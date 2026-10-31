@@ -59,10 +59,6 @@ so the Creation Kit must be installed.
 .\Deploy.ps1 -Root "<mod folder>\SKSE\Plugins" -Examples
 ```
 
-`Package.ps1` builds and writes the archive players install (`artifacts\SkyrimForge-<version>.zip`),
-the NuGet package that plugins reference (`artifacts\packages\SkyrimForge.<version>.nupkg`),
-and the package of the `dotnet new` plugin template (`artifacts\packages\SkyrimForge.PluginTemplate.<version>.nupkg`).
-
 ## Documentation
 
 [docs.skyrimforge.net](https://docs.skyrimforge.net/) covers writing a plugin, the services a plugin can use, and the API reference.

@@ -1,0 +1,75 @@
+diff --git a/include/RE/Skyrim.h b/include/RE/Skyrim.h
+--- a/include/RE/Skyrim.h
++++ b/include/RE/Skyrim.h
+@@ -1930,5 +1930,8 @@
+ #include "RE/T/TESTopicInfo.h"
+ #include "RE/T/TESTopicInfoEvent.h"
+ #include "RE/T/TESTrackedStatsEvent.h"
++#include "RE/T/TESTriggerEnterEvent.h"
++#include "RE/T/TESTriggerEvent.h"
++#include "RE/T/TESTriggerLeaveEvent.h"
+ #include "RE/T/TESUniqueIDChangeEvent.h"
+ #include "RE/T/TESValueForm.h"
+diff --git a/include/RE/T/TESTriggerEnterEvent.h b/include/RE/T/TESTriggerEnterEvent.h
+new file mode 100644
+--- /dev/null
++++ b/include/RE/T/TESTriggerEnterEvent.h
+@@ -0,0 +1,16 @@
++#pragma once
++
++#include "RE/N/NiSmartPointer.h"
++
++namespace RE
++{
++	class TESObjectREFR;
++
++	struct TESTriggerEnterEvent
++	{
++	public:
++		// members
++		NiPointer<TESObjectREFR> trigger;    // 00
++		NiPointer<TESObjectREFR> actionRef;  // 08
++	};
++}
+diff --git a/include/RE/T/TESTriggerEvent.h b/include/RE/T/TESTriggerEvent.h
+new file mode 100644
+--- /dev/null
++++ b/include/RE/T/TESTriggerEvent.h
+@@ -0,0 +1,16 @@
++#pragma once
++
++#include "RE/N/NiSmartPointer.h"
++
++namespace RE
++{
++	class TESObjectREFR;
++
++	struct TESTriggerEvent
++	{
++	public:
++		// members
++		NiPointer<TESObjectREFR> trigger;    // 00
++		NiPointer<TESObjectREFR> actionRef;  // 08
++	};
++}
+diff --git a/include/RE/T/TESTriggerLeaveEvent.h b/include/RE/T/TESTriggerLeaveEvent.h
+new file mode 100644
+--- /dev/null
++++ b/include/RE/T/TESTriggerLeaveEvent.h
+@@ -0,0 +1,16 @@
++#pragma once
++
++#include "RE/N/NiSmartPointer.h"
++
++namespace RE
++{
++	class TESObjectREFR;
++
++	struct TESTriggerLeaveEvent
++	{
++	public:
++		// members
++		NiPointer<TESObjectREFR> trigger;    // 00
++		NiPointer<TESObjectREFR> actionRef;  // 08
++	};
++}

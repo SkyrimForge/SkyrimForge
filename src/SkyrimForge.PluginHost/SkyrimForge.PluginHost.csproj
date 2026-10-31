@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <WarningsAsErrors>nullable</WarningsAsErrors>
+    <EnableDynamicLoading>true</EnableDynamicLoading>
+    <RollForward>Major</RollForward>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SkyrimForge\SkyrimForge.csproj" />
+    <ProjectReference Include="..\SkyrimForge.Infrastructure\SkyrimForge.Infrastructure.csproj" />
+    <ProjectReference Include="..\SkyrimForge.Game\SkyrimForge.Game.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="SkyrimForge.Tests" />
+    <InternalsVisibleTo Include="SkyrimForge.DocsGenerator" />
+  </ItemGroup>
+
+</Project>

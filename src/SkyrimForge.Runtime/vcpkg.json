@@ -1,0 +1,14 @@
+{
+  "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg-tool/main/docs/vcpkg.schema.json",
+  "name": "skyrimforge-runtime",
+  "version-string": "0.1.1",
+  "description": "SkyrimForge native runtime, which hosts the CLR and calls CommonLibSSE-NG for managed code",
+  "dependencies": [
+    "commonlibsse-ng",
+    "safetyhook",
+    {
+      "name": "spdlog",
+      "features": ["wchar"]
+    }
+  ]
+}

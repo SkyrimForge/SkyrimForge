@@ -1,0 +1,13 @@
+diff --git a/include/REL/RuntimeDataAccessors.h b/include/REL/RuntimeDataAccessors.h
+index c0798ab..acc49c9 100644
+--- a/include/REL/RuntimeDataAccessors.h
++++ b/include/REL/RuntimeDataAccessors.h
+@@ -224,7 +224,7 @@ namespace REL
+ 	{                                                                                                     \
+ 		if SKYRIM_REL_CONSTEXPR (REL::Module::IsAE()) {                                                   \
+ 			if (REL::Module::get().version().compare(Version) != std::strong_ordering::less) {            \
+-				return REL::RelocateMember<StructType*>(this, AEOffset);                                  \
++				return std::addressof(REL::RelocateMember<StructType>(this, AEOffset));                   \
+ 			}                                                                                             \
+ 		}                                                                                                 \
+ 		return nullptr;                                                                                   \

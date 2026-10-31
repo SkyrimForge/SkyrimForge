@@ -1,0 +1,28 @@
+diff --git a/include/REL/ID.h b/include/REL/ID.h
+index 6f0b2d2..eb4baa7 100644
+--- a/include/REL/ID.h
++++ b/include/REL/ID.h
+@@ -632,6 +632,23 @@ namespace REL
+ 			}
+ 		}
+ 
++		// The address library identifier for the running edition, or 0 on VR, where the entry is an offset.
++		[[nodiscard]] SKYRIM_REL std::uint64_t id() const noexcept
++		{
++			switch (Module::GetRuntime()) {
++#ifdef ENABLE_SKYRIM_AE
++			case Module::Runtime::AE:
++				return _aeID;
++#endif
++#ifdef ENABLE_SKYRIM_SE
++			case Module::Runtime::SE:
++				return _seID;
++#endif
++			default:
++				return 0;
++			}
++		}
++
+ 	private:
+ 		[[nodiscard]] static std::uintptr_t base() { return Module::get().base(); }
+ 

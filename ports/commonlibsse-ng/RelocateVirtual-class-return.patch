@@ -1,0 +1,53 @@
+diff --git a/include/REL/Relocation.h b/include/REL/Relocation.h
+index 7024cc1..7c55b3b 100644
+--- a/include/REL/Relocation.h
++++ b/include/REL/Relocation.h
+@@ -929,6 +929,16 @@ namespace REL
+ 			using return_type = Ret;
+ 			using function_type = Ret(const This*, Args...);
+ 		};
++
++		template <class T>
++		struct RelocateVirtualIndirectReturn
++		{};
++
++		template <class Ret, class This, class... Args>
++		struct RelocateVirtualIndirectReturn<Ret(This*, Args...)>
++		{
++			using function_type = void(This*, Ret*, Args...);
++		};
+ 	}
+ 
+ 	/**
+@@ -959,7 +969,9 @@ namespace REL
+ 		[[maybe_unused]] std::ptrdiff_t                        a_vrVtableIndex,
+ 		typename detail::RelocateVirtualHelper<Fn>::this_type* a_self, Args&&... a_args)
+ 	{
+-		return (*reinterpret_cast<typename detail::RelocateVirtualHelper<Fn>::function_type**>(
++		using function_type = typename detail::RelocateVirtualHelper<Fn>::function_type;
++		using return_type = typename detail::RelocateVirtualHelper<Fn>::return_type;
++		const auto function = *reinterpret_cast<function_type**>(
+ 			*reinterpret_cast<const uintptr_t*>(reinterpret_cast<uintptr_t>(a_self) +
+ #ifndef ENABLE_SKYRIM_VR
+ 												a_seAndAEVtableOffset) +
+@@ -971,7 +983,19 @@ namespace REL
+ 												(Module::IsVR() ? a_vrVtableOffset : a_seAndAEVtableOffset)) +
+ 			(Module::IsVR() ? a_vrVtableIndex : a_seAndAEVtableIndex)
+ #endif
+-				* sizeof(uintptr_t)))(a_self, std::forward<Args>(a_args)...);
++				* sizeof(uintptr_t));
++		if constexpr (std::is_class_v<return_type> || std::is_union_v<return_type>) {
++			// The game's virtual functions are member functions, which return a class through a pointer passed after this. A call through function_type
++			// passes that pointer first, or not at all, so the game would write its result over the object or through the first argument.
++			alignas(return_type) std::byte storage[sizeof(return_type)];
++			const auto                     result = reinterpret_cast<return_type*>(storage);
++			reinterpret_cast<typename detail::RelocateVirtualIndirectReturn<function_type>::function_type*>(function)(a_self, result, std::forward<Args>(a_args)...);
++			return_type value = std::move(*result);
++			std::destroy_at(result);
++			return value;
++		} else {
++			return function(a_self, std::forward<Args>(a_args)...);
++		}
+ 	}
+ 
+ 	/**

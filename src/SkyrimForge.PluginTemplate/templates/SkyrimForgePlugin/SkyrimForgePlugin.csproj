@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="SkyrimForge" Version="SKYRIMFORGE_VERSION" />
+  </ItemGroup>
+
+  <!--
+  To copy the plugin into a mod manager's mod folder, or into the game's Data folder, after each build,
+  set SkyrimForgeDeployDirectory in SkyrimForgePlugin.csproj.user, since the folder differs between machines:
+  <Project>
+    <PropertyGroup>
+      <SkyrimForgeDeployDirectory>C:\Path\To\ModOrganizer\mods\SkyrimForgePlugin</SkyrimForgeDeployDirectory>
+    </PropertyGroup>
+  </Project>
+  -->
+
+</Project>

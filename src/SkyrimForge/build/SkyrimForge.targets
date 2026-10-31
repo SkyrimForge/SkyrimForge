@@ -1,0 +1,153 @@
+﻿<Project>
+
+  <PropertyGroup>
+    <SkyrimDirectory Condition="'$(SkyrimDirectory)' == ''">$([MSBuild]::GetRegistryValueFromView('HKEY_LOCAL_MACHINE\SOFTWARE\Bethesda Softworks\Skyrim Special Edition', 'Installed Path', null, RegistryView.Registry32))</SkyrimDirectory>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Include="Scripts\Source\*.psc" />
+  </ItemGroup>
+
+  <Target Name="SkyrimForgeBuildPapyrusScripts" AfterTargets="CopyFilesToOutputDirectory"
+    DependsOnTargets="_SkyrimForgeFindPapyrusScripts;_SkyrimForgeWarnNoPapyrusCompiler;_SkyrimForgeCompilePapyrusScripts;_SkyrimForgeCopyPapyrusSources" />
+
+  <!-- Lists the scripts when the target runs, since the C# compiler writes the .psc of a class marked [PapyrusScript] during the build. -->
+  <Target Name="_SkyrimForgeFindPapyrusScripts">
+    <PropertyGroup>
+      <_SkyrimForgeDataDir>$(SkyrimForgeDataDir)</_SkyrimForgeDataDir>
+      <_SkyrimForgeDataDir Condition="'$(_SkyrimForgeDataDir)' == ''">$(OutDir)</_SkyrimForgeDataDir>
+      <_SkyrimForgeScriptSource>$(MSBuildProjectDirectory)\Scripts\Source</_SkyrimForgeScriptSource>
+      <_SkyrimForgeScriptOutput>$([MSBuild]::EnsureTrailingSlash('$(_SkyrimForgeDataDir)'))Scripts</_SkyrimForgeScriptOutput>
+      <_SkyrimForgeSourceOutput>$([MSBuild]::EnsureTrailingSlash('$(_SkyrimForgeDataDir)'))Source\Scripts</_SkyrimForgeSourceOutput>
+      <_SkyrimForgePapyrusCompiler>$([MSBuild]::EnsureTrailingSlash('$(SkyrimDirectory)'))Papyrus Compiler\PapyrusCompiler.exe</_SkyrimForgePapyrusCompiler>
+      <_SkyrimForgeGameScriptSource>$([MSBuild]::EnsureTrailingSlash('$(SkyrimDirectory)'))Data\Source\Scripts</_SkyrimForgeGameScriptSource>
+      <_SkyrimForgeSkseScriptSource>$([MSBuild]::EnsureTrailingSlash('$(SkyrimDirectory)'))Data\Scripts\Source</_SkyrimForgeSkseScriptSource>
+      <_SkyrimForgePapyrusFlags>$(_SkyrimForgeGameScriptSource)\TESV_Papyrus_Flags.flg</_SkyrimForgePapyrusFlags>
+      <_SkyrimForgePapyrusFileList>$(IntermediateOutputPath)SkyrimForge.PapyrusFiles.txt</_SkyrimForgePapyrusFileList>
+    </PropertyGroup>
+    <ItemGroup>
+      <_SkyrimForgePapyrusScript Include="$(_SkyrimForgeScriptSource)\*.psc" />
+      <_SkyrimForgeCompiledScript Include="@(_SkyrimForgePapyrusScript->'$(_SkyrimForgeScriptOutput)\%(Filename).pex')" />
+      <_SkyrimForgeCopiedSource Include="@(_SkyrimForgePapyrusScript->'$(_SkyrimForgeSourceOutput)\%(Filename)%(Extension)')" />
+    </ItemGroup>
+    <!-- Only the files the list records are deleted, since the output folder can be a Data folder that contains other mods' scripts. -->
+    <ReadLinesFromFile File="$(_SkyrimForgePapyrusFileList)" Condition="Exists('$(_SkyrimForgePapyrusFileList)')">
+      <Output TaskParameter="Lines" ItemName="_SkyrimForgePreviousPapyrusFile" />
+    </ReadLinesFromFile>
+    <ItemGroup>
+      <_SkyrimForgeStaleFile Include="@(_SkyrimForgePreviousPapyrusFile)" Exclude="@(_SkyrimForgeCompiledScript);@(_SkyrimForgeCopiedSource)" />
+    </ItemGroup>
+    <Delete Files="@(_SkyrimForgeStaleFile)" />
+    <WriteLinesToFile File="$(_SkyrimForgePapyrusFileList)" Lines="@(_SkyrimForgeCompiledScript);@(_SkyrimForgeCopiedSource)" Overwrite="true" WriteOnlyWhenDifferent="true" />
+  </Target>
+
+  <Target Name="_SkyrimForgeWarnNoPapyrusCompiler"
+    Condition="'@(_SkyrimForgePapyrusScript)' != '' and (!Exists('$(_SkyrimForgePapyrusCompiler)') or !Exists('$(_SkyrimForgePapyrusFlags)'))">
+    <Warning Code="SF1006"
+      Text="The Papyrus scripts in Scripts\Source were not compiled, because $(_SkyrimForgePapyrusCompiler) or $(_SkyrimForgePapyrusFlags) does not exist. Install the Creation Kit and run it once, which extracts the game's script sources, or set SkyrimDirectory to the Skyrim Special Edition folder." />
+  </Target>
+
+  <!--
+  Every script is compiled when any one changes, since the compiler checks a script against the scripts it extends and calls.
+  A path in the command ends without a backslash, which would escape the closing quotation mark.
+  -->
+  <Target Name="_SkyrimForgeCompilePapyrusScripts"
+    Condition="'@(_SkyrimForgePapyrusScript)' != '' and Exists('$(_SkyrimForgePapyrusCompiler)') and Exists('$(_SkyrimForgePapyrusFlags)')"
+    Inputs="@(_SkyrimForgePapyrusScript);$(_SkyrimForgePapyrusFlags)"
+    Outputs="@(_SkyrimForgeCompiledScript)">
+    <PropertyGroup>
+      <!-- SKSE's versions of the game's scripts declare more functions, so they precede the game's. -->
+      <_SkyrimForgeImports>$(_SkyrimForgeScriptSource)</_SkyrimForgeImports>
+      <_SkyrimForgeImports Condition="Exists('$(_SkyrimForgeSkseScriptSource)')">$(_SkyrimForgeImports);$(_SkyrimForgeSkseScriptSource)</_SkyrimForgeImports>
+      <_SkyrimForgeImports>$(_SkyrimForgeImports);$(_SkyrimForgeGameScriptSource)</_SkyrimForgeImports>
+    </PropertyGroup>
+    <MakeDir Directories="$(_SkyrimForgeScriptOutput)" />
+    <Exec Command="&quot;$(_SkyrimForgePapyrusCompiler)&quot; &quot;$(_SkyrimForgeScriptSource)&quot; -all -quiet &quot;-f=$(_SkyrimForgePapyrusFlags)&quot; &quot;-i=$(_SkyrimForgeImports)&quot; &quot;-o=$(_SkyrimForgeScriptOutput)&quot;"
+      ConsoleToMSBuild="true" IgnoreExitCode="true" StandardOutputImportance="low">
+      <Output TaskParameter="ConsoleOutput" ItemName="_SkyrimForgeCompilerOutput" />
+      <Output TaskParameter="ExitCode" PropertyName="_SkyrimForgeCompilerExitCode" />
+    </Exec>
+    <SkyrimForgeReportPapyrusErrors Lines="@(_SkyrimForgeCompilerOutput)" />
+    <Error Condition="'$(_SkyrimForgeCompilerExitCode)' != '0'" Text="PapyrusCompiler.exe exited with code $(_SkyrimForgeCompilerExitCode): @(_SkyrimForgeCompilerOutput, ' ')" />
+    <Message Condition="'$(_SkyrimForgeCompilerExitCode)' == '0'" Importance="high"
+      Text="$(MSBuildProjectName) -> @(_SkyrimForgeCompiledScript->Count()) Papyrus script(s) compiled to $(_SkyrimForgeScriptOutput)" />
+  </Target>
+
+  <!--
+  MSBuild reads only its own error format from a command's output, and its Error task has no line parameter.
+  SkyrimForgeReportPapyrusErrors fails where it reports an error, which ends the target before the error for the exit code.
+  -->
+  <UsingTask TaskName="SkyrimForgeReportPapyrusErrors" TaskFactory="RoslynCodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
+    <ParameterGroup>
+      <Lines ParameterType="Microsoft.Build.Framework.ITaskItem[]" Required="true" />
+    </ParameterGroup>
+    <Task>
+      <Using Namespace="System.Text.RegularExpressions" />
+      <Code Type="Method" Language="cs"><![CDATA[
+        public override bool Execute()
+        {
+            // The compiler writes some errors twice.
+            var reportedLines = new System.Collections.Generic.HashSet<string>();
+            foreach (Microsoft.Build.Framework.ITaskItem line in Lines)
+            {
+                Match match = Regex.Match(line.ItemSpec, @"^(.+\.psc)\((\d+),(\d+)\): (.+)$");
+                if (match.Success && reportedLines.Add(line.ItemSpec))
+                {
+                    Log.LogError(null, null, null, match.Groups[1].Value, int.Parse(match.Groups[2].Value), int.Parse(match.Groups[3].Value), 0, 0, match.Groups[4].Value);
+                }
+            }
+            return !Log.HasLoggedErrors;
+        }
+      ]]></Code>
+    </Task>
+  </UsingTask>
+
+  <Target Name="_SkyrimForgeCopyPapyrusSources" Condition="'@(_SkyrimForgePapyrusScript)' != ''">
+    <Copy SourceFiles="@(_SkyrimForgePapyrusScript)" DestinationFolder="$(_SkyrimForgeSourceOutput)" SkipUnchangedFiles="true" />
+  </Target>
+
+  <!-- The framework loads its own assemblies. -->
+  <Target Name="_SkyrimForgeExcludeFrameworkAssemblies" AfterTargets="ResolvePackageAssets">
+    <ItemGroup>
+      <RuntimeCopyLocalItems Remove="@(RuntimeCopyLocalItems->WithMetadataValue('NuGetPackageId', 'SkyrimForge'))" />
+    </ItemGroup>
+  </Target>
+
+  <!-- A project that targets an earlier framework still restores the package, and the compiler would report only that the SkyrimForge namespace does not exist. -->
+  <Target Name="_SkyrimForgeCheckTargetFramework" BeforeTargets="CoreCompile" Condition="!$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net10.0'))">
+    <Error Code="SF2002" Text="SkyrimForge requires .NET 10, and this project targets $(TargetFramework). Set TargetFramework to net10.0." />
+  </Target>
+
+  <!-- A file the game has loaded cannot be overwritten, so the copy fails while the game runs. -->
+  <Target Name="SkyrimForgeDeploy" AfterTargets="Build" Condition="'$(SkyrimForgeDeployDirectory)' != ''">
+    <Error Condition="'$(SkyrimForgeDataDir)' == ''" Code="SF2001"
+      Text="The output was not copied to $(SkyrimForgeDeployDirectory), because the project or the command line sets OutDir. SkyrimForge sets OutDir to a folder below SKSE\Plugins\SkyrimForge in the output folder only when OutDir is unset, and the copy requires the output there." />
+    <PropertyGroup>
+      <_SkyrimForgeDeployDir>$([MSBuild]::NormalizeDirectory('$(MSBuildProjectDirectory)', '$(SkyrimForgeDeployDirectory)'))</_SkyrimForgeDeployDir>
+      <_SkyrimForgeDeployFileList>$(IntermediateOutputPath)SkyrimForge.DeployedFiles.txt</_SkyrimForgeDeployFileList>
+    </PropertyGroup>
+    <!-- The SKSE, Scripts, and Source folders are copied rather than the whole output folder, which also contains the publish folder. -->
+    <ItemGroup>
+      <_SkyrimForgeDeploySource Include="$(SkyrimForgeDataDir)SKSE\**" DataFolder="SKSE\" />
+      <_SkyrimForgeDeploySource Include="$(SkyrimForgeDataDir)Scripts\**" DataFolder="Scripts\" />
+      <_SkyrimForgeDeploySource Include="$(SkyrimForgeDataDir)Source\**" DataFolder="Source\" />
+      <_SkyrimForgeDeployedFile Include="@(_SkyrimForgeDeploySource->'%(DataFolder)%(RecursiveDir)%(Filename)%(Extension)')" />
+    </ItemGroup>
+    <!--
+    Stale files are deleted, because the plugin loader would load a removed dependency.
+    Only the files the list records are deleted, since the folder can contain other mods' files.
+    -->
+    <ReadLinesFromFile File="$(_SkyrimForgeDeployFileList)" Condition="Exists('$(_SkyrimForgeDeployFileList)')">
+      <Output TaskParameter="Lines" ItemName="_SkyrimForgePreviousDeployedFile" />
+    </ReadLinesFromFile>
+    <ItemGroup>
+      <_SkyrimForgeStaleDeployedFile Include="@(_SkyrimForgePreviousDeployedFile)" Exclude="@(_SkyrimForgeDeployedFile)" />
+    </ItemGroup>
+    <Delete Files="@(_SkyrimForgeStaleDeployedFile->'$(_SkyrimForgeDeployDir)%(Identity)')" />
+    <Copy SourceFiles="@(_SkyrimForgeDeploySource)" DestinationFiles="@(_SkyrimForgeDeployedFile->'$(_SkyrimForgeDeployDir)%(Identity)')"
+      SkipUnchangedFiles="true" Retries="$(CopyRetryCount)" RetryDelayMilliseconds="$(CopyRetryDelayMilliseconds)" />
+    <WriteLinesToFile File="$(_SkyrimForgeDeployFileList)" Lines="@(_SkyrimForgeDeployedFile)" Overwrite="true" WriteOnlyWhenDifferent="true" />
+    <Message Importance="high" Text="$(MSBuildProjectName) -> $(_SkyrimForgeDeployDir)" />
+  </Target>
+
+</Project>

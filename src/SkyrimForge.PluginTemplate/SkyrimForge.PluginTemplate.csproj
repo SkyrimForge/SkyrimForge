@@ -1,0 +1,39 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <PackageType>Template</PackageType>
+    <TargetFramework>net10.0</TargetFramework>
+    <Description>The dotnet new template for a SkyrimForge plugin: a .NET 10 class library that references the SkyrimForge package, with a plugin class that shows a notification with the player's name each time a new game starts or a save finishes loading.</Description>
+    <PackageTags>skyrim;skse;skyrimforge;dotnet-new;template</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <ContentTargetFolders>content</ContentTargetFolders>
+    <!-- Includes .template.config, which dotnet pack omits by default. -->
+    <NoDefaultExcludes>true</NoDefaultExcludes>
+    <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
+    <TemplateProject>templates\SkyrimForgePlugin\SkyrimForgePlugin.csproj</TemplateProject>
+    <BeforePack>$(BeforePack);WriteTemplateProject</BeforePack>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="templates\**\*" Exclude="$(TemplateProject)" />
+    <Compile Remove="**\*" />
+    <None Update="README.md" Pack="true" PackagePath="README.md" />
+  </ItemGroup>
+
+  <!-- A project the template creates references the SkyrimForge package released beside this one. -->
+  <Target Name="WriteTemplateProject">
+    <PropertyGroup>
+      <TemplateProjectCopy>$(IntermediateOutputPath)SkyrimForgePlugin.csproj</TemplateProjectCopy>
+    </PropertyGroup>
+    <WriteLinesToFile
+      File="$(TemplateProjectCopy)"
+      Lines="$([MSBuild]::Escape($([System.IO.File]::ReadAllText('$(MSBuildProjectDirectory)\$(TemplateProject)').Replace('SKYRIMFORGE_VERSION', '$(Version)'))))"
+      Overwrite="true"
+      WriteOnlyWhenDifferent="true" />
+    <ItemGroup>
+      <Content Include="$(TemplateProjectCopy)" PackagePath="content\templates\SkyrimForgePlugin\SkyrimForgePlugin.csproj" />
+    </ItemGroup>
+  </Target>
+
+</Project>

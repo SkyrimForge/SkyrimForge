@@ -1,0 +1,26 @@
+diff --git a/include/RE/I/IMenu.h b/include/RE/I/IMenu.h
+index 58af5ec..b7b1dad 100644
+--- a/include/RE/I/IMenu.h
++++ b/include/RE/I/IMenu.h
+@@ -128,10 +128,11 @@ namespace RE
+ 		};
+ 
+ 		// Returns nullptr on SE/AE; uses absolute VR offset so it works in cross-VR builds too.
++		// The block follows fxDelegate, at 0x30 on Skyrim VR.
+ 		[[nodiscard]] inline VR_RUNTIME_DATA* GetVRRuntimeData() noexcept
+ 		{
+ 			if SKYRIM_REL_VR_CONSTEXPR (REL::Module::IsVR()) {
+-				return &REL::RelocateMember<VR_RUNTIME_DATA>(this, 0x0, 0x0);
++				return &REL::RelocateMember<VR_RUNTIME_DATA>(this, 0x0, 0x30);
+ 			}
+ 			return nullptr;
+ 		}
+@@ -139,7 +140,7 @@ namespace RE
+ 		[[nodiscard]] inline const VR_RUNTIME_DATA* GetVRRuntimeData() const noexcept
+ 		{
+ 			if SKYRIM_REL_VR_CONSTEXPR (REL::Module::IsVR()) {
+-				return &REL::RelocateMember<VR_RUNTIME_DATA>(this, 0x0, 0x0);
++				return &REL::RelocateMember<VR_RUNTIME_DATA>(this, 0x0, 0x30);
+ 			}
+ 			return nullptr;
+ 		}

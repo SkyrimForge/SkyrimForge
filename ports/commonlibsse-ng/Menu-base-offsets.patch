@@ -1,0 +1,113 @@
+diff --git a/include/RE/C/ContainerMenu.h b/include/RE/C/ContainerMenu.h
+index acddc0fd..6111fd4a 100644
+--- a/include/RE/C/ContainerMenu.h
++++ b/include/RE/C/ContainerMenu.h
+@@ -72,7 +72,8 @@ namespace RE
+ 		[[nodiscard]] GFxValue  GetRoot() const noexcept;
+ 		[[nodiscard]] ItemList* GetItemList() const noexcept;
+ 
+-		RUNTIME_DATA_ACCESSOR(RUNTIME_DATA, 0x30, 0x40);
++		// Skyrim VR's ContainerMenu also derives from MenuEventHandler, at 0x40.
++		RUNTIME_DATA_ACCESSOR(RUNTIME_DATA, 0x30, 0x50);
+ 		// members
+ #ifndef SKYRIM_CROSS_VR
+ 		RUNTIME_DATA_CONTENT;  // 30, 40
+diff --git a/include/RE/C/CraftingMenu.h b/include/RE/C/CraftingMenu.h
+index f76155f6..8aaf7398 100644
+--- a/include/RE/C/CraftingMenu.h
++++ b/include/RE/C/CraftingMenu.h
+@@ -33,11 +33,12 @@ namespace RE
+ 		void               AdvanceMovie(float a_interval, std::uint32_t a_currentTime) override;  // 05
+ 		void               PostDisplay() override;                                                // 06
+ 
+-		RUNTIME_DATA_POINTER_ACCESSOR_EX(CraftingSubMenus::CraftingSubMenu*, GetCraftingSubMenu, 0x30, 0x40);
++		// Skyrim VR's CraftingMenu also derives from MenuEventHandler, at 0x40, and stores the sub-menu pointer after it.
++		RUNTIME_DATA_POINTER_ACCESSOR_EX(CraftingSubMenus::CraftingSubMenu*, GetCraftingSubMenu, 0x30, 0x50);
+ 
+ 		inline void SetCraftingSubMenu(CraftingSubMenus::CraftingSubMenu* craftingSubMenu) noexcept
+ 		{
+-			REL::RelocateMember<CraftingSubMenus::CraftingSubMenu*>(this, 0x30, 0x40) = craftingSubMenu;
++			REL::RelocateMember<CraftingSubMenus::CraftingSubMenu*>(this, 0x30, 0x50) = craftingSubMenu;
+ 		}
+ 
+ 		static void QuitMenu()
+diff --git a/include/RE/D/DialogueMenu.h b/include/RE/D/DialogueMenu.h
+index be82333f..27b9e57d 100644
+--- a/include/RE/D/DialogueMenu.h
++++ b/include/RE/D/DialogueMenu.h
+@@ -53,7 +53,8 @@ namespace RE
+ 		BSEventNotifyControl ProcessEvent(const MenuOpenCloseEvent* a_event, BSTEventSource<MenuOpenCloseEvent>* a_eventSource) override;  // 01
+ #endif
+ 
+-		RUNTIME_CAST_ACCESSOR(BSTEventSink<MenuOpenCloseEvent>, AsMenuOpenCloseEventSink, 0x88, 0x30);
++		// At 0x30 on Skyrim SE and AE, and at 0x58 on Skyrim VR, after the WorldSpaceMenu base.
++		RUNTIME_CAST_ACCESSOR(BSTEventSink<MenuOpenCloseEvent>, AsMenuOpenCloseEventSink, 0x30, 0x58);
+ 
+ 		[[nodiscard]] BSTEventSink<HudModeChangeEvent>* AsHudModeChangeEventSink() noexcept
+ 		{
+@@ -65,7 +66,8 @@ namespace RE
+ 			return const_cast<DialogueMenu*>(this)->AsHudModeChangeEventSink();
+ 		}
+ 
+-		RUNTIME_DATA_ACCESSOR(RUNTIME_DATA, 0x38, 0x48);
++		// On Skyrim VR the block follows the MenuOpenCloseEvent sink, at 0x58.
++		RUNTIME_DATA_ACCESSOR(RUNTIME_DATA, 0x38, 0x60);
+ 		// members
+ #ifndef SKYRIM_CROSS_VR
+ 		RUNTIME_DATA_CONTENT;  // 38, 48
+diff --git a/include/RE/I/InventoryMenu.h b/include/RE/I/InventoryMenu.h
+index 763d0552..4176fdfd 100644
+--- a/include/RE/I/InventoryMenu.h
++++ b/include/RE/I/InventoryMenu.h
+@@ -66,7 +66,8 @@ namespace RE
+ 			return func(this);
+ 		}
+ 
+-		RUNTIME_DATA_ACCESSOR(RUNTIME_DATA, 0x30, 0x40);
++		// Skyrim VR's InventoryMenu also derives from MenuEventHandler, at 0x40, and stores eight further bytes at 0x50 before this block.
++		RUNTIME_DATA_ACCESSOR(RUNTIME_DATA, 0x30, 0x58);
+ 		// members
+ #ifndef SKYRIM_CROSS_VR
+ 		RUNTIME_DATA_CONTENT;  // 30, 40
+diff --git a/include/RE/M/MagicMenu.h b/include/RE/M/MagicMenu.h
+index c0a613c8..57f043ec 100644
+--- a/include/RE/M/MagicMenu.h
++++ b/include/RE/M/MagicMenu.h
+@@ -43,7 +43,8 @@ namespace RE
+ 		UI_MESSAGE_RESULTS ProcessMessage(UIMessage& a_message) override;    // 04
+ 		void               PostDisplay() override;                           // 06
+ 
+-		RUNTIME_DATA_ACCESSOR(RUNTIME_DATA, 0x30, 0x40);
++		// Skyrim VR's MagicMenu also derives from MenuEventHandler, at 0x40.
++		RUNTIME_DATA_ACCESSOR(RUNTIME_DATA, 0x30, 0x50);
+ 		// members
+ #ifndef SKYRIM_CROSS_VR
+ 		RUNTIME_DATA_CONTENT;  // 30, 40
+diff --git a/include/RE/M/MainMenu.h b/include/RE/M/MainMenu.h
+index 96606327..a62730e1 100644
+--- a/include/RE/M/MainMenu.h
++++ b/include/RE/M/MainMenu.h
+@@ -63,10 +63,11 @@ namespace RE
+ #endif
+ 		[[nodiscard]] inline GFxFunctionHandler* AsGFxFunctionHandler() noexcept
+ 		{
+-			if SKYRIM_REL_VR_CONSTEXPR (!REL::Module::IsVR()) {
++			// The game derives MainMenu from GFxFunctionHandler at 0x40 on Skyrim SE and AE, and not at all on Skyrim VR.
++			if SKYRIM_REL_VR_CONSTEXPR (REL::Module::IsVR()) {
+ 				return nullptr;
+ 			} else {
+-				return &REL::RelocateMember<GFxFunctionHandler>(this, 0, 0x50);
++				return &REL::RelocateMember<GFxFunctionHandler>(this, 0x40, 0);
+ 			}
+ 		}
+ 
+@@ -103,7 +104,8 @@ namespace RE
+ 			}
+ 		}
+ 
+-		RUNTIME_DATA_ACCESSOR(RUNTIME_DATA, 0x50, 0x60);
++		// The block follows MenuEventHandler, at 0x58 on Skyrim VR.
++		RUNTIME_DATA_ACCESSOR(RUNTIME_DATA, 0x50, 0x68);
+ 		// members
+ #ifndef SKYRIM_CROSS_VR
+ 		RUNTIME_DATA_CONTENT;  // 50, 60

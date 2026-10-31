@@ -1,0 +1,12 @@
+diff --git a/include/RE/B/BGSSaveLoadManager.h b/include/RE/B/BGSSaveLoadManager.h
+--- a/include/RE/B/BGSSaveLoadManager.h
++++ b/include/RE/B/BGSSaveLoadManager.h
+@@ -188,7 +188,7 @@ namespace RE
+ 		std::uint32_t                   pad134;                   // 134
+ 		const char                      lastFileFullName[0x104];  // 138
+ 		std::uint32_t                   pad23C;                   // 23C
+-		BSFixedString                   lastFileName;             // 240
++		const char*                     lastFileName;             // 240
+ 		std::uint16_t                   lastFileNameLength;       // 248
+ 		std::uint16_t                   maxFileNameLength;        // 24A
+ 		std::uint32_t                   unk24C;                   // 24C

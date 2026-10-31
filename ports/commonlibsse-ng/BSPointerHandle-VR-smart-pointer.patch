@@ -1,0 +1,14 @@
+diff --git a/include/RE/B/BSPointerHandle.h b/include/RE/B/BSPointerHandle.h
+--- a/include/RE/B/BSPointerHandle.h
++++ b/include/RE/B/BSPointerHandle.h
+@@ -224,6 +224,10 @@ namespace RE
+ 
+ 		static bool GetSmartPointer(BSPointerHandle<T>& a_handle, NiPointer<T>& a_smartPointerOut)  // clears the handle
+ 		{
++			// The Skyrim VR address library omits 12785. The other overload resolves the handle the same way and leaves an invalid one as it is.
++			if (REL::Module::IsVR()) {
++				return GetSmartPointer(static_cast<const BSPointerHandle<T>&>(a_handle), a_smartPointerOut);
++			}
+ 			using func_t = bool (*)(BSPointerHandle<T>&, NiPointer<T>&);
+ 			static REL::Relocation<func_t> func{ RELOCATION_ID(12785, 12922) };
+ 			return func(a_handle, a_smartPointerOut);

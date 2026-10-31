@@ -1,0 +1,24 @@
+diff --git a/include/REL/IDDB.h b/include/REL/IDDB.h
+index ea0d774..9cc70d1 100644
+--- a/include/REL/IDDB.h
++++ b/include/REL/IDDB.h
+@@ -133,6 +133,19 @@ namespace REL
+ 
+ 		[[nodiscard]] std::size_t id2offset(std::uint64_t a_id) const;
+ 
++		// Whether the library contains the identifier, on every format, without ending the process where it does not.
++		[[nodiscard]] bool names(std::uint64_t a_id) const noexcept
++		{
++			if (_loadedFormat == Format::SSEv5) {
++				return a_id < _id2offsetDense.size() && _id2offsetDense[a_id] != 0;
++			}
++
++			const auto it = std::lower_bound(_id2offset.begin(), _id2offset.end(), a_id, [](const mapping_t& a_entry, std::uint64_t a_value) {
++				return a_entry.id < a_value;
++			});
++			return it != _id2offset.end() && it->id == a_id;
++		}
++
+ #ifdef ENABLE_SKYRIM_VR
+ 		bool IsVRAddressLibraryAtLeastVersion(const char* a_minimalVRAddressLibVersion, bool a_reportAndFail = false) const;
+ #endif

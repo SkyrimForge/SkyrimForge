@@ -1,0 +1,15 @@
+{
+  "$schema": "http://json.schemastore.org/template",
+  "author": "Wessley Mitchell",
+  "classifications": [ "Skyrim", "SKSE", "SkyrimForge", "Plugin" ],
+  "identity": "SkyrimForge.PluginTemplate",
+  "name": "SkyrimForge Plugin",
+  "description": "A SkyrimForge plugin: a .NET 10 class library that references the SkyrimForge package, with a plugin class that shows a notification with the player's name each time a new game starts or a save finishes loading.",
+  "shortName": "skyrimforge-plugin",
+  "sourceName": "SkyrimForgePlugin",
+  "preferNameDirectory": true,
+  "tags": {
+    "language": "C#",
+    "type": "project"
+  }
+}

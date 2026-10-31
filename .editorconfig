@@ -1,0 +1,28 @@
+root = true
+
+[*.cs]
+# IDE0063: Use simple 'using' statement (A using block's braces make the scope of the using clear.)
+dotnet_diagnostic.IDE0063.severity = none
+
+# IDE0130: Namespace does not match folder structure
+dotnet_diagnostic.IDE0130.severity = none
+
+[*.Generated.cs]
+# CS1591: Missing XML comment for publicly visible type or member
+# The binding generator emits thousands of public members with no XML comment, and documenting them is not the goal.
+# This section applies only to files whose names end in .Generated.cs. Adding CS1591 to NoWarn in a project file would hide the warnings for every file in that project,
+# so a non-generated public member with no XML comment still raises the warning.
+dotnet_diagnostic.CS1591.severity = none
+
+[src/SkyrimForge.PapyrusScripts/Wrappers/*.cs]
+# These files also compile into the .NET Standard 2.0 source generator, which has no ranges, span overloads of string, string.Contains(char), or GeneratedRegexAttribute.
+# The analyzers suggest each of those when the .NET 10 binding generator compiles these files.
+# IDE0028 suggests a collection expression with arguments, which the C# 14 compiler in the .NET 10 SDK cannot compile.
+dotnet_diagnostic.IDE0028.severity = none
+dotnet_diagnostic.IDE0056.severity = none
+dotnet_diagnostic.IDE0057.severity = none
+dotnet_diagnostic.CA1845.severity = none
+dotnet_diagnostic.CA1846.severity = none
+dotnet_diagnostic.CA1865.severity = none
+dotnet_diagnostic.CA2249.severity = none
+dotnet_diagnostic.SYSLIB1045.severity = none

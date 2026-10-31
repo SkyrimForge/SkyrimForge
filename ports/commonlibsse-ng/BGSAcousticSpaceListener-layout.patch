@@ -1,0 +1,36 @@
+diff --git a/include/RE/B/BGSAcousticSpaceListener.h b/include/RE/B/BGSAcousticSpaceListener.h
+index fcf62df3..8c6dace6 100644
+--- a/include/RE/B/BGSAcousticSpaceListener.h
++++ b/include/RE/B/BGSAcousticSpaceListener.h
+@@ -1,5 +1,6 @@
+ #pragma once
+ 
++#include "RE/B/BSTHashMap.h"
+ #include "RE/B/bhkEntityListener.h"
+ 
+ namespace RE
+@@ -20,19 +21,12 @@ namespace RE
+ 		bool ContactPointAddedCallback(hkpRootCdPoint& a_point) override;    // 07 - fired by bhkAcousticSpacePhantomCallbackShape's phantom-enter callback
+ 		bool ContactPointRemovedCallback(hkpRootCdPoint& a_point) override;  // 08 - fired by its phantom-exit callback
+ 
+-		struct Entry
+-		{
+-			std::uint32_t refHandle;  // 00
+-			std::uint32_t refCount;   // 04
+-			std::uint64_t pad08;      // 08
+-		};
+-		static_assert(sizeof(Entry) == 0x10);
+-
+ 		// members
+-		std::uint32_t numBuckets;   // 18
+-		std::uint32_t pad1C;        // 1C
+-		Entry*        entries;      // 20
+-		std::uint8_t  unk28[0x28];  // 28
++		bool                                     unk18;         // 18
++		std::uint8_t                             pad19;         // 19
++		std::uint16_t                            pad1A;         // 1A
++		std::uint32_t                            pad1C;         // 1C
++		BSTHashMap<std::uint32_t, std::uint32_t> pendingExits;  // 20 - reference handle to the updates left before Update finalizes its exit
+ 	};
+ 	static_assert(sizeof(BGSAcousticSpaceListener) == 0x50);
+ }

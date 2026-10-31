@@ -1,0 +1,39 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <WarningsAsErrors>nullable</WarningsAsErrors>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Description>Write Skyrim plugins in C#. SkyrimForge hosts .NET inside the game and exposes the game's events, Papyrus, quests, scenes, dialogue, and function hooks to plugins, with bindings generated from CommonLibSSE-NG. One build runs on Skyrim Special Edition, Anniversary Edition, and VR.</Description>
+    <PackageTags>skyrim;skse;commonlibsse;papyrus;modding;skyrimvr</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <None
+      Include="..\SkyrimForge.CommonLib\bin\$(Configuration)\$(TargetFramework)\SkyrimForge.CommonLib.dll;..\SkyrimForge.CommonLib\bin\$(Configuration)\$(TargetFramework)\SkyrimForge.CommonLib.xml;..\SkyrimForge.Game\bin\$(Configuration)\$(TargetFramework)\SkyrimForge.Game.dll;..\SkyrimForge.Game\bin\$(Configuration)\$(TargetFramework)\SkyrimForge.Game.xml"
+      Pack="true"
+      PackagePath="lib\$(TargetFramework)"
+      Visible="false" />
+    <None
+      Include="..\SkyrimForge.PapyrusScripts\bin\$(Configuration)\netstandard2.0\SkyrimForge.PapyrusScripts.dll"
+      Pack="true"
+      PackagePath="analyzers\dotnet\cs"
+      Visible="false" />
+    <None Update="build\*" Pack="true" PackagePath="build\%(Filename)%(Extension)" />
+    <None Update="README.md" Pack="true" PackagePath="README.md" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="SkyrimForge.PluginHost" />
+    <InternalsVisibleTo Include="SkyrimForge.Infrastructure" />
+    <InternalsVisibleTo Include="SkyrimForge.Game" />
+    <InternalsVisibleTo Include="SkyrimForge.CommonLib" />
+    <InternalsVisibleTo Include="SkyrimForge.ApiSanityCheck" />
+    <InternalsVisibleTo Include="SkyrimForge.Tests" />
+  </ItemGroup>
+
+</Project>

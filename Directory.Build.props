@@ -1,0 +1,20 @@
+﻿<Project>
+
+  <PropertyGroup>
+    <!-- An x86 build would truncate 64-bit pointers without an error. -->
+    <PlatformTarget>x64</PlatformTarget>
+    <!-- Without the documentation file, the compiler does not check the XML in doc comments. -->
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Version>0.1.1</Version>
+    <Authors>Wessley Mitchell</Authors>
+    <Copyright>Copyright 2026 Wessley Mitchell</Copyright>
+    <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
+    <PackageProjectUrl>https://docs.skyrimforge.net/</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/SkyrimForge/SkyrimForge</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+  </PropertyGroup>
+
+</Project>

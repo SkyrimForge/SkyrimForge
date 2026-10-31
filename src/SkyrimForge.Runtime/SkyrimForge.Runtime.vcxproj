@@ -1,0 +1,151 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{3F8C6A21-5B4D-4E7A-9C21-6D4F2B8E1A73}</ProjectGuid>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+
+  <!-- The static triplet and the /MT CRT leave the DLL with no CRT DLL dependency, so it loads under MO2's virtual file system. -->
+  <PropertyGroup Label="Vcpkg">
+    <VcpkgRoot Condition="'$(VcpkgRoot)' == ''">$(VCPKG_ROOT)</VcpkgRoot>
+    <!-- The default path repeats the triplet. The binding generator reads vcpkg_installed\x64-windows-static\ and must see the CommonLib revision the compiler builds. -->
+    <VcpkgInstalledDir>$(MSBuildThisFileDirectory)vcpkg_installed\</VcpkgInstalledDir>
+    <VcpkgEnabled>true</VcpkgEnabled>
+    <VcpkgEnableManifest>true</VcpkgEnableManifest>
+    <VcpkgManifestInstall>true</VcpkgManifestInstall>
+    <VcpkgTriplet>x64-windows-static</VcpkgTriplet>
+    <VcpkgHostTriplet>x64-windows</VcpkgHostTriplet>
+    <VcpkgApplocalDeps>false</VcpkgApplocalDeps>
+    <VcpkgAutoBootstrap>false</VcpkgAutoBootstrap>
+  </PropertyGroup>
+
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+
+  <PropertyGroup Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>$(DefaultPlatformToolset)</PlatformToolset>
+  </PropertyGroup>
+
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <Import Project="$(VcpkgRoot)\scripts\buildsystems\msbuild\vcpkg.props" Condition="Exists('$(VcpkgRoot)\scripts\buildsystems\msbuild\vcpkg.props')" />
+
+  <ItemGroup>
+    <ClInclude Include="Shared.h" />
+    <ClInclude Include="CodeWrites.h" />
+    <ClCompile Include="Plugin.cpp" />
+    <ClCompile Include="Faults.cpp" />
+    <ClCompile Include="Events.cpp" />
+    <ClCompile Include="Events.Generated.cpp" />
+    <ClCompile Include="Frame.cpp" />
+    <ClCompile Include="Story.cpp" />
+    <ClCompile Include="Hooks.cpp" />
+    <ClCompile Include="CodeWrites.cpp" />
+    <ClCompile Include="CodePatches.cpp" />
+    <ClCompile Include="CodeDecoding.cpp" />
+    <ClCompile Include="VTables.Generated.cpp" />
+    <ClCompile Include="Lifecycle.cpp" />
+    <ClCompile Include="Console.cpp" />
+    <ClCompile Include="ConsoleCommand.cpp" />
+    <ClCompile Include="Saving.cpp" />
+    <ClCompile Include="Messaging.cpp" />
+    <ClCompile Include="Task.cpp" />
+    <ClCompile Include="Bindings.Generated.cpp" />
+    <ClCompile Include="CommonLibRepairs.cpp" />
+    <ClCompile Include="GameSettings.cpp" />
+    <ClCompile Include="LoadOrder.cpp" />
+    <ClCompile Include="GameFileSystem.cpp" />
+    <ClCompile Include="MagicItemData.cpp" />
+    <ClCompile Include="PackageData.cpp" />
+    <ClCompile Include="ManagedMenu.cpp" />
+    <ClCompile Include="MenuRoot.cpp" />
+    <ClCompile Include="ScaleformFunction.cpp" />
+    <ClCompile Include="PapyrusEvents.cpp" />
+    <ClCompile Include="MessageBox.cpp" />
+    <ClCompile Include="Papyrus.cpp" />
+    <ClCompile Include="PapyrusProperties.cpp" />
+    <ClCompile Include="PapyrusCallback.cpp" />
+    <ClCompile Include="PapyrusNative.cpp" />
+    <ClCompile Include="SpeakerBias.cpp" />
+    <ClCompile Include="Quests.cpp" />
+    <ClCompile Include="Globals.Generated.cpp" />
+    <!-- Includes no CommonLib header, since its windows.h macros collide with names in CommonLib's REX::W32. -->
+    <ClCompile Include="ClrHost.cpp" />
+  </ItemGroup>
+
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <!--
+      /utf-8: fmt and spdlog static_assert that the source is compiled as UTF-8.
+      /bigobj: Bindings.Generated.cpp passes the object format's section limit without it.
+      -->
+      <AdditionalOptions>/utf-8 /bigobj %(AdditionalOptions)</AdditionalOptions>
+      <!-- RE/S/State.h includes SimpleMath.h, which DirectXTK installs in a directory of its own. -->
+      <AdditionalIncludeDirectories>$(VcpkgInstalledDir)$(VcpkgTriplet)\include\directxtk;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <!-- CommonLib's STATIC_ASSERT_SIZE does not compile under the traditional preprocessor. -->
+      <UseStandardPreprocessor>true</UseStandardPreprocessor>
+      <!--
+      CommonLibSSE-NG's CMake target passes these definitions to a CMake consumer, and this project is not one.
+      SPDLOG_COMPILED_LIB: the header-only spdlog includes windows.h in each CommonLib unit, where its macros collide with REX::W32's constants.
+      NDEBUG: CommonLib's inline functions compile here, and without it a Release build shows a modal assertion dialog in the game.
+      -->
+      <PreprocessorDefinitions>NDEBUG;ENABLE_SKYRIM_SE=1;ENABLE_SKYRIM_AE=1;ENABLE_SKYRIM_VR=1;HAS_SKYRIM_MULTI_TARGETING=1;SKSE_SUPPORT_XBYAK=1;WINVER=0x0601;_WIN32_WINNT=0x0601;SPDLOG_COMPILED_LIB;SPDLOG_FMT_EXTERNAL;SPDLOG_WCHAR_TO_UTF8_SUPPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <!--
+      C4005: multi-targeting redefines RUNTIME_DATA_CONTENT for each struct.
+      C4190: generated shims return small float structs by value from extern "C" functions. The platform returns them the same way under either linkage.
+      -->
+      <DisableSpecificWarnings>4005;4190;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+    </ClCompile>
+    <Link>
+      <!-- One translation unit of CommonLib's REX::W32 references all of these, so the linker requires each whether or not this DLL uses it. -->
+      <AdditionalDependencies>version.lib;bcrypt.lib;d3d11.lib;dxgi.lib;d3dcompiler.lib;dbghelp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <!-- LNK4099: the .NET host pack's libnethost.lib references a vc140.pdb that the pack does not include. -->
+      <AdditionalOptions>/ignore:4099 %(AdditionalOptions)</AdditionalOptions>
+    </Link>
+  </ItemDefinitionGroup>
+
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <Import Project="$(VcpkgRoot)\scripts\buildsystems\msbuild\vcpkg.targets" Condition="Exists('$(VcpkgRoot)\scripts\buildsystems\msbuild\vcpkg.targets')" />
+
+  <Target Name="ResolveNetHostPack" BeforeTargets="ClCompile">
+    <PropertyGroup>
+      <_DotNetRoot Condition="'$(DOTNET_ROOT)' != ''">$(DOTNET_ROOT)</_DotNetRoot>
+      <_DotNetRoot Condition="'$(_DotNetRoot)' == ''">$(ProgramW6432)\dotnet</_DotNetRoot>
+      <_HostPacksRoot>$(_DotNetRoot)\packs\Microsoft.NETCore.App.Host.win-x64</_HostPacksRoot>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(_HostPacksRoot)')" Text="SkyrimForge: .NET host pack root not found at $(_HostPacksRoot). Install the .NET 10 SDK, or set DOTNET_ROOT." />
+    <ItemGroup>
+      <_HostPackDir Include="$([System.IO.Directory]::GetDirectories('$(_HostPacksRoot)'))" />
+      <_HostPackVersion Include="@(_HostPackDir->'%(Filename)%(Extension)')" />
+    </ItemGroup>
+    <PropertyGroup>
+      <_NetHostVersion Condition="('$(_NetHostVersion)' == '' Or $([MSBuild]::VersionGreaterThan('%(_HostPackVersion.Identity)', '$(_NetHostVersion)'))) And $([MSBuild]::VersionGreaterThanOrEquals('%(_HostPackVersion.Identity)', '10.0.0'))">%(_HostPackVersion.Identity)</_NetHostVersion>
+      <_NetHostNative>$(_HostPacksRoot)\$(_NetHostVersion)\runtimes\win-x64\native</_NetHostNative>
+    </PropertyGroup>
+    <Error Condition="'$(_NetHostVersion)' == ''" Text="SkyrimForge: No .NET 10+ host pack found under $(_HostPacksRoot). Install the .NET 10 SDK." />
+    <Message Importance="high" Text="SkyrimForge: using .NET host pack $(_NetHostVersion) ($(_NetHostNative))" />
+    <ItemGroup>
+      <ClCompile Condition="'%(ClCompile.Filename)' == 'ClrHost'">
+        <AdditionalIncludeDirectories>$(_NetHostNative);%(ClCompile.AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      </ClCompile>
+    </ItemGroup>
+  </Target>
+
+  <Target Name="LinkNetHostPack" BeforeTargets="Link" DependsOnTargets="ResolveNetHostPack">
+    <ItemGroup>
+      <Link>
+        <AdditionalDependencies>$(_NetHostNative)\libnethost.lib;%(Link.AdditionalDependencies)</AdditionalDependencies>
+      </Link>
+    </ItemGroup>
+  </Target>
+</Project>

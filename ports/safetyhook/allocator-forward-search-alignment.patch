@@ -1,0 +1,14 @@
+diff --git a/src/allocator.cpp b/src/allocator.cpp
+--- a/src/allocator.cpp
++++ b/src/allocator.cpp
+@@ -257,7 +257,9 @@
+             continue;
+         }
+ 
+-        if (auto allocation_address = attempt_allocation(p); allocation_address != nullptr) {
++        // A free region after an image or a mapping begins on a page boundary, and VirtualAlloc rounds a reservation down to the allocation
++        // granularity, into the region before it. The region is tried from its first aligned address instead.
++        if (auto allocation_address = attempt_allocation(align_up(p, si.allocation_granularity)); allocation_address != nullptr) {
+             return allocation_address;
+         }
+     }

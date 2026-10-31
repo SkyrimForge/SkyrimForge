@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <WarningsAsErrors>nullable</WarningsAsErrors>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SkyrimForge\SkyrimForge.csproj" />
+    <ProjectReference Include="..\SkyrimForge.Game\SkyrimForge.Game.csproj" />
+    <!-- The SkyrimForge NuGet package adds this generator and the imports below to a plugin. This project references SkyrimForge's projects instead. -->
+    <ProjectReference Include="..\SkyrimForge.PapyrusScripts\SkyrimForge.PapyrusScripts.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- So every build checks the dotnet new template's plugin class. -->
+    <Compile Include="..\SkyrimForge.PluginTemplate\templates\SkyrimForgePlugin\SkyrimForgePlugin.cs" Link="SkyrimForgePlugin.cs" />
+  </ItemGroup>
+
+  <Import Project="..\SkyrimForge\build\SkyrimForge.props" />
+  <Import Project="..\SkyrimForge\build\SkyrimForge.targets" />
+
+</Project>

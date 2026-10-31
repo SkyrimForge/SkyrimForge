@@ -1,0 +1,19 @@
+diff --git a/include/RE/H/hkbCharacterSetup.h b/include/RE/H/hkbCharacterSetup.h
+index 3c744ea..dc450c1 100644
+--- a/include/RE/H/hkbCharacterSetup.h
++++ b/include/RE/H/hkbCharacterSetup.h
+@@ -27,10 +27,9 @@ namespace RE
+ 		hkRefPtr<const hkaSkeletonMapper>          animationToRagdollSkeletonMapper;  // 30
+ 		hkRefPtr<hkbAnimationBindingSet>           animationBindingSet;               // 38
+ 		hkRefPtr<hkbCharacterData>                 data;                              // 40
+-		hkRefPtr<const hkaSkeleton>                unscaledAnimationSkeleton;         // 48
+-		mutable hkRefPtr<hkaMirroredSkeleton>      mirroredSkeleton;                  // 50
+-		hkRefPtr<hkbSymbolIdMap>                   characterPropertyIdMap;            // 58
+-		mutable hkCriticalSection*                 criticalSection;                   // 60
++		mutable hkRefPtr<hkaMirroredSkeleton>      mirroredSkeleton;                  // 48
++		hkRefPtr<hkbSymbolIdMap>                   characterPropertyIdMap;            // 50
++		mutable hkCriticalSection*                 criticalSection;                   // 58
+ 	};
+-	static_assert(sizeof(hkbCharacterSetup) == 0x68);
++	static_assert(sizeof(hkbCharacterSetup) == 0x60);
+ }

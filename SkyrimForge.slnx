@@ -1,0 +1,12 @@
+﻿<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/SkyrimForge/SkyrimForge.csproj" />
+    <Project Path="src/SkyrimForge.CommonLib/SkyrimForge.CommonLib.csproj" />
+    <Project Path="src/SkyrimForge.Game/SkyrimForge.Game.csproj" />
+    <Project Path="src/SkyrimForge.Infrastructure/SkyrimForge.Infrastructure.csproj" />
+    <Project Path="src/SkyrimForge.PluginHost/SkyrimForge.PluginHost.csproj" />
+    <Project Path="src/SkyrimForge.PapyrusScripts/SkyrimForge.PapyrusScripts.csproj" />
+    <Project Path="src/SkyrimForge.ExamplePlugins/SkyrimForge.ExamplePlugins.csproj" />
+    <Project Path="src/SkyrimForge.PluginTemplate/SkyrimForge.PluginTemplate.csproj" />
+  </Folder>
+</Solution>

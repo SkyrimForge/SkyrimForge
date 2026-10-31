@@ -1,0 +1,27 @@
+diff --git a/include/RE/B/BGSSaveLoadManager.h b/include/RE/B/BGSSaveLoadManager.h
+--- a/include/RE/B/BGSSaveLoadManager.h
++++ b/include/RE/B/BGSSaveLoadManager.h
+@@ -119,7 +119,7 @@ namespace RE
+ 		static BGSSaveLoadManager* GetSingleton();
+ 
+ 		void GenerateCharacterID();
+-		void Save(const char* a_fileName);
++		bool Save(const char* a_fileName);
+ 		void Load(const char* a_fileName);
+ 		void Load(const char* a_fileName, bool a_checkForMods);
+ 		bool LoadMostRecentSaveGame();
+diff --git a/src/RE/B/BGSSaveLoadManager.cpp b/src/RE/B/BGSSaveLoadManager.cpp
+--- a/src/RE/B/BGSSaveLoadManager.cpp
++++ b/src/RE/B/BGSSaveLoadManager.cpp
+@@ -22,9 +22,9 @@ namespace RE
+ 		return func(this);
+ 	}
+ 
+-	void BGSSaveLoadManager::Save(const char* a_fileName)
++	bool BGSSaveLoadManager::Save(const char* a_fileName)
+ 	{
+-		Save_Impl(2, 0, a_fileName);
++		return Save_Impl(2, 0, a_fileName);
+ 	}
+ 
+ 	void BGSSaveLoadManager::Load(const char* a_fileName)

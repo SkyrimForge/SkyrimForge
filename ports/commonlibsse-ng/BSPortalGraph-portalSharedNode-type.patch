@@ -1,0 +1,13 @@
+diff --git a/include/RE/B/BSPortalGraph.h b/include/RE/B/BSPortalGraph.h
+index dcb23a3..c3dc229 100644
+--- a/include/RE/B/BSPortalGraph.h
++++ b/include/RE/B/BSPortalGraph.h
+@@ -49,7 +49,7 @@ namespace RE
+ 		NiTPointerList<BSPortal>              portals;                     // 28
+ 		BSTArray<NiPointer<BSMultiBoundRoom>> rooms;                       // 40
+ 		BSTArray<NiPointer<NiAVObject>>       alwaysRenderChildren;        // 58
+-		NiPointer<BSPortalSharedNode>         portalSharedNode;            // 70
++		NiPointer<NiNode>                     portalSharedNode;            // 70
+ 		BSTArray<NiPointer<NiAVObject>>       pendingAlwaysRenderAdds;     // 78
+ 		BSTArray<NiPointer<NiAVObject>>       pendingAlwaysRenderRemoves;  // 90
+ 		BSTArray<NiPointer<NiNode>>           cellNodes;                   // A8

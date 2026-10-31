@@ -1,0 +1,21 @@
+diff --git a/include/RE/T/TESObjectCELL.h b/include/RE/T/TESObjectCELL.h
+--- a/include/RE/T/TESObjectCELL.h
++++ b/include/RE/T/TESObjectCELL.h
+@@ -28,7 +28,7 @@ namespace RE
+ 
+ 	namespace BGSWaterCollisionManager
+ 	{
+-		class BGSWaterUpdateI;
++		class bhkPlaceableWater;
+ 	}
+ 
+ 	class BSTempEffectParticle;
+@@ -241,7 +241,7 @@ namespace RE
+ 	TESForm*                                             unk0B0;           /* 0B0, 0B8 - REFR owner of cell? */                \
+ 	BSTArray<TESObjectREFR*>                             objectList;       /* 0B8, 0C0 - persistent */                         \
+ 	BSTArray<void*>                                      unk0D0;           /* 0D0, 0D8 */                                      \
+-	BSTArray<BGSWaterCollisionManager::BGSWaterUpdateI*> waterObjects;     /* 0E8, 0F0 */                                      \
++	BSTArray<BGSWaterCollisionManager::bhkPlaceableWater*> waterObjects;   /* 0E8, 0F0 */                                      \
+ 	BSTArray<void*>                                      unk100;           /* 100, 108 */                                      \
+ 	mutable BSSpinLock                                   spinLock;         /* 118, 120 */                                      \
+ 	TESWorldSpace*                                       worldSpace;       /* 120, 128 */                                      \

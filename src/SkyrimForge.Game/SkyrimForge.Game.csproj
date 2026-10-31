@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <WarningsAsErrors>nullable</WarningsAsErrors>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <RootNamespace>SkyrimForge.Game</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SkyrimForge\SkyrimForge.csproj" />
+    <ProjectReference Include="..\SkyrimForge.CommonLib\SkyrimForge.CommonLib.csproj" />
+  </ItemGroup>
+
+  <!-- DisableRuntimeMarshalling applies per assembly, and this assembly also declares P/Invokes over value structs. -->
+  <ItemGroup>
+    <Compile Include="..\SkyrimForge.CommonLib\AssemblyMarshalling.cs" Link="AssemblyMarshalling.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="SkyrimForge.Tests" />
+    <InternalsVisibleTo Include="SkyrimForge.PluginHost" />
+    <InternalsVisibleTo Include="SkyrimForge.ApiSanityCheck" />
+  </ItemGroup>
+
+</Project>

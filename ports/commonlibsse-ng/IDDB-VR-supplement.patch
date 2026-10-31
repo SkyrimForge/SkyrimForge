@@ -1,0 +1,68 @@
+diff --git a/include/REL/IDDB.h b/include/REL/IDDB.h
+index e9c5196..fe0af02 100644
+--- a/include/REL/IDDB.h
++++ b/include/REL/IDDB.h
+@@ -143,7 +143,7 @@ namespace REL
+ 			const auto it = std::lower_bound(_id2offset.begin(), _id2offset.end(), a_id, [](const mapping_t& a_entry, std::uint64_t a_value) {
+ 				return a_entry.id < a_value;
+ 			});
+-			return it != _id2offset.end() && it->id == a_id;
++			return (it != _id2offset.end() && it->id == a_id) || vr_supplement_offset(a_id) != 0;
+ 		}
+ 
+ #ifdef ENABLE_SKYRIM_VR
+@@ -272,6 +272,10 @@ namespace REL
+ 		IDDB& operator=(const IDDB&) = delete;
+ 		IDDB& operator=(IDDB&&) = delete;
+ 
++		// The offset of an identifier the VR Address Library lacks, or 0 if the supplement has no entry for it or the VR Address Library is not loaded.
++		// The library's mapping is shared with every other CommonLib plugin in the process, so the supplement is not merged into it.
++		[[nodiscard]] std::size_t vr_supplement_offset(std::uint64_t a_id) const noexcept;
++
+ 		void load()
+ 		{
+ 			const auto version = Module::get().version();
+diff --git a/src/REL/IDDB.cpp b/src/REL/IDDB.cpp
+index 7d4983b..6df1214 100644
+--- a/src/REL/IDDB.cpp
++++ b/src/REL/IDDB.cpp
+@@ -35,6 +35,11 @@ namespace REL
+ 					"library for this version of the game, and thus does not support it."sv,
+ 					a_id));
+ 		}
++
++		constexpr IDDB::mapping_t vr_supplement[]{
++#include "IDDBVRSupplement.inl"
++		};
++		static_assert(std::ranges::is_sorted(vr_supplement, {}, &IDDB::mapping_t::id));
+ 	}
+ 
+ 	namespace detail
+@@ -173,12 +178,26 @@ namespace REL
+ 			});
+ 
+ 		if (it == _id2offset.end() || it->id != a_id) {
+-			report_id_lookup_failure(a_id);
++			const auto supplementOffset = vr_supplement_offset(a_id);
++			if (supplementOffset == 0) {
++				report_id_lookup_failure(a_id);
++			}
++			return supplementOffset;
+ 		}
+ 
+ 		return static_cast<std::size_t>(it->offset);
+ 	}
+ 
++	std::size_t IDDB::vr_supplement_offset(std::uint64_t a_id) const noexcept
++	{
++		if (_loadedFormat != Format::VR) {
++			return 0;
++		}
++
++		const auto it = std::ranges::lower_bound(vr_supplement, a_id, {}, &mapping_t::id);
++		return it != std::end(vr_supplement) && it->id == a_id ? static_cast<std::size_t>(it->offset) : 0;
++	}
++
+ 	bool IDDB::load_file(stl::zwstring a_filename, Version a_version, std::optional<std::uint8_t> a_expectedFormat, bool a_failOnError)
+ 	{
+ 		try {

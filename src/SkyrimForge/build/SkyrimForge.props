@@ -1,0 +1,19 @@
+﻿<Project>
+
+  <!-- A source generator reads only the MSBuild properties listed this way. SkyrimForge.PapyrusScripts writes .psc files only when BuildingProject is true. -->
+  <ItemGroup>
+    <CompilerVisibleProperty Include="BuildingProject" />
+    <CompilerVisibleProperty Include="RootNamespace" />
+    <AdditionalFiles Include="Scripts\Source\*.psc" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <!-- The plugin loader loads a plugin's dependencies from the plugin's folder, and a class library copies its NuGet dependencies there only with this set. -->
+    <EnableDynamicLoading Condition="'$(EnableDynamicLoading)' == ''">true</EnableDynamicLoading>
+    <PlatformTarget Condition="'$(PlatformTarget)' == ''">x64</PlatformTarget>
+    <!-- MSBuild computes the output paths before it imports a package's .targets file, and CustomBeforeMicrosoftCommonTargets specifies the only file it imports earlier. -->
+    <SkyrimForgeChainedBeforeCommonTargets>$(CustomBeforeMicrosoftCommonTargets)</SkyrimForgeChainedBeforeCommonTargets>
+    <CustomBeforeMicrosoftCommonTargets>$(MSBuildThisFileDirectory)SkyrimForge.BeforeCommon.targets</CustomBeforeMicrosoftCommonTargets>
+  </PropertyGroup>
+
+</Project>

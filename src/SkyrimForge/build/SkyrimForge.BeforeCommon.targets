@@ -1,0 +1,19 @@
+﻿<Project>
+
+  <!-- Imports the file SkyrimForge.props displaced from CustomBeforeMicrosoftCommonTargets. -->
+  <PropertyGroup>
+    <SkyrimForgeChainedBeforeCommonTargets Condition="'$(SkyrimForgeChainedBeforeCommonTargets)' == ''">$(MSBuildExtensionsPath)\v$(MSBuildToolsVersion)\Custom.Before.Microsoft.Common.targets</SkyrimForgeChainedBeforeCommonTargets>
+  </PropertyGroup>
+  <Import Project="$(SkyrimForgeChainedBeforeCommonTargets)" Condition="Exists('$(SkyrimForgeChainedBeforeCommonTargets)')" />
+
+  <!--
+  The output folder has the folder structure of the game's Data folder. The framework loads the DLL named for each folder in Plugins.
+  It reads service sources only from SharedLibraries, where every plugin loads the same copy of an assembly.
+  -->
+  <PropertyGroup Condition="'$(OutDir)' == ''">
+    <SkyrimForgeDataDir>$([MSBuild]::EnsureTrailingSlash('$(OutputPath)'))</SkyrimForgeDataDir>
+    <OutDir Condition="'$(SkyrimForgeSharedLibrary)' == 'true'">$(SkyrimForgeDataDir)SKSE\Plugins\SkyrimForge\SharedLibraries\$(AssemblyName)\</OutDir>
+    <OutDir Condition="'$(SkyrimForgeSharedLibrary)' != 'true'">$(SkyrimForgeDataDir)SKSE\Plugins\SkyrimForge\Plugins\$(AssemblyName)\</OutDir>
+  </PropertyGroup>
+
+</Project>

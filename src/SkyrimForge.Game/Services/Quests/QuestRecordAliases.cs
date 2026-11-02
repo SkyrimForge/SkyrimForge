@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using SkyrimForge.Quests;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
 namespace SkyrimForge.Game;

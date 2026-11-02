@@ -2,7 +2,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace SkyrimForge;
+namespace SkyrimForge.Events;
 
 internal sealed partial class PluginGameEvents(IGameEvents events, ILog log) : IGameEvents
 {

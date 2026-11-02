@@ -1,6 +1,6 @@
 ﻿using SkyrimForge.Game;
 
-namespace SkyrimForge;
+namespace SkyrimForge.Quests;
 
 /// <summary>Provides extension members for <see cref="QuestReferenceAlias"/>.</summary>
 public static class QuestReferenceAliasExtensions

@@ -177,18 +177,6 @@ public static class TESExtensions
             return clearedReferences;
         }
 
-        /// <summary>
-        /// Disables the vegetation within <see cref="PackIn.DisabledVegetationRadius"/> of <paramref name="origin"/>, except the bases of <paramref name="packIn"/>'s parts.
-        /// </summary>
-        /// <returns>The references disabled.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="packIn"/> is <c>null</c>.</exception>
-        /// <remarks>Call on the game's thread.</remarks>
-        public IReadOnlyList<ObjectReference> DisableVegetation(PackIn packIn, NiPoint3 origin)
-        {
-            ArgumentNullException.ThrowIfNull(packIn);
-            return packIn.DisabledVegetationRadius > 0f ? tes.DisableVegetation(origin, packIn.DisabledVegetationRadius, [.. packIn.Parts.Select(part => part.BaseObjectId)]) : [];
-        }
-
         internal async Task LayOnGroundAfterDelayAsync(IEnumerable<GroundPlacement> placements, IUtility utility, CancellationToken cancellationToken = default)
         {
             const float settleSeconds = 1f;

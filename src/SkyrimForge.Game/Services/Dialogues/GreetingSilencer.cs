@@ -1,4 +1,6 @@
-﻿namespace SkyrimForge.Game;
+﻿using SkyrimForge.Dialogue;
+
+namespace SkyrimForge.Game;
 
 internal sealed class GreetingSilencer(VoiceSilencer voiceSilencer) : IGreetingSilencer
 {

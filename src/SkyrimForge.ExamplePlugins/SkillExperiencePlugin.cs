@@ -1,4 +1,5 @@
 ﻿using SkyrimForge.Game;
+using SkyrimForge.Hooks;
 
 namespace SkyrimForge.ExamplePlugins;
 

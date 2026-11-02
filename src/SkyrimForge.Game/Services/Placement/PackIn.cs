@@ -1,8 +1,9 @@
-﻿using System;
+﻿using SkyrimForge.Game;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SkyrimForge.Game;
+namespace SkyrimForge.World;
 
 /// <summary>A group of objects placed at offsets from one point, each laid on the ground, as a pack-in of the Creation Kit is.</summary>
 /// <exception cref="ArgumentNullException"><paramref name="parts"/> is <c>null</c>.</exception>

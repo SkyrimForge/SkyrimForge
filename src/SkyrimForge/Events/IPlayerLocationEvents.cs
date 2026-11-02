@@ -1,4 +1,4 @@
-﻿namespace SkyrimForge;
+﻿namespace SkyrimForge.Events;
 
 /// <summary>Events for the location the player is in.</summary>
 public interface IPlayerLocationEvents

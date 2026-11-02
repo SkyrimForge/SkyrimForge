@@ -1,6 +1,6 @@
 ﻿using SkyrimForge.Game;
 
-namespace SkyrimForge;
+namespace SkyrimForge.Events;
 
 // Called on any thread.
 internal interface IKeyboardReader

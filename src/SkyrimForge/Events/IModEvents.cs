@@ -1,6 +1,6 @@
 ﻿using SkyrimForge.Game;
 
-namespace SkyrimForge;
+namespace SkyrimForge.Events;
 
 /// <summary>Sends mod events. Every registration for an event's name receives it, including the sending plugin's own.</summary>
 /// <remarks>

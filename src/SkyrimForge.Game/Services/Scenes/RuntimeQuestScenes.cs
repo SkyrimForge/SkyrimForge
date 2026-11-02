@@ -1,4 +1,7 @@
-﻿using SkyrimForge.Papyrus;
+﻿using SkyrimForge.Dialogue;
+using SkyrimForge.Events;
+using SkyrimForge.Papyrus;
+using SkyrimForge.Quests;
 using System;
 using System.Collections.Generic;
 using System.Linq;

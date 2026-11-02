@@ -1,4 +1,6 @@
-﻿namespace SkyrimForge;
+﻿using SkyrimForge.Events;
+
+namespace SkyrimForge;
 
 /// <summary>A unit of behavior loaded into a game.</summary>
 /// <remarks>

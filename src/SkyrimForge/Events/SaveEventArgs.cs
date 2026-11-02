@@ -1,4 +1,4 @@
-﻿namespace SkyrimForge;
+﻿namespace SkyrimForge.Events;
 
 /// <summary>The save that <see cref="IGameEvents.OnSaveLoading"/>, <see cref="IGameEvents.OnSaveWriting"/>, or <see cref="IGameEvents.OnSaveDeleted"/> concerns.</summary>
 /// <param name="FileName">

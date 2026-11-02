@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace SkyrimForge;
+namespace SkyrimForge.Events;
 
 internal sealed class FilteredGameEvent<TArgs>(IGameEvent<TArgs> source, Func<TArgs, bool> predicate) : IGameEvent<TArgs> where TArgs : struct
 {

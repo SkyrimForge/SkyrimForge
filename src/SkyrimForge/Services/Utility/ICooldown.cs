@@ -1,4 +1,6 @@
-﻿namespace SkyrimForge;
+﻿using SkyrimForge.Events;
+
+namespace SkyrimForge;
 
 /// <summary>A cooldown measured in <see cref="FrameEventArgs.UnpausedTime"/> from each start. A new game or a save load ends it.</summary>
 /// <remarks>Members can be called on any thread.</remarks>

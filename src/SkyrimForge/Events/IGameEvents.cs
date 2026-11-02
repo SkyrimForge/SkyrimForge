@@ -1,7 +1,7 @@
 ﻿using SkyrimForge.Game;
 using System;
 
-namespace SkyrimForge;
+namespace SkyrimForge.Events;
 
 /// <summary>The game events the framework exposes to plugins.</summary>
 /// <remarks>

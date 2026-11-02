@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace SkyrimForge;
+namespace SkyrimForge.Events;
 
 /// <summary>Provides extension members for <see cref="IGameEvent{TArgs}"/>.</summary>
 public static class GameEventExtensions

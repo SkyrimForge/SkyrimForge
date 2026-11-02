@@ -1,6 +1,6 @@
 ﻿using SkyrimForge.Game;
 
-namespace SkyrimForge;
+namespace SkyrimForge.Events;
 
 /// <summary>One value of a story event.</summary>
 public readonly record struct StoryEventValue

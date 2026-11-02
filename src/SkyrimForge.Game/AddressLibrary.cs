@@ -1,7 +1,8 @@
-﻿using System;
+﻿using SkyrimForge.Game;
+using System;
 using System.Runtime.InteropServices;
 
-namespace SkyrimForge.Game;
+namespace SkyrimForge.Hooks;
 
 /// <summary>Resolves address library identifiers on the running game.</summary>
 public static partial class AddressLibrary

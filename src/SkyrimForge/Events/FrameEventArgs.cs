@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SkyrimForge;
+namespace SkyrimForge.Events;
 
 /// <summary>Arguments for <see cref="IGameEvents.OnFrame"/>.</summary>
 /// <param name="Interval">

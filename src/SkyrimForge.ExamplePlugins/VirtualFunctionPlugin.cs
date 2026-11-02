@@ -1,4 +1,5 @@
 ﻿using SkyrimForge.Game;
+using SkyrimForge.Hooks;
 using System;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;

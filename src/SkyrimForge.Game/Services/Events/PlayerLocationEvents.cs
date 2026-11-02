@@ -1,4 +1,6 @@
-﻿namespace SkyrimForge.Game;
+﻿using SkyrimForge.Events;
+
+namespace SkyrimForge.Game;
 
 internal sealed class PlayerLocationEvents : IPlayerLocationEvents
 {

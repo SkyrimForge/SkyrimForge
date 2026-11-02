@@ -1,4 +1,6 @@
-﻿namespace SkyrimForge.ExamplePlugins;
+﻿using SkyrimForge.Events;
+
+namespace SkyrimForge.ExamplePlugins;
 
 /// <summary>Logs the SKSE messages about loading and saving.</summary>
 /// <remarks>

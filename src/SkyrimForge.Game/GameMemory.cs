@@ -1,7 +1,8 @@
-﻿using System;
+﻿using SkyrimForge.Game;
+using System;
 using System.Runtime.CompilerServices;
 
-namespace SkyrimForge.Game;
+namespace SkyrimForge.Hooks;
 
 /// <summary>Reads and writes memory at an address, and converts between addresses and views.</summary>
 /// <remarks>An address that maps no memory faults when it is read or written, and the process ends.</remarks>

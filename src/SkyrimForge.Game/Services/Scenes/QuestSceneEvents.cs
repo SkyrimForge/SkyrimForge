@@ -1,4 +1,7 @@
-﻿namespace SkyrimForge.Game;
+﻿using SkyrimForge.Events;
+using SkyrimForge.Quests;
+
+namespace SkyrimForge.Game;
 
 internal sealed class QuestSceneEvents(IQuestSceneEvents sceneEvents, QuestScene scene) : IQuestSceneEvents
 {

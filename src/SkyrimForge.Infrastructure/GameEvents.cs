@@ -1,4 +1,6 @@
-﻿using SkyrimForge.Game;
+﻿using SkyrimForge.Events;
+using SkyrimForge.Game;
+using SkyrimForge.Hooks;
 using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;

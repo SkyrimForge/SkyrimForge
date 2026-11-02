@@ -1,6 +1,6 @@
 ﻿using SkyrimForge.Game;
 
-namespace SkyrimForge;
+namespace SkyrimForge.Events;
 
 /// <summary>An actor's animation events, which are the annotations on its animations.</summary>
 /// <remarks>

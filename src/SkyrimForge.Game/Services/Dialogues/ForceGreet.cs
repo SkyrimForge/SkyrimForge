@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using SkyrimForge.Dialogue;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace SkyrimForge.Game;

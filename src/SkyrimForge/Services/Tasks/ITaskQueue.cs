@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SkyrimForge.Quests;
+using System;
 
 namespace SkyrimForge;
 

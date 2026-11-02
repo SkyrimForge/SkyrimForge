@@ -1,4 +1,7 @@
-﻿using System;
+﻿using SkyrimForge.Dialogue;
+using SkyrimForge.Events;
+using SkyrimForge.Hooks;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;

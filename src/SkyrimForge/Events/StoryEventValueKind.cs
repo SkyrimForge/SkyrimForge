@@ -1,4 +1,4 @@
-﻿namespace SkyrimForge;
+﻿namespace SkyrimForge.Events;
 
 /// <summary>The type of one value of a story event.</summary>
 public enum StoryEventValueKind

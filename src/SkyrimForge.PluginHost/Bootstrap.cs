@@ -1,4 +1,5 @@
-﻿using SkyrimForge.Game;
+﻿using SkyrimForge.Events;
+using SkyrimForge.Game;
 using SkyrimForge.Hosting;
 using SkyrimForge.Infrastructure;
 using SkyrimForge.Papyrus;

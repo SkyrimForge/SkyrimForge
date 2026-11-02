@@ -1,4 +1,4 @@
-﻿namespace SkyrimForge;
+﻿namespace SkyrimForge.Events;
 
 /// <summary>The story manager's events: crafting, arrest, a killing, a relationship changing, and every other kind the game registers.</summary>
 /// <remarks>

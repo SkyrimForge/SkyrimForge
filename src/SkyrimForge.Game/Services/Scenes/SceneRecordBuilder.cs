@@ -1,4 +1,6 @@
-﻿using System;
+﻿using SkyrimForge.Dialogue;
+using SkyrimForge.Quests;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 

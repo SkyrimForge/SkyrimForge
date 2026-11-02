@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using SkyrimForge.Events;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace SkyrimForge.Game;

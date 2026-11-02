@@ -1,6 +1,6 @@
 ﻿using SkyrimForge.Game;
 
-namespace SkyrimForge;
+namespace SkyrimForge.Events;
 
 /// <summary>Provides extension members for <see cref="InputEventArgs"/>.</summary>
 public static class InputEventArgsExtensions

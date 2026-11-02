@@ -1,4 +1,6 @@
-﻿using SkyrimForge.Game;
+﻿using SkyrimForge.Events;
+using SkyrimForge.Game;
+using SkyrimForge.Menus;
 using System.Net;
 using System.Threading.Tasks;
 

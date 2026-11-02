@@ -1,4 +1,4 @@
-﻿namespace SkyrimForge;
+﻿namespace SkyrimForge.Events;
 
 /// <summary>A game event to which a plugin can subscribe.</summary>
 /// <remarks>

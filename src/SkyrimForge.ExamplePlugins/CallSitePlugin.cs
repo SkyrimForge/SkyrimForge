@@ -1,4 +1,6 @@
-﻿namespace SkyrimForge.ExamplePlugins;
+﻿using SkyrimForge.Hooks;
+
+namespace SkyrimForge.ExamplePlugins;
 
 /// <summary>Finds MainLoop's call to Main::Update by its offset into MainLoop on each edition, and logs its address.</summary>
 /// <remarks>

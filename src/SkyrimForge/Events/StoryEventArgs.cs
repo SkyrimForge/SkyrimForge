@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SkyrimForge;
+namespace SkyrimForge.Events;
 
 /// <summary>Arguments for <see cref="IStoryEvents.OnStoryEvent"/>.</summary>
 /// <param name="Signature">

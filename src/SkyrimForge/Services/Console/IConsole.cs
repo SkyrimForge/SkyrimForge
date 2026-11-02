@@ -1,4 +1,6 @@
-﻿namespace SkyrimForge;
+﻿using SkyrimForge.Events;
+
+namespace SkyrimForge;
 
 /// <summary>Writes to the game's console.</summary>
 /// <remarks>

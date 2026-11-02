@@ -1,6 +1,6 @@
 ﻿using SkyrimForge.Game;
 
-namespace SkyrimForge;
+namespace SkyrimForge.Events;
 
 /// <summary>Provides extension members for <see cref="IGameEvents"/>.</summary>
 public static class GameEventsExtensions

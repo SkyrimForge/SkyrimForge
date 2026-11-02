@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SkyrimForge;
+namespace SkyrimForge.Events;
 
 /// <summary>The modifier keys of a hotkey. The left and right keys of each pair are treated as the same key.</summary>
 [Flags]

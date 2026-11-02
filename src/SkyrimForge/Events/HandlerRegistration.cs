@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SkyrimForge;
+namespace SkyrimForge.Events;
 
 // A class rather than a record, so removing one registration never removes another of the same handler.
 internal sealed class HandlerRegistration<THandler>(THandler handler, ILog log) where THandler : Delegate

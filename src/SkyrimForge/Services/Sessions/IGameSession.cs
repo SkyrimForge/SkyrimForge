@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using SkyrimForge.Events;
+using System.Threading;
 
 namespace SkyrimForge;
 

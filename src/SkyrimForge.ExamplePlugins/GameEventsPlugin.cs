@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using SkyrimForge.Events;
+using System.Linq;
 
 namespace SkyrimForge.ExamplePlugins;
 

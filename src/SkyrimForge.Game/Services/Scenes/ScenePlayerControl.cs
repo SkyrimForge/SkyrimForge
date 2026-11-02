@@ -1,4 +1,5 @@
 ﻿using SkyrimForge.Papyrus;
+using SkyrimForge.Quests;
 using System;
 using System.Linq;
 using System.Threading.Tasks;

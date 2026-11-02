@@ -1,3 +1,5 @@
-﻿namespace SkyrimForge.Game;
+﻿using SkyrimForge.Quests;
+
+namespace SkyrimForge.Game;
 
 internal sealed record SceneRecordConversation(SceneConversation Conversation, GameList<Package> Packages);

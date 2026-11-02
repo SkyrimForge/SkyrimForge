@@ -1,6 +1,6 @@
 ﻿using SkyrimForge.Game;
 
-namespace SkyrimForge;
+namespace SkyrimForge.Events;
 
 /// <summary>One annotation on an actor's animation, matching the game's BSAnimationGraphEvent.</summary>
 /// <param name="Tag">The annotation's name: HitFrame, weaponSwing, attackStart, FootLeft.</param>

@@ -2,7 +2,7 @@
 #nullable enable
 using SkyrimForge.Game;
 
-namespace SkyrimForge;
+namespace SkyrimForge.Events;
 
 /// <summary>Arguments for <see cref="IGameEvents.OnAction"/>, SKSE's ActionEvent.</summary>
 public readonly record struct ActionEventArgs(ActionEvent.Type Type, Actor? Actor, Form? SourceForm, ActionEvent.Slot Slot);

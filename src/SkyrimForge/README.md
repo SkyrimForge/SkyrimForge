@@ -21,6 +21,7 @@ A plugin class implements `IPlugin`, and its one public constructor declares the
 
 ```csharp
 using SkyrimForge;
+using SkyrimForge.Events;
 
 namespace GreetingPlugin;
 

@@ -1,5 +1,8 @@
-﻿using SkyrimForge.Game;
+﻿using SkyrimForge.Dialogue;
+using SkyrimForge.Events;
+using SkyrimForge.Game;
 using SkyrimForge.Papyrus;
+using SkyrimForge.Quests;
 using System;
 using System.Threading.Tasks;
 

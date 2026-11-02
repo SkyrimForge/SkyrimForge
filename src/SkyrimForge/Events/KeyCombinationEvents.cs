@@ -5,7 +5,7 @@ using System.Linq;
 using System.Numerics;
 using System.Threading;
 
-namespace SkyrimForge;
+namespace SkyrimForge.Events;
 
 internal sealed class KeyCombinationEvents(IGameEvent<InputEventArgs> input, IKeyboardReader keyboardReader, Action<Exception> reportFailure)
 {

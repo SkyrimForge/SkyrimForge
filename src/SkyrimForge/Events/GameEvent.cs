@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading;
 
-namespace SkyrimForge;
+namespace SkyrimForge.Events;
 
 /// <summary>An <see cref="IGameEvent{TArgs}"/> with a <see cref="Raise"/> method for the code that raises the event.</summary>
 public sealed class GameEvent<TArgs> : IGameEvent<TArgs> where TArgs : struct

@@ -1,4 +1,6 @@
-﻿namespace SkyrimForge.Game;
+﻿using SkyrimForge.Game;
+
+namespace SkyrimForge.World;
 
 /// <summary>One object of a <see cref="PackIn"/>.</summary>
 public sealed class PackInPart(FormId<TESBoundObject> baseObjectId, float eastOffset, float northOffset, float span)

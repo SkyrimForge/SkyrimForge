@@ -1,4 +1,5 @@
-﻿using SkyrimForge.Game;
+﻿using SkyrimForge.Events;
+using SkyrimForge.Game;
 using System;
 using System.Threading.Tasks;
 

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
-namespace SkyrimForge.Game;
+namespace SkyrimForge.Hooks;
 
 /// <summary>The running game's executable, as loaded in this process.</summary>
 public static unsafe partial class GameModule

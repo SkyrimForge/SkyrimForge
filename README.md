@@ -27,7 +27,7 @@ dotnet new install SkyrimForge.PluginTemplate
 dotnet new skyrimforge-plugin --name <YourPluginName>
 ```
 
-[SkyrimForge.PrismaUi](https://github.com/SkyrimForge/SkyrimForge.PrismaUi) lets a plugin create and script [PrismaUI](https://github.com/PrismaUI-SKSE/framework) views in C#.
+[SkyrimForge.PrismaUi](https://github.com/SkyrimForge/SkyrimForge.PrismaUi) lets a plugin create and script [Prisma UI](https://github.com/PrismaUI-SKSE/framework) views in C#.
 
 [docs.skyrimforge.net](https://docs.skyrimforge.net/) covers writing a plugin and the services it can use. A plugin needs none of the steps below,
 which build SkyrimForge itself.

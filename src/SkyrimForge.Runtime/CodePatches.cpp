@@ -27,32 +27,6 @@ extern "C" IMAGE_DOS_HEADER __ImageBase;
 namespace
 {
 	// CodePatcher mirrors the values.
-	enum class PatchFault : std::int32_t
-	{
-		None,
-		NoImage,
-		ExcludedImage,
-		NotExecutable,
-		Overlap,
-		NotInstructionStart,
-		Mismatch,
-		ProtectionUnchanged,
-		NotInstructionEnd,
-		BranchIntoPatch,
-		DisplacedRelative,
-		TargetNotInstructionStart,
-		TargetInsideWrite,
-		NoNearMemory,
-		ContainsTarget,
-		NotRelocatable,
-		MovedPastExpected,
-		MovedCallNotLast,
-		BranchWithinMoved,
-		HookNotWritten,
-		HookNotRemoved
-	};
-
-	// CodePatcher mirrors the values.
 	enum class PatchKind : std::int32_t
 	{
 		Bytes,
@@ -78,7 +52,7 @@ namespace
 		std::uint32_t codeLength;
 		std::uint32_t displacedLength;
 		std::int32_t displacedAfter;
-		// Below instructionHookCapacity, and used by no other hook.
+		// Below instructionHookCapacity. Used by no other hook, or the slot of the instruction hook recorded at the address, which this hook then shares.
 		std::uint32_t slot;
 	};
 
@@ -132,16 +106,6 @@ namespace
 		return GetCodeAllocator().allocate_near({ reinterpret_cast<std::uint8_t*>(address) }, length, maximumDistance - reach);
 	}
 
-	// Callers confirm the displacement fits.
-	std::vector<std::uint8_t> MakeBranch(std::uint8_t opcode, std::uintptr_t site, std::uintptr_t target, std::size_t length)
-	{
-		std::vector<std::uint8_t> bytes(length, nopOpcode);
-		bytes[0] = opcode;
-		const auto displacement = static_cast<std::int32_t>(target - (site + branchLength));
-		std::memcpy(bytes.data() + 1, &displacement, sizeof(displacement));
-		return bytes;
-	}
-
 	std::vector<std::uint8_t> MakeCave(const CodePatch& patch, std::uintptr_t cave)
 	{
 		const bool loneCall = IsLoneCall(patch);
@@ -164,7 +128,7 @@ namespace
 		{
 			std::memcpy(bytes.data() + displacedAt, reinterpret_cast<const void*>(patch.address), patch.displacedLength);
 		}
-		const std::vector<std::uint8_t> jump = MakeBranch(jumpOpcode, cave + returnAt, patch.address + patch.expectedLength, branchLength);
+		const std::vector<std::uint8_t> jump = SF_Code_MakeBranch(jumpOpcode, cave + returnAt, patch.address + patch.expectedLength, branchLength);
 		std::ranges::copy(jump, bytes.begin() + static_cast<std::ptrdiff_t>(returnAt));
 		return bytes;
 	}
@@ -181,11 +145,11 @@ namespace
 		case PatchKind::Bytes:
 			return { patch.replacement, patch.replacement + patch.replacementLength };
 		case PatchKind::Call:
-			return MakeBranch(callOpcode, patch.address, patch.target, patch.expectedLength);
+			return SF_Code_MakeBranch(callOpcode, patch.address, patch.target, patch.expectedLength);
 		case PatchKind::Jump:
-			return MakeBranch(jumpOpcode, patch.address, patch.target, patch.expectedLength);
+			return SF_Code_MakeBranch(jumpOpcode, patch.address, patch.target, patch.expectedLength);
 		case PatchKind::Insertion:
-			return MakeBranch(jumpOpcode, patch.address, cave, patch.expectedLength);
+			return SF_Code_MakeBranch(jumpOpcode, patch.address, cave, patch.expectedLength);
 		default:
 			// SafetyHook writes an instruction hook.
 			return {};
@@ -239,25 +203,20 @@ namespace
 			IsUnder(modulePath, GetModuleDirectory(GetModuleHandleW(L"coreclr.dll"))) || IsUnder(modulePath, GetModuleDirectory(GetModuleHandleW(L"hostfxr.dll")));
 	}
 
-	PatchFault CheckImage(std::uintptr_t begin, std::size_t length)
+	HMODULE GetModule(std::uintptr_t address)
 	{
 		HMODULE module = nullptr;
-		if (!GetModuleHandleExW(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS | GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT, reinterpret_cast<LPCWSTR>(begin), &module))
+		if (!GetModuleHandleExW(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS | GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT, reinterpret_cast<LPCWSTR>(address), &module))
 		{
-			return PatchFault::NoImage;
+			return nullptr;
 		}
+		return module;
+	}
+
+	const IMAGE_NT_HEADERS64* GetHeaders(HMODULE module)
+	{
 		const auto imageBase = reinterpret_cast<std::uintptr_t>(module);
-		const auto* headers = reinterpret_cast<const IMAGE_NT_HEADERS64*>(imageBase + reinterpret_cast<const IMAGE_DOS_HEADER*>(imageBase)->e_lfanew);
-		if (IsExcludedImage(module, headers))
-		{
-			return PatchFault::ExcludedImage;
-		}
-		const std::uintptr_t rva = begin - imageBase;
-		const std::span sections{ IMAGE_FIRST_SECTION(headers), headers->FileHeader.NumberOfSections };
-		const bool executable = std::ranges::any_of(sections, [rva, length](const IMAGE_SECTION_HEADER& section) {
-			return (section.Characteristics & IMAGE_SCN_MEM_EXECUTE) != 0 && rva >= section.VirtualAddress && rva + length <= section.VirtualAddress + section.Misc.VirtualSize;
-		});
-		return executable ? PatchFault::None : PatchFault::NotExecutable;
+		return reinterpret_cast<const IMAGE_NT_HEADERS64*>(imageBase + reinterpret_cast<const IMAGE_DOS_HEADER*>(imageBase)->e_lfanew);
 	}
 
 	// Called with g_codeWritesLock held, once the expected bytes match. Execution resumes at the end of the expected bytes, so they must end on an instruction.
@@ -291,18 +250,36 @@ namespace
 	}
 
 	// Called with g_codeWritesLock held. The overlap is tested before the bytes, so an earlier write's owner is reported instead of a mismatch.
-	PatchFault CheckPatch(const CodePatch& patch)
+	// An instruction hook at the address of a recorded one shares it, and its expected bytes are compared with the bytes that hook moved, as they were before it was written.
+	PatchFault CheckPatch(const CodePatch& patch, std::optional<SharedHook>& shared)
 	{
-		if (const PatchFault fault = CheckImage(patch.address, patch.expectedLength); fault != PatchFault::None)
+		if (const PatchFault fault = SF_Code_CheckImage(patch.address, patch.expectedLength); fault != PatchFault::None)
 		{
 			return fault;
 		}
-		if (SF_Code_OverlapsWrite(patch.address, patch.expectedLength))
+		const bool instruction = patch.kind == PatchKind::Instruction;
+		if (instruction ? SF_Code_OverlapsWriteNotAt(patch.address, patch.expectedLength) : SF_Code_OverlapsWrite(patch.address, patch.expectedLength))
 		{
 			return PatchFault::Overlap;
 		}
+		std::span<const std::uint8_t> original;
+		if (instruction && SF_Code_HasWriteAt(patch.address))
+		{
+			// CodePatcher passes the slot of a hook it wrote at the address. Any other slot was reserved for a new hook, which would overlap the recorded one.
+			shared = SF_Code_FindSharedHook(patch.address);
+			if (!shared || shared->slot != patch.slot)
+			{
+				return PatchFault::Overlap;
+			}
+			if (shared->movedBytes.size() > patch.expectedLength)
+			{
+				return PatchFault::MovedPastExpected;
+			}
+			SF_Code_ClearConflictOwner();
+			original = shared->movedBytes;
+		}
 		// PrepareInstructionHook tests an instruction hook's moved bytes.
-		if (patch.kind != PatchKind::Instruction && SF_Code_ContainsWriteTarget(patch.address, patch.expectedLength))
+		if (!instruction && SF_Code_ContainsWriteTarget(patch.address, patch.expectedLength))
 		{
 			return PatchFault::ContainsTarget;
 		}
@@ -316,18 +293,17 @@ namespace
 		const auto* code = reinterpret_cast<const std::uint8_t*>(patch.address);
 		for (std::uint32_t i = 0; i < patch.expectedLength; ++i)
 		{
-			if (patch.mask[i] != 0 && code[i] != patch.expected[i])
+			const std::uint8_t byte = i < original.size() ? original[i] : code[i];
+			if (patch.mask[i] != 0 && byte != patch.expected[i])
 			{
 				return PatchFault::Mismatch;
 			}
 		}
-		return patch.kind == PatchKind::Bytes || patch.kind == PatchKind::Instruction ? PatchFault::None : CheckRedirect(patch);
+		return patch.kind == PatchKind::Bytes || instruction ? PatchFault::None : CheckRedirect(patch);
 	}
 
 	// Called with g_codeWritesLock held, once CheckPatch has passed.
 	// The moved bytes must lie within the expected ones, since SafetyHook writes a fourteen-byte jump when no trampoline lies within reach.
-	// A moved call must be the last moved instruction, so a thread inside the callee during the write returns past the jump.
-	// A moved branch must not target a moved byte, since SafetyHook aims it at the original address, where the hook's jump is written.
 	PatchFault PrepareInstructionHook(const CodePatch& patch, std::optional<safetyhook::MidHook>& hook)
 	{
 		auto created = safetyhook::MidHook::create(reinterpret_cast<void*>(patch.address), instructionDestinations[patch.slot], safetyhook::MidHook::StartDisabled);
@@ -339,28 +315,7 @@ namespace
 			return allocationFailed ? PatchFault::NoNearMemory : PatchFault::NotRelocatable;
 		}
 		const std::size_t movedLength = created->original_bytes().size();
-		const std::uintptr_t movedEnd = patch.address + movedLength;
-		PatchFault fault = PatchFault::None;
-		if (movedLength > patch.expectedLength)
-		{
-			fault = PatchFault::MovedPastExpected;
-		}
-		else if (SF_Code_ContainsWriteTarget(patch.address, movedLength))
-		{
-			fault = PatchFault::ContainsTarget;
-		}
-		else if (SF_Code_CallBeforeEnd(patch.address, movedEnd))
-		{
-			fault = PatchFault::MovedCallNotLast;
-		}
-		else if (SF_Code_BranchesWithin(patch.address, movedEnd))
-		{
-			fault = PatchFault::BranchWithinMoved;
-		}
-		else if (SF_Code_BranchesInto(patch.address, movedEnd))
-		{
-			fault = PatchFault::BranchIntoPatch;
-		}
+		const PatchFault fault = movedLength > patch.expectedLength ? PatchFault::MovedPastExpected : SF_Code_CheckMoved(patch.address, movedLength);
 		if (fault == PatchFault::None)
 		{
 			hook = std::move(*created);
@@ -382,7 +337,7 @@ namespace
 					disabled = false;
 					SF_Code_RecordWrite(patches[i].address, patches[i].expectedLength, owner,
 						"hooked an instruction, and the hook could not be removed after a later hook in its group failed",
-						CodeWriteKind::Write, 0, hook->original_bytes().size());
+						CodeWriteKind::Write, 0, hook->original_bytes());
 				}
 				new safetyhook::MidHook{ std::move(*hook) };
 			}
@@ -400,6 +355,91 @@ namespace
 			VirtualProtect(reinterpret_cast<void*>(pages[i]), pageSize, protections[i], &replacedProtection);
 		}
 	}
+}
+
+std::vector<std::uint8_t> SF_Code_MakeBranch(std::uint8_t opcode, std::uintptr_t site, std::uintptr_t target, std::size_t length)
+{
+	std::vector<std::uint8_t> bytes(length, nopOpcode);
+	bytes[0] = opcode;
+	const auto displacement = static_cast<std::int32_t>(target - (site + branchLength));
+	std::memcpy(bytes.data() + 1, &displacement, sizeof(displacement));
+	return bytes;
+}
+
+PatchFault SF_Code_CheckImage(std::uintptr_t begin, std::size_t length)
+{
+	const HMODULE module = GetModule(begin);
+	if (module == nullptr)
+	{
+		return PatchFault::NoImage;
+	}
+	if (IsExcludedImage(module, GetHeaders(module)))
+	{
+		return PatchFault::ExcludedImage;
+	}
+	std::uintptr_t sectionBegin = 0;
+	std::uintptr_t sectionEnd = 0;
+	return SF_Code_FindCodeSection(begin, &sectionBegin, &sectionEnd) && begin + length <= sectionEnd ? PatchFault::None : PatchFault::NotExecutable;
+}
+
+bool SF_Code_FindCodeSection(std::uintptr_t address, std::uintptr_t* begin, std::uintptr_t* end)
+{
+	const HMODULE module = GetModule(address);
+	if (module == nullptr)
+	{
+		return false;
+	}
+	const auto imageBase = reinterpret_cast<std::uintptr_t>(module);
+	const IMAGE_NT_HEADERS64* headers = GetHeaders(module);
+	const std::span sections{ IMAGE_FIRST_SECTION(headers), headers->FileHeader.NumberOfSections };
+	const auto section = std::ranges::find_if(sections, [address, imageBase](const IMAGE_SECTION_HEADER& candidate) {
+		return (candidate.Characteristics & IMAGE_SCN_MEM_EXECUTE) != 0 && address >= imageBase + candidate.VirtualAddress &&
+			address < imageBase + candidate.VirtualAddress + candidate.Misc.VirtualSize;
+	});
+	if (section == sections.end())
+	{
+		return false;
+	}
+	*begin = imageBase + section->VirtualAddress;
+	*end = *begin + section->Misc.VirtualSize;
+	return true;
+}
+
+// A moved call must be the last moved instruction, so a thread inside the callee during the write returns past the jump.
+// A moved branch must not target a moved byte, since SafetyHook aims it at the original address, where the hook's jump is written.
+PatchFault SF_Code_CheckMoved(std::uintptr_t begin, std::size_t movedLength)
+{
+	const std::uintptr_t movedEnd = begin + movedLength;
+	if (SF_Code_ContainsWriteTarget(begin, movedLength))
+	{
+		return PatchFault::ContainsTarget;
+	}
+	if (SF_Code_CallBeforeEnd(begin, movedEnd))
+	{
+		return PatchFault::MovedCallNotLast;
+	}
+	if (SF_Code_BranchesWithin(begin, movedEnd))
+	{
+		return PatchFault::BranchWithinMoved;
+	}
+	return SF_Code_BranchesInto(begin, movedEnd) ? PatchFault::BranchIntoPatch : PatchFault::None;
+}
+
+std::uintptr_t SF_Code_AllocateJump(std::uintptr_t branch, std::uintptr_t destination)
+{
+	auto allocation = AllocateNear(branch, absoluteJumpLength, absoluteJumpLength + branchLength);
+	if (!allocation)
+	{
+		return 0;
+	}
+	std::uint8_t* stub = allocation->data();
+	std::memcpy(stub, absoluteJump, sizeof(absoluteJump));
+	std::memcpy(stub + sizeof(absoluteJump), &destination, sizeof(destination));
+	FlushInstructionCache(GetCurrentProcess(), stub, absoluteJumpLength);
+	const std::uintptr_t address = allocation->address();
+	// Never destroyed, since destroying it releases memory code may still run from.
+	new safetyhook::Allocation{ std::move(*allocation) };
+	return address;
 }
 
 extern "C" __declspec(dllexport) std::uintptr_t SF_Code_Allocate(std::uintptr_t address, std::uint32_t length, const char* owner)
@@ -431,10 +471,11 @@ extern "C" __declspec(dllexport) PatchFault SF_Code_WritePatches(const CodePatch
 	const std::span patchSpan{ patches, count };
 	std::scoped_lock lock{ g_codeWritesLock };
 	std::vector<std::optional<safetyhook::MidHook>> hooks(count);
+	std::vector<std::optional<SharedHook>> sharedHooks(count);
 	for (std::uint32_t i = 0; i < count; ++i)
 	{
-		PatchFault fault = CheckPatch(patchSpan[i]);
-		if (fault == PatchFault::None && patchSpan[i].kind == PatchKind::Instruction)
+		PatchFault fault = CheckPatch(patchSpan[i], sharedHooks[i]);
+		if (fault == PatchFault::None && patchSpan[i].kind == PatchKind::Instruction && !sharedHooks[i])
 		{
 			fault = PrepareInstructionHook(patchSpan[i], hooks[i]);
 		}
@@ -530,10 +571,13 @@ extern "C" __declspec(dllexport) PatchFault SF_Code_WritePatches(const CodePatch
 	RestoreProtections(pages, protections);
 	for (std::uint32_t i = 0; i < count; ++i)
 	{
-		const bool redirects = patchSpan[i].kind == PatchKind::Jump || patchSpan[i].kind == PatchKind::Call;
-		const std::optional<std::size_t> movedLength = hooks[i] ? std::optional{ hooks[i]->original_bytes().size() } : std::nullopt;
-		SF_Code_RecordWrite(patchSpan[i].address, patchSpan[i].expectedLength, owner, DescribePatch(patchSpan[i], movedLength.value_or(0)), CodeWriteKind::Write,
-			redirects ? patchSpan[i].target : 0, movedLength);
+		const CodePatch& patch = patchSpan[i];
+		const bool redirects = patch.kind == PatchKind::Jump || patch.kind == PatchKind::Call;
+		const std::span<const std::uint8_t> movedBytes = hooks[i] ? std::span{ hooks[i]->original_bytes() } : sharedHooks[i] ? sharedHooks[i]->movedBytes : std::span<const std::uint8_t>{};
+		const std::string description = sharedHooks[i] ? std::format("hooked the instruction, sharing slot {} with the hook written there earlier", patch.slot)
+			: DescribePatch(patch, movedBytes.size());
+		const std::optional<std::uint32_t> slot = patch.kind == PatchKind::Instruction ? std::optional{ patch.slot } : std::nullopt;
+		SF_Code_RecordWrite(patch.address, patch.expectedLength, owner, description, CodeWriteKind::Write, redirects ? patch.target : 0, movedBytes, slot);
 		if (hooks[i])
 		{
 			// Never destroyed, since destroying it writes the original bytes back while game threads may run them.

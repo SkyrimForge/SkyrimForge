@@ -29,6 +29,9 @@ namespace
 		CodeWriteKind kind;
 		std::uintptr_t target;
 		std::vector<std::uint8_t> written;
+		// An instruction hook's slot, set only where a later hook at its address can share it, and the bytes the hook moved, as they were before it was written.
+		std::optional<std::uint32_t> slot;
+		std::vector<std::uint8_t> movedBytes;
 		const CodeWrite* previous;
 	};
 
@@ -140,6 +143,22 @@ bool SF_Code_OverlapsWrite(std::uintptr_t begin, std::size_t length)
 	return FindConflict([begin, length](const CodeWrite& write) { return write.begin < begin + length && begin < write.begin + write.length; });
 }
 
+bool SF_Code_OverlapsWriteNotAt(std::uintptr_t begin, std::size_t length)
+{
+	return FindConflict([begin, length](const CodeWrite& write) { return write.begin != begin && write.begin < begin + length && begin < write.begin + write.length; });
+}
+
+bool SF_Code_HasWriteAt(std::uintptr_t address)
+{
+	return FindConflict([address](const CodeWrite& write) { return write.kind == CodeWriteKind::Write && write.begin == address; });
+}
+
+std::optional<SharedHook> SF_Code_FindSharedHook(std::uintptr_t address)
+{
+	const CodeWrite* newest = FindWrite([address](const CodeWrite& write) { return write.kind == CodeWriteKind::Write && write.begin == address; });
+	return newest != nullptr && newest->slot ? std::optional{ SharedHook{ *newest->slot, newest->movedBytes } } : std::nullopt;
+}
+
 bool SF_Code_ContainsWriteTarget(std::uintptr_t begin, std::size_t length)
 {
 	return FindConflict([begin, length](const CodeWrite& write) { return write.target != 0 && begin < write.target && write.target < begin + length; });
@@ -151,12 +170,14 @@ bool SF_Code_IsInsideWrite(std::uintptr_t address)
 }
 
 void SF_Code_RecordWrite(std::uintptr_t begin, std::size_t length, const char* owner, std::string_view description, CodeWriteKind kind,
-	std::uintptr_t target, std::optional<std::size_t> movedLength)
+	std::uintptr_t target, std::span<const std::uint8_t> movedBytes, std::optional<std::uint32_t> slot)
 {
 	// Never deleted, since SF_Code_InteriorOwner returns a pointer into its owner string.
 	const auto* bytes = reinterpret_cast<const std::uint8_t*>(begin);
 	std::vector<std::uint8_t> written = kind == CodeWriteKind::Write ? std::vector<std::uint8_t>{ bytes, bytes + length } : std::vector<std::uint8_t>{};
-	const auto* write = new CodeWrite{ begin, length, movedLength.value_or(length), owner, kind, target, std::move(written), g_lastCodeWrite.load(std::memory_order_relaxed) };
+	const std::size_t guardedLength = movedBytes.empty() ? length : movedBytes.size();
+	const auto* write = new CodeWrite{ begin, length, guardedLength, owner, kind, target, std::move(written), slot, { movedBytes.begin(), movedBytes.end() },
+		g_lastCodeWrite.load(std::memory_order_relaxed) };
 	g_lastCodeWrite.store(write, std::memory_order_release);
 	spdlog::info("{} {} at {}.", owner, description, SF_Faults_DescribeAddress(reinterpret_cast<const void*>(begin)));
 }
@@ -176,27 +197,49 @@ extern "C" __declspec(dllexport) const char* SF_Code_InteriorOwner(std::uintptr_
 }
 
 // Takes no lock, since entries are complete before they are published and never change.
+// A byte a later write covers is compared only against that write, since a hook chained to an earlier one overwrites the earlier one's bytes.
 extern "C" __declspec(dllexport) std::uint32_t SF_Code_VerifyWrites()
 {
 	std::uint32_t writeCount = 0;
 	std::uint32_t changedCount = 0;
+	std::vector<std::pair<std::uintptr_t, std::uintptr_t>> laterWrites;
 	for (const CodeWrite* write = g_lastCodeWrite.load(std::memory_order_acquire); write != nullptr; write = write->previous)
 	{
 		if (write->kind != CodeWriteKind::Write)
 		{
 			continue;
 		}
+		const auto* code = reinterpret_cast<const std::uint8_t*>(write->begin);
+		bool compared = false;
+		std::optional<std::size_t> changedIndex;
+		for (std::size_t i = 0; i < write->length && !changedIndex; ++i)
+		{
+			const std::uintptr_t address = write->begin + i;
+			if (std::ranges::any_of(laterWrites, [address](const auto& range) { return range.first <= address && address < range.second; }))
+			{
+				continue;
+			}
+			compared = true;
+			if (code[i] != write->written[i])
+			{
+				changedIndex = i;
+			}
+		}
+		laterWrites.emplace_back(write->begin, write->begin + write->length);
+		if (!compared)
+		{
+			continue;
+		}
 		++writeCount;
-		const std::span<const std::uint8_t> code{ reinterpret_cast<const std::uint8_t*>(write->begin), write->length };
-		const auto writtenByte = std::ranges::mismatch(write->written, code).in1;
-		if (writtenByte == write->written.end())
+		if (!changedIndex)
 		{
 			continue;
 		}
 		++changedCount;
-		const std::uintptr_t changed = write->begin + static_cast<std::uintptr_t>(writtenByte - write->written.begin());
+		const std::uintptr_t changed = write->begin + *changedIndex;
+		const std::span<const std::uint8_t> currentCode{ code, write->length };
 		spdlog::warn("Another module changed the {} bytes at {} that {} patched or verified. They were {} after {}'s change and are now {}.{}", write->length,
-			SF_Faults_DescribeAddress(reinterpret_cast<const void*>(write->begin)), write->owner, FormatBytes(write->written), write->owner, FormatBytes(code),
+			SF_Faults_DescribeAddress(reinterpret_cast<const void*>(write->begin)), write->owner, FormatBytes(write->written), write->owner, FormatBytes(currentCode),
 			DescribeForeignBranch(write->begin, changed));
 	}
 	spdlog::info("Recorded writes compared with the code: {}. Changed by another module: {}.", writeCount, changedCount);

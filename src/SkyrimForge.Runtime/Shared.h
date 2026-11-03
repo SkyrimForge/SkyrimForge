@@ -23,8 +23,6 @@ extern "C" void SF_Faults_Install();
 
 std::string SF_Faults_DescribeAddress(const void* address);
 
-extern "C" void SF_Hook_AllocateTrampoline();
-
 extern "C" __declspec(dllexport) std::uintptr_t SF_Hook_FindCall(std::uintptr_t callerAddress, std::uintptr_t calleeAddress, std::uint32_t occurrence, std::uint32_t searchLength);
 
 extern "C" __declspec(dllexport) std::uintptr_t SF_Hook_CallAt(std::uintptr_t function, std::uint32_t seOffset, std::uint32_t aeOffset, std::uint32_t vrOffset);

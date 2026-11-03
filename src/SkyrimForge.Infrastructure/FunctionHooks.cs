@@ -30,9 +30,9 @@ internal sealed class FunctionHooks(string owner) : IFrameworkFunctionHooks
         nint displacedAddress = NativeGlobals.SF_Hook_WriteVirtual(vtable, (uint)index, replacement, owner);
         if (displacedAddress == 0)
         {
-            throw new InvalidOperationException(ConflictOwner is string conflictOwner
-                ? $"Entry 0x{index:X} of {typeName} is already replaced by {conflictOwner}. Nothing was written."
-                : $"Entry 0x{index:X} of {typeName} does not contain game code. The index may be past the table's end, or the entry may already be replaced. Nothing was written.");
+            throw new InvalidOperationException(NativeGlobals.SF_Hook_Fault() == PatchFault.Overlap
+                ? $"Entry 0x{index:X} of {typeName} overlaps memory {ConflictOwner} already changed. Nothing was written."
+                : $"Entry 0x{index:X} of {typeName} does not address code in a loaded module, and no earlier hook replaced it. The index may be past the table's end. Nothing was written.");
         }
         return displacedAddress;
     }
@@ -65,7 +65,7 @@ internal sealed class FunctionHooks(string owner) : IFrameworkFunctionHooks
         nint callSite = NativeGlobals.SF_Hook_CallAt(GetAddress(caller), offset.SpecialEdition, offset.AnniversaryEdition, offset.VR);
         if (callSite == 0)
         {
-            throw new InvalidOperationException($"The offset into {caller} does not address a call to game code or to an SKSE trampoline stub on this runtime.");
+            throw new InvalidOperationException($"The offset into {caller} does not address a call to game code or to an absolute jump stub on this runtime.");
         }
         return callSite;
     }
@@ -81,9 +81,14 @@ internal sealed class FunctionHooks(string owner) : IFrameworkFunctionHooks
         nint displacedAddress = NativeGlobals.SF_Hook_WriteCall(callSite, replacement, owner);
         if (displacedAddress == 0)
         {
-            throw new InvalidOperationException(ConflictOwner is string conflictOwner
-                ? $"The call at 0x{callSite:X} overlaps code {conflictOwner} already replaced. Nothing was written."
-                : $"The address 0x{callSite:X} does not contain a call to game code or to an SKSE trampoline stub. Nothing was written.");
+            string reason = NativeGlobals.SF_Hook_Fault() switch
+            {
+                PatchFault.Overlap => $"overlaps code {ConflictOwner} already changed, other than a call replaced at the same address",
+                PatchFault.NoImage or PatchFault.ExcludedImage or PatchFault.NotExecutable => "does not lie in the executable code of a module SkyrimForge patches",
+                PatchFault.NoNearMemory => "lies farther than a 32-bit displacement from any memory that could be allocated for the stub the call reaches",
+                _ => "does not contain a call to code in the same section or to an absolute jump stub"
+            };
+            throw new InvalidOperationException($"The address 0x{callSite:X} {reason}. Nothing was written.");
         }
         return displacedAddress;
     }
@@ -96,9 +101,18 @@ internal sealed class FunctionHooks(string owner) : IFrameworkFunctionHooks
         nint trampoline = NativeGlobals.SF_Hook_WriteEntry(entry, replacement, owner);
         if (trampoline == 0)
         {
-            string reason = ConflictOwner is string conflictOwner
-                ? $"Its opening instructions overlap code {conflictOwner} already replaced, or contain, past their first byte, the target of a jump or call {conflictOwner} applied."
-                : GetDetourFailureReason(entry);
+            string reason = NativeGlobals.SF_Hook_Fault() switch
+            {
+                PatchFault.Overlap => $"Its opening instructions overlap code {ConflictOwner} already changed, other than a jump written at its entry.",
+                PatchFault.ContainsTarget => $"Its opening instructions contain, past their first byte, the target of a jump or call {ConflictOwner} applied.",
+                PatchFault.NoImage or PatchFault.ExcludedImage or PatchFault.NotExecutable => "Its opening instructions do not lie in the executable code of a module SkyrimForge patches.",
+                PatchFault.NoNearMemory => "No memory within a 32-bit displacement of it could be allocated for the trampoline.",
+                PatchFault.NotRelocatable => $"Its opening instructions cannot be moved to a trampoline. Its first 16 bytes are {DescribeCode(entry, 16)}.",
+                PatchFault.MovedCallNotLast => "Its opening instructions contain a call followed by another instruction the jump overwrites.",
+                PatchFault.BranchWithinMoved => "Its opening instructions contain a branch to one of the instructions the jump overwrites.",
+                PatchFault.BranchIntoPatch => "A direct branch elsewhere in the function lands inside the instructions the jump overwrites, past their first byte.",
+                _ => "The jump could not be written to its entry."
+            };
             throw new InvalidOperationException($"The function at 0x{entry:X} was not detoured. {reason}");
         }
         return trampoline;
@@ -122,20 +136,7 @@ internal sealed class FunctionHooks(string owner) : IFrameworkFunctionHooks
         return address;
     }
 
-    private static unsafe string GetDetourFailureReason(nint entry)
-    {
-        const int reportedByteCount = 16;
-        const byte relativeJump = 0xE9;
-        byte[] openingBytes = new byte[reportedByteCount];
-        uint movableLength;
-        fixed (byte* destination = openingBytes)
-        {
-            movableLength = NativeGlobals.SF_Hook_EntryPrologue(entry, destination, reportedByteCount);
-        }
-        string bytes = string.Join(" ", openingBytes.Select(value => value.ToString("X2")));
-        return movableLength != 0 ? $"Its first {movableLength} bytes can be relocated, but no trampoline memory is available for them."
-            : openingBytes[0] == relativeJump
-                ? $"It starts with a relative jump, which the framework does not relocate. It is already detoured, or it is a thunk. Its first {reportedByteCount} bytes are {bytes}."
-            : $"It is outside the game's code, or it starts with an instruction the framework does not relocate. Its first {reportedByteCount} bytes are {bytes}.";
-    }
+    // Reads without a check: the native side confirmed the bytes lie in a module's code, all of them for CodePatcher and the first 5 of the 16 for a detour.
+    internal static unsafe string DescribeCode(nint address, int length) =>
+        string.Join(" ", new ReadOnlySpan<byte>((void*)address, length).ToArray().Select(value => value.ToString("X2")));
 }

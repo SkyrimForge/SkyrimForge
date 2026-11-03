@@ -10,10 +10,15 @@ internal sealed unsafe partial class CodePatcher(string owner, ILog log) : ICode
 {
     private const int instructionHookCapacity = 1024;
 
-    private static readonly Lock slotsLock = new();
+    private static readonly Lock instructionHooksLock = new();
 
-    // A slot is filled with slotsLock held before its hook is written. Dispatch reads it without the lock.
-    private static readonly InstructionHookSlot?[] slots = new InstructionHookSlot?[instructionHookCapacity];
+    // A slot is filled with instructionHooksLock held before its hook is written. Dispatch reads it without the lock.
+    // A slot's entries are linked newest first, and the entry of a hook sharing the slot is linked in once Apply has written its group.
+    private static readonly InstructionHookEntry?[] slots = new InstructionHookEntry?[instructionHookCapacity];
+
+    // Set with instructionHooksLock held for a slot whose hook was written, so a later hook at its address can share it.
+    // A slot whose hook was removed after a later hook in its group failed is retained but not set.
+    private static readonly bool[] writtenSlots = new bool[instructionHookCapacity];
 
     private static readonly Func<ulong, string?> findInteriorOwner = address => Marshal.PtrToStringUTF8(SF_Code_InteriorOwner((nint)address));
 
@@ -21,32 +26,6 @@ internal sealed unsafe partial class CodePatcher(string owner, ILog log) : ICode
 
     private readonly string owner = owner;
     private readonly ILog log = log;
-
-    /// <summary>Mirrors PatchFault in CodePatches.cpp.</summary>
-    private enum PatchFault
-    {
-        None,
-        NoImage,
-        ExcludedImage,
-        NotExecutable,
-        Overlap,
-        NotInstructionStart,
-        Mismatch,
-        ProtectionUnchanged,
-        NotInstructionEnd,
-        BranchIntoPatch,
-        DisplacedRelative,
-        TargetNotInstructionStart,
-        TargetInsideWrite,
-        NoNearMemory,
-        ContainsTarget,
-        NotRelocatable,
-        MovedPastExpected,
-        MovedCallNotLast,
-        BranchWithinMoved,
-        HookNotWritten,
-        HookNotRemoved
-    }
 
     /// <summary>Mirrors PatchKind in CodePatches.cpp.</summary>
     private enum PatchKind
@@ -85,7 +64,7 @@ internal sealed unsafe partial class CodePatcher(string owner, ILog log) : ICode
             return;
         }
 
-        uint[] patchSlots = ReserveSlots(patchArray);
+        (uint[] patchSlots, bool[] sharing) = ReserveSlots(patchArray);
         NativeCodePatch[] nativePatches = new NativeCodePatch[patchArray.Length];
         byte[] data = new byte[patchArray.Sum(patch => 2 * patch.Expected.Length + GetPatchData(patch).Length)];
         PatchFault fault;
@@ -114,10 +93,11 @@ internal sealed unsafe partial class CodePatcher(string owner, ILog log) : ICode
             // A hook that was written and then removed retains its slot, because a thread inside it may still call its handler.
             if (fault is not (PatchFault.HookNotWritten or PatchFault.HookNotRemoved))
             {
-                ReleaseSlots(patchArray, patchSlots);
+                ReleaseSlots(patchArray, patchSlots, sharing);
             }
             throw new InvalidOperationException(GetFaultMessage(fault, patchArray[failedIndex]));
         }
+        CompleteSlots(patchArray, patchSlots, sharing);
     }
 
     /// <inheritdoc/>
@@ -132,21 +112,29 @@ internal sealed unsafe partial class CodePatcher(string owner, ILog log) : ICode
         return address != 0 ? address : throw new InvalidOperationException($"No free memory for {length} bytes lies within a 32-bit displacement of 0x{near:X}.");
     }
 
-    private uint[] ReserveSlots(CodePatch[] patches)
+    /// <summary>
+    /// Assigns each hook at the address of a written hook that hook's slot, which SF_Code_WritePatches confirms against its record, and reserves a free slot for each other hook.
+    /// </summary>
+    private (uint[] PatchSlots, bool[] Sharing) ReserveSlots(CodePatch[] patches)
     {
         uint[] patchSlots = new uint[patches.Length];
-        int hookCount = patches.Count(patch => patch is InstructionHook);
-        if (hookCount == 0)
+        bool[] sharing = new bool[patches.Length];
+        if (!patches.Any(patch => patch is InstructionHook))
         {
-            return patchSlots;
+            return (patchSlots, sharing);
         }
-        lock (slotsLock)
+        lock (instructionHooksLock)
         {
-            int[] freeSlots = [.. Enumerable.Range(0, instructionHookCapacity).Where(slot => slots[slot] == null).Take(hookCount)];
-            if (freeSlots.Length < hookCount)
+            // A written slot is never released, so it is never null.
+            int[] sharedSlots = [.. patches.Select(patch => patch is InstructionHook hook
+                ? Enumerable.Range(0, instructionHookCapacity).FirstOrDefault(slot => writtenSlots[slot] && slots[slot]!.Address == hook.Address, -1)
+                : -1)];
+            int newHookCount = patches.Where((patch, i) => patch is InstructionHook && sharedSlots[i] < 0).Count();
+            int[] freeSlots = [.. Enumerable.Range(0, instructionHookCapacity).Where(slot => slots[slot] == null).Take(newHookCount)];
+            if (freeSlots.Length < newHookCount)
             {
                 throw new InvalidOperationException(
-                    $"The {hookCount} instruction hooks would exceed the process limit of {instructionHookCapacity}, of which {instructionHookCapacity - freeSlots.Length} are in use. Nothing was written.");
+                    $"The {newHookCount} instruction hooks would exceed the process limit of {instructionHookCapacity} hooked addresses, of which {instructionHookCapacity - freeSlots.Length} are in use. Nothing was written.");
             }
             if (!dispatchSet)
             {
@@ -156,24 +144,31 @@ internal sealed unsafe partial class CodePatcher(string owner, ILog log) : ICode
             int nextFreeSlot = 0;
             for (int i = 0; i < patches.Length; i++)
             {
-                if (patches[i] is InstructionHook hook)
+                if (patches[i] is not InstructionHook hook)
                 {
-                    int slot = freeSlots[nextFreeSlot++];
-                    Volatile.Write(ref slots[slot], new InstructionHookSlot(hook.Handler, hook.Address, log));
-                    patchSlots[i] = (uint)slot;
+                    continue;
                 }
+                if (sharedSlots[i] >= 0)
+                {
+                    patchSlots[i] = (uint)sharedSlots[i];
+                    sharing[i] = true;
+                    continue;
+                }
+                int slot = freeSlots[nextFreeSlot++];
+                Volatile.Write(ref slots[slot], new InstructionHookEntry(hook.Handler, hook.Address, log, null));
+                patchSlots[i] = (uint)slot;
             }
         }
-        return patchSlots;
+        return (patchSlots, sharing);
     }
 
-    private static void ReleaseSlots(CodePatch[] patches, uint[] patchSlots)
+    private static void ReleaseSlots(CodePatch[] patches, uint[] patchSlots, bool[] sharing)
     {
-        lock (slotsLock)
+        lock (instructionHooksLock)
         {
             for (int i = 0; i < patches.Length; i++)
             {
-                if (patches[i] is InstructionHook)
+                if (patches[i] is InstructionHook && !sharing[i])
                 {
                     slots[patchSlots[i]] = null;
                 }
@@ -181,19 +176,44 @@ internal sealed unsafe partial class CodePatcher(string owner, ILog log) : ICode
         }
     }
 
+    /// <summary>Marks each new hook's slot as written, and links the entry of each sharing hook ahead of the entries already in its slot.</summary>
+    private void CompleteSlots(CodePatch[] patches, uint[] patchSlots, bool[] sharing)
+    {
+        lock (instructionHooksLock)
+        {
+            for (int i = 0; i < patches.Length; i++)
+            {
+                if (patches[i] is not InstructionHook hook)
+                {
+                    continue;
+                }
+                uint slot = patchSlots[i];
+                if (sharing[i])
+                {
+                    Volatile.Write(ref slots[slot], new InstructionHookEntry(hook.Handler, hook.Address, log, slots[slot]));
+                }
+                writtenSlots[slot] = true;
+            }
+        }
+    }
+
+    /// <summary>Runs a slot's handlers newest first, until one sets rip to another address, as a detour that does not call its displaced function ends a chain.</summary>
     [UnmanagedCallersOnly]
     private static void Dispatch(uint slot, CpuRegisters* registers)
     {
-        InstructionHookSlot hook = Volatile.Read(ref slots[slot])!;
-        try
+        ulong trampoline = registers->Rip;
+        for (InstructionHookEntry? entry = Volatile.Read(ref slots[slot]); entry != null && registers->Rip == trampoline; entry = entry.Earlier)
         {
-            hook.Handler(new CpuContext(ref *registers, hook.Address, findInteriorOwner));
-        }
-        catch (Exception exception)
-        {
-            string message = $"The handler of the instruction hook at 0x{hook.Address:X} threw an exception. The process ends.";
-            hook.Log.Write($"{message} {exception}");
-            Environment.FailFast(message, exception);
+            try
+            {
+                entry.Handler(new CpuContext(ref *registers, entry.Address, findInteriorOwner));
+            }
+            catch (Exception exception)
+            {
+                string message = $"The handler of the instruction hook at 0x{entry.Address:X} threw an exception. The process ends.";
+                entry.Log.Write($"{message} {exception}");
+                Environment.FailFast(message, exception);
+            }
         }
     }
 
@@ -262,7 +282,7 @@ internal sealed unsafe partial class CodePatcher(string owner, ILog log) : ICode
             PatchFault.NotExecutable => "do not lie in one executable section of their module",
             PatchFault.Overlap => $"overlap code {FunctionHooks.ConflictOwner} already changed",
             PatchFault.NotInstructionStart => "do not begin on an instruction of the function containing them",
-            PatchFault.Mismatch => $"read {DescribeCode(patch)}, which does not match the expected {patch.Expected}",
+            PatchFault.Mismatch => $"read {FunctionHooks.DescribeCode(patch.Address, patch.Expected.Length)}, which does not match the expected {patch.Expected}",
             PatchFault.ProtectionUnchanged => "lie on a page whose protection could not be changed to allow writing",
             PatchFault.NotInstructionEnd => patch is InsertionPatch insertion
                 ? $"or the first {insertion.DisplacedLength} of them, which the insertion displaces, do not end on an instruction"
@@ -287,10 +307,6 @@ internal sealed unsafe partial class CodePatcher(string owner, ILog log) : ICode
 
     private static string DescribeBranch(CodePatch patch) => $"{(patch is CallPatch ? "a call" : "a jump")} to 0x{GetTarget(patch):X}";
 
-    // Called after the native side confirms the bytes are in a module's code, so reading them cannot fault.
-    private static string DescribeCode(CodePatch patch) =>
-        string.Join(" ", new ReadOnlySpan<byte>((void*)patch.Address, patch.Expected.Length).ToArray().Select(value => value.ToString("X2")));
-
     [LibraryImport(NativeRuntime.Library, StringMarshalling = StringMarshalling.Utf8)]
     private static partial PatchFault SF_Code_WritePatches(NativeCodePatch* patches, uint count, string owner, uint* failedIndex);
 
@@ -303,7 +319,7 @@ internal sealed unsafe partial class CodePatcher(string owner, ILog log) : ICode
     [LibraryImport(NativeRuntime.Library)]
     private static partial nint SF_Code_InteriorOwner(nint address);
 
-    private sealed record InstructionHookSlot(InstructionHandler Handler, nint Address, ILog Log);
+    private sealed record InstructionHookEntry(InstructionHandler Handler, nint Address, ILog Log, InstructionHookEntry? Earlier);
 
     /// <summary>Mirrors CodePatch in CodePatches.cpp.</summary>
     [StructLayout(LayoutKind.Sequential)]

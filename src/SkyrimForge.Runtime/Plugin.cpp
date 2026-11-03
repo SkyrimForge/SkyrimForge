@@ -111,7 +111,6 @@ SKSEPluginLoad(const SKSE::LoadInterface* skse)
         // false disables SKSE's logger, which would also write to SkyrimForge.log, the managed framework's log.
         SKSE::Init(skse, false);
         g_logDirectory = SetUpLog();
-        SF_Hook_AllocateTrampoline();
 
         SF_Events_Install();
 

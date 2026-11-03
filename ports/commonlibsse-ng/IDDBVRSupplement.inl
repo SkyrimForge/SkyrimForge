@@ -16,6 +16,7 @@
 { 20263, 0x2CFA40 },    // BGSCameraShot::IsValid
 { 20264, 0x2CFA90 },    // BGSCameraShot::ReleaseNodes
 { 24509, 0x382480 },    // TESQuest::UpdateCurrentInstanceGlobal
+{ 24549, 0x388850 },    // TESQuest::GetJournalTextForInstance
 { 25416, 0x3B0F40 },    // LoadedAreaBound::Clear
 { 30826, 0x4B7050 },    // BGSDistantTreeBlock::Ctor
 { 30933, 0x4BD880 },    // BGSTerrainChunk::Dtor

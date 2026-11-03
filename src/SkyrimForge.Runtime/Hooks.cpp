@@ -3,18 +3,26 @@
 
 #include <Windows.h>
 
+#define ZYCORE_STATIC_BUILD
+#define ZYDIS_STATIC_BUILD
+#include <safetyhook.hpp>
+
 #include <spdlog/spdlog.h>
 
 #include <algorithm>
 #include <cstring>
 #include <mutex>
+#include <span>
 
 namespace
 {
-	bool IsGameCode(std::uintptr_t address)
+	// The reason this thread's last hook was not written. SF_Hook_Fault returns it.
+	thread_local PatchFault t_hookFault = PatchFault::None;
+
+	std::uintptr_t Fail(PatchFault fault)
 	{
-		const REL::Segment text = REL::Module::get().segment(REL::Segment::textx);
-		return address >= text.address() && address < text.address() + text.size();
+		t_hookFault = fault;
+		return 0;
 	}
 
 	template <typename T>
@@ -23,7 +31,7 @@ namespace
 		return REL::Module::IsAE() ? ae : (REL::Module::IsVR() ? vr : se);
 	}
 
-	// SKSE's trampoline stub is FF 25 with a zero displacement, then the destination.
+	// An absolute jump stub, as SKSE's trampoline and SF_Code_AllocateJump write one: FF 25 with a zero displacement, then the destination.
 	bool IsTrampolineStub(std::uintptr_t address)
 	{
 		constexpr DWORD readableExecutable = PAGE_EXECUTE_READ | PAGE_EXECUTE_READWRITE | PAGE_EXECUTE_WRITECOPY;
@@ -34,107 +42,32 @@ namespace
 			std::memcmp(reinterpret_cast<const void*>(address), absoluteJump, sizeof(absoluteJump)) == 0;
 	}
 
-	// A call another SKSE plugin replaced targets SKSE's stub, so a hook written over it calls that plugin's replacement.
-	std::uintptr_t GetCallTarget(std::uintptr_t site)
+	// The target must lie in the site's own section or be an absolute jump stub, so a data byte equal to E8 at a wrong offset is rarely accepted as a call.
+	// A call that a recorded hook or patch wrote at the site is accepted with any target.
+	std::uintptr_t GetCallTarget(std::uintptr_t site, bool recorded)
 	{
-		if (site == 0 || !IsGameCode(site) || !IsGameCode(site + branchLength - 1) || *reinterpret_cast<const std::uint8_t*>(site) != callOpcode)
+		std::uintptr_t sectionBegin = 0;
+		std::uintptr_t sectionEnd = 0;
+		if (site == 0 || !SF_Code_FindCodeSection(site, &sectionBegin, &sectionEnd) || site + branchLength > sectionEnd ||
+			*reinterpret_cast<const std::uint8_t*>(site) != callOpcode)
 		{
 			return 0;
 		}
 		const std::uintptr_t callTarget = (site + branchLength) + *reinterpret_cast<const std::int32_t*>(site + 1);
-		return IsGameCode(callTarget) || IsTrampolineStub(callTarget) ? callTarget : 0;
+		return recorded || (callTarget >= sectionBegin && callTarget < sectionEnd) || IsTrampolineStub(callTarget) ? callTarget : 0;
+	}
+
+	// An unconditional jump with a 32-bit displacement, or one through an address, which SafetyHook moves whole.
+	bool IsJump(std::uintptr_t address)
+	{
+		const auto* code = reinterpret_cast<const std::uint8_t*>(address);
+		return code[0] == jumpOpcode || (code[0] == absoluteJump[0] && code[1] == absoluteJump[1]);
 	}
 
 	// CommonLib's id2offset ends the process for an identifier the library does not contain.
 	bool IsAddressLibraryIdentifier(std::uint64_t identifier)
 	{
 		return REL::IDDB::get().names(identifier);
-	}
-
-	// The decoded forms address memory through registers and constants only, so a detour can run them from a new address.
-	std::size_t GetInstructionLength(std::uintptr_t address)
-	{
-		const std::uint8_t* code = reinterpret_cast<const std::uint8_t*>(address);
-		std::size_t length = 0;
-
-		// REX prefix.
-		if (code[length] >= 0x40 && code[length] <= 0x4F)
-		{
-			++length;
-		}
-
-		const std::uint8_t opcode = code[length++];
-
-		// push r64
-		if (opcode >= 0x50 && opcode <= 0x57)
-		{
-			return length;
-		}
-
-		std::size_t immediateLength = 0;
-		switch (opcode)
-		{
-		case 0x89:  // mov r/m64, r64
-		case 0x8B:  // mov r64, r/m64
-			break;
-		case 0x83:  // group 1 (add, sub, and others), imm8
-			immediateLength = 1;
-			break;
-		case 0x81:  // group 1, imm32
-		case 0xC7:  // mov r/m64, imm32
-			immediateLength = 4;
-			break;
-		default:
-			return 0;
-		}
-
-		const std::uint8_t modRM = code[length++];
-		const std::uint8_t mode = modRM >> 6;
-		const std::uint8_t rm = modRM & 0x07;
-
-		// C7 is a mov only if the middle field is zero. XBEGIN shares the opcode and counts an address from itself.
-		if (opcode == 0xC7 && ((modRM >> 3) & 0x07) != 0x00)
-		{
-			return 0;
-		}
-		if (mode != 0x03)
-		{
-			// RIP-relative.
-			if (mode == 0x00 && rm == 0x05)
-			{
-				return 0;
-			}
-			const bool hasSib = rm == 0x04;
-			std::uint8_t sibBase = 0;
-			if (hasSib)
-			{
-				sibBase = code[length++] & 0x07;
-			}
-			if (mode == 0x01)
-			{
-				length += 1;
-			}
-			else if (mode == 0x02 || (mode == 0x00 && hasSib && sibBase == 0x05))
-			{
-				length += 4;
-			}
-		}
-		return length + immediateLength;
-	}
-
-	std::size_t GetPrologueLength(std::uintptr_t target)
-	{
-		std::size_t length = 0;
-		while (length < branchLength)
-		{
-			const std::size_t instructionLength = GetInstructionLength(target + length);
-			if (instructionLength == 0)
-			{
-				return 0;
-			}
-			length += instructionLength;
-		}
-		return length;
 	}
 }
 
@@ -161,29 +94,36 @@ extern "C" __declspec(dllexport) std::uintptr_t SF_Hook_VTable(const char* name)
 	return name == nullptr ? 0 : SF_VTable_Lookup(name);
 }
 
+// Valid until this thread's next hook.
+extern "C" __declspec(dllexport) PatchFault SF_Hook_Fault()
+{
+	return t_hookFault;
+}
+
+// An entry an earlier hook replaced is replaced again, and the earlier replacement is returned.
+// Otherwise the entry must address code, which an index past the table's end rarely does.
 extern "C" __declspec(dllexport) std::uintptr_t SF_Hook_WriteVirtual(std::uintptr_t vtable, std::uint32_t index, std::uintptr_t replacement, const char* owner)
 {
 	SF_Code_ClearConflictOwner();
-	if (vtable == 0 || replacement == 0)
-	{
-		return 0;
-	}
+	t_hookFault = PatchFault::None;
 	const std::uintptr_t slot = vtable + sizeof(void*) * index;
 	std::scoped_lock lock{ g_codeWritesLock };
-	const std::uintptr_t existing = *reinterpret_cast<std::uintptr_t*>(slot);
-	if (SF_Code_OverlapsWrite(slot, sizeof(void*)) || !IsGameCode(existing))
+	if (SF_Code_OverlapsWriteNotAt(slot, sizeof(void*)))
 	{
-		return 0;
+		return Fail(PatchFault::Overlap);
+	}
+	const bool replaced = SF_Code_HasWriteAt(slot);
+	SF_Code_ClearConflictOwner();
+	const std::uintptr_t existing = *reinterpret_cast<std::uintptr_t*>(slot);
+	std::uintptr_t sectionBegin = 0;
+	std::uintptr_t sectionEnd = 0;
+	if (!replaced && !SF_Code_FindCodeSection(existing, &sectionBegin, &sectionEnd))
+	{
+		return Fail(PatchFault::NotCode);
 	}
 	REL::safe_write(slot, replacement);
 	SF_Code_RecordWrite(slot, sizeof(void*), owner, "replaced a virtual method table entry");
 	return existing;
-}
-
-// SKSE's create() resets its cursor, so a second allocation abandons the first and the hooks relocated into it.
-extern "C" void SF_Hook_AllocateTrampoline()
-{
-	SKSE::AllocTrampoline(8192);
 }
 
 // A data byte equal to E8 is decoded as a call too, and is rejected unless its computed target is the callee.
@@ -197,7 +137,7 @@ extern "C" __declspec(dllexport) std::uintptr_t SF_Hook_FindCall(std::uintptr_t 
 	for (std::size_t offset = 0; offset < searchLength; ++offset)
 	{
 		const std::uintptr_t candidate = caller + offset;
-		if (GetCallTarget(candidate) == callee && matchCount++ == occurrence)
+		if (GetCallTarget(candidate, false) == callee && matchCount++ == occurrence)
 		{
 			return candidate;
 		}
@@ -214,66 +154,91 @@ extern "C" __declspec(dllexport) std::uintptr_t SF_Hook_CallAt(std::uintptr_t fu
 	}
 	const std::uint32_t offset = SelectForRuntime(seOffset, aeOffset, vrOffset);
 	const std::uintptr_t site = function + offset;
-	return GetCallTarget(site) != 0 ? site : 0;
+	return GetCallTarget(site, false) != 0 ? site : 0;
 }
 
+// A call an earlier hook replaced is replaced again, and the earlier hook's target is returned.
+// The call reaches the replacement through an absolute jump stub, written whole before the call is changed.
 extern "C" __declspec(dllexport) std::uintptr_t SF_Hook_WriteCall(std::uintptr_t site, std::uintptr_t replacement, const char* owner)
 {
 	SF_Code_ClearConflictOwner();
+	t_hookFault = PatchFault::None;
 	std::scoped_lock lock{ g_codeWritesLock };
-	if (replacement == 0 || SF_Code_OverlapsWrite(site, branchLength) || GetCallTarget(site) == 0)
+	if (const PatchFault fault = SF_Code_CheckImage(site, branchLength); fault != PatchFault::None)
 	{
-		return 0;
+		return Fail(fault);
 	}
-	const std::uintptr_t displaced = SKSE::GetTrampoline().write_call<branchLength>(site, replacement);
+	if (SF_Code_OverlapsWriteNotAt(site, branchLength))
+	{
+		return Fail(PatchFault::Overlap);
+	}
+	// HasWriteAt names the recorded write's owner, which the Overlap below reports.
+	const bool replaced = SF_Code_HasWriteAt(site);
+	const std::uintptr_t displaced = GetCallTarget(site, replaced);
+	if (displaced == 0)
+	{
+		return Fail(replaced ? PatchFault::Overlap : PatchFault::NotCall);
+	}
+	SF_Code_ClearConflictOwner();
+	const std::uintptr_t stub = SF_Code_AllocateJump(site, replacement);
+	if (stub == 0)
+	{
+		return Fail(PatchFault::NoNearMemory);
+	}
+	const std::vector<std::uint8_t> call = SF_Code_MakeBranch(callOpcode, site, stub, branchLength);
+	REL::safe_write(site, call.data(), call.size());
+	FlushInstructionCache(GetCurrentProcess(), reinterpret_cast<void*>(site), call.size());
 	SF_Code_RecordWrite(site, branchLength, owner, "replaced the call");
 	return displaced;
 }
 
-extern "C" __declspec(dllexport) std::uint32_t SF_Hook_EntryPrologue(std::uintptr_t target, std::uint8_t* destination, std::uint32_t capacity)
-{
-	if (target == 0 || !IsGameCode(target))
-	{
-		return 0;
-	}
-	if (destination != nullptr && capacity != 0)
-	{
-		std::memcpy(destination, reinterpret_cast<const void*>(target), capacity);
-	}
-	return static_cast<std::uint32_t>(GetPrologueLength(target));
-}
-
+// SafetyHook moves the instructions its jump overwrites to the trampoline returned. A jump an earlier hook or another module wrote at the entry is moved the same way,
+// so the trampoline jumps to that hook. A recorded write at the entry is accepted only if it begins with such a jump, since SafetyHook then moves the jump alone.
 extern "C" __declspec(dllexport) std::uintptr_t SF_Hook_WriteEntry(std::uintptr_t target, std::uintptr_t replacement, const char* owner)
 {
 	SF_Code_ClearConflictOwner();
-	if (target == 0 || replacement == 0 || !IsGameCode(target))
-	{
-		return 0;
-	}
+	t_hookFault = PatchFault::None;
 	std::scoped_lock lock{ g_codeWritesLock };
-	// The overlap is tested over at least five bytes, so an earlier write's owner is reported even if its jump no longer decodes as a prologue.
-	const std::size_t prologueLength = GetPrologueLength(target);
-	const std::size_t replacedLength = (std::max)(prologueLength, branchLength);
-	if (SF_Code_OverlapsWrite(target, replacedLength) || SF_Code_ContainsWriteTarget(target, replacedLength) || prologueLength == 0)
+	// Tested over the jump's five bytes before SafetyHook decodes them, so an earlier write's owner is reported rather than a decoding failure.
+	if (const PatchFault fault = SF_Code_CheckImage(target, branchLength); fault != PatchFault::None)
 	{
-		return 0;
+		return Fail(fault);
 	}
-
-	SKSE::Trampoline& trampoline = SKSE::GetTrampoline();
-
-	// SKSE ends the process on a request the trampoline cannot meet. The request is two jumps, this stub's and write_branch's, beyond the prologue.
-	if (trampoline.free_size() < prologueLength + absoluteJumpLength * 2)
+	if (SF_Code_OverlapsWriteNotAt(target, branchLength) || (SF_Code_HasWriteAt(target) && !IsJump(target)))
 	{
-		return 0;
+		return Fail(PatchFault::Overlap);
 	}
-	std::uint8_t* stub = static_cast<std::uint8_t*>(trampoline.allocate(prologueLength + absoluteJumpLength));
-	const std::uintptr_t resumeAddress = target + prologueLength;
-	std::memcpy(stub, reinterpret_cast<const void*>(target), prologueLength);
-	std::memcpy(stub + prologueLength, absoluteJump, sizeof(absoluteJump));
-	std::memcpy(stub + prologueLength + sizeof(absoluteJump), &resumeAddress, sizeof(resumeAddress));
+	SF_Code_ClearConflictOwner();
 
-	// Written once the stub is complete, so a thread arriving between the two steps runs the original code.
-	trampoline.write_branch<branchLength>(target, replacement);
-	SF_Code_RecordWrite(target, prologueLength, owner, "detoured the function");
-	return reinterpret_cast<std::uintptr_t>(stub);
+	auto created = safetyhook::InlineHook::create(reinterpret_cast<void*>(target), reinterpret_cast<void*>(replacement), safetyhook::InlineHook::StartDisabled);
+	if (!created)
+	{
+		// SafetyHook writes a fourteen-byte jump when no trampoline lies within reach, which cannot move an instruction relative to its own address.
+		const auto errorType = created.error().type;
+		const bool allocationFailed = errorType == safetyhook::InlineHook::Error::BAD_ALLOCATION || errorType == safetyhook::InlineHook::Error::IP_RELATIVE_INSTRUCTION_OUT_OF_RANGE;
+		return Fail(allocationFailed ? PatchFault::NoNearMemory : PatchFault::NotRelocatable);
+	}
+	const std::span<const std::uint8_t> moved = created->original_bytes();
+	if (const PatchFault fault = SF_Code_CheckImage(target, moved.size()); fault != PatchFault::None)
+	{
+		return Fail(fault);
+	}
+	if (SF_Code_OverlapsWriteNotAt(target, moved.size()))
+	{
+		return Fail(PatchFault::Overlap);
+	}
+	if (const PatchFault fault = SF_Code_CheckMoved(target, moved.size()); fault != PatchFault::None)
+	{
+		return Fail(fault);
+	}
+	// SafetyHook can report a skipped write as done, so the entry is compared with the moved bytes.
+	if (!created->enable() || std::ranges::equal(moved, std::span{ reinterpret_cast<const std::uint8_t*>(target), moved.size() }))
+	{
+		return Fail(PatchFault::HookNotWritten);
+	}
+	SF_Code_RecordWrite(target, moved.size(), owner, "detoured the function");
+	const std::uintptr_t trampoline = created->trampoline().address();
+	// Never destroyed, since destroying it writes the original bytes back while game threads may run them.
+	new safetyhook::InlineHook{ std::move(*created) };
+	return trampoline;
 }

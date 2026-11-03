@@ -74,7 +74,7 @@ internal static partial class NativeGlobals
     internal static partial nint SF_Hook_WriteCall(nint site, nint replacement, string owner);
 
     [LibraryImport(library)]
-    internal static unsafe partial uint SF_Hook_EntryPrologue(nint target, byte* destination, uint capacity);
+    internal static partial PatchFault SF_Hook_Fault();
 
     [LibraryImport(library, StringMarshalling = StringMarshalling.Utf8)]
     internal static partial nint SF_Hook_WriteEntry(nint target, nint replacement, string owner);

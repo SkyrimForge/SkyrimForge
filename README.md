@@ -47,8 +47,11 @@ Then run:
 ```
 
 `Deploy.ps1` builds SkyrimForge and copies it into a mod folder. Add `-NoBuild` to copy the last build without building again.
+By default it deploys to the `SkyrimForge` mod of Mod Organizer 2's global Skyrim Special Edition instance,
+`%LOCALAPPDATA%\ModOrganizer\Skyrim Special Edition\mods\SkyrimForge`. Otherwise, pass the `SKSE\Plugins` folder to deploy to as `-Root`.
 
 ```powershell
+.\Deploy.ps1
 .\Deploy.ps1 -Root "<mod folder>\SKSE\Plugins"
 ```
 
@@ -56,7 +59,7 @@ To also deploy the example plugins, add `-Examples`. The build compiles their Pa
 so the Creation Kit must be installed.
 
 ```powershell
-.\Deploy.ps1 -Root "<mod folder>\SKSE\Plugins" -Examples
+.\Deploy.ps1 -Examples
 ```
 
 ## Documentation

@@ -146,7 +146,7 @@ extern "C" __declspec(dllexport) RE::BSScript::Array* SF_Papyrus_SetVariableArra
 
 	RE::BSTSmartPointer<RE::BSScript::Array> array;
 	RE::BSScript::TypeInfo type(ToRawType(rawType, objectType));
-	if (!machine->CreateArray(type, size, array) || !array)
+	if (!machine->CreateArray(type, size, array) || !array || array->size() != size)
 	{
 		return nullptr;
 	}

@@ -141,10 +141,6 @@ public readonly ref struct PapyrusCall
                 + $"{values.Length} entries of the type this function declares. A Papyrus array has at most 128 entries, and only a function declaring an array can return one.");
 
         IReadOnlyList<Variable> entries = array.GetEntries();
-        if (entries.Count != values.Length)
-        {
-            throw new InvalidOperationException($"An array was requested with {values.Length} entries and allocated with {entries.Count}.");
-        }
         for (int i = 0; i < values.Length; i++)
         {
             Write(entries[i], values.GetValue(i));

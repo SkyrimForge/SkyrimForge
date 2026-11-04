@@ -137,26 +137,6 @@ extern "C" __declspec(dllexport) RE::BSScript::Variable* SF_Papyrus_AppendArgume
 {
 	return &AsArgumentList(args)->arguments.emplace_back().value;
 }
-extern "C" __declspec(dllexport) RE::BSScript::Array* SF_Papyrus_AppendArray(
-	RE::BSScript::IFunctionArguments* args, RE::BSScript::TypeInfo::RawType rawType, std::uint32_t size)
-{
-	RE::BSScript::Internal::VirtualMachine* machine = RE::BSScript::Internal::VirtualMachine::GetSingleton();
-	if (args == nullptr || machine == nullptr)
-	{
-		return nullptr;
-	}
-	RE::BSTSmartPointer<RE::BSScript::Array> array;
-	RE::BSScript::TypeInfo type(rawType);
-	if (!machine->CreateArray(type, size, array) || !array)
-	{
-		return nullptr;
-	}
-	SuppliedArguments* argumentList = AsArgumentList(args);
-	argumentList->arguments.emplace_back();
-	// SetArray gives the Variable its own reference, so the returned array outlives this call.
-	argumentList->arguments.back().value.SetArray(array);
-	return array.get();
-}
 // The Variable stays None until SF_Papyrus_BindArgumentsFor binds the form to the declared class.
 extern "C" __declspec(dllexport) void SF_Papyrus_AppendForm(RE::BSScript::IFunctionArguments* args,
 	RE::TESForm* form)

@@ -53,18 +53,9 @@ internal sealed class VirtualMachineArgumentList
 
     internal void AppendArray<T>(IReadOnlyCollection<T> values, TypeInfo.RawType arrayRawType, Action<Variable, T> setEntry)
     {
-        Array_ array = Array_.OrNull(NativePapyrus.SF_Papyrus_AppendArray(NativeArguments.Address, arrayRawType, (uint)values.Count)) ??
+        Array_ array = Array_.OrNull(NativePapyrus.SF_Papyrus_SetVariableArray(Append().Address, arrayRawType, FormType.None, (uint)values.Count)) ??
             throw new InvalidOperationException($"No {arrayRawType} of {values.Count} entries was allocated. Either no Papyrus virtual machine exists, or it did not allocate the array.");
-
-        count++;
-
-        // Zip stops at the shorter sequence, so a length mismatch would leave entries unset.
-        IReadOnlyList<Variable> entries = array.GetEntries();
-        if (entries.Count != values.Count)
-        {
-            throw new InvalidOperationException($"A {arrayRawType} was requested with {values.Count} entries and made with {entries.Count}.");
-        }
-        foreach ((Variable entry, T value) in entries.Zip(values))
+        foreach ((Variable entry, T value) in array.GetEntries().Zip(values))
         {
             setEntry(entry, value);
         }
@@ -109,10 +100,6 @@ internal static partial class NativePapyrus
 
     [LibraryImport(library)]
     internal static partial nint SF_Papyrus_AppendArgument(nint args);
-
-    // The raw type is the array's, not the entry's. Only the Papyrus VM can allocate a BSScript::Array, which declares no constructor.
-    [LibraryImport(library)]
-    internal static partial nint SF_Papyrus_AppendArray(nint args, TypeInfo.RawType rawType, uint size);
 
     [LibraryImport(library)]
     internal static partial void SF_Papyrus_AppendForm(nint args, nint form);

@@ -6,7 +6,6 @@ namespace SkyrimForge;
 internal static class SavedStateKey<TKey> where TKey : struct, IConvertible
 {
     private static readonly TypeCode typeCode = Type.GetTypeCode(typeof(TKey));
-    private static readonly bool isEnum = typeof(TKey).IsEnum;
 
     internal static ISavedStateEntries GetDictionaryEntries(ISavedStateEntries entries, string key)
     {
@@ -22,21 +21,17 @@ internal static class SavedStateKey<TKey> where TKey : struct, IConvertible
     // Reformatted and compared, so text that parses but is not canonical, such as " 6" or "+6", is rejected.
     internal static bool TryParse(string text, out TKey key)
     {
-        key = default;
-        object? number;
+        object number;
         try
         {
-            number = Convert.ChangeType(text, typeCode, CultureInfo.InvariantCulture);
+            number = Convert.ChangeType(text, typeCode, CultureInfo.InvariantCulture)!;
         }
         catch (Exception ex) when (ex is FormatException or OverflowException)
         {
+            key = default;
             return false;
         }
-        if (number != null)
-        {
-            key = (TKey)(isEnum ? Enum.ToObject(typeof(TKey), number) : number);
-            return Format(key) == text;
-        }
-        return false;
+        key = (TKey)(typeof(TKey).IsEnum ? Enum.ToObject(typeof(TKey), number) : number);
+        return Format(key) == text;
     }
 }

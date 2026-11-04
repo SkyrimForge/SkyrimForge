@@ -35,7 +35,7 @@ internal static partial class NativeGlobals
     internal static partial bool SF_Saving_WriteRecord(uint type, uint version, nint data, uint length);
 
     [LibraryImport(library)]
-    internal static unsafe partial uint SF_Saving_SaveFolder(byte* buffer, uint capacity);
+    internal static partial int SF_Saving_SaveFolder(ref byte buffer, int capacity);
 
     [LibraryImport(library)]
     [return: MarshalAs(UnmanagedType.U1)]

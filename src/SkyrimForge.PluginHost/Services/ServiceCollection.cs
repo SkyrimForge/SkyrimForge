@@ -24,7 +24,7 @@ internal sealed class ServiceCollection(ServiceCollection? fallbackCollection = 
     public void Add<T>() where T : class => Add<T, T>();
 
     public void Add<TService, TImplementation>() where TService : class where TImplementation : class, TService =>
-        Add(typeof(TService), () => Construct(typeof(TImplementation), false));
+        Add(typeof(TService), () => Construct(typeof(TImplementation)));
 
     private void Add(Type serviceType, Func<object> factory)
     {
@@ -35,7 +35,6 @@ internal sealed class ServiceCollection(ServiceCollection? fallbackCollection = 
     }
 
     public T? GetConstructedInstance<T>() => (T?)cachedInstances.GetValueOrDefault(typeof(T));
-
 
     public object? Get(Type serviceType)
     {
@@ -67,22 +66,12 @@ internal sealed class ServiceCollection(ServiceCollection? fallbackCollection = 
 
     public T GetRequired<T>() => (T)(Get(typeof(T)) ?? throw new ArgumentException(typeof(T).FullName + " was not registered."));
 
-
     public object Construct(Type constructibleType)
     {
-        return Construct(constructibleType, true);
-    }
-
-    internal object Construct(Type constructibleType, bool includeOnlyPublic)
-    {
-        BindingFlags flags = BindingFlags.Instance | BindingFlags.Public;
-        // CoSave's constructor is internal.
-        if (!includeOnlyPublic) { flags |= BindingFlags.NonPublic; }
-        ConstructorInfo[] constructors = constructibleType.GetConstructors(flags);
+        ConstructorInfo[] constructors = constructibleType.GetConstructors();
         if (constructors.Length != 1)
         {
-            string message = $"{constructibleType.FullName} must have exactly one {(includeOnlyPublic ? "public " : "")}constructor. It has {constructors.Length}.";
-            throw new ArgumentException(message, nameof(constructibleType));
+            throw new ArgumentException($"{constructibleType.FullName} must have exactly one public constructor. It has {constructors.Length}.", nameof(constructibleType));
         }
         ConstructorInfo constructor = constructors[0];
         ParameterInfo[] parameters = constructor.GetParameters();

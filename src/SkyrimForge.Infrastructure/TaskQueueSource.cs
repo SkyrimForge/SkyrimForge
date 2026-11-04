@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SkyrimForge.Events;
+using System;
 using System.Collections.Concurrent;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -8,15 +9,15 @@ namespace SkyrimForge.Infrastructure;
 internal sealed class TaskQueueSource
 {
     // The native side receives a token, not the delegate. The delegate stays rooted here until its token runs.
-    private readonly ConcurrentDictionary<ulong, Job> pendingJobs = new();
+    private readonly ConcurrentDictionary<ulong, HandlerRegistration<Action>> pendingJobs = new();
 
     private ulong lastToken;
 
     private static TaskQueueSource? instance;
 
-    public static unsafe void Install(TaskQueueSource queue, ILog hostLog)
+    public unsafe void Install(ILog hostLog)
     {
-        instance = queue;
+        instance = this;
         NativeGlobals.SF_Task_SetHandler(&OnRun);
         if (!NativeGlobals.SF_Task_IsAvailable())
         {
@@ -32,7 +33,7 @@ internal sealed class TaskQueueSource
 
         // Recorded before the token is queued, because SKSE may run it at once.
         ulong token = Interlocked.Increment(ref lastToken);
-        pendingJobs[token] = new Job(work, log);
+        pendingJobs[token] = new HandlerRegistration<Action>(work, log);
         if (isUITask ? NativeGlobals.SF_Task_AddUI(token) : NativeGlobals.SF_Task_Add(token))
         {
             return;
@@ -45,29 +46,17 @@ internal sealed class TaskQueueSource
     [UnmanagedCallersOnly]
     private static void OnRun(ulong token)
     {
-        if (instance != null && instance.pendingJobs.TryRemove(token, out Job? job))
+        if (instance != null && instance.pendingJobs.TryRemove(token, out HandlerRegistration<Action>? job))
         {
-            RunWithTryCatch(job);
+            try
+            {
+                job.Handler();
+            }
+            catch (Exception ex)
+            {
+                job.Log.Write($"Queued work threw and was dropped: {ex}");
+            }
         }
-    }
-
-    private static void RunWithTryCatch(Job job)
-    {
-        try
-        {
-            job.Run();
-        }
-        catch (Exception ex)
-        {
-            job.Log.Write($"Queued work threw and was dropped: {ex}");
-        }
-    }
-
-    private sealed class Job(Action run, ILog log)
-    {
-        internal Action Run { get; } = run;
-
-        internal ILog Log { get; } = log;
     }
 
     private sealed class LogTaskQueue(TaskQueueSource queue, ILog log) : ITaskQueue

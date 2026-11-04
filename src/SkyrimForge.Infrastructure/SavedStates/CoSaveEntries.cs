@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 namespace SkyrimForge.Infrastructure;
 
@@ -18,13 +19,6 @@ internal sealed class CoSaveEntries
 
     public Dictionary<string, uint> GetFormsForWrite() => Forms ??= new Dictionary<string, uint>(StringComparer.Ordinal);
 
-    public CoSaveEntries GetChildForWrite(string name)
-    {
-        Children ??= new Dictionary<string, CoSaveEntries>(StringComparer.Ordinal);
-        if (!Children.TryGetValue(name, out CoSaveEntries? child))
-        {
-            Children[name] = child = new CoSaveEntries();
-        }
-        return child;
-    }
+    public CoSaveEntries GetChildForWrite(string name) =>
+        CollectionsMarshal.GetValueRefOrAddDefault(Children ??= new Dictionary<string, CoSaveEntries>(StringComparer.Ordinal), name, out _) ??= new CoSaveEntries();
 }

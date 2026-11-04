@@ -6,10 +6,9 @@ using System.Threading;
 namespace SkyrimForge.Infrastructure;
 
 /// <summary>Resolves its scope on each call, so a view of a list element addresses its index rather than the entries it was read from.</summary>
-internal sealed class SavedStateEntries(CoSaveStore store, CoSaveScope scope) : ISavedStateEntries
+internal class SavedStateEntries(CoSaveStore store, CoSaveScope scope) : ISavedStateEntries
 {
-    private readonly CoSaveStore store = store;
-    private readonly CoSaveScope scope = scope;
+    private protected CoSaveStore Store => store;
 
     /// <inheritdoc/>
     public string? GetString(string key)

@@ -63,7 +63,7 @@ public static class Bootstrap
         string hostDirectory = AssemblyOrAppContextDirectory;
         string directory = Path.Combine(hostDirectory, PluginDirectoryName);
         var taskQueueSource = new TaskQueueSource();
-        TaskQueueSource.Install(taskQueueSource, log);
+        taskQueueSource.Install(log);
         ITaskQueue logTaskQueue = taskQueueSource.CreateLogTaskQueue(log);
         PapyrusDispatcher.Install(new PapyrusDispatcher(gameTarget, logTaskQueue, log));
 

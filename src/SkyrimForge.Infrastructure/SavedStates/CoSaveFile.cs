@@ -14,7 +14,7 @@ internal static class CoSaveFile
     // Matches the unique ID in Saving.cpp.
     internal const uint PluginId = 0x53464850; // "SFHP"
 
-    internal static bool TryFindRecord(ReadOnlySpan<byte> file, uint pluginId, uint recordType, out uint version, out byte[] data)
+    internal static bool TryFindRecord(ReadOnlySpan<byte> file, out uint version, out byte[] data)
     {
         if (ReadUInt32(ref file) != signature)
         {
@@ -31,14 +31,14 @@ internal static class CoSaveFile
             uint id = ReadUInt32(ref file);
             uint recordCount = ReadUInt32(ref file);
             ReadOnlySpan<byte> records = Read(ref file, ReadUInt32(ref file));
-            if (id == pluginId)
+            if (id == PluginId)
             {
                 for (uint j = 0; j < recordCount; j++)
                 {
                     uint type = ReadUInt32(ref records);
                     uint recordVersion = ReadUInt32(ref records);
                     ReadOnlySpan<byte> recordData = Read(ref records, ReadUInt32(ref records));
-                    if (type == recordType)
+                    if (type == CoSave.RecordType)
                     {
                         version = recordVersion;
                         data = recordData.ToArray();

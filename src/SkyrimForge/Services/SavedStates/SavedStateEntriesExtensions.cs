@@ -144,14 +144,7 @@ public static class SavedStateEntriesExtensions
 
         public T? Value
         {
-            get
-            {
-                if (entries.GetString(Key) is not { } json)
-                {
-                    return null;
-                }
-                return JsonSerializer.Deserialize<T>(json);
-            }
+            get => entries.GetString(Key) is { } json ? JsonSerializer.Deserialize<T>(json) : null;
             set => entries.SetString(Key, value != null ? JsonSerializer.Serialize(value) : null);
         }
     }

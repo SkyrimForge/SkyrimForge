@@ -1,13 +1,13 @@
-﻿using System;
+﻿using SkyrimForge.Game;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Text.Json;
 
 namespace SkyrimForge.Infrastructure;
 
-internal sealed class CoSave
+internal sealed class CoSave(ILog log)
 {
     internal const uint RecordType = 0x53464B56; // "SFKV"
 
@@ -15,17 +15,8 @@ internal sealed class CoSave
     internal const uint RecordVersion = 1;
 
     private readonly CoSaveStore store = new();
-    private readonly CoSaveFormIdResolver formIdResolver;
-    private readonly ILog log;
 
     private static CoSave? instance;
-
-    internal CoSave(ILog log)
-    {
-        this.log = log;
-        // ResolveFormId is read on each call, because the init property is set after the constructor runs.
-        formIdResolver = new CoSaveFormIdResolver(formId => ResolveFormId(formId), log);
-    }
 
     internal Func<uint, uint?> ResolveFormId { get; init; } = formId => NativeGlobals.SF_Saving_ResolveFormId(formId, out uint resolvedFormId) ? resolvedFormId : null;
 
@@ -56,7 +47,7 @@ internal sealed class CoSave
         const string saveExtension = ".ess";
         string saveName = saveFileName.EndsWith(saveExtension, StringComparison.OrdinalIgnoreCase) ? saveFileName[..^saveExtension.Length] : saveFileName;
         string path = Path.Combine(GetSaveFolder(), saveName + ".skse");
-        if (File.Exists(path) && CoSaveFile.TryFindRecord(File.ReadAllBytes(path), CoSaveFile.PluginId, RecordType, out uint version, out byte[] data))
+        if (File.Exists(path) && CoSaveFile.TryFindRecord(File.ReadAllBytes(path), out uint version, out byte[] data))
         {
             if (version != RecordVersion)
             {
@@ -105,6 +96,7 @@ internal sealed class CoSave
         }
         try
         {
+            var formIdResolver = new CoSaveFormIdResolver(ResolveFormId, log);
             CoSaveRecord? decodedRecord = CoSaveRecord.Decode(data);
             if (decodedRecord == null)
             {
@@ -142,32 +134,15 @@ internal sealed class CoSave
         store.Clear();
     }
 
-    private static unsafe string ReadSaveFolder()
-    {
-        uint length = NativeGlobals.SF_Saving_SaveFolder(null, 0);
-        if (length == 0)
-        {
-            throw new InvalidOperationException("SKSE provides no co-save folder.");
-        }
-        byte[] folder = new byte[length];
-        fixed (byte* buffer = folder)
-        {
-            NativeGlobals.SF_Saving_SaveFolder(buffer, length);
-        }
-        return Encoding.UTF8.GetString(folder);
-    }
+    private static string ReadSaveFolder() =>
+        Sequences.ReadString(NativeGlobals.SF_Saving_SaveFolder) ?? throw new InvalidOperationException("SKSE provides no co-save folder.");
 
-    private static bool Write(byte[] record)
+    private static unsafe bool Write(byte[] record)
     {
         // SKSE copies the record before returning.
-        GCHandle pinnedHandle = GCHandle.Alloc(record, GCHandleType.Pinned);
-        try
+        fixed (byte* data = record)
         {
-            return NativeGlobals.SF_Saving_WriteRecord(RecordType, RecordVersion, pinnedHandle.AddrOfPinnedObject(), (uint)record.Length);
-        }
-        finally
-        {
-            pinnedHandle.Free();
+            return NativeGlobals.SF_Saving_WriteRecord(RecordType, RecordVersion, (nint)data, (uint)record.Length);
         }
     }
 }

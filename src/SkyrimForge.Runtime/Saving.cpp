@@ -87,7 +87,7 @@ extern "C" __declspec(dllexport) bool SF_Saving_ResolveFormId(std::uint32_t stor
 }
 
 // Must match the folder SKSE's MakeSavePath builds.
-extern "C" __declspec(dllexport) std::uint32_t SF_Saving_SaveFolder(char* buffer, std::uint32_t capacity)
+extern "C" __declspec(dllexport) std::int32_t SF_Saving_SaveFolder(char* buffer, std::int32_t capacity)
 {
     const std::optional<std::filesystem::path> logDirectory = SKSE::log::log_directory();
     if (!logDirectory)
@@ -102,8 +102,8 @@ extern "C" __declspec(dllexport) std::uint32_t SF_Saving_SaveFolder(char* buffer
     folder += "\\";
     folder += isSet ? localSavePath->GetString() : "Saves\\";
     const std::u8string utf8Folder = folder.u8string();
-    std::copy_n(utf8Folder.data(), std::min<std::size_t>(utf8Folder.size(), capacity), buffer);
-    return static_cast<std::uint32_t>(utf8Folder.size());
+    std::copy_n(utf8Folder.data(), std::min<std::size_t>(utf8Folder.size(), static_cast<std::size_t>(capacity)), buffer);
+    return static_cast<std::int32_t>(utf8Folder.size());
 }
 
 // Call after the managed side sets its handlers, since SKSE may load a save immediately.

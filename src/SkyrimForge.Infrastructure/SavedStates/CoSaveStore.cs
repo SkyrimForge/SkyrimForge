@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using System.Threading;
 
 namespace SkyrimForge.Infrastructure;
@@ -204,21 +205,10 @@ internal sealed class CoSaveStore
     {
         if (scope.FormId == null)
         {
-            if (!entriesByPlugin.TryGetValue(scope.PluginTypeName, out CoSaveEntries? pluginEntries))
-            {
-                entriesByPlugin[scope.PluginTypeName] = pluginEntries = new CoSaveEntries();
-            }
-            return pluginEntries;
+            return CollectionsMarshal.GetValueRefOrAddDefault(entriesByPlugin, scope.PluginTypeName, out _) ??= new CoSaveEntries();
         }
-        if (!entriesByPluginAndForm.TryGetValue(scope.PluginTypeName, out Dictionary<uint, CoSaveEntries>? entriesByForm))
-        {
-            entriesByPluginAndForm[scope.PluginTypeName] = entriesByForm = [];
-        }
-        if (!entriesByForm.TryGetValue(scope.FormId.Value, out CoSaveEntries? entries))
-        {
-            entriesByForm[scope.FormId.Value] = entries = new CoSaveEntries();
-        }
-        return entries;
+        Dictionary<uint, CoSaveEntries> entriesByForm = CollectionsMarshal.GetValueRefOrAddDefault(entriesByPluginAndForm, scope.PluginTypeName, out _) ??= [];
+        return CollectionsMarshal.GetValueRefOrAddDefault(entriesByForm, scope.FormId.Value, out _) ??= new CoSaveEntries();
     }
 
     // Called with entriesLock held. An empty store left in place would read as a present key.

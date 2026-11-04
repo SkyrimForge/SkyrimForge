@@ -1,9 +1,11 @@
 ﻿// CommonLib constructs IFunctionArguments only through a variadic template.
 // A form is bound once the function is known, since its class depends on the declared parameter.
 #include "Shared.h"
+#include <algorithm>
 #include <cstdint>
 #include <cstring>
 #include <deque>
+#include <span>
 #include <vector>
 namespace
 {
@@ -88,31 +90,25 @@ namespace
 	{
 		for (RE::BSScript::ObjectTypeInfo* type = objectType; type != nullptr; type = type->GetParent())
 		{
-			if (!type->IsLinked())
+			if (RE::BSScript::IFunction* function = type->IsLinked() ? SF_Papyrus_FindFunction(*type, name) : nullptr)
 			{
-				continue;
-			}
-			const RE::BSScript::ObjectTypeInfo::GlobalFuncInfo* globals = type->GetGlobalFuncIter();
-			for (std::uint32_t i = 0; i < type->GetNumGlobalFuncs(); ++i)
-			{
-				RE::BSScript::IFunction* function = globals[i].func.get();
-				if (function != nullptr && _stricmp(function->GetName().c_str(), name) == 0)
-				{
-					return function;
-				}
-			}
-			const RE::BSScript::ObjectTypeInfo::MemberFuncInfo* members = type->GetMemberFuncIter();
-			for (std::uint32_t i = 0; i < type->GetNumMemberFuncs(); ++i)
-			{
-				RE::BSScript::IFunction* function = members[i].func.get();
-				if (function != nullptr && _stricmp(function->GetName().c_str(), name) == 0)
-				{
-					return function;
-				}
+				return function;
 			}
 		}
 		return nullptr;
 	}
+}
+RE::BSScript::IFunction* SF_Papyrus_FindFunction(RE::BSScript::ObjectTypeInfo& type, const char* name)
+{
+	const auto named = [name](const auto& entry) { return entry.func && _stricmp(entry.func->GetName().c_str(), name) == 0; };
+	const std::span globals{ type.GetGlobalFuncIter(), type.GetNumGlobalFuncs() };
+	if (const auto global = std::ranges::find_if(globals, named); global != globals.end())
+	{
+		return global->func.get();
+	}
+	const std::span members{ type.GetMemberFuncIter(), type.GetNumMemberFuncs() };
+	const auto member = std::ranges::find_if(members, named);
+	return member != members.end() ? member->func.get() : nullptr;
 }
 bool SF_Papyrus_DeclaredClassSafely(RE::BSScript::Internal::VirtualMachine* machine,
 	const RE::BSScript::TypeInfo& declaredType, std::int32_t* classId, bool* resolved)
@@ -139,13 +135,7 @@ extern "C" __declspec(dllexport) void SF_Papyrus_DeleteArguments(RE::BSScript::I
 extern "C" __declspec(dllexport) RE::BSScript::Variable* SF_Papyrus_AppendArgument(
 	RE::BSScript::IFunctionArguments* args)
 {
-	if (args == nullptr)
-	{
-		return nullptr;
-	}
-	SuppliedArguments* argumentList = AsArgumentList(args);
-	argumentList->arguments.emplace_back();
-	return &argumentList->arguments.back().value;
+	return &AsArgumentList(args)->arguments.emplace_back().value;
 }
 extern "C" __declspec(dllexport) RE::BSScript::Array* SF_Papyrus_AppendArray(
 	RE::BSScript::IFunctionArguments* args, RE::BSScript::TypeInfo::RawType rawType, std::uint32_t size)
@@ -171,29 +161,13 @@ extern "C" __declspec(dllexport) RE::BSScript::Array* SF_Papyrus_AppendArray(
 extern "C" __declspec(dllexport) void SF_Papyrus_AppendForm(RE::BSScript::IFunctionArguments* args,
 	RE::TESForm* form)
 {
-	if (args != nullptr)
-	{
-		SuppliedArguments* argumentList = AsArgumentList(args);
-		argumentList->arguments.emplace_back();
-		argumentList->arguments.back().pendingBinding = PendingBinding::Form;
-		argumentList->arguments.back().forms.push_back(form);
-	}
+	AsArgumentList(args)->arguments.push_back({ .pendingBinding = PendingBinding::Form, .forms = { form } });
 }
 // SF_Papyrus_BindArgumentsFor allocates the array, since CreateArray requires the declared element class.
 extern "C" __declspec(dllexport) void SF_Papyrus_AppendFormArray(RE::BSScript::IFunctionArguments* args,
 	RE::TESForm* const* forms, std::int32_t count)
 {
-	if (args == nullptr || count < 0)
-	{
-		return;
-	}
-	SuppliedArguments* argumentList = AsArgumentList(args);
-	argumentList->arguments.emplace_back();
-	argumentList->arguments.back().pendingBinding = PendingBinding::FormArray;
-	if (forms != nullptr && count > 0)
-	{
-		argumentList->arguments.back().forms.assign(forms, forms + count);
-	}
+	AsArgumentList(args)->arguments.push_back({ .pendingBinding = PendingBinding::FormArray, .forms = std::vector<RE::TESForm*>(forms, forms + count) });
 }
 // An object bound to any other class makes the VM accept the dispatch, skip the function, and return None.
 // The function is looked up first, since dispatching an unresolvable name crashes the VM.
@@ -201,16 +175,10 @@ extern "C" __declspec(dllexport) std::int32_t SF_Papyrus_BindArgumentsFor(
 	RE::BSScript::IFunctionArguments* args, const char* className, const char* functionName,
 	std::int32_t* declaredCount, std::int32_t* returnObjectType)
 {
-	if (declaredCount != nullptr)
-	{
-		*declaredCount = 0;
-	}
-	if (returnObjectType != nullptr)
-	{
-		*returnObjectType = 0;
-	}
+	*declaredCount = 0;
+	*returnObjectType = 0;
 	RE::BSScript::Internal::VirtualMachine* machine = RE::BSScript::Internal::VirtualMachine::GetSingleton();
-	if (machine == nullptr || args == nullptr || className == nullptr || functionName == nullptr)
+	if (machine == nullptr || className == nullptr || functionName == nullptr)
 	{
 		return 1;
 	}
@@ -225,11 +193,8 @@ extern "C" __declspec(dllexport) std::int32_t SF_Papyrus_BindArgumentsFor(
 		return 3;
 	}
 	SuppliedArguments* argumentList = AsArgumentList(args);
-	if (declaredCount != nullptr)
-	{
-		*declaredCount = static_cast<std::int32_t>(function->GetParamCount());
-	}
-	if (returnObjectType != nullptr && !TryReadReturnedClass(machine, function, returnObjectType))
+	*declaredCount = static_cast<std::int32_t>(function->GetParamCount());
+	if (!TryReadReturnedClass(machine, function, returnObjectType))
 	{
 		*returnObjectType = -1;
 	}
@@ -298,8 +263,5 @@ extern "C" __declspec(dllexport) std::int32_t SF_Papyrus_BindArgumentsFor(
 extern "C" __declspec(dllexport) void SF_Papyrus_SetVariableForm(RE::BSScript::Variable* variable,
 	RE::TESForm* form, std::int32_t typeId)
 {
-	if (variable != nullptr)
-	{
-		RE::BSScript::PackHandle(variable, form, static_cast<RE::VMTypeID>(typeId));
-	}
+	RE::BSScript::PackHandle(variable, form, static_cast<RE::VMTypeID>(typeId));
 }

@@ -7,6 +7,8 @@
 #include <cwchar>
 #include <string>
 
+extern "C" IMAGE_DOS_HEADER __ImageBase;
+
 namespace
 {
 	std::string hostError;
@@ -56,14 +58,7 @@ namespace
 
 	bool ResolveSibling(const wchar_t* relativePath, wchar_t* path, size_t capacity)
 	{
-		HMODULE self = nullptr;
-		if (!GetModuleHandleExW(
-			GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS | GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT,
-			reinterpret_cast<LPCWSTR>(&ResolveSibling), &self))
-		{
-			return false;
-		}
-		DWORD length = GetModuleFileNameW(self, path, static_cast<DWORD>(capacity));
+		DWORD length = GetModuleFileNameW(reinterpret_cast<HMODULE>(&__ImageBase), path, static_cast<DWORD>(capacity));
 		if (length == 0 || length >= capacity)
 		{
 			return false;

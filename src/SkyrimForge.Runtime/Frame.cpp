@@ -6,7 +6,6 @@ namespace
 
 	UpdateFunction g_originalUpdate = nullptr;
 	void (*g_frameHandler)(float) = nullptr;
-	bool g_installed = false;
 
 	std::uint32_t g_lastUiRunTime = 0;
 	std::uint32_t g_lastGameRunTime = 0;
@@ -60,7 +59,7 @@ extern "C" __declspec(dllexport) bool SF_Frame_Register(void (*handler)(float), 
 	std::uint32_t aeOffset, std::uint32_t vrOffset)
 {
 	g_frameHandler = handler;
-	if (g_installed)
+	if (g_originalUpdate != nullptr)
 	{
 		return true;
 	}
@@ -80,10 +79,5 @@ extern "C" __declspec(dllexport) bool SF_Frame_Register(void (*handler)(float), 
 	}
 
 	g_originalUpdate = reinterpret_cast<UpdateFunction>(SF_Hook_WriteCall(site, reinterpret_cast<std::uintptr_t>(&FrameThunk), "SkyrimForge"));
-	if (g_originalUpdate == nullptr)
-	{
-		return false;
-	}
-	g_installed = true;
-	return true;
+	return g_originalUpdate != nullptr;
 }

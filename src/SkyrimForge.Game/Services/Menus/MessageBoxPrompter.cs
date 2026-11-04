@@ -65,10 +65,9 @@ internal sealed class MessageBoxPrompter(ILog log, ITaskQueue taskQueue) : IMess
         pendingPrompts.TryRemove(token, out _);
         string failure = queueResult switch
         {
-            1 => "The native call rejected the message box arguments.",
-            2 => "The game has no message box factory.",
-            3 => "The address library has no ID for MessageBoxData::QueueMessage.",
-            4 => "Queueing the message box faulted. Its data and callback are not freed.",
+            1 => "The game has no message box factory.",
+            2 => "The address library has no ID for MessageBoxData::QueueMessage.",
+            3 => "Queueing the message box faulted. Its data and callback are not freed.",
             _ => $"Queueing the message box returned the unrecognized status {queueResult}."
         };
         return Task.FromException<int>(new InvalidOperationException(failure));

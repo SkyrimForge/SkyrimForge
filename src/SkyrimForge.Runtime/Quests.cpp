@@ -1,7 +1,6 @@
 ﻿#include "Shared.h"
 
 #include <cstdint>
-#include <memory>
 
 extern "C" __declspec(dllexport) void SF_Player_SetQuestTargets(RE::TESQuest* quest, RE::TESQuestTarget** targets, std::int32_t count)
 {
@@ -20,12 +19,7 @@ extern "C" __declspec(dllexport) void SF_Player_SetQuestTargets(RE::TESQuest* qu
 		}
 		else if (count > 0)
 		{
-			cachedTargets = RE::malloc<RE::BSTArray<RE::TESQuestTarget*>>();
-			if (cachedTargets == nullptr)
-			{
-				return;
-			}
-			std::construct_at(cachedTargets);
+			cachedTargets = new RE::BSTArray<RE::TESQuestTarget*>();
 			SF_Repair_BSTScatterTable_WrapNextFree(table);
 			table.emplace(quest, cachedTargets);
 		}
@@ -61,12 +55,7 @@ namespace
 			{
 				return;
 			}
-			packages = RE::malloc<RE::BSTArray<RE::TESPackage*>>();
-			if (packages == nullptr)
-			{
-				return;
-			}
-			std::construct_at(packages);
+			packages = new RE::BSTArray<RE::TESPackage*>();
 			instance.instancedPackages = packages;
 		}
 		packages->clear();
@@ -173,11 +162,7 @@ extern "C" __declspec(dllexport) void SF_AliasInstance_Remove(RE::TESObjectREFR*
 			continue;
 		}
 		instances->aliases.erase(instances->aliases.begin() + i);
-		if (auto* packages = const_cast<RE::BSTArray<RE::TESPackage*>*>(instance->instancedPackages))
-		{
-			std::destroy_at(packages);
-			RE::free(packages);
-		}
+		delete instance->instancedPackages;
 		RE::free(instance);
 	}
 }

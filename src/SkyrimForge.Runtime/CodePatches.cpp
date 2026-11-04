@@ -106,6 +106,11 @@ namespace
 		return GetCodeAllocator().allocate_near({ reinterpret_cast<std::uint8_t*>(address) }, length, maximumDistance - reach);
 	}
 
+	std::size_t GetCaveLength(const CodePatch& patch)
+	{
+		return patch.codeLength + (IsLoneCall(patch) ? indirectCallLength + sizeof(std::uintptr_t) : patch.displacedLength) + branchLength;
+	}
+
 	std::vector<std::uint8_t> MakeCave(const CodePatch& patch, std::uintptr_t cave)
 	{
 		const bool loneCall = IsLoneCall(patch);
@@ -113,7 +118,7 @@ namespace
 		const std::size_t displacedAt = patch.displacedAfter != 0 ? patch.codeLength : 0;
 		const std::size_t codeAt = patch.displacedAfter != 0 ? 0 : displacedLength;
 		const std::size_t returnAt = patch.codeLength + displacedLength;
-		std::vector<std::uint8_t> bytes(returnAt + branchLength + (loneCall ? sizeof(std::uintptr_t) : 0));
+		std::vector<std::uint8_t> bytes(GetCaveLength(patch));
 		std::memcpy(bytes.data() + codeAt, patch.code, patch.codeLength);
 		if (loneCall)
 		{
@@ -133,10 +138,6 @@ namespace
 		return bytes;
 	}
 
-	std::size_t GetCaveLength(const CodePatch& patch)
-	{
-		return IsLoneCall(patch) ? patch.codeLength + indirectCallLength + branchLength + sizeof(std::uintptr_t) : patch.codeLength + patch.displacedLength + branchLength;
-	}
 
 	std::vector<std::uint8_t> MakeSiteBytes(const CodePatch& patch, std::uintptr_t cave)
 	{
@@ -145,9 +146,8 @@ namespace
 		case PatchKind::Bytes:
 			return { patch.replacement, patch.replacement + patch.replacementLength };
 		case PatchKind::Call:
-			return SF_Code_MakeBranch(callOpcode, patch.address, patch.target, patch.expectedLength);
 		case PatchKind::Jump:
-			return SF_Code_MakeBranch(jumpOpcode, patch.address, patch.target, patch.expectedLength);
+			return SF_Code_MakeBranch(patch.kind == PatchKind::Call ? callOpcode : jumpOpcode, patch.address, patch.target, patch.expectedLength);
 		case PatchKind::Insertion:
 			return SF_Code_MakeBranch(jumpOpcode, patch.address, cave, patch.expectedLength);
 		default:
@@ -163,9 +163,9 @@ namespace
 		case PatchKind::Bytes:
 			return std::format("patched {} of the {} bytes it verified", patch.replacementLength, patch.expectedLength);
 		case PatchKind::Call:
-			return std::format("replaced {} bytes with a call to {}", patch.expectedLength, SF_Faults_DescribeAddress(reinterpret_cast<const void*>(patch.target)));
 		case PatchKind::Jump:
-			return std::format("replaced {} bytes with a jump to {}", patch.expectedLength, SF_Faults_DescribeAddress(reinterpret_cast<const void*>(patch.target)));
+			return std::format("replaced {} bytes with a {} to {}", patch.expectedLength, patch.kind == PatchKind::Call ? "call" : "jump",
+				SF_Faults_DescribeAddress(reinterpret_cast<const void*>(patch.target)));
 		case PatchKind::Insertion:
 			return std::format("inserted {} bytes of code {} the {} bytes it displaced, replacing {} bytes", patch.codeLength, patch.displacedAfter != 0 ? "before" : "after",
 				patch.displacedLength, patch.expectedLength);
@@ -203,19 +203,8 @@ namespace
 			IsUnder(modulePath, GetModuleDirectory(GetModuleHandleW(L"coreclr.dll"))) || IsUnder(modulePath, GetModuleDirectory(GetModuleHandleW(L"hostfxr.dll")));
 	}
 
-	HMODULE GetModule(std::uintptr_t address)
+	const IMAGE_NT_HEADERS64* GetHeaders(std::uintptr_t imageBase)
 	{
-		HMODULE module = nullptr;
-		if (!GetModuleHandleExW(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS | GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT, reinterpret_cast<LPCWSTR>(address), &module))
-		{
-			return nullptr;
-		}
-		return module;
-	}
-
-	const IMAGE_NT_HEADERS64* GetHeaders(HMODULE module)
-	{
-		const auto imageBase = reinterpret_cast<std::uintptr_t>(module);
 		return reinterpret_cast<const IMAGE_NT_HEADERS64*>(imageBase + reinterpret_cast<const IMAGE_DOS_HEADER*>(imageBase)->e_lfanew);
 	}
 
@@ -366,14 +355,21 @@ std::vector<std::uint8_t> SF_Code_MakeBranch(std::uint8_t opcode, std::uintptr_t
 	return bytes;
 }
 
+std::uintptr_t SF_Code_ModuleBase(std::uintptr_t address)
+{
+	HMODULE module = nullptr;
+	GetModuleHandleExW(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS | GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT, reinterpret_cast<LPCWSTR>(address), &module);
+	return reinterpret_cast<std::uintptr_t>(module);
+}
+
 PatchFault SF_Code_CheckImage(std::uintptr_t begin, std::size_t length)
 {
-	const HMODULE module = GetModule(begin);
-	if (module == nullptr)
+	const std::uintptr_t imageBase = SF_Code_ModuleBase(begin);
+	if (imageBase == 0)
 	{
 		return PatchFault::NoImage;
 	}
-	if (IsExcludedImage(module, GetHeaders(module)))
+	if (IsExcludedImage(reinterpret_cast<HMODULE>(imageBase), GetHeaders(imageBase)))
 	{
 		return PatchFault::ExcludedImage;
 	}
@@ -384,13 +380,12 @@ PatchFault SF_Code_CheckImage(std::uintptr_t begin, std::size_t length)
 
 bool SF_Code_FindCodeSection(std::uintptr_t address, std::uintptr_t* begin, std::uintptr_t* end)
 {
-	const HMODULE module = GetModule(address);
-	if (module == nullptr)
+	const std::uintptr_t imageBase = SF_Code_ModuleBase(address);
+	if (imageBase == 0)
 	{
 		return false;
 	}
-	const auto imageBase = reinterpret_cast<std::uintptr_t>(module);
-	const IMAGE_NT_HEADERS64* headers = GetHeaders(module);
+	const IMAGE_NT_HEADERS64* headers = GetHeaders(imageBase);
 	const std::span sections{ IMAGE_FIRST_SECTION(headers), headers->FileHeader.NumberOfSections };
 	const auto section = std::ranges::find_if(sections, [address, imageBase](const IMAGE_SECTION_HEADER& candidate) {
 		return (candidate.Characteristics & IMAGE_SCN_MEM_EXECUTE) != 0 && address >= imageBase + candidate.VirtualAddress &&

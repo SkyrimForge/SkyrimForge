@@ -10,7 +10,6 @@ namespace
 
 	AddEventFunction g_originalAddEvent = nullptr;
 	StoryHandler g_storyHandler = nullptr;
-	bool g_installed = false;
 
 	// Story events raise no BSTEventSource, so this hooks the function every one of them enters.
 	// The handler runs after the lock is released, since the lock is not recursive and a subscriber can raise a story event.
@@ -48,7 +47,7 @@ namespace
 extern "C" __declspec(dllexport) bool SF_Story_Register(void (*handler)(std::uint32_t, const std::uint64_t*, std::int32_t), std::uintptr_t addEvent)
 {
 	g_storyHandler = handler;
-	if (g_installed)
+	if (g_originalAddEvent != nullptr)
 	{
 		return true;
 	}
@@ -58,10 +57,5 @@ extern "C" __declspec(dllexport) bool SF_Story_Register(void (*handler)(std::uin
 	}
 
 	g_originalAddEvent = reinterpret_cast<AddEventFunction>(SF_Hook_WriteEntry(addEvent, reinterpret_cast<std::uintptr_t>(&AddEventThunk), "SkyrimForge"));
-	if (g_originalAddEvent == nullptr)
-	{
-		return false;
-	}
-	g_installed = true;
-	return true;
+	return g_originalAddEvent != nullptr;
 }

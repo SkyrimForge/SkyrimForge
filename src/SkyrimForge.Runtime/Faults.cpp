@@ -73,24 +73,20 @@ namespace
 
 std::string SF_Faults_DescribeAddress(const void* address)
 {
-    HMODULE module = nullptr;
-    const bool found = GetModuleHandleExA(
-        GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS | GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT,
-        static_cast<LPCSTR>(address), &module) != 0;
-    if (!found)
+    const std::uintptr_t imageBase = SF_Code_ModuleBase(reinterpret_cast<std::uintptr_t>(address));
+    if (imageBase == 0)
     {
         return "no module";
     }
 
     char path[MAX_PATH] = {};
-    if (GetModuleFileNameA(module, path, MAX_PATH) == 0)
+    if (GetModuleFileNameA(reinterpret_cast<HMODULE>(imageBase), path, MAX_PATH) == 0)
     {
         return "unnamed module";
     }
 
     const char* name = std::strrchr(path, '\\');
-    const std::uintptr_t offset = reinterpret_cast<std::uintptr_t>(address) - reinterpret_cast<std::uintptr_t>(module);
-    return std::format("{}+0x{:X}", name != nullptr ? name + 1 : path, offset);
+    return std::format("{}+0x{:X}", name != nullptr ? name + 1 : path, reinterpret_cast<std::uintptr_t>(address) - imageBase);
 }
 
 // SafetyHook's handler, registered later, runs first and handles only faults on pages it hooked.

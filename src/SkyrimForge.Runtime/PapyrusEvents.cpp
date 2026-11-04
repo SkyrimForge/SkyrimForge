@@ -46,11 +46,6 @@ namespace
 			Locker lock(_lock);
 			return _handles.size();
 		}
-
-		const std::string& Name() const
-		{
-			return _eventName;
-		}
 	};
 
 	// Papyrus compares names case-insensitively.
@@ -68,10 +63,6 @@ namespace
 
 	ManagedRegistrationSet* FindOrCreateSet(const char* eventName)
 	{
-		if (eventName == nullptr)
-		{
-			return nullptr;
-		}
 		std::string name(eventName);
 		std::scoped_lock lock(g_setsMutex);
 		std::unique_ptr<ManagedRegistrationSet>& set = g_sets[name];
@@ -113,50 +104,47 @@ extern "C" __declspec(dllexport) void* SF_PapyrusEvents_Declare(const char* even
 
 extern "C" __declspec(dllexport) bool SF_PapyrusEvents_AddForm(void* set, RE::TESForm* form)
 {
-	return set != nullptr && form != nullptr && AsSet(set)->Register(form);
+	return form != nullptr && AsSet(set)->Register(form);
 }
 
 extern "C" __declspec(dllexport) bool SF_PapyrusEvents_AddAlias(void* set, RE::BGSBaseAlias* alias)
 {
-	return set != nullptr && alias != nullptr && AsSet(set)->Register(alias);
+	return alias != nullptr && AsSet(set)->Register(alias);
 }
 
 extern "C" __declspec(dllexport) bool SF_PapyrusEvents_AddActiveEffect(void* set, RE::ActiveEffect* effect)
 {
-	return set != nullptr && effect != nullptr && AsSet(set)->Register(effect);
+	return effect != nullptr && AsSet(set)->Register(effect);
 }
 
 extern "C" __declspec(dllexport) bool SF_PapyrusEvents_RemoveForm(void* set, RE::TESForm* form)
 {
-	return set != nullptr && form != nullptr && AsSet(set)->Unregister(form);
+	return form != nullptr && AsSet(set)->Unregister(form);
 }
 
 extern "C" __declspec(dllexport) bool SF_PapyrusEvents_RemoveAlias(void* set, RE::BGSBaseAlias* alias)
 {
-	return set != nullptr && alias != nullptr && AsSet(set)->Unregister(alias);
+	return alias != nullptr && AsSet(set)->Unregister(alias);
 }
 
 extern "C" __declspec(dllexport) bool SF_PapyrusEvents_RemoveActiveEffect(void* set, RE::ActiveEffect* effect)
 {
-	return set != nullptr && effect != nullptr && AsSet(set)->Unregister(effect);
+	return effect != nullptr && AsSet(set)->Unregister(effect);
 }
 
 extern "C" __declspec(dllexport) void SF_PapyrusEvents_Clear(void* set)
 {
-	if (set != nullptr)
-	{
-		AsSet(set)->Clear();
-	}
+	AsSet(set)->Clear();
 }
 
 extern "C" __declspec(dllexport) std::int32_t SF_PapyrusEvents_Count(void* set)
 {
-	return set == nullptr ? 0 : static_cast<std::int32_t>(AsSet(set)->Count());
+	return static_cast<std::int32_t>(AsSet(set)->Count());
 }
 
 extern "C" __declspec(dllexport) bool SF_PapyrusEvents_Send(void* set, RE::BSScript::IFunctionArguments* arguments)
 {
-	return set != nullptr && arguments != nullptr && AsSet(set)->Send(arguments);
+	return AsSet(set)->Send(arguments);
 }
 
 // One record for every set, since a record type is fixed at build time and event names are not.
@@ -201,8 +189,7 @@ bool SF_PapyrusEvents_LoadRecord(SKSE::SerializationInterface* serialization, st
 		{
 			return true;
 		}
-		ManagedRegistrationSet* set = FindOrCreateSet(name.c_str());
-		if (set == nullptr || !set->Load(serialization))
+		if (!FindOrCreateSet(name.c_str())->Load(serialization))
 		{
 			return true;
 		}

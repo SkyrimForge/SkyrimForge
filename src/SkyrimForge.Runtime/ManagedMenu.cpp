@@ -14,7 +14,6 @@ namespace
 
 	struct MenuRegistration
 	{
-		bool inUse = false;
 		std::int32_t token = 0;
 		std::string movieFile;
 		std::uint32_t flags = 0;
@@ -26,6 +25,7 @@ namespace
 
 	// Plugins may register from any thread.
 	std::mutex g_registrationMutex;
+	std::size_t g_usedRegistrationCount = 0;
 
 	using MessageHandler = std::int32_t (*)(std::int32_t, std::uint32_t);
 	MessageHandler g_messageHandler = nullptr;
@@ -108,10 +108,6 @@ extern "C" __declspec(dllexport) void SF_ManagedMenu_SetHandler(std::int32_t (*h
 extern "C" __declspec(dllexport) std::int32_t SF_UI_RegisterManagedMenu(const char* name, std::int32_t token,
 	const char* movieFile, std::uint32_t flags, std::int8_t depth, std::uint32_t context)
 {
-	if (name == nullptr)
-	{
-		return 3;
-	}
 	RE::UI* ui = RE::UI::GetSingleton();
 	if (ui == nullptr)
 	{
@@ -121,27 +117,23 @@ extern "C" __declspec(dllexport) std::int32_t SF_UI_RegisterManagedMenu(const ch
 	// UI::Register silently leaves an existing entry in place. Checked before a registration is claimed, since a registration is never released.
 	if (ui->menuMap.find(RE::BSFixedString(name)) != ui->menuMap.end())
 	{
-		return 4;
+		return 3;
 	}
 
 	std::scoped_lock lock(g_registrationMutex);
-	for (std::size_t i = 0; i < registrationCount; ++i)
+	if (g_usedRegistrationCount == registrationCount)
 	{
-		if (g_registrations[i].inUse)
-		{
-			continue;
-		}
-		// Filled before the factory is registered, since the game may construct the menu immediately.
-		g_registrations[i] = MenuRegistration{
-			.inUse = true,
-			.token = token,
-			.movieFile = movieFile == nullptr ? std::string() : std::string(movieFile),
-			.flags = flags,
-			.depth = depth,
-			.context = context
-		};
-		ui->Register(name, g_factories[i]);
-		return 0;
+		return 2;
 	}
-	return 2;
+	const std::size_t i = g_usedRegistrationCount++;
+	// Filled before the factory is registered, since the game may construct the menu immediately.
+	g_registrations[i] = MenuRegistration{
+		.token = token,
+		.movieFile = movieFile == nullptr ? std::string() : std::string(movieFile),
+		.flags = flags,
+		.depth = depth,
+		.context = context
+	};
+	ui->Register(name, g_factories[i]);
+	return 0;
 }

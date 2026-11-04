@@ -1,4 +1,5 @@
 ﻿#include "Shared.h"
+#include <algorithm>
 #include <spdlog/sinks/basic_file_sink.h>
 
 using namespace std::string_view_literals;
@@ -37,6 +38,7 @@ extern "C" bool SF_FrameworkRunning()
     return g_frameworkRunning;
 }
 
+// 1 for AE, 2 for SE, 4 for VR, and 0 for none, as REL::Module::Runtime defines them.
 extern "C" __declspec(dllexport) std::uint8_t SF_Module_Edition()
 {
     return static_cast<std::uint8_t>(REL::Module::GetRuntime());
@@ -49,11 +51,7 @@ extern "C" __declspec(dllexport) std::uintptr_t SF_Module_Base()
 
 extern "C" __declspec(dllexport) void SF_Module_Version(std::uint16_t* parts)
 {
-    const REL::Version version = REL::Module::get().version();
-    for (std::size_t i = 0; i < 4; ++i)
-    {
-        parts[i] = version[i];
-    }
+    std::ranges::copy(REL::Module::get().version(), parts);
 }
 
 extern "C" __declspec(dllexport) void SF_Module_Segment(std::uint32_t name, std::uintptr_t* address, std::size_t* size)

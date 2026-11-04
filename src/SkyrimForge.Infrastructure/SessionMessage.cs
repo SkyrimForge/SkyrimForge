@@ -1,15 +1,15 @@
 ﻿namespace SkyrimForge.Infrastructure;
 
-// The values match the enum of the same name in Lifecycle.cpp.
+// The values are SKSE's MessagingInterface message types.
 internal enum SessionMessage
 {
-    PostLoad = 1,
-    PostPostLoad = 2,
-    InputLoaded = 3,
-    DataLoaded = 4,
-    NewGame = 5,
-    PreLoadGame = 6,
-    PostLoadGame = 7,
-    SaveGame = 8,
-    DeleteGame = 9
+    PostLoad = 0,
+    PostPostLoad = 1,
+    PreLoadGame = 2,
+    PostLoadGame = 3,
+    SaveGame = 4,
+    DeleteGame = 5,
+    InputLoaded = 6,
+    NewGame = 7,
+    DataLoaded = 8
 }

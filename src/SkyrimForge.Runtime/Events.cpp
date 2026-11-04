@@ -36,14 +36,9 @@ extern "C" __declspec(dllexport) bool SF_Actor_AddAnimationGraphEventSink(RE::Ac
 	return self != nullptr && self->AddAnimationGraphEventSink(AnimationGraphEventSink::GetSingleton());
 }
 
-extern "C" __declspec(dllexport) bool SF_Actor_RemoveAnimationGraphEventSink(RE::Actor* self)
+extern "C" __declspec(dllexport) void SF_Actor_RemoveAnimationGraphEventSink(RE::Actor* self)
 {
-	if (self != nullptr)
-	{
-		self->RemoveAnimationGraphEventSink(AnimationGraphEventSink::GetSingleton());
-		return true;
-	}
-	return false;
+	self->RemoveAnimationGraphEventSink(AnimationGraphEventSink::GetSingleton());
 }
 
 extern "C" void SF_Events_Install()

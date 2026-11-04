@@ -57,25 +57,13 @@ namespace
 
 extern "C" __declspec(dllexport) std::int64_t SF_SCRIPT_FUNCTION_LocateConsoleCommand(const char* name)
 {
-	if (name == nullptr)
-	{
-		return 0;
-	}
 	return reinterpret_cast<std::int64_t>(Locate(name).function);
 }
 
 // An empty parameter block is passed, since a command whose parameters are all optional dereferences it.
 extern "C" __declspec(dllexport) std::int32_t SF_SCRIPT_FUNCTION_ExecuteFunction(const char* name, RE::TESObjectREFR* reference, double* result)
 {
-	if (result != nullptr)
-	{
-		*result = 0.0;
-	}
-	if (name == nullptr)
-	{
-		return -1;
-	}
-
+	*result = 0.0;
 	const LocatedCommand locatedCommand = Locate(name);
 	if (locatedCommand.function == nullptr || locatedCommand.function->executeFunction == nullptr)
 	{
@@ -96,33 +84,20 @@ extern "C" __declspec(dllexport) std::int32_t SF_SCRIPT_FUNCTION_ExecuteFunction
 	data.chunkSize = static_cast<std::uint16_t>(sizeof(ScriptData) - offsetof(ScriptData, numParams));
 	data.numParams = 0;
 
-	double returnedValue = 0.0;
 	std::uint32_t offset = static_cast<std::uint32_t>(offsetof(ScriptData, numParams));
 	const bool succeeded = locatedCommand.function->executeFunction(
-		locatedCommand.function->params, &data, reference, nullptr, nullptr, nullptr, returnedValue, offset);
-	if (result != nullptr)
-	{
-		*result = returnedValue;
-	}
+		locatedCommand.function->params, &data, reference, nullptr, nullptr, nullptr, *result, offset);
 	return succeeded ? 0 : 1;
 }
 
 extern "C" __declspec(dllexport) std::int32_t SF_SCRIPT_FUNCTION_NumParams(const char* name)
 {
-	if (name == nullptr)
-	{
-		return -1;
-	}
 	RE::SCRIPT_FUNCTION* command = Locate(name).function;
 	return command != nullptr ? static_cast<std::int32_t>(command->numParams) : -1;
 }
 
 extern "C" __declspec(dllexport) std::int32_t SF_SCRIPT_FUNCTION_RequiredParams(const char* name)
 {
-	if (name == nullptr)
-	{
-		return -1;
-	}
 	RE::SCRIPT_FUNCTION* command = Locate(name).function;
 	return command != nullptr ? static_cast<std::int32_t>(CountRequiredParameters(command)) : -1;
 }
@@ -130,10 +105,6 @@ extern "C" __declspec(dllexport) std::int32_t SF_SCRIPT_FUNCTION_RequiredParams(
 // The generator cannot bind the template form factory.
 extern "C" __declspec(dllexport) bool SF_Console_RunCommandLine(const char* commandLine, RE::TESObjectREFR* reference)
 {
-	if (commandLine == nullptr)
-	{
-		return false;
-	}
 	RE::ConcreteFormFactory<RE::Script, RE::FormType::Script>* factory = RE::IFormFactory::GetConcreteFormFactoryByType<RE::Script>();
 	if (factory == nullptr)
 	{

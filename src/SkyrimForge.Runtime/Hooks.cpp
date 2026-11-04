@@ -25,12 +25,6 @@ namespace
 		return 0;
 	}
 
-	template <typename T>
-	T SelectForRuntime(T se, T ae, T vr)
-	{
-		return REL::Module::IsAE() ? ae : (REL::Module::IsVR() ? vr : se);
-	}
-
 	// An absolute jump stub, as SKSE's trampoline and SF_Code_AllocateJump write one: FF 25 with a zero displacement, then the destination.
 	bool IsTrampolineStub(std::uintptr_t address)
 	{
@@ -48,7 +42,7 @@ namespace
 	{
 		std::uintptr_t sectionBegin = 0;
 		std::uintptr_t sectionEnd = 0;
-		if (site == 0 || !SF_Code_FindCodeSection(site, &sectionBegin, &sectionEnd) || site + branchLength > sectionEnd ||
+		if (!SF_Code_FindCodeSection(site, &sectionBegin, &sectionEnd) || site + branchLength > sectionEnd ||
 			*reinterpret_cast<const std::uint8_t*>(site) != callOpcode)
 		{
 			return 0;
@@ -73,25 +67,25 @@ namespace
 
 extern "C" __declspec(dllexport) std::uintptr_t SF_Hook_FunctionAddress(std::uint64_t se, std::uint64_t ae, std::uint64_t vr)
 {
-	const std::uint64_t identifier = SelectForRuntime(se, ae, vr);
+	const std::uint64_t identifier = REL::Relocate(se, ae, vr);
 	if (!IsAddressLibraryIdentifier(identifier))
 	{
 		spdlog::error("The address library does not contain identifier {}.", identifier);
 		return 0;
 	}
-	return REL::Relocation<std::uintptr_t>{ REL::RelocationID(se, ae, vr) }.address();
+	return REL::ID(identifier).address();
 }
 
 // CommonLib writes 0 if it states no identifier for this runtime.
 extern "C" __declspec(dllexport) bool SF_AddressLibrary_Names(std::uint64_t se, std::uint64_t ae, std::uint64_t vr)
 {
-	const std::uint64_t identifier = SelectForRuntime(se, ae, vr);
+	const std::uint64_t identifier = REL::Relocate(se, ae, vr);
 	return identifier != 0 && IsAddressLibraryIdentifier(identifier);
 }
 
 extern "C" __declspec(dllexport) std::uintptr_t SF_Hook_VTable(const char* name)
 {
-	return name == nullptr ? 0 : SF_VTable_Lookup(name);
+	return SF_VTable_Lookup(name);
 }
 
 // Valid until this thread's next hook.
@@ -148,11 +142,7 @@ extern "C" __declspec(dllexport) std::uintptr_t SF_Hook_FindCall(std::uintptr_t 
 // Finds a call another SKSE plugin replaced, which SF_Hook_FindCall does not find.
 extern "C" __declspec(dllexport) std::uintptr_t SF_Hook_CallAt(std::uintptr_t function, std::uint32_t seOffset, std::uint32_t aeOffset, std::uint32_t vrOffset)
 {
-	if (function == 0)
-	{
-		return 0;
-	}
-	const std::uint32_t offset = SelectForRuntime(seOffset, aeOffset, vrOffset);
+	const std::uint32_t offset = REL::Relocate(seOffset, aeOffset, vrOffset);
 	const std::uintptr_t site = function + offset;
 	return GetCallTarget(site, false) != 0 ? site : 0;
 }

@@ -16,12 +16,12 @@ extern "C" bool SF_StartFramework();
 
 extern "C" bool SF_FrameworkRunning();
 
-// 1 for AE, 2 for SE, 4 for VR, and 0 for none, as REL::Module::Runtime defines them.
-extern "C" __declspec(dllexport) std::uint8_t SF_Module_Edition();
-
 extern "C" void SF_Faults_Install();
 
 std::string SF_Faults_DescribeAddress(const void* address);
+
+// Returns the base address of the loaded module containing the address, or 0 if none does.
+std::uintptr_t SF_Code_ModuleBase(std::uintptr_t address);
 
 extern "C" __declspec(dllexport) std::uintptr_t SF_Hook_FindCall(std::uintptr_t callerAddress, std::uintptr_t calleeAddress, std::uint32_t occurrence, std::uint32_t searchLength);
 
@@ -53,6 +53,9 @@ bool SF_PapyrusEvents_LoadRecord(SKSE::SerializationInterface* serialization, st
 
 // The game requires this before a load and on a new game.
 void SF_PapyrusEvents_RevertAll();
+
+// Searches a linked type's global and then member functions, ignoring case.
+RE::BSScript::IFunction* SF_Papyrus_FindFunction(RE::BSScript::ObjectTypeInfo& type, const char* name);
 
 bool SF_Papyrus_DeclaredClassSafely(RE::BSScript::Internal::VirtualMachine* machine, const RE::BSScript::TypeInfo& declaredType, std::int32_t* classId, bool* resolved);
 

@@ -18,14 +18,8 @@ namespace
     const SKSE::SerializationInterface* g_writingInterface = nullptr;
     const SKSE::SerializationInterface* g_loadingInterface = nullptr;
 
-    constexpr std::uint32_t Signature(char first, char second, char third, char fourth)
-    {
-        return (static_cast<std::uint32_t>(first) << 24) | (static_cast<std::uint32_t>(second) << 16) |
-               (static_cast<std::uint32_t>(third) << 8) | static_cast<std::uint32_t>(fourth);
-    }
-
     // Must not collide with another plugin's ID, and must not change, since saves store it.
-    constexpr std::uint32_t uniqueId = Signature('S', 'F', 'H', 'P');
+    constexpr std::uint32_t uniqueId = 0x53464850;  // SFHP
 
     void OnSave(SKSE::SerializationInterface* serialization)
     {

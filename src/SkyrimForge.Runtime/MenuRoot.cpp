@@ -4,32 +4,20 @@
 
 extern "C" __declspec(dllexport) void SF_TutorialMenu_GetRoot(const RE::TutorialMenu* self, RE::GFxValue* destination)
 {
-	if (self != nullptr && destination != nullptr)
-	{
-		*destination = self->GetRoot();
-	}
+	*destination = self->GetRoot();
 }
 
 extern "C" __declspec(dllexport) void SF_TutorialMenu_SetRoot(RE::TutorialMenu* self, const RE::GFxValue* root)
 {
-	if (self != nullptr && root != nullptr)
-	{
-		self->SetRoot(*root);
-	}
+	self->SetRoot(*root);
 }
 
 extern "C" __declspec(dllexport) void SF_KinectMenu_GetRoot(const RE::KinectMenu* self, RE::GFxValue* destination)
 {
-	if (self != nullptr && destination != nullptr)
-	{
-		*destination = self->GetRoot();
-	}
+	*destination = self->GetRoot();
 }
 
 extern "C" __declspec(dllexport) void SF_KinectMenu_SetRoot(RE::KinectMenu* self, const RE::GFxValue* root)
 {
-	if (self != nullptr && root != nullptr)
-	{
-		self->SetRoot(*root);
-	}
+	self->SetRoot(*root);
 }

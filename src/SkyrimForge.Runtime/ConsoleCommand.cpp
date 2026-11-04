@@ -1,8 +1,10 @@
 ﻿// The command table is a fixed array, so a command replaces a disabled entry, one whose name begins with a space.
 #include <RE/Skyrim.h>
 
+#include <algorithm>
 #include <cstdint>
 #include <cstring>
+#include <span>
 #include <string>
 #include <string_view>
 #include <unordered_map>
@@ -32,27 +34,10 @@ namespace
 
 	bool IsNameInUse(std::string_view name)
 	{
-		if (name.empty())
-		{
-			return false;
-		}
-		const RE::SCRIPT_FUNCTION* consoleCommands = RE::SCRIPT_FUNCTION::GetFirstConsoleCommand();
-		for (std::uint16_t i = 0; i < RE::SCRIPT_FUNCTION::Commands::kConsoleCommandsEnd; ++i)
-		{
-			if (Matches(consoleCommands[i].functionName, name) || Matches(consoleCommands[i].shortName, name))
-			{
-				return true;
-			}
-		}
-		const RE::SCRIPT_FUNCTION* scriptCommands = RE::SCRIPT_FUNCTION::GetFirstScriptCommand();
-		for (std::uint16_t i = 0; i < RE::SCRIPT_FUNCTION::Commands::kScriptCommandsEnd; ++i)
-		{
-			if (Matches(scriptCommands[i].functionName, name) || Matches(scriptCommands[i].shortName, name))
-			{
-				return true;
-			}
-		}
-		return false;
+		const auto uses = [name](const RE::SCRIPT_FUNCTION& command) { return Matches(command.functionName, name) || Matches(command.shortName, name); };
+		return !name.empty()
+			&& (std::ranges::any_of(std::span{ RE::SCRIPT_FUNCTION::GetFirstConsoleCommand(), RE::SCRIPT_FUNCTION::Commands::kConsoleCommandsEnd }, uses)
+				|| std::ranges::any_of(std::span{ RE::SCRIPT_FUNCTION::GetFirstScriptCommand(), RE::SCRIPT_FUNCTION::Commands::kScriptCommandsEnd }, uses));
 	}
 
 	bool Execute(const RE::SCRIPT_PARAMETER* paramInfo, RE::SCRIPT_FUNCTION::ScriptData* scriptData, RE::TESObjectREFR* thisObj, RE::TESObjectREFR*,
@@ -111,7 +96,7 @@ extern "C" __declspec(dllexport) void SF_ConsoleCommand_SetHandler(CommandHandle
 extern "C" __declspec(dllexport) std::int64_t SF_ConsoleCommand_Add(const char* name, const char* shortName, const char* help,
 	const char* const* parameterNames, std::int32_t count)
 {
-	if (name == nullptr || name[0] == '\0' || name[0] == ' ' || count < 0 || count > 0xFFFF || (count > 0 && parameterNames == nullptr))
+	if (count > 0xFFFF)
 	{
 		return -2;
 	}

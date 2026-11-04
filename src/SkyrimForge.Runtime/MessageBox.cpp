@@ -47,7 +47,7 @@ namespace
 		const std::uintptr_t address = SF_Hook_FunctionAddress(51422, 52271, 51422);
 		if (address == 0)
 		{
-			return 3;
+			return 2;
 		}
 
 		__try
@@ -58,7 +58,7 @@ namespace
 		}
 		__except (1)
 		{
-			return 4;
+			return 3;
 		}
 	}
 }
@@ -73,33 +73,22 @@ extern "C" __declspec(dllexport) void SF_MessageBoxData_SetCallback(
 extern "C" __declspec(dllexport) std::int32_t SF_MessageBoxData_QueueMessage(const char* message, std::int32_t token,
 	const char* const* buttonTexts, std::int32_t count)
 {
-	if (message == nullptr || buttonTexts == nullptr || count < 1)
-	{
-		return 1;
-	}
-	for (std::int32_t i = 0; i < count; ++i)
-	{
-		if (buttonTexts[i] == nullptr)
-		{
-			return 1;
-		}
-	}
 	RE::InterfaceStrings* strings = RE::InterfaceStrings::GetSingleton();
 	RE::MessageDataFactoryManager* manager = RE::MessageDataFactoryManager::GetSingleton();
 	if (strings == nullptr || manager == nullptr)
 	{
-		return 2;
+		return 1;
 	}
 	const RE::BSTDerivedCreator<RE::MessageBoxData, RE::IUIMessageData>* creator =
 		manager->GetCreator<RE::MessageBoxData>(strings->messageBoxData);
 	if (creator == nullptr)
 	{
-		return 2;
+		return 1;
 	}
 	RE::MessageBoxData* data = creator->Create();
 	if (data == nullptr)
 	{
-		return 2;
+		return 1;
 	}
 
 	// The message data's destruction frees the callback.

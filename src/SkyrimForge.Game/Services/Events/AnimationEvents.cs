@@ -130,6 +130,5 @@ internal static unsafe partial class NativeSupplements
     internal static partial bool SF_Actor_AddAnimationGraphEventSink(nint self);
 
     [LibraryImport(library)]
-    [return: MarshalAs(UnmanagedType.U1)]
-    internal static partial bool SF_Actor_RemoveAnimationGraphEventSink(nint self);
+    internal static partial void SF_Actor_RemoveAnimationGraphEventSink(nint self);
 }

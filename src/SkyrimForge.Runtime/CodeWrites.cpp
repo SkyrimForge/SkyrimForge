@@ -82,12 +82,6 @@ namespace
 		return true;
 	}
 
-	bool IsInModule(std::uintptr_t address)
-	{
-		HMODULE module = nullptr;
-		return GetModuleHandleExW(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS | GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT, reinterpret_cast<LPCWSTR>(address), &module) != 0;
-	}
-
 	std::uintptr_t GetBranchDestination(std::uintptr_t address)
 	{
 		const auto* code = reinterpret_cast<const std::uint8_t*>(address);
@@ -112,11 +106,11 @@ namespace
 			{
 				continue;
 			}
-			if (const std::uintptr_t next = GetBranchDestination(destination); !IsInModule(destination) && next != 0)
+			if (const std::uintptr_t next = GetBranchDestination(destination); SF_Code_ModuleBase(destination) == 0 && next != 0)
 			{
 				destination = next;
 			}
-			return IsInModule(destination) ? std::format(" The changed bytes are a jump or call to {}.", SF_Faults_DescribeAddress(reinterpret_cast<const void*>(destination)))
+			return SF_Code_ModuleBase(destination) != 0 ? std::format(" The changed bytes are a jump or call to {}.", SF_Faults_DescribeAddress(reinterpret_cast<const void*>(destination)))
 				: std::format(" The changed bytes are a jump or call to 0x{:X}, which lies in no module.", destination);
 		}
 		return {};

@@ -33,6 +33,26 @@ namespace
 		RE::VMHandle handle = policy->GetHandleForObject(receiver->GetFormType(), receiver);
 		return handle != policy->EmptyHandle() && machine->FindBoundObject(handle, className, out);
 	}
+	// Returns 0 for an auto property of the bound object, 1 for a null name or no VM, 2 for no bound object, 3 for no such property, and 4 for a property that is not auto.
+	std::int32_t FindAutoProperty(RE::TESForm* receiver, const char* className, const char* propertyName, RE::BSTSmartPointer<RE::BSScript::Object>& object,
+		const RE::BSScript::PropertyTypeInfo*& property)
+	{
+		RE::BSScript::Internal::VirtualMachine* machine = RE::BSScript::Internal::VirtualMachine::GetSingleton();
+		if (machine == nullptr || className == nullptr || propertyName == nullptr)
+		{
+			return 1;
+		}
+		if (!FindBoundObject(machine, receiver, className, object) || !object)
+		{
+			return 2;
+		}
+		property = FindProperty(object->GetTypeInfo(), propertyName);
+		if (property == nullptr)
+		{
+			return 3;
+		}
+		return property->autoVarIndex == static_cast<std::uint32_t>(-1) ? 4 : 0;
+	}
 }
 extern "C" __declspec(dllexport) std::int32_t SF_Papyrus_BindScript(RE::TESForm* receiver,
 	const char* className)
@@ -97,33 +117,15 @@ extern "C" __declspec(dllexport) std::int32_t SF_Papyrus_HasBoundObject(std::uin
 extern "C" __declspec(dllexport) std::int32_t SF_Papyrus_PropertySlot(RE::TESForm* receiver,
 	const char* className, const char* propertyName, RE::BSScript::Variable** variable)
 {
-	if (variable == nullptr)
-	{
-		return 1;
-	}
 	*variable = nullptr;
-	RE::BSScript::Internal::VirtualMachine* machine = RE::BSScript::Internal::VirtualMachine::GetSingleton();
-	if (machine == nullptr || className == nullptr || propertyName == nullptr)
-	{
-		return 1;
-	}
 	RE::BSTSmartPointer<RE::BSScript::Object> object;
-	if (!FindBoundObject(machine, receiver, className, object) || !object)
+	const RE::BSScript::PropertyTypeInfo* property = nullptr;
+	if (const std::int32_t error = FindAutoProperty(receiver, className, propertyName, object, property); error != 0)
 	{
-		return 2;
-	}
-	const RE::BSScript::PropertyTypeInfo* property = FindProperty(object->GetTypeInfo(), propertyName);
-	if (property == nullptr)
-	{
-		return 3;
-	}
-	if (property->autoVarIndex == static_cast<std::uint32_t>(-1))
-	{
-		return 4;
+		return error;
 	}
 	// autoVarIndex is read from a .pex that can be older than the code reading it.
-	RE::BSScript::ObjectTypeInfo* type = object->GetTypeInfo();
-	if (type == nullptr || property->autoVarIndex >= type->GetTotalNumVariables())
+	if (property->autoVarIndex >= object->GetTypeInfo()->GetTotalNumVariables())
 	{
 		return 5;
 	}
@@ -134,31 +136,17 @@ extern "C" __declspec(dllexport) std::int32_t SF_Papyrus_PropertySlot(RE::TESFor
 extern "C" __declspec(dllexport) std::int32_t SF_Papyrus_ClearPropertyArray(RE::TESForm* receiver,
 	const char* className, const char* propertyName)
 {
-	RE::BSScript::Internal::VirtualMachine* machine = RE::BSScript::Internal::VirtualMachine::GetSingleton();
-	if (machine == nullptr || className == nullptr || propertyName == nullptr)
-	{
-		return 1;
-	}
 	RE::BSTSmartPointer<RE::BSScript::Object> object;
-	if (!FindBoundObject(machine, receiver, className, object) || !object)
+	const RE::BSScript::PropertyTypeInfo* property = nullptr;
+	if (const std::int32_t error = FindAutoProperty(receiver, className, propertyName, object, property); error != 0)
 	{
-		return 2;
-	}
-	const RE::BSScript::PropertyTypeInfo* property = FindProperty(object->GetTypeInfo(), propertyName);
-	if (property == nullptr)
-	{
-		return 3;
-	}
-	if (property->autoVarIndex == static_cast<std::uint32_t>(-1))
-	{
-		return 4;
+		return error;
 	}
 	if (!property->type.IsArray())
 	{
 		return 6;
 	}
-	RE::BSScript::ObjectTypeInfo* type = object->GetTypeInfo();
-	if (type == nullptr || property->autoVarIndex >= type->GetTotalNumVariables())
+	if (property->autoVarIndex >= object->GetTypeInfo()->GetTotalNumVariables())
 	{
 		return 5;
 	}
@@ -169,10 +157,6 @@ extern "C" __declspec(dllexport) std::int32_t SF_Papyrus_ClearPropertyArray(RE::
 extern "C" __declspec(dllexport) std::int32_t SF_Papyrus_PropertyClass(const char* className,
 	const char* propertyName, std::int32_t* typeId)
 {
-	if (typeId == nullptr)
-	{
-		return 1;
-	}
 	*typeId = 0;
 	RE::BSScript::Internal::VirtualMachine* machine = RE::BSScript::Internal::VirtualMachine::GetSingleton();
 	if (machine == nullptr || className == nullptr || propertyName == nullptr)
@@ -210,14 +194,10 @@ extern "C" __declspec(dllexport) std::int32_t SF_Papyrus_PropertyArray(const cha
 	const char* propertyName, RE::BSScript::Variable* variable, std::uint32_t size,
 	RE::BSScript::Array** array, std::int32_t* elementType)
 {
-	if (array == nullptr || elementType == nullptr)
-	{
-		return 1;
-	}
 	*array = nullptr;
 	*elementType = 0;
 	RE::BSScript::Internal::VirtualMachine* machine = RE::BSScript::Internal::VirtualMachine::GetSingleton();
-	if (machine == nullptr || className == nullptr || propertyName == nullptr || variable == nullptr)
+	if (machine == nullptr || className == nullptr || propertyName == nullptr)
 	{
 		return 1;
 	}
@@ -261,7 +241,7 @@ extern "C" __declspec(dllexport) std::int32_t SF_Papyrus_GetPropertyIntoCallback
 	const char* className, const char* propertyName, RE::BSScript::IStackCallbackFunctor* callback)
 {
 	RE::BSScript::Internal::VirtualMachine* machine = RE::BSScript::Internal::VirtualMachine::GetSingleton();
-	if (machine == nullptr || callback == nullptr || className == nullptr || propertyName == nullptr)
+	if (machine == nullptr || className == nullptr || propertyName == nullptr)
 	{
 		return 1;
 	}
@@ -278,8 +258,7 @@ extern "C" __declspec(dllexport) std::int32_t SF_Papyrus_SetPropertyIntoCallback
 	RE::BSScript::IStackCallbackFunctor* callback)
 {
 	RE::BSScript::Internal::VirtualMachine* machine = RE::BSScript::Internal::VirtualMachine::GetSingleton();
-	if (machine == nullptr || value == nullptr || callback == nullptr || className == nullptr
-		|| propertyName == nullptr)
+	if (machine == nullptr || className == nullptr || propertyName == nullptr)
 	{
 		return 1;
 	}

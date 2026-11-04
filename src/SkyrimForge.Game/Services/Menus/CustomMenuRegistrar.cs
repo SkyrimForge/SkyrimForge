@@ -32,7 +32,7 @@ internal sealed class CustomMenuRegistrar(ILog log) : ICustomMenuRegistrar
         }
 
         registrations.TryRemove(token, out _);
-        if (status == 4)
+        if (status == 3)
         {
             throw new ArgumentException($"The game already registers a menu called \"{name}\". To change a built-in menu, replace its virtual table entries through {nameof(IFunctionHooks)}.{nameof(IFunctionHooks.ReplaceVirtualTableEntry)}.", nameof(name));
         }

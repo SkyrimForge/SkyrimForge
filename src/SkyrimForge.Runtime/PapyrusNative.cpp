@@ -1,4 +1,4 @@
-﻿#include <RE/Skyrim.h>
+﻿#include "Shared.h"
 
 #include <cstdint>
 #include <mutex>
@@ -82,25 +82,6 @@ namespace
 	std::mutex g_functionsLock;
 	std::unordered_map<std::int32_t, RE::BSTSmartPointer<ManagedFunction>> g_functions;
 
-	RE::BSScript::IFunction* FindFunction(RE::BSScript::ObjectTypeInfo& type, const RE::BSFixedString& name)
-	{
-		for (std::uint32_t i = 0; i < type.GetNumGlobalFuncs(); ++i)
-		{
-			if (type.GetGlobalFuncIter()[i].func && type.GetGlobalFuncIter()[i].func->GetName() == name)
-			{
-				return type.GetGlobalFuncIter()[i].func.get();
-			}
-		}
-		for (std::uint32_t i = 0; i < type.GetNumMemberFuncs(); ++i)
-		{
-			if (type.GetMemberFuncIter()[i].func && type.GetMemberFuncIter()[i].func->GetName() == name)
-			{
-				return type.GetMemberFuncIter()[i].func.get();
-			}
-		}
-		return nullptr;
-	}
-
 	std::string Describe(const RE::BSScript::IFunction& function, bool withParameterNames)
 	{
 		std::string text;
@@ -146,7 +127,7 @@ extern "C" __declspec(dllexport) void SF_Papyrus_SetCallback(
 extern "C" __declspec(dllexport) bool SF_Papyrus_ReturnLatent(RE::VMStackID stackId, const RE::BSScript::Variable* value)
 {
 	RE::BSScript::Internal::VirtualMachine* machine = RE::BSScript::Internal::VirtualMachine::GetSingleton();
-	if (machine == nullptr || value == nullptr)
+	if (machine == nullptr)
 	{
 		return false;
 	}
@@ -158,7 +139,7 @@ extern "C" __declspec(dllexport) RE::BSScript::Array* SF_Papyrus_SetVariableArra
 	RE::BSScript::Variable* variable, RE::BSScript::TypeInfo::RawType rawType, std::int32_t objectType, std::uint32_t size)
 {
 	RE::BSScript::Internal::VirtualMachine* machine = RE::BSScript::Internal::VirtualMachine::GetSingleton();
-	if (variable == nullptr || machine == nullptr)
+	if (machine == nullptr)
 	{
 		return nullptr;
 	}
@@ -196,7 +177,7 @@ extern "C" __declspec(dllexport) std::int32_t SF_Papyrus_BindFunction(const char
 	// BindNativeMethod would replace a function already bound to a linked script's declaration.
 	RE::BSTSmartPointer<RE::BSScript::ObjectTypeInfo> type;
 	if (machine->GetScriptObjectTypeNoLoad1(RE::BSFixedString(className), type) && type && type->IsLinked()
-		&& dynamic_cast<ManagedFunction*>(FindFunction(*type, RE::BSFixedString(functionName))) != nullptr)
+		&& dynamic_cast<ManagedFunction*>(SF_Papyrus_FindFunction(*type, functionName)) != nullptr)
 	{
 		return 4;
 	}
@@ -239,7 +220,7 @@ extern "C" __declspec(dllexport) std::int32_t SF_Papyrus_GetBinding(const char* 
 	{
 		return 5;
 	}
-	RE::BSScript::IFunction* declared = FindFunction(*type, RE::BSFixedString(functionName));
+	RE::BSScript::IFunction* declared = SF_Papyrus_FindFunction(*type, functionName);
 	if (declared == nullptr)
 	{
 		return 3;

@@ -2,7 +2,6 @@
 
 #include <cstddef>
 #include <cstdint>
-#include <memory>
 #include <type_traits>
 #include <utility>
 
@@ -12,11 +11,6 @@ extern "C" bool SF_Repair_BSScript__IVirtualMachine_GetPropertyValue(
 	RE::BSScript::Internal::VirtualMachine* machine, RE::BSScript::Object* object,
 	const char* propertyName, RE::BSScript::IStackCallbackFunctor* callback)
 {
-	if (machine == nullptr || object == nullptr || propertyName == nullptr || callback == nullptr)
-	{
-		return false;
-	}
-
 	// At the ABI a reference to either type is one pointer.
 	RE::BSTSmartPointer<RE::BSScript::Object> objectReference(object);
 	RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor> callbackReference(callback);
@@ -37,12 +31,6 @@ extern "C" bool SF_Repair_BSScript__IVirtualMachine_SetPropertyValue(
 	const char* propertyName, RE::BSScript::Variable* value,
 	RE::BSScript::IStackCallbackFunctor* callback)
 {
-	if (machine == nullptr || object == nullptr || propertyName == nullptr || value == nullptr
-		|| callback == nullptr)
-	{
-		return false;
-	}
-
 	using SetPropertyValueFunction = bool(RE::BSScript::IVirtualMachine*, RE::BSTSmartPointer<RE::BSScript::Object>&,
 		const char*, RE::BSScript::Variable&,
 		RE::BSTSmartPointer<RE::BSScript::IStackCallbackFunctor>&);
@@ -64,11 +52,6 @@ namespace
 
 extern "C" bool SF_Repair_IPackageData_GetDataAsString(const RE::IPackageData* data, RE::BSString* text, const RE::TESPackage* package)
 {
-	if (data == nullptr || text == nullptr)
-	{
-		return false;
-	}
-
 	using GetDataAsStringFunction = bool (*)(const RE::IPackageData*, RE::BSString*, const RE::TESPackage*);
 	void* slot = (*reinterpret_cast<void* const* const*>(data))[getDataAsStringSlot];
 	return reinterpret_cast<GetDataAsStringFunction>(slot)(data, text, package);
@@ -119,12 +102,7 @@ extern "C" __declspec(dllexport) bool SF_Repair_TESQuest_BranchedDialogue_Emplac
 	{
 		return true;
 	}
-	auto* topics = RE::malloc<RE::BSTArray<RE::TESTopic*>>();
-	if (topics == nullptr)
-	{
-		return false;
-	}
-	std::construct_at(topics);
+	auto* topics = new RE::BSTArray<RE::TESTopic*>();
 	topics->push_back(topic);
 	SF_Repair_BSTScatterTable_WrapNextFree(table);
 	table.emplace(branch, topics);

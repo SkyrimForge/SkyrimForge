@@ -26,7 +26,10 @@ public sealed class EquipPlugin(GameTarget gameTarget, IGameEvents events, ICons
         List<Weapon> weapons = [.. player.GetInventoryCounts()
             .Where(entry => entry.Value > 0)
             .Select(entry => entry.Key.AsWeapon())
-            .OfType<Weapon>().Where(weapon => !string.IsNullOrEmpty(weapon.GetName())).OrderByDescending(weapon => weapon.GetGoldValue()).ThenBy(weapon => weapon.FormId)];
+            .WhereNotNull()
+            .Where(weapon => !string.IsNullOrEmpty(weapon.GetName()))
+            .OrderByDescending(weapon => weapon.GetGoldValue())
+            .ThenBy(weapon => weapon.FormId)];
         if (weapons.Count == 0)
         {
             log.Write("The player has no weapon to equip.");

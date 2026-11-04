@@ -28,10 +28,10 @@ internal static class CSharpFormatting
         return string.Join("\n", lines.Select(line => prefix + line));
     }
 
-    internal static string RenderDocElement(string tag, string inner, string prefix)
+    internal static string RenderDocElement(string tag, string inner, string prefix, string attributes = "")
     {
-        string singleLine = $"{prefix}<{tag}>{inner}</{tag}>";
-        return singleLine.Length <= 180 ? singleLine : $"{prefix}<{tag}>\n{RenderDocLines(inner, prefix)}\n{prefix}</{tag}>";
+        string singleLine = $"{prefix}<{tag}{attributes}>{inner}</{tag}>";
+        return singleLine.Length <= 180 ? singleLine : $"{prefix}<{tag}{attributes}>\n{RenderDocLines(inner, prefix)}\n{prefix}</{tag}>";
     }
 
     internal static string RenderSummary(IReadOnlyList<string> comment, string indent)

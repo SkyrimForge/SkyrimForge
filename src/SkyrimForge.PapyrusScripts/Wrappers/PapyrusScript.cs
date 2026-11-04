@@ -116,8 +116,7 @@ internal sealed class PapyrusScript(string name, string? parent, IReadOnlyList<s
                 if ((declaresGet || declaresSet) && properties.Count > 0)
                 {
                     PapyrusProperty current = properties[properties.Count - 1];
-                    properties[properties.Count - 1] = new PapyrusProperty(current.Name, current.Type, current.Value, current.IsAuto, current.IsReadable || declaresGet, current.IsWritable || declaresSet,
-                        current.Comment, current.Line);
+                    properties[properties.Count - 1] = current with { IsReadable = current.IsReadable || declaresGet, IsWritable = current.IsWritable || declaresSet };
                 }
                 inProperty = code.IndexOf("EndProperty", StringComparison.OrdinalIgnoreCase) < 0;
                 continue;

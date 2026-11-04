@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading;
 
 namespace SkyrimForge.PapyrusScripts;
@@ -64,12 +63,8 @@ public sealed class PapyrusWrapperGenerator : IIncrementalGenerator
         string name = (options.TryGetValue("build_property.RootNamespace", out string? rootNamespace) && rootNamespace.Trim().Length > 0 ? rootNamespace : assemblyName ?? "").Trim();
         IEnumerable<string> segments = name.Split('.').Where(segment => segment.Length > 0).Select(segment =>
         {
-            var identifier = new StringBuilder();
-            foreach (char character in segment)
-            {
-                identifier.Append(SyntaxFacts.IsIdentifierPartCharacter(character) ? character : '_');
-            }
-            return SyntaxFacts.IsIdentifierStartCharacter(segment[0]) ? identifier.ToString() : "_" + identifier;
+            string identifier = string.Concat(segment.Select(character => SyntaxFacts.IsIdentifierPartCharacter(character) ? character : '_'));
+            return SyntaxFacts.IsIdentifierStartCharacter(segment[0]) ? identifier : "_" + identifier;
         });
         string namespaceName = string.Join(".", segments);
         return namespaceName.Length > 0 ? namespaceName : "Papyrus";
@@ -77,7 +72,7 @@ public sealed class PapyrusWrapperGenerator : IIncrementalGenerator
 
     private static void Generate(SourceProductionContext context, ImmutableArray<PscFile?> files, string namespaceName)
     {
-        List<PscFile> readFiles = [.. files.Where(file => file != null).Select(file => file!).OrderBy(file => file.Path, StringComparer.Ordinal)];
+        List<PscFile> readFiles = [.. files.WhereNotNull().OrderBy(file => file.Path, StringComparer.Ordinal)];
         foreach (PscFile file in readFiles.Where(file => file.Script == null))
         {
             context.ReportDiagnostic(Diagnostic.Create(missingScriptname, Location.Create(file.Path, default, default), Path.GetFileName(file.Path)));

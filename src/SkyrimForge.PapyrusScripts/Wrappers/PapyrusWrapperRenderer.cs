@@ -198,10 +198,7 @@ internal static class PapyrusWrapperRenderer
             2 => $"{references[0]} or {last}",
             _ => $"{string.Join(", ", references.Take(references.Length - 1))}, or {last}"
         };
-        string prose = $"{subject} has more than 128 entries.";
-        string singleLine = $"{indent}/// <exception cref=\"ArgumentOutOfRangeException\">{prose}</exception>";
-        return singleLine.Length <= 180 ? singleLine + "\n"
-            : $"{indent}/// <exception cref=\"ArgumentOutOfRangeException\">\n{CSharpFormatting.RenderDocLines(prose, $"{indent}/// ")}\n{indent}/// </exception>\n";
+        return CSharpFormatting.RenderDocElement("exception", $"{subject} has more than 128 entries.", $"{indent}/// ", attributes: " cref=\"ArgumentOutOfRangeException\"") + "\n";
     }
 
     // "int Property Foo = 5 Auto" is a variable with a starting value, so only a property that cannot be written is constant.
@@ -289,19 +286,9 @@ internal static class PapyrusWrapperRenderer
 
     private static string GetCommentText(PapyrusFunction function) => string.Join("\n", function.Comment);
 
-    private static int CountDefaulted(PapyrusFunction function, PapyrusTypes types)
-    {
-        int defaultedCount = 0;
-        foreach (PapyrusParameter parameter in function.Parameters.Reverse())
-        {
-            if (GetParameterDefault(parameter, types) == null)
-            {
-                break;
-            }
-            defaultedCount++;
-        }
-        return defaultedCount;
-    }
+    private static int CountDefaulted(PapyrusFunction function, PapyrusTypes types) =>
+        function.Parameters.Reverse().TakeWhile(parameter => GetParameterDefault(parameter, types) != null).Count();
+
 
     private static string? RenderLiteral(string papyrusType, string? declaredDefault, PapyrusTypes types)
     {

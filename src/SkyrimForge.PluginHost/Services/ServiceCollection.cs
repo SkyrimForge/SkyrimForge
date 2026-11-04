@@ -8,65 +8,45 @@ namespace SkyrimForge.PluginHost.Services;
 
 internal sealed class ServiceCollection(ServiceCollection? fallbackCollection = null) : IServiceRegistrar
 {
-    private readonly Dictionary<Type, IServiceDescriptor> serviceDescriptors = [];
+    private readonly Dictionary<Type, Func<object>> serviceFactories = [];
     private readonly Dictionary<Type, object> cachedInstances = [];
     // Detects a cycle, which would otherwise overflow the stack and terminate the process.
     private readonly List<Type> servicesUnderConstruction = [];
 
-    public IEnumerable<Type> PublicServiceTypes => serviceDescriptors.Keys.Where(type => type.IsPublic);
+    public IEnumerable<Type> PublicServiceTypes => serviceFactories.Keys.Where(type => type.IsPublic);
 
     public void Add<T>(Func<T> factory) where T : class
     {
         ArgumentNullException.ThrowIfNull(factory);
-        Type type = typeof(T);
-        Add(type, new ServiceDescriptorWithFactory(factory));
+        Add(typeof(T), factory);
     }
 
     public void Add<T>() where T : class => Add<T, T>();
 
-    public void Add<TService, TImplementation>() where TService : class where TImplementation : class, TService
-    {
-        Type serviceType = typeof(TService);
-        Type implementationType = typeof(TImplementation);
-        Add(serviceType, new ServiceDescriptorWithType(implementationType));
-    }
+    public void Add<TService, TImplementation>() where TService : class where TImplementation : class, TService =>
+        Add(typeof(TService), () => Construct(typeof(TImplementation), false));
 
-    private void Add(Type serviceType, IServiceDescriptor serviceDescriptor)
+    private void Add(Type serviceType, Func<object> factory)
     {
-        if (!serviceDescriptors.TryAdd(serviceType, serviceDescriptor))
+        if (!serviceFactories.TryAdd(serviceType, factory))
         {
             throw new ArgumentException($"{serviceType.FullName} is already registered.");
         }
     }
 
-    private IServiceDescriptor? GetDescriptor(Type serviceType)
-    {
-        return serviceDescriptors.TryGetValue(serviceType, out IServiceDescriptor? descriptor) ? descriptor : null;
-    }
+    public T? GetConstructedInstance<T>() => (T?)cachedInstances.GetValueOrDefault(typeof(T));
 
-    public object? GetConstructedInstance(Type serviceType)
-    {
-        return cachedInstances.GetValueOrDefault(serviceType);
-    }
-
-    public T? GetConstructedInstance<T>()
-    {
-        return (T?)GetConstructedInstance(typeof(T));
-    }
 
     public object? Get(Type serviceType)
     {
-        IServiceDescriptor? descriptor = GetDescriptor(serviceType);
-        if (descriptor == null)
+        if (!serviceFactories.TryGetValue(serviceType, out Func<object>? factory))
         {
-            if (fallbackCollection != null)
-            {
-                return fallbackCollection.Get(serviceType);
-            }
-            return null;
+            return fallbackCollection?.Get(serviceType);
         }
-        object? instance = GetConstructedInstance(serviceType);
-        if (instance != null) { return instance; }
+        if (cachedInstances.TryGetValue(serviceType, out object? instance))
+        {
+            return instance;
+        }
         if (servicesUnderConstruction.Contains(serviceType))
         {
             string chain = string.Join(" requires ", servicesUnderConstruction.Append(serviceType).Select(type => type.FullName));
@@ -75,7 +55,7 @@ internal sealed class ServiceCollection(ServiceCollection? fallbackCollection = 
         servicesUnderConstruction.Add(serviceType);
         try
         {
-            instance = descriptor.Construct(this);
+            instance = factory();
         }
         finally
         {
@@ -85,17 +65,8 @@ internal sealed class ServiceCollection(ServiceCollection? fallbackCollection = 
         return instance;
     }
 
-    public object GetRequired(Type serviceType)
-    {
-        object? instance = Get(serviceType);
-        if (instance != null) { return instance; }
-        throw new ArgumentException(serviceType.FullName + " was not registered.", nameof(serviceType));
-    }
+    public T GetRequired<T>() => (T)(Get(typeof(T)) ?? throw new ArgumentException(typeof(T).FullName + " was not registered."));
 
-    public T GetRequired<T>()
-    {
-        return (T)GetRequired(typeof(T));
-    }
 
     public object Construct(Type constructibleType)
     {

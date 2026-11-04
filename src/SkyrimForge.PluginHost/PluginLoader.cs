@@ -173,7 +173,7 @@ internal sealed class PluginLoader(
         {
             throw new InvalidOperationException($"Another plugin already uses the identity \"{identity}\". Two plugins with one identity would share saved state and a log file.");
         }
-        return new PluginServiceResolver(pluginType, serviceResolver, directory, serviceSources);
+        return new PluginServiceResolver(pluginType, identity, serviceResolver, directory, serviceSources);
     }
 
     /// <summary>Registers native functions on data load, after the Papyrus VM exists.</summary>
@@ -190,16 +190,13 @@ internal sealed class PluginLoader(
     /// </summary>
     private sealed class PluginLoadContext(string pluginPath, IReadOnlyDictionary<string, string> sharedLibraryPaths) : AssemblyLoadContext
     {
-        // Under the native host, the framework's context is a component load context, not Default.
-        private static readonly AssemblyLoadContext hostContext = GetLoadContext(typeof(PluginLoadContext).Assembly) ?? Default;
-
         private readonly AssemblyDependencyResolver resolver = new(pluginPath);
 
         protected override Assembly? Load(AssemblyName assemblyName)
         {
             try
             {
-                return hostContext.LoadFromAssemblyName(assemblyName);
+                return ServiceSourceLoader.HostContext.LoadFromAssemblyName(assemblyName);
             }
             catch (FileNotFoundException)
             {
@@ -209,7 +206,7 @@ internal sealed class PluginLoader(
             if (assemblyName.Name != null && sharedLibraryPaths.TryGetValue(assemblyName.Name, out string? sharedPath))
             {
                 // Loaded into the host context, so every plugin receives the same instance.
-                return hostContext.LoadFromAssemblyPath(sharedPath);
+                return ServiceSourceLoader.HostContext.LoadFromAssemblyPath(sharedPath);
             }
 
             string? path = resolver.ResolveAssemblyToPath(assemblyName);

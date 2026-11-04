@@ -35,14 +35,15 @@ internal static class ServiceSourceLoader
 
     // Services are looked up by Type, and one class loaded into two load contexts becomes two distinct Types.
     // Sources are loaded into the host's context, where a plugin's constructor parameters are resolved.
-    private static readonly AssemblyLoadContext hostContext = AssemblyLoadContext.GetLoadContext(typeof(ServiceSourceLoader).Assembly) ?? AssemblyLoadContext.Default;
+    // Under the native host, the framework's context is a component load context, not Default.
+    internal static readonly AssemblyLoadContext HostContext = AssemblyLoadContext.GetLoadContext(typeof(ServiceSourceLoader).Assembly) ?? AssemblyLoadContext.Default;
 
     private static IEnumerable<Type> GetSourceTypes(string path, ILog log)
     {
         Type[] types;
         try
         {
-            types = hostContext.LoadFromAssemblyPath(path).GetTypes();
+            types = HostContext.LoadFromAssemblyPath(path).GetTypes();
         }
         catch (BadImageFormatException)
         {

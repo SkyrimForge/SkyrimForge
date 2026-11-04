@@ -34,10 +34,9 @@ internal sealed class PluginServiceResolver
         return identityAttribute.Identity;
     }
 
-    public PluginServiceResolver(Type pluginType, ServiceResolver serviceResolver, string directory, IReadOnlyList<IPluginServiceSource> serviceSources)
+    public PluginServiceResolver(Type pluginType, string identity, ServiceResolver serviceResolver, string directory, IReadOnlyList<IPluginServiceSource> serviceSources)
     {
         this.pluginType = pluginType;
-        string identity = GetIdentity(pluginType);
         serviceCollection = new ServiceCollection(serviceResolver.ServiceCollection);
         serviceCollection.Add(() => serviceResolver.CoSave.CreatePluginSavedState(identity));
         serviceCollection.Add<ILog>(() => new FileLog(Path.Combine(directory, identity + ".log")));

@@ -7,6 +7,7 @@ using SkyrimForge.PluginHost.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
@@ -41,10 +42,9 @@ public static class Bootstrap
         // An exception thrown into the native caller terminates the process.
         try
         {
-            string processFileName = CurrentProcessFileName;
-            log.Write($"{StartedMessage} on .NET {Environment.Version} in {processFileName} (Process ID: {Environment.ProcessId})");
+            log.Write($"{StartedMessage} on .NET {Environment.Version} in {CurrentProcessFileName} (Process ID: {Environment.ProcessId})");
 
-            GameTarget gameTarget = GameTargetFactory.Create();
+            GameTarget gameTarget = new(new SingletonSource());
 
             IGameEvents events = GameEvents.Create(log, CurrentGameEdition.Value == GameEdition.VR, () => gameTarget.UI.GameIsPaused(), new KeyboardReader(gameTarget));
 
@@ -94,36 +94,25 @@ public static class Bootstrap
             log.Write($"Started {plugin.GetType().FullName}");
         }
 
-        var failureMessages = new List<string>();
-        if (serviceSourceFailures.Count > 0)
+        (string Action, IReadOnlyList<string> Failures)[] failureGroups =
+            [
+                ("load these service sources", serviceSourceFailures),
+                ("load these plugins", pluginLoader.Failures),
+                ("start these plugins", startFailures)
+            ];
+        string failureMessage = string.Join("\n\n", failureGroups
+            .Where(group => group.Failures.Count > 0)
+            .Select(group => $"{Product.Name} could not {group.Action}:\n\n{string.Join("\n\n", group.Failures)}"));
+        if (failureMessage.Length > 0)
         {
-            failureMessages.Add($"{Product.Name} could not load these service sources:\n\n{string.Join("\n\n", serviceSourceFailures)}");
-        }
-        if (pluginLoader.Failures.Count > 0)
-        {
-            failureMessages.Add($"{Product.Name} could not load these plugins:\n\n{string.Join("\n\n", pluginLoader.Failures)}");
-        }
-        if (startFailures.Count > 0)
-        {
-            failureMessages.Add($"{Product.Name} could not start these plugins:\n\n{string.Join("\n\n", startFailures)}");
-        }
-        if (failureMessages.Count > 0)
-        {
-            ShowAtMainMenu(events, string.Join("\n\n", failureMessages));
+            ShowAtMainMenuAsync(events, failureMessage).LogFault(log);
         }
     }
 
-    private static void ShowAtMainMenu(IGameEvents events, string message)
+    private static async Task ShowAtMainMenuAsync(IGameEvents events, string message)
     {
-        ISubscription? subscription = null;
-        subscription = events.OnMenuOpenClose.Subscribe(args =>
-        {
-            if (args.MenuName == MainMenu.MenuName && args.Opening)
-            {
-                subscription?.Unsubscribe();
-                GlobalFunctions.DebugMessageBox(message);
-            }
-        });
+        await events.OnMenuOpenClose.WaitForNextAsync(args => args.MenuName == MainMenu.MenuName && args.Opening);
+        GlobalFunctions.DebugMessageBox(message);
     }
 
     internal static string GetLogPath(string logDirectory)

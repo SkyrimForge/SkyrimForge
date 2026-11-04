@@ -152,9 +152,7 @@ internal sealed unsafe partial class GameEvents : IGameEvents
     private static void InstallOnFrame(ILog log)
     {
         GameOffset updateCallOffset = new(0x11F, 0x160, 0x11F);
-        if (NativeGlobals.SF_Frame_Register(&OnFrameHook,
-            NativeGlobals.SF_Hook_FunctionAddress(GameFunction.MainLoop.SpecialEdition, GameFunction.MainLoop.AnniversaryEdition, GameFunction.MainLoop.VR),
-            NativeGlobals.SF_Hook_FunctionAddress(GameFunction.Main__Update.SpecialEdition, GameFunction.Main__Update.AnniversaryEdition, GameFunction.Main__Update.VR),
+        if (NativeGlobals.SF_Frame_Register(&OnFrameHook, NativeRuntime.GetAddress(GameFunction.MainLoop), NativeRuntime.GetAddress(GameFunction.Main__Update),
             updateCallOffset.SpecialEdition, updateCallOffset.AnniversaryEdition, updateCallOffset.VR))
         {
             log.Write("OnFrame hooked Main::Update.");

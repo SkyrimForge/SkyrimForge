@@ -44,8 +44,7 @@ internal sealed unsafe class StoryEvents : IStoryEvents
             return;
         }
         hooked = true;
-        GameFunction addEvent = GameFunction.BGSStoryEventManager__AddEvent_Impl;
-        if (NativeSupplements.SF_Story_Register(&OnStoryRaised, NativeSupplements.SF_Hook_FunctionAddress(addEvent.SpecialEdition, addEvent.AnniversaryEdition, addEvent.VR)))
+        if (NativeSupplements.SF_Story_Register(&OnStoryRaised, NativeRuntime.GetAddress(GameFunction.BGSStoryEventManager__AddEvent_Impl)))
         {
             log.Write("Story events hooked the manager.");
             return;
@@ -138,7 +137,4 @@ internal static unsafe partial class NativeSupplements
     [LibraryImport(library)]
     [return: MarshalAs(UnmanagedType.U1)]
     internal static partial bool SF_Story_Register(delegate* unmanaged<uint, nint, int, void> handler, nint addEvent);
-
-    [LibraryImport(library)]
-    internal static partial nint SF_Hook_FunctionAddress(ulong se, ulong ae, ulong vr);
 }

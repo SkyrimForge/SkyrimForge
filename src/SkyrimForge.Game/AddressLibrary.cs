@@ -19,14 +19,7 @@ public static partial class AddressLibrary
 
     /// <summary>The address of a function on the running edition.</summary>
     /// <exception cref="InvalidOperationException">The library does not contain the identifier the function states for the running edition.</exception>
-    public static nint Resolve(GameFunction function)
-    {
-        if (Contains(function))
-        {
-            return SF_Hook_FunctionAddress(function.SpecialEdition, function.AnniversaryEdition, function.VR);
-        }
-        throw new InvalidOperationException($"The address library does not contain the identifier of {function} on this runtime.");
-    }
+    public static nint Resolve(GameFunction function) => Resolve(function.SpecialEdition, function.AnniversaryEdition, function.VR, function);
 
     /// <summary>The address of the instruction at an offset into a function, using the offset stated for the running edition.</summary>
     /// <exception cref="InvalidOperationException">The library does not contain the identifier the function states for the running edition.</exception>
@@ -43,19 +36,13 @@ public static partial class AddressLibrary
 
     /// <summary>The address of a variable on the running edition.</summary>
     /// <exception cref="InvalidOperationException">The library does not contain the identifier the variable states for the running edition.</exception>
-    public static nint Resolve(GameVariable variable)
-    {
-        if (Contains(variable))
-        {
-            return SF_Hook_FunctionAddress(variable.SpecialEdition, variable.AnniversaryEdition, variable.VR);
-        }
-        throw new InvalidOperationException($"The address library does not contain the identifier of {variable} on this runtime.");
-    }
+    public static nint Resolve(GameVariable variable) => Resolve(variable.SpecialEdition, variable.AnniversaryEdition, variable.VR, variable);
+
+    private static nint Resolve(ulong se, ulong ae, ulong vr, object identifier) => SF_AddressLibrary_Names(se, ae, vr)
+        ? NativeRuntime.SF_Hook_FunctionAddress(se, ae, vr)
+        : throw new InvalidOperationException($"The address library does not contain the identifier of {identifier} on this runtime.");
 
     [LibraryImport(NativeRuntime.Library)]
     [return: MarshalAs(UnmanagedType.U1)]
     private static partial bool SF_AddressLibrary_Names(ulong se, ulong ae, ulong vr);
-
-    [LibraryImport(NativeRuntime.Library)]
-    private static partial nint SF_Hook_FunctionAddress(ulong se, ulong ae, ulong vr);
 }

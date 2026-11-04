@@ -21,7 +21,7 @@ internal sealed class FunctionHooks(string owner) : IFrameworkFunctionHooks
         {
             throw new ArgumentOutOfRangeException(nameof(index), index, "The index is outside the range of a virtual method table.");
         }
-        nint vtable = NativeGlobals.SF_Hook_VTable(typeName);
+        nint vtable = NativeRuntime.SF_Hook_VTable(typeName);
         if (vtable == 0)
         {
             throw new InvalidOperationException(
@@ -126,15 +126,9 @@ internal sealed class FunctionHooks(string owner) : IFrameworkFunctionHooks
         }
     }
 
-    private static nint GetAddress(GameFunction function)
-    {
-        nint address = NativeGlobals.SF_Hook_FunctionAddress(function.SpecialEdition, function.AnniversaryEdition, function.VR);
-        if (address == 0)
-        {
-            throw new InvalidOperationException($"The address library does not contain the identifier of {function} on this runtime.");
-        }
-        return address;
-    }
+    private static nint GetAddress(GameFunction function) => NativeRuntime.GetAddress(function) is var address and not 0
+        ? address
+        : throw new InvalidOperationException($"The address library does not contain the identifier of {function} on this runtime.");
 
     // Reads without a check: the native side confirmed the bytes lie in a module's code, all of them for CodePatcher and the first 5 of the 16 for a detour.
     internal static unsafe string DescribeCode(nint address, int length) =>

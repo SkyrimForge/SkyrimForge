@@ -30,11 +30,5 @@ internal static class GameHeap
     }
 
     internal static nint GetVTable(string type) =>
-        NativeSupplements.SF_Hook_VTable(type) is var vtable and not 0 ? vtable : throw new InvalidOperationException($"The game has no virtual table for {type}.");
-}
-
-internal static partial class NativeSupplements
-{
-    [LibraryImport(library, StringMarshalling = StringMarshalling.Utf8)]
-    internal static partial nint SF_Hook_VTable(string name);
+        NativeRuntime.SF_Hook_VTable(type) is var vtable and not 0 ? vtable : throw new InvalidOperationException($"The game has no virtual table for {type}.");
 }

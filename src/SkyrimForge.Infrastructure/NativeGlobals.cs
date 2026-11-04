@@ -53,9 +53,6 @@ internal static partial class NativeGlobals
     internal static unsafe partial void SF_Task_SetHandler(delegate* unmanaged<ulong, void> handler);
 
     [LibraryImport(library, StringMarshalling = StringMarshalling.Utf8)]
-    internal static partial nint SF_Hook_VTable(string name);
-
-    [LibraryImport(library, StringMarshalling = StringMarshalling.Utf8)]
     internal static partial nint SF_Hook_WriteVirtual(nint vtable, uint index, nint replacement, string owner);
 
     [LibraryImport(library)]
@@ -63,9 +60,6 @@ internal static partial class NativeGlobals
 
     [LibraryImport(library)]
     internal static partial nint SF_Hook_FindCall(nint caller, nint callee, uint occurrence, uint searchLength);
-
-    [LibraryImport(library)]
-    internal static partial nint SF_Hook_FunctionAddress(ulong se, ulong ae, ulong vr);
 
     [LibraryImport(library)]
     internal static partial nint SF_Hook_CallAt(nint function, uint seOffset, uint aeOffset, uint vrOffset);

@@ -25,4 +25,14 @@ internal static class RuntimeConditions
         data.Object = CONDITIONITEMOBJECT.kSelf;
         return item;
     }
+
+    // The condition is joined to the rest with "and," which the game evaluates after every "or," so it applies to the info as a whole.
+    internal static TESConditionItem PrependIsReference(TopicInfo info, nint reference, float value)
+    {
+        TESConditionItem condition = Create(FUNCTION_DATA.FunctionID.kGetIsReference, reference, value);
+        TESCondition conditions = info.ObjConditions;
+        condition.Next = conditions.Head;
+        conditions.Head = condition;
+        return condition;
+    }
 }

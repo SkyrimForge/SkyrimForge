@@ -78,49 +78,39 @@ internal sealed unsafe class VoiceSilencer(GameTarget gameTarget, IFrameworkFunc
 
     internal void SilenceGreetings(FormId<Actor> actorId, object owner) => silencedGreeters.GetOrAdd(actorId, _ => []).Add(owner);
 
-    internal void RestoreGreetings(FormId<Actor> actorId, object owner)
-    {
-        if (silencedGreeters.TryGetValue(actorId, out HashSet<object>? owners) && owners.Remove(owner) && owners.Count == 0)
-        {
-            silencedGreeters.TryRemove(actorId, out _);
-        }
-    }
+    internal void RestoreGreetings(FormId<Actor> actorId, object owner) => RemoveOwner(silencedGreeters, actorId, owner);
 
     internal void SilenceRemarks(FormId<Actor> actorId, object owner) => silencedRemarkers.GetOrAdd(actorId, _ => []).Add(owner);
 
-    internal void RestoreRemarks(FormId<Actor> actorId, object owner)
+    internal void RestoreRemarks(FormId<Actor> actorId, object owner) => RemoveOwner(silencedRemarkers, actorId, owner);
+
+    internal void SetGreeting(FormId<Actor> actorId, object owner, IReadOnlyList<ReplyResponse> responses) => SetResponses(greetings, actorId, owner, responses);
+
+    internal void RemoveGreeting(FormId<Actor> actorId, object owner) => RemoveResponses(greetings, actorId, owner);
+
+    internal void SetGoodbye(FormId<Actor> actorId, object owner, IReadOnlyList<ReplyResponse> responses) => SetResponses(goodbyes, actorId, owner, responses);
+
+    internal void RemoveGoodbye(FormId<Actor> actorId, object owner) => RemoveResponses(goodbyes, actorId, owner);
+
+    private static void RemoveOwner(ConcurrentDictionary<FormId<Actor>, HashSet<object>> ownersByActor, FormId<Actor> actorId, object owner)
     {
-        if (silencedRemarkers.TryGetValue(actorId, out HashSet<object>? owners) && owners.Remove(owner) && owners.Count == 0)
+        if (ownersByActor.TryGetValue(actorId, out HashSet<object>? owners) && owners.Remove(owner) && owners.Count == 0)
         {
-            silencedRemarkers.TryRemove(actorId, out _);
+            ownersByActor.TryRemove(actorId, out _);
         }
     }
 
-    internal void SetGreeting(FormId<Actor> actorId, object owner, IReadOnlyList<ReplyResponse> responses)
+    private void SetResponses(ConcurrentDictionary<FormId<Actor>, OwnedResponses> responsesByActor, FormId<Actor> actorId, object owner, IReadOnlyList<ReplyResponse> responses)
     {
         subtitleSwitch.FindSettings();
-        greetings[actorId] = new(owner, ToWrittenResponses(responses));
+        responsesByActor[actorId] = new(owner, ToWrittenResponses(responses));
     }
 
-    internal void RemoveGreeting(FormId<Actor> actorId, object owner)
+    private static void RemoveResponses(ConcurrentDictionary<FormId<Actor>, OwnedResponses> responsesByActor, FormId<Actor> actorId, object owner)
     {
-        if (greetings.TryGetValue(actorId, out OwnedResponses? greeting) && greeting.Owner == owner)
+        if (responsesByActor.TryGetValue(actorId, out OwnedResponses? ownedResponses) && ownedResponses.Owner == owner)
         {
-            greetings.TryRemove(new KeyValuePair<FormId<Actor>, OwnedResponses>(actorId, greeting));
-        }
-    }
-
-    internal void SetGoodbye(FormId<Actor> actorId, object owner, IReadOnlyList<ReplyResponse> responses)
-    {
-        subtitleSwitch.FindSettings();
-        goodbyes[actorId] = new(owner, ToWrittenResponses(responses));
-    }
-
-    internal void RemoveGoodbye(FormId<Actor> actorId, object owner)
-    {
-        if (goodbyes.TryGetValue(actorId, out OwnedResponses? goodbye) && goodbye.Owner == owner)
-        {
-            goodbyes.TryRemove(new KeyValuePair<FormId<Actor>, OwnedResponses>(actorId, goodbye));
+            responsesByActor.TryRemove(new KeyValuePair<FormId<Actor>, OwnedResponses>(actorId, ownedResponses));
         }
     }
 
@@ -167,14 +157,14 @@ internal sealed unsafe class VoiceSilencer(GameTarget gameTarget, IFrameworkFunc
             {
                 if (instance.topicInfoAddressesToResponses.TryGetValue(info.Address, out WrittenResponse[]? writtenResponses))
                 {
-                    instance.WriteInConversation(speaker, info, dialogue, responses, writtenResponses);
+                    instance.Write(speaker, info, responses, dialogue.Responses.Add, writtenResponses, true);
                 }
                 else if (info.ParentTopic?.Data.GetSubtype() == DIALOGUE_DATA.Subtype.kHello)
                 {
                     FormId<Actor> speakerId = speaker.FormId;
                     if (instance.greetings.TryGetValue(speakerId, out OwnedResponses? greeting))
                     {
-                        instance.WriteInConversation(speaker, info, dialogue, responses, greeting.Responses);
+                        instance.Write(speaker, info, responses, dialogue.Responses.Add, greeting.Responses, true);
                         Silence(responses.Skip(greeting.Responses.Length));
                     }
                     else if (instance.silencedGreeters.ContainsKey(speakerId))
@@ -206,10 +196,6 @@ internal sealed unsafe class VoiceSilencer(GameTarget gameTarget, IFrameworkFunc
                 && TopicInfo.OrNull(info) is { } topicInfo)
             {
                 instance.Write(actor, topicInfo, responses, dialogueItem.Responses.Add, writtenResponses, false);
-                if (writtenResponses.Any(writtenResponse => writtenResponse.Unvoiced))
-                {
-                    instance.subtitleSwitch.BeginLine(topicInfo.FormId);
-                }
             }
             // The game builds a greeting said outside a conversation here. A greeting that opens a conversation is not built here.
             else if (instance != null
@@ -240,14 +226,7 @@ internal sealed unsafe class VoiceSilencer(GameTarget gameTarget, IFrameworkFunc
                 && goodbyeItem.Responses.Get() is { Count: > 0 } goodbyeResponses
                 && TopicInfo.OrNull(info) is { } goodbyeInfo)
             {
-                if (goodbye.Responses.Length > 0)
-                {
-                    instance.Write(goodbyeSpeaker, goodbyeInfo, goodbyeResponses, goodbyeItem.Responses.Add, goodbye.Responses, false);
-                    if (goodbye.Responses.Any(writtenResponse => writtenResponse.Unvoiced))
-                    {
-                        instance.subtitleSwitch.BeginLine(goodbyeInfo.FormId);
-                    }
-                }
+                instance.Write(goodbyeSpeaker, goodbyeInfo, goodbyeResponses, goodbyeItem.Responses.Add, goodbye.Responses, false);
                 Silence(goodbyeResponses.Skip(goodbye.Responses.Length));
             }
         }
@@ -256,15 +235,6 @@ internal sealed unsafe class VoiceSilencer(GameTarget gameTarget, IFrameworkFunc
             instance?.log.Write($"Rewriting a dialogue item threw, so it plays as the game built it: {ex}");
         }
         return constructedItem;
-    }
-
-    private void WriteInConversation(Actor speaker, TopicInfo info, MenuTopicManager.Dialogue dialogue, IReadOnlyList<DialogueResponse> responses, WrittenResponse[] writtenResponses)
-    {
-        Write(speaker, info, responses, dialogue.Responses.Add, writtenResponses, true);
-        if (writtenResponses.Any(writtenResponse => writtenResponse.Unvoiced))
-        {
-            subtitleSwitch.EnableDialogueSubtitles();
-        }
     }
 
     private void Write(Actor speaker, TopicInfo info, IReadOnlyList<DialogueResponse> responses, Action<DialogueResponse> append, WrittenResponse[] writtenResponses, bool inConversation)
@@ -283,6 +253,17 @@ internal sealed unsafe class VoiceSilencer(GameTarget gameTarget, IFrameworkFunc
         if (writtenResponses.Length > 0 && writtenResponses.All(writtenResponse => writtenResponse.Unvoiced))
         {
             unvoicedLipSync.Begin(speaker.FormId, info.FormId, inConversation);
+        }
+        if (writtenResponses.Any(writtenResponse => writtenResponse.Unvoiced))
+        {
+            if (inConversation)
+            {
+                subtitleSwitch.EnableDialogueSubtitles();
+            }
+            else
+            {
+                subtitleSwitch.BeginLine(info.FormId);
+            }
         }
     }
 

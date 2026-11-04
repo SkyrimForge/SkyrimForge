@@ -28,8 +28,6 @@ internal sealed class TopicHider
     // The player is never the speaker, so a condition on this address matches no speaker.
     private nint NobodyAddress => gameTarget.Player.Address;
 
-    internal void AddInfo(TopicInfo info, PlayerTopic topic) => Add(info, topic);
-
     internal void Hide(object owner, Actor speaker, IReadOnlyCollection<PlayerTopic> ownTopics)
     {
         Release(owner);
@@ -71,12 +69,12 @@ internal sealed class TopicHider
         }
     }
 
-    private void Add(TopicInfo info, PlayerTopic? topic)
+    internal void AddInfo(TopicInfo info, PlayerTopic? topic)
     {
         infos.Add((info, topic));
         for (int slot = 0; slot < conditionsBySlot.Count; slot++)
         {
-            conditionsBySlot[slot].Add(Prepend(info, GetParameter(slot, topic)));
+            conditionsBySlot[slot].Add(RuntimeConditions.PrependIsReference(info, GetParameter(slot, topic), 0f));
         }
     }
 
@@ -96,7 +94,7 @@ internal sealed class TopicHider
             {
                 foreach (TopicInfo info in topic.TopicInfos.Get())
                 {
-                    Add(info, null);
+                    AddInfo(info, null);
                 }
             }
         }
@@ -105,7 +103,7 @@ internal sealed class TopicHider
     private int AddSlot()
     {
         nint nobody = NobodyAddress;
-        conditionsBySlot.Add([.. infos.Select(entry => Prepend(entry.Info, nobody))]);
+        conditionsBySlot.Add([.. infos.Select(entry => RuntimeConditions.PrependIsReference(entry.Info, nobody, 0f))]);
         speakersBySlot.Add(null);
         return conditionsBySlot.Count - 1;
     }
@@ -122,13 +120,4 @@ internal sealed class TopicHider
     private nint GetParameter(int slot, PlayerTopic? topic) =>
         speakersBySlot[slot] is { } speaker && (topic == null || !owners.Values.Any(entry => entry.Slot == slot && entry.Topics.Contains(topic))) ? speaker.Address : NobodyAddress;
 
-    // The condition is joined to the rest with "and," which the game evaluates after every "or," so it applies to the info as a whole.
-    private static TESConditionItem Prepend(TopicInfo info, nint reference)
-    {
-        TESConditionItem condition = RuntimeConditions.Create(FUNCTION_DATA.FunctionID.kGetIsReference, reference, 0f);
-        TESCondition conditions = info.ObjConditions;
-        condition.Next = conditions.Head;
-        conditions.Head = condition;
-        return condition;
-    }
 }

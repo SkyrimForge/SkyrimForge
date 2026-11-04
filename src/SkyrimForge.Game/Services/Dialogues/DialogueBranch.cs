@@ -27,7 +27,7 @@ internal sealed class DialogueBranch : IDialogueBranch
     private readonly List<(PlayerTopic PlayerTopic, DialogueTopic Topic)> shownTopics = [];
 
     // The text is part of the key, since the player can choose from a menu that the latest change of a created topic's text has not reached.
-    private readonly Dictionary<(IPlayerTopic PlayerTopic, string Text), DialogueTopic> choices = [];
+    private readonly Dictionary<(PlayerTopic PlayerTopic, string Text), DialogueTopic> choices = [];
 
     private readonly List<DialogueTopic> chosenTopics = [];
 
@@ -148,17 +148,9 @@ internal sealed class DialogueBranch : IDialogueBranch
     {
         Actor? actor = args.CrosshairReference?.AsActor();
         crosshairActorId = actor?.FormId;
-        if (actor != null)
+        if (actor is { } crosshairActor && speakerFilter != null && !IsConversing && speakerFilter(crosshairActor))
         {
-            SetSpeakerIfAccepted(actor.Value);
-        }
-    }
-
-    private void SetSpeakerIfAccepted(Actor actor)
-    {
-        if (speakerFilter != null && !IsConversing && speakerFilter(actor))
-        {
-            SetSpeaker(actor.FormId);
+            SetSpeaker(crosshairActor.FormId);
         }
     }
 

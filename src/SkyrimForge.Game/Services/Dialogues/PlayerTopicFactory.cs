@@ -35,23 +35,18 @@ internal sealed class PlayerTopicFactory
         events.OnNewGameOrSaveLoading.Subscribe(_ => HideAll());
     }
 
-    internal PlayerTopic Create(byte priority, FormId<Quest>? questId) => Add(new PlayerTopic(questId, priority, voiceSilencer, topicHider, ReportFailure));
-
-    private PlayerTopic Add(PlayerTopic topic)
+    internal PlayerTopic Create(byte priority, FormId<Quest>? questId)
     {
+        var topic = new PlayerTopic(questId, priority, voiceSilencer, topicHider, ex => log.Write($"A subscriber to a player topic's OnSelected threw: {ex}"));
         allTopics.Add(topic);
         pendingTopics.Add(topic);
         return topic;
     }
 
-    private void ReportFailure(Exception ex) => log.Write($"A subscriber to a player topic's OnSelected threw: {ex}");
-
-    private bool ConversationOpen => gameTarget.MenuTopicManager is { MenuOpen: true };
-
     // The game reads a quest's branches when it builds a conversation, so topics are added only while none is open.
     private void CreatePendingTopics(FrameEventArgs args)
     {
-        if (pendingTopics.Count == 0 || gameTarget.MenuTopicManager is not { MenuOpen: false })
+        if (pendingTopics.Count == 0 || gameTarget.MenuTopicManager.MenuOpen)
         {
             return;
         }
@@ -61,7 +56,7 @@ internal sealed class PlayerTopicFactory
         {
             try
             {
-                if (!PlayerTopicRecords.Create(topic))
+                if (!topic.CreateRecords())
                 {
                     log.Write($"The player topic \"{topic.Text}\" was not added because its quest's table of branches does not list the topic's branch.");
                 }
@@ -105,7 +100,7 @@ internal sealed class PlayerTopicFactory
     // The game can close a conversation without ending the reply.
     private void EndReplyOutsideConversation()
     {
-        if (replyEndSource is { Task.IsCompleted: false } && !ConversationOpen)
+        if (replyEndSource is { Task.IsCompleted: false } && !gameTarget.MenuTopicManager.MenuOpen)
         {
             replyEndSource.TrySetResult();
         }

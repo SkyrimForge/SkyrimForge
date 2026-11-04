@@ -15,12 +15,10 @@ internal sealed class UnvoicedSpeech(GameTarget gameTarget, IUtility utility, IG
         shortestLineDuration = TimeSpan.FromSeconds(2),
         timeBetweenLines = TimeSpan.FromSeconds(0.3);
 
-    internal static TimeSpan LongestLine => TopicResponse.LongestSilentVoice;
-
     internal static TimeSpan GetLineDuration(string line)
     {
         TimeSpan duration = timePerCharacter * line.Length;
-        return duration < shortestLineDuration ? shortestLineDuration : duration > LongestLine ? LongestLine : duration;
+        return duration < shortestLineDuration ? shortestLineDuration : duration > TopicResponse.LongestSilentVoice ? TopicResponse.LongestSilentVoice : duration;
     }
 
     // Static, so one plugin's lines interrupt another plugin's lines for the same speaker.

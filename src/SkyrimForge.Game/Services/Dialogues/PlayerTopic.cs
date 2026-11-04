@@ -1,4 +1,3 @@
-﻿using SkyrimForge.Dialogue;
 using SkyrimForge.Events;
 using System;
 using System.Collections.Generic;
@@ -7,11 +6,13 @@ using System.Threading.Tasks;
 
 namespace SkyrimForge.Game;
 
-internal sealed class PlayerTopic : IPlayerTopic
+/// <remarks>Call members on the game's thread.</remarks>
+internal sealed class PlayerTopic(FormId<Quest>? questId, byte priority, VoiceSilencer voiceSilencer, TopicHider topicHider, Action<Exception> reportFailure)
 {
-    private readonly GameEvent<PlayerTopicSelectedEventArgs> onSelected;
-    private readonly VoiceSilencer voiceSilencer;
-    private readonly TopicHider topicHider;
+    private static readonly FormId<Quest> dialogueGeneric = new(0x00013EB3);
+    private static readonly FormId<TopicInfo> offerServicesInfo = new(0x0007F6BC);
+
+    private readonly GameEvent<PlayerTopicSelectedEventArgs> onSelected = new(reportFailure);
 
     // One info per text, so the game marks each text said separately.
     private readonly Dictionary<string, TopicInfo> textsToInfos = new(StringComparer.Ordinal);
@@ -23,28 +24,14 @@ internal sealed class PlayerTopic : IPlayerTopic
 
     private nint speakerAddress;
 
+    private Topic topic;
     private TopicInfo record;
     private GlobalVariable global;
     private bool visible;
     private bool said;
     private string? exceptionMessage;
 
-    internal PlayerTopic(FormId<Quest>? questId, byte priority, VoiceSilencer voiceSilencer, TopicHider topicHider, Action<Exception> reportFailure)
-    {
-        QuestId = questId;
-        Priority = priority;
-        onSelected = new GameEvent<PlayerTopicSelectedEventArgs>(reportFailure);
-        this.voiceSilencer = voiceSilencer;
-        this.topicHider = topicHider;
-    }
-
-    internal FormId<Quest>? QuestId { get; }
-
-    internal byte Priority { get; }
-
-    internal Topic Topic { get; private set; }
-
-    private bool IsReady => Topic.Exists;
+    private bool IsReady => topic.Exists;
 
     public string Text
     {
@@ -87,35 +74,37 @@ internal sealed class PlayerTopic : IPlayerTopic
         {
             SetSpeakerCondition(infoText, info);
         }
-        visible = true;
-        if (IsReady)
-        {
-            GlobalVariable shownGlobal = global;
-            shownGlobal.Value = 1f;
-        }
+        SetVisible(true);
     }
 
-    public void Hide()
-    {
-        visible = false;
-        if (IsReady)
-        {
-            GlobalVariable shownGlobal = global;
-            shownGlobal.Value = 0f;
-        }
-    }
+    public void Hide() => SetVisible(false);
 
     // A load frees the speaker's address.
     internal void ResetForLoad() => speakerAddress = 0;
 
-    internal void Attach(Topic topic, TopicInfo responseRecord, GlobalVariable shownGlobal)
+    // The priority is set before the quest lists the topic, in case the game orders a quest's branches as they are added.
+    internal bool CreateRecords()
     {
-        Topic = topic;
-        record = responseRecord;
-        global = shownGlobal;
+        Quest owner = (questId ?? dialogueGeneric).Form;
+        record = offerServicesInfo.Form;
+        topic = RuntimeForms.Create(FormType.Dialogue).AsTopic()!.Value;
+        global = RuntimeConditions.CreateGlobal();
+        DIALOGUE_DATA data = topic.Data;
+        data.Type = DIALOGUE_TYPES.DIALOGUE_TYPE.kPlayerDialogue;
+        data.SetSubtype(DIALOGUE_DATA.Subtype.kCustom);
+        topic.PriorityAndJournalIndex = ((uint)priority << 24) | (topic.PriorityAndJournalIndex & 0x00FFFFFFu);
         ApplyText(text);
-        GlobalVariable value = global;
-        value.Value = visible ? 1f : 0f;
+        SetVisible(visible);
+        return owner.AddPlayerTopic(topic);
+    }
+
+    private void SetVisible(bool value)
+    {
+        visible = value;
+        if (IsReady)
+        {
+            global.Value = value ? 1f : 0f;
+        }
     }
 
     internal void OnException(string exceptionMessage) => this.exceptionMessage = exceptionMessage;
@@ -154,14 +143,14 @@ internal sealed class PlayerTopic : IPlayerTopic
     {
         TopicInfo info = textsToInfos.TryGetValue(value, out TopicInfo knownInfo) ? knownInfo : CreateInfo(value);
         info.SaidOnce = said;
-        Topic.AsTESFullName().SetFullName(value);
-        Topic.TopicInfos.Replace([info]);
+        topic.AsTESFullName().SetFullName(value);
+        topic.TopicInfos.Replace([info]);
     }
 
     private TopicInfo CreateInfo(string text)
     {
         TopicInfo info = RuntimeForms.Create(FormType.Info).AsTopicInfo()!.Value;
-        info.ParentTopic = Topic;
+        info.ParentTopic = topic;
         info.DataInfo = record;
         TESCondition conditions = info.ObjConditions;
         conditions.Head = RuntimeConditions.Create(FUNCTION_DATA.FunctionID.kGetGlobalValue, global.Address);
@@ -182,10 +171,6 @@ internal sealed class PlayerTopic : IPlayerTopic
             existing.Data.FunctionData.Params.Set(0, speakerAddress);
             return;
         }
-        TESConditionItem condition = RuntimeConditions.Create(FUNCTION_DATA.FunctionID.kGetIsReference, speakerAddress);
-        TESCondition conditions = info.ObjConditions;
-        condition.Next = conditions.Head;
-        conditions.Head = condition;
-        textsToSpeakerConditions[infoText] = condition;
+        textsToSpeakerConditions[infoText] = RuntimeConditions.PrependIsReference(info, speakerAddress, 1f);
     }
 }

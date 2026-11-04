@@ -31,7 +31,7 @@ internal sealed class UnvoicedLipSync(MouthAnimator mouthAnimator, IUtility util
         });
         events.OnFrame.Subscribe(_ =>
         {
-            if (linesBySpeaker.Count > 0 && gameTarget.MenuTopicManager is not { MenuOpen: true })
+            if (linesBySpeaker.Count > 0 && !gameTarget.MenuTopicManager.MenuOpen)
             {
                 StopWhere(line => line.InConversation);
             }

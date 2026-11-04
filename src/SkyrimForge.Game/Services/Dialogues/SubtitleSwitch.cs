@@ -30,7 +30,7 @@ internal sealed class SubtitleSwitch
         this.utility = utility;
         events.OnFrame.Subscribe(_ =>
         {
-            if (dialogueSwitchedOn && gameTarget.MenuTopicManager is not { MenuOpen: true })
+            if (dialogueSwitchedOn && !gameTarget.MenuTopicManager.MenuOpen)
             {
                 RestoreDialogueSubtitles();
             }

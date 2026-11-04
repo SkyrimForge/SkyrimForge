@@ -9,7 +9,7 @@ namespace SkyrimForge.Game;
 internal static unsafe class QuestDescriptions
 {
     private static readonly Lock descriptionsLock = new();
-    private static Dictionary<nint, Description> questAddressesToDescriptions = [];
+    private static Dictionary<nint, string> questAddressesToDescriptions = [];
     private static delegate* unmanaged<nint, nint, uint, void> originalGetJournalText;
     private static bool hooked;
 
@@ -35,40 +35,27 @@ internal static unsafe class QuestDescriptions
         }
     }
 
-    internal static void Set(Quest quest, string description, string questName, ILog log)
+    internal static void Set(Quest quest, string description)
     {
         // Replaced, never mutated, because the journal reads it without the lock.
         lock (descriptionsLock)
         {
-            questAddressesToDescriptions = new Dictionary<nint, Description>(questAddressesToDescriptions)
-            {
-                [quest.Address] = new Description(description, questName, log)
-            };
+            questAddressesToDescriptions = new Dictionary<nint, string>(questAddressesToDescriptions) { [quest.Address] = description };
         }
     }
 
     [UnmanagedCallersOnly]
     private static void OnJournalText(nint quest, nint text, uint instanceId)
     {
-        if (questAddressesToDescriptions.TryGetValue(quest, out Description? description))
+        if (questAddressesToDescriptions.TryGetValue(quest, out string? description))
         {
-            try
-            {
-                NativeSupplements.SF_Quest_WriteJournalText(text, description.Text);
-                return;
-            }
-            catch (Exception ex)
-            {
-                description.Log.Write($"Quest \"{description.QuestName}\" description \"{description.Text}\" could not be written: {ex}");
-            }
+            NativeSupplements.SF_Quest_WriteJournalText(text, description);
         }
-        if (originalGetJournalText != null)
+        else
         {
             originalGetJournalText(quest, text, instanceId);
         }
     }
-
-    private sealed record Description(string Text, string QuestName, ILog Log);
 }
 
 internal static partial class NativeSupplements

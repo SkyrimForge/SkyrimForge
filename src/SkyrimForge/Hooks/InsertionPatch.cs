@@ -33,10 +33,8 @@ public sealed class InsertionPatch : CodePatch
     public InsertionPatch(nint address, BytePattern expected, ReadOnlySpan<byte> code, int displacedLength, DisplacedPlacement placement) : base(address, expected)
     {
         ThrowIfShorterThanBranch();
-        if (code.IsEmpty)
-        {
-            throw new ArgumentOutOfRangeException(nameof(code), "The code is empty.");
-        }
+        ArgumentOutOfRangeException.ThrowIfZero(code.Length, nameof(code));
+
         ArgumentOutOfRangeException.ThrowIfNegative(displacedLength);
         ArgumentOutOfRangeException.ThrowIfGreaterThan(displacedLength, expected.Length);
         if (!Enum.IsDefined(placement))

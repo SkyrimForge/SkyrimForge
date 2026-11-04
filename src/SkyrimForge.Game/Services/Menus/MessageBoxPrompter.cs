@@ -11,12 +11,10 @@ namespace SkyrimForge.Game;
 
 internal sealed class MessageBoxPrompter(ILog log, ITaskQueue taskQueue) : IMessageBoxPrompter
 {
-    private static readonly ConcurrentDictionary<int, PendingPrompt> pendingPrompts = new();
+    private static readonly ConcurrentDictionary<int, GameTaskCompletionSource<int>> pendingPrompts = new();
     private static int nextToken;
     private static bool installed;
     private static readonly Lock installLock = new();
-
-    private sealed record PendingPrompt(GameTaskCompletionSource<int> TaskCompletionSource, ILog Log);
 
     private readonly ILog log = log;
     private readonly ITaskQueue taskQueue = taskQueue;
@@ -44,22 +42,22 @@ internal sealed class MessageBoxPrompter(ILog log, ITaskQueue taskQueue) : IMess
         }
 
         int token = Interlocked.Increment(ref nextToken);
-        var pendingPrompt = new PendingPrompt(new GameTaskCompletionSource<int>(taskQueue), log);
+        var taskCompletionSource = new GameTaskCompletionSource<int>(taskQueue);
         // Registered before QueueMessage, which can report a press before it returns.
-        pendingPrompts[token] = pendingPrompt;
+        pendingPrompts[token] = taskCompletionSource;
 
         int queueResult = NativeSupplements.SF_MessageBoxData_QueueMessage(message, token, [.. buttons], buttons.Count);
         if (queueResult == 0)
         {
             CancellationTokenRegistration registration = cancellationToken.Register(() =>
             {
-                if (pendingPrompts.TryRemove(token, out PendingPrompt? canceledTask))
+                if (pendingPrompts.TryRemove(token, out GameTaskCompletionSource<int>? canceledTask))
                 {
-                    canceledTask.TaskCompletionSource.SetCanceled();
+                    canceledTask.SetCanceled();
                 }
             });
-            pendingPrompt.TaskCompletionSource.Task.ContinueWith(_ => registration.Dispose(), TaskScheduler.Default).LogFault(log);
-            return pendingPrompt.TaskCompletionSource.Task;
+            taskCompletionSource.Task.ContinueWith(_ => registration.Dispose(), TaskScheduler.Default).LogFault(log);
+            return taskCompletionSource.Task;
         }
 
         pendingPrompts.TryRemove(token, out _);
@@ -76,24 +74,17 @@ internal sealed class MessageBoxPrompter(ILog log, ITaskQueue taskQueue) : IMess
     [UnmanagedCallersOnly]
     private static void OnClosed(int token, uint button, byte wasButtonChosen)
     {
-        if (!pendingPrompts.TryRemove(token, out PendingPrompt? pendingPrompt))
+        if (!pendingPrompts.TryRemove(token, out GameTaskCompletionSource<int>? taskCompletionSource))
         {
             return;
         }
-
-        try
+        if (wasButtonChosen != 0)
         {
-            if (wasButtonChosen != 0)
-            {
-                pendingPrompt.TaskCompletionSource.SetResult((int)button);
-                return;
-            }
-
-            pendingPrompt.TaskCompletionSource.SetCanceled();
+            taskCompletionSource.SetResult((int)button);
         }
-        catch (Exception ex)
+        else
         {
-            pendingPrompt.Log.Write($"Completing the task of a closed message box threw: {ex}");
+            taskCompletionSource.SetCanceled();
         }
     }
 }

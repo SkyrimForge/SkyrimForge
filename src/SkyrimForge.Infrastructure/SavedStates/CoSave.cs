@@ -39,41 +39,15 @@ internal sealed class CoSave
         NativeGlobals.SF_Saving_SetHandlers(&OnSave, &OnLoad, &OnRevert);
     }
 
-    // An exception escaping one of these handlers ends the process.
+    // An exception escaping one of these handlers ends the process, so Save and Load catch every exception.
     [UnmanagedCallersOnly]
-    private static void OnSave() => InvokeWithTryCatch(state => state.Save(), nameof(OnSave));
+    private static void OnSave() => instance?.Save();
 
     [UnmanagedCallersOnly]
-    private static void OnLoad(uint type, uint version, nint data, uint length)
-    {
-        // Copied because the native buffer exists only for this call.
-        byte[] buffer = new byte[length];
-        if (length > 0)
-        {
-            Marshal.Copy(data, buffer, 0, (int)length);
-        }
-        InvokeWithTryCatch(state => state.Load(type, version, buffer), nameof(OnLoad));
-    }
+    private static unsafe void OnLoad(uint type, uint version, nint data, uint length) => instance?.Load(type, version, new ReadOnlySpan<byte>((void*)data, (int)length));
 
     [UnmanagedCallersOnly]
-    private static void OnRevert() => InvokeWithTryCatch(state => state.Revert(), nameof(OnRevert));
-
-    private static void InvokeWithTryCatch(Action<CoSave> action, string hookName)
-    {
-        CoSave? state = instance;
-        if (state == null)
-        {
-            return;
-        }
-        try
-        {
-            action(state);
-        }
-        catch (Exception ex)
-        {
-            state.log.Write($"{hookName} failed: {ex}");
-        }
-    }
+    private static void OnRevert() => instance?.Revert();
 
     public IPerPluginSavedState CreatePluginSavedState(string pluginTypeName) => new PerPluginSavedState(this, store, pluginTypeName);
 

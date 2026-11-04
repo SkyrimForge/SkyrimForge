@@ -301,7 +301,7 @@ internal sealed unsafe class VoiceSilencer(GameTarget gameTarget, IFrameworkFunc
     {
         // The size CommonLib asserts for DialogueResponse.
         const int dialogueResponseSize = 0x40;
-        DialogueResponse copy = DialogueResponse.OrNull(GameHeap.AllocateZeroed(gameTarget, dialogueResponseSize, "DialogueResponse"))!.Value;
+        DialogueResponse copy = DialogueResponse.FromAddress(GameHeap.AllocateZeroed(gameTarget, dialogueResponseSize));
         copy.Text = source.Text;
         copy.AnimFaceArchType = source.AnimFaceArchType;
         copy.Percent = source.Percent;

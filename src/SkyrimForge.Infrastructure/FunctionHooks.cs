@@ -15,12 +15,10 @@ internal sealed class FunctionHooks(string owner) : IFrameworkFunctionHooks
     public nint ReplaceVirtualTableEntry(string typeName, int index, nint replacement)
     {
         ArgumentNullException.ThrowIfNull(typeName);
-        ThrowIfZero(replacement);
+        ArgumentOutOfRangeException.ThrowIfZero(replacement);
         // The native side reads the entry before validating it, and an unmapped address faults.
-        if (index < 0 || index > 0x1000)
-        {
-            throw new ArgumentOutOfRangeException(nameof(index), index, "The index is outside the range of a virtual method table.");
-        }
+        ArgumentOutOfRangeException.ThrowIfNegative(index);
+        ArgumentOutOfRangeException.ThrowIfGreaterThan(index, 0x1000);
         nint vtable = NativeRuntime.SF_Hook_VTable(typeName);
         if (vtable == 0)
         {
@@ -40,15 +38,11 @@ internal sealed class FunctionHooks(string owner) : IFrameworkFunctionHooks
     /// <inheritdoc/>
     public nint FindCallSite(GameFunction caller, GameFunction callee, int occurrence = 0, int searchLength = 0x200)
     {
-        if (occurrence < 0)
-        {
-            throw new ArgumentOutOfRangeException(nameof(occurrence), occurrence, "The occurrence must be 0 or greater.");
-        }
+        ArgumentOutOfRangeException.ThrowIfNegative(occurrence);
+
         // The native side reads every byte of the search length, and a byte past the caller's code can match a call in the next function.
-        if (searchLength <= 0 || searchLength > 0x2000)
-        {
-            throw new ArgumentOutOfRangeException(nameof(searchLength), searchLength, "The search length must be between 1 and 0x2000 bytes.");
-        }
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(searchLength);
+        ArgumentOutOfRangeException.ThrowIfGreaterThan(searchLength, 0x2000);
         nint callSite = NativeGlobals.SF_Hook_FindCall(GetAddress(caller), GetAddress(callee), (uint)occurrence, (uint)searchLength);
         if (callSite == 0)
         {
@@ -73,11 +67,8 @@ internal sealed class FunctionHooks(string owner) : IFrameworkFunctionHooks
     /// <inheritdoc/>
     public nint ReplaceCallTarget(nint callSite, nint replacement)
     {
-        if (callSite == 0)
-        {
-            throw new ArgumentOutOfRangeException(nameof(callSite), "The call site is 0.");
-        }
-        ThrowIfZero(replacement);
+        ArgumentOutOfRangeException.ThrowIfZero(callSite);
+        ArgumentOutOfRangeException.ThrowIfZero(replacement);
         nint displacedAddress = NativeGlobals.SF_Hook_WriteCall(callSite, replacement, owner);
         if (displacedAddress == 0)
         {
@@ -96,7 +87,7 @@ internal sealed class FunctionHooks(string owner) : IFrameworkFunctionHooks
     /// <inheritdoc/>
     public nint DetourFunction(GameFunction function, nint replacement)
     {
-        ThrowIfZero(replacement);
+        ArgumentOutOfRangeException.ThrowIfZero(replacement);
         nint entry = GetAddress(function);
         nint trampoline = NativeGlobals.SF_Hook_WriteEntry(entry, replacement, owner);
         if (trampoline == 0)
@@ -116,14 +107,6 @@ internal sealed class FunctionHooks(string owner) : IFrameworkFunctionHooks
             throw new InvalidOperationException($"The function at 0x{entry:X} was not detoured. {reason}");
         }
         return trampoline;
-    }
-
-    private static void ThrowIfZero(nint replacement)
-    {
-        if (replacement == 0)
-        {
-            throw new ArgumentOutOfRangeException(nameof(replacement), "The replacement address is 0.");
-        }
     }
 
     private static nint GetAddress(GameFunction function) => NativeRuntime.GetAddress(function) is var address and not 0

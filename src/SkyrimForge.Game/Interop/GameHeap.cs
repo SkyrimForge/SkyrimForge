@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SkyrimForge.Hooks;
+using System;
 using System.Runtime.InteropServices;
 
 namespace SkyrimForge.Game;
@@ -6,25 +7,17 @@ namespace SkyrimForge.Game;
 // The game frees these objects, so they must come from its heap.
 internal static class GameHeap
 {
-    // The size is a multiple of eight.
-    internal static nint AllocateZeroed(GameTarget gameTarget, int size, string type)
+    internal static nint AllocateZeroed(GameTarget gameTarget, int size)
     {
         nint address = gameTarget.MemoryManager.Allocate((ulong)size, 0, false);
-        if (address == 0)
-        {
-            throw new InvalidOperationException($"The game's heap returned no memory for a {type}.");
-        }
-        for (int offset = 0; offset < size; offset += sizeof(long))
-        {
-            Marshal.WriteInt64(address, offset, 0);
-        }
+        GameMemory.AsSpan(address, size).Clear();
         return address;
     }
 
     internal static nint AllocateObject(GameTarget gameTarget, int size, string type)
     {
         nint vtable = GetVTable(type);
-        nint address = AllocateZeroed(gameTarget, size, type);
+        nint address = AllocateZeroed(gameTarget, size);
         Marshal.WriteIntPtr(address, vtable);
         return address;
     }

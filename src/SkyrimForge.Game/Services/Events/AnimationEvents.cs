@@ -58,27 +58,23 @@ internal sealed class AnimationEvents(ILog log) : IAnimationEvents
     [UnmanagedCallersOnly]
     private static void OnAnimationEvent(nint tag, nint payload, nint holder)
     {
-        try
+        if (!registrations.TryGetValue(holder, out var actorRegistrations))
         {
-            if (!registrations.TryGetValue(holder, out var actorRegistrations))
+            return;
+        }
+        var animationEvent = new AnimationEventArgs(Marshal.PtrToStringUTF8(tag) ?? string.Empty, Marshal.PtrToStringUTF8(payload) ?? string.Empty, Actor.OrNull(holder)!.Value);
+        foreach (HandlerRegistration<GameEventHandler<AnimationEventArgs>> registration in actorRegistrations)
+        {
+            try
             {
-                return;
+                registration.Handler(animationEvent);
             }
-            var animationEvent = new AnimationEventArgs(Marshal.PtrToStringUTF8(tag) ?? string.Empty, Marshal.PtrToStringUTF8(payload) ?? string.Empty, Actor.OrNull(holder)!.Value);
-            foreach (HandlerRegistration<GameEventHandler<AnimationEventArgs>> registration in actorRegistrations)
+            catch (Exception ex)
             {
-                try
-                {
-                    registration.Handler(animationEvent);
-                }
-                catch (Exception ex)
-                {
-                    RemoveRegistration(holder, registration);
-                    registration.Log.Write($"An animation event handler threw and was removed: {ex}");
-                }
+                RemoveRegistration(holder, registration);
+                registration.Log.Write($"An animation event handler threw and was removed: {ex}");
             }
         }
-        catch (Exception) { } // An exception escaping an UnmanagedCallersOnly method ends the process.
     }
 
     private static void RemoveRegistration(nint actorAddress, HandlerRegistration<GameEventHandler<AnimationEventArgs>> registration)

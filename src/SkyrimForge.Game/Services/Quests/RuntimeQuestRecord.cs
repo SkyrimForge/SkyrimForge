@@ -84,7 +84,7 @@ internal sealed class RuntimeQuestRecord(GameTarget gameTarget, IUtility utility
         ApplyJournalObjectives(quest, objectivePairs);
         ApplyFlags(quest, savedQuest, objectivePairs.Length > 0, restoreActive);
         StartOrStop(quest, recordAliases, objectivePairs.Length > 0);
-        QuestDescriptions.Set(quest, savedQuest.Description, name, log);
+        QuestDescriptions.Set(quest, savedQuest.Description);
     }
 
     private (SavedObjective SavedObjective, BGSQuestObjective Objective)[] ApplyObjectives(Quest quest, QuestRecordAliases aliases, SavedQuest savedQuest)

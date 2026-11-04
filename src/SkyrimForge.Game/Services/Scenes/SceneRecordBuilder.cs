@@ -179,7 +179,7 @@ internal sealed class SceneRecordBuilder(GameTarget gameTarget, VoiceSilencer vo
 
     private BGSSceneAction CreateAction(string type, int size, uint actorId, PhaseRange phaseRange, uint index)
     {
-        BGSSceneAction action = BGSSceneAction.OrNull(GameHeap.AllocateObject(gameTarget, size, type))!.Value;
+        BGSSceneAction action = BGSSceneAction.FromAddress(GameHeap.AllocateObject(gameTarget, size, type));
         action.ActorID = actorId;
         action.StartPhase = phaseRange.Start;
         action.EndPhase = phaseRange.End;

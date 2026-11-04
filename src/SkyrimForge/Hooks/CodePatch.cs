@@ -9,10 +9,7 @@ public abstract class CodePatch
     /// <exception cref="ArgumentNullException"><paramref name="expected"/> is <c>null</c>.</exception>
     private protected CodePatch(nint address, BytePattern expected)
     {
-        if (address == 0)
-        {
-            throw new ArgumentOutOfRangeException(nameof(address), "The address is 0.");
-        }
+        ArgumentOutOfRangeException.ThrowIfZero(address);
         ArgumentNullException.ThrowIfNull(expected);
         Address = address;
         Expected = expected;
@@ -27,21 +24,13 @@ public abstract class CodePatch
     private protected const int BranchLength = 5;
 
     /// <exception cref="ArgumentOutOfRangeException">The expected bytes are fewer than a jump.</exception>
-    private protected void ThrowIfShorterThanBranch()
-    {
-        if (Expected.Length < BranchLength)
-        {
-            throw new ArgumentOutOfRangeException("expected", $"The {Expected.Length} expected bytes are fewer than the {BranchLength} a jump occupies.");
-        }
-    }
+    private protected void ThrowIfShorterThanBranch() => ArgumentOutOfRangeException.ThrowIfLessThan(Expected.Length, BranchLength, "expected");
+
 
     /// <exception cref="ArgumentOutOfRangeException"><paramref name="target"/> is 0 or lies farther from <see cref="Address"/> than a 32-bit displacement reaches.</exception>
     private protected void ThrowIfOutOfReach(nint target)
     {
-        if (target == 0)
-        {
-            throw new ArgumentOutOfRangeException(nameof(target), "The target is 0.");
-        }
+        ArgumentOutOfRangeException.ThrowIfZero(target);
         Int128 displacement = (Int128)target - ((Int128)Address + BranchLength);
         if (displacement < int.MinValue || displacement > int.MaxValue)
         {

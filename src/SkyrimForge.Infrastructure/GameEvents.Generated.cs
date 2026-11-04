@@ -536,538 +536,520 @@ internal sealed unsafe partial class GameEvents
         log.Write("OnWaitStop registered. Its sink attaches when the game's data loads.");
     }
 
-    // The shared body of every event hook: checks the current instance and raises the event, preventing any exception from entering native code, where it would crash the game.
-    // The caller builds the args before this call, outside the check, which is safe because no read there throws: a view wrapper returns null for no address,
-    // and the shim passes neither a null fixed string nor a null chained object.
-    private static void Dispatch<TArgs>(Func<GameEvents, GameEvent<TArgs>> target, TArgs args, string hookName) where TArgs : struct
-    {
-        GameEvents? current = instance;
-        if (current != null)
-        {
-            try
-            {
-                target(current).Raise(args);
-            }
-            catch (Exception ex)
-            {
-                current.LogHookFailure(hookName, ex);
-            }
-        }
-    }
-
     [UnmanagedCallersOnly]
     private static void OnActionHook(uint type, nint actor, nint sourceForm, uint slot)
     {
-        Dispatch(current => current.onAction, new ActionEventArgs((ActionEvent.Type)type, Actor.OrNull(actor), Form.OrNull(sourceForm), (ActionEvent.Slot)slot), nameof(OnActionHook));
+        instance!.onAction.Raise(new ActionEventArgs((ActionEvent.Type)type, Actor.OrNull(actor), Form.OrNull(sourceForm), (ActionEvent.Slot)slot));
     }
 
     [UnmanagedCallersOnly]
     private static void OnActivateHook(nint objectActivated, nint actionRef)
     {
-        Dispatch(current => current.onActivate, new ActivateEventArgs(ObjectReference.OrNull(objectActivated), ObjectReference.OrNull(actionRef)), nameof(OnActivateHook));
+        instance!.onActivate.Raise(new ActivateEventArgs(ObjectReference.OrNull(objectActivated), ObjectReference.OrNull(actionRef)));
     }
 
     [UnmanagedCallersOnly]
     private static void OnActiveEffectApplyRemoveHook(nint caster, nint target, ushort activeEffectUniqueID, int isApplied)
     {
-        Dispatch(current => current.onActiveEffectApplyRemove, new ActiveEffectApplyRemoveEventArgs(ObjectReference.OrNull(caster), ObjectReference.OrNull(target), activeEffectUniqueID, isApplied != 0), nameof(OnActiveEffectApplyRemoveHook));
+        instance!.onActiveEffectApplyRemove.Raise(new ActiveEffectApplyRemoveEventArgs(ObjectReference.OrNull(caster), ObjectReference.OrNull(target), activeEffectUniqueID, isApplied != 0));
     }
 
     [UnmanagedCallersOnly]
     private static void OnActorCellHook(uint cellID, uint flags)
     {
-        Dispatch(current => current.onActorCell, new ActorCellEventArgs(cellID != 0 ? new FormId<Form>(cellID) : null, (BGSActorCellEvent.CellFlag)flags), nameof(OnActorCellHook));
+        instance!.onActorCell.Raise(new ActorCellEventArgs(cellID != 0 ? new FormId<Form>(cellID) : null, (BGSActorCellEvent.CellFlag)flags));
     }
 
     [UnmanagedCallersOnly]
     private static void OnActorDeathHook()
     {
-        Dispatch(current => current.onActorDeath, new ActorDeathEventArgs(), nameof(OnActorDeathHook));
+        instance!.onActorDeath.Raise(new ActorDeathEventArgs());
     }
 
     [UnmanagedCallersOnly]
     private static void OnActorKillHook(nint killer, nint victim)
     {
-        Dispatch(current => current.onActorKill, new ActorKillEventArgs(Actor.OrNull(killer), Actor.OrNull(victim)), nameof(OnActorKillHook));
+        instance!.onActorKill.Raise(new ActorKillEventArgs(Actor.OrNull(killer), Actor.OrNull(victim)));
     }
 
     [UnmanagedCallersOnly]
     private static void OnActorLocationChangeHook(nint actor, nint oldLoc, nint newLoc)
     {
-        Dispatch(current => current.onActorLocationChange, new ActorLocationChangeEventArgs(Actor.OrNull(actor), Location.OrNull(oldLoc), Location.OrNull(newLoc)), nameof(OnActorLocationChangeHook));
+        instance!.onActorLocationChange.Raise(new ActorLocationChangeEventArgs(Actor.OrNull(actor), Location.OrNull(oldLoc), Location.OrNull(newLoc)));
     }
 
     [UnmanagedCallersOnly]
     private static void OnBookReadHook(nint @ref, uint baseFormID, ushort uniqueID)
     {
-        Dispatch(current => current.onBookRead, new BookReadEventArgs(ObjectReference.OrNull(@ref), baseFormID != 0 ? new FormId<Form>(baseFormID) : null, uniqueID), nameof(OnBookReadHook));
+        instance!.onBookRead.Raise(new BookReadEventArgs(ObjectReference.OrNull(@ref), baseFormID != 0 ? new FormId<Form>(baseFormID) : null, uniqueID));
     }
 
     [UnmanagedCallersOnly]
     private static void OnBooksReadHook(nint book, int skillBook)
     {
-        Dispatch(current => current.onBooksRead, new BooksReadEventArgs(Book.OrNull(book), skillBook != 0), nameof(OnBooksReadHook));
+        instance!.onBooksRead.Raise(new BooksReadEventArgs(Book.OrNull(book), skillBook != 0));
     }
 
     [UnmanagedCallersOnly]
     private static void OnCameraHook(nint oldState, nint newState)
     {
-        Dispatch(current => current.onCamera, new CameraEventArgs(TESCameraState.OrNull(oldState), TESCameraState.OrNull(newState)), nameof(OnCameraHook));
+        instance!.onCamera.Raise(new CameraEventArgs(TESCameraState.OrNull(oldState), TESCameraState.OrNull(newState)));
     }
 
     [UnmanagedCallersOnly]
     private static void OnCellAttachDetachHook(nint reference, int attached)
     {
-        Dispatch(current => current.onCellAttachDetach, new CellAttachDetachEventArgs(ObjectReference.OrNull(reference), attached != 0), nameof(OnCellAttachDetachHook));
+        instance!.onCellAttachDetach.Raise(new CellAttachDetachEventArgs(ObjectReference.OrNull(reference), attached != 0));
     }
 
     [UnmanagedCallersOnly]
     private static void OnCellFullyLoadedHook(nint cell)
     {
-        Dispatch(current => current.onCellFullyLoaded, new CellFullyLoadedEventArgs(Cell.OrNull(cell)), nameof(OnCellFullyLoadedHook));
+        instance!.onCellFullyLoaded.Raise(new CellFullyLoadedEventArgs(Cell.OrNull(cell)));
     }
 
     [UnmanagedCallersOnly]
     private static void OnCellReadyToApplyDecalsHook()
     {
-        Dispatch(current => current.onCellReadyToApplyDecals, new CellReadyToApplyDecalsEventArgs(), nameof(OnCellReadyToApplyDecalsHook));
+        instance!.onCellReadyToApplyDecals.Raise(new CellReadyToApplyDecalsEventArgs());
     }
 
     [UnmanagedCallersOnly]
     private static void OnChestsLootedHook()
     {
-        Dispatch(current => current.onChestsLooted, new ChestsLootedEventArgs(), nameof(OnChestsLootedHook));
+        instance!.onChestsLooted.Raise(new ChestsLootedEventArgs());
     }
 
     [UnmanagedCallersOnly]
     private static void OnCombatHook(nint actor, nint targetActor, uint newState)
     {
-        Dispatch(current => current.onCombat, new CombatEventArgs(Actor.OrNull(actor), Actor.OrNull(targetActor), (ACTOR_COMBAT_STATE)newState), nameof(OnCombatHook));
+        instance!.onCombat.Raise(new CombatEventArgs(Actor.OrNull(actor), Actor.OrNull(targetActor), (ACTOR_COMBAT_STATE)newState));
     }
 
     [UnmanagedCallersOnly]
     private static void OnContainerChangedHook(uint oldContainer, uint newContainer, uint baseObj, int itemCount, nint reference, ushort uniqueID)
     {
-        Dispatch(current => current.onContainerChanged, new ContainerChangedEventArgs(oldContainer != 0 ? new FormId<Form>(oldContainer) : null, newContainer != 0 ? new FormId<Form>(newContainer) : null, baseObj != 0 ? new FormId<Form>(baseObj) : null, itemCount, ObjectReference.OrNull(reference), uniqueID), nameof(OnContainerChangedHook));
+        instance!.onContainerChanged.Raise(new ContainerChangedEventArgs(oldContainer != 0 ? new FormId<Form>(oldContainer) : null, newContainer != 0 ? new FormId<Form>(newContainer) : null, baseObj != 0 ? new FormId<Form>(baseObj) : null, itemCount, ObjectReference.OrNull(reference), uniqueID));
     }
 
     [UnmanagedCallersOnly]
     private static void OnCriticalHitHook(nint aggressor, nint weapon, int sneakHit)
     {
-        Dispatch(current => current.onCriticalHit, new CriticalHitEventArgs(ObjectReference.OrNull(aggressor), Weapon.OrNull(weapon), sneakHit != 0), nameof(OnCriticalHitHook));
+        instance!.onCriticalHit.Raise(new CriticalHitEventArgs(ObjectReference.OrNull(aggressor), Weapon.OrNull(weapon), sneakHit != 0));
     }
 
     [UnmanagedCallersOnly]
     private static void OnCrosshairReferenceHook(nint crosshairRef)
     {
-        Dispatch(current => current.onCrosshairReference, new CrosshairReferenceEventArgs(ObjectReference.OrNull(crosshairRef)), nameof(OnCrosshairReferenceHook));
+        instance!.onCrosshairReference.Raise(new CrosshairReferenceEventArgs(ObjectReference.OrNull(crosshairRef)));
     }
 
     [UnmanagedCallersOnly]
     private static void OnDeathHook(nint actorDying, nint actorKiller, int dead)
     {
-        Dispatch(current => current.onDeath, new DeathEventArgs(Actor.OrNull(actorDying), Actor.OrNull(actorKiller), dead != 0), nameof(OnDeathHook));
+        instance!.onDeath.Raise(new DeathEventArgs(Actor.OrNull(actorDying), Actor.OrNull(actorKiller), dead != 0));
     }
 
     [UnmanagedCallersOnly]
     private static void OnDestructionStageChangedHook()
     {
-        Dispatch(current => current.onDestructionStageChanged, new DestructionStageChangedEventArgs(), nameof(OnDestructionStageChangedHook));
+        instance!.onDestructionStageChanged.Raise(new DestructionStageChangedEventArgs());
     }
 
     [UnmanagedCallersOnly]
     private static void OnDisarmedHook(nint source, nint target)
     {
-        Dispatch(current => current.onDisarmed, new DisarmedEventArgs(Actor.OrNull(source), Actor.OrNull(target)), nameof(OnDisarmedHook));
+        instance!.onDisarmed.Raise(new DisarmedEventArgs(Actor.OrNull(source), Actor.OrNull(target)));
     }
 
     [UnmanagedCallersOnly]
     private static void OnDragonSoulsGainedHook(float souls)
     {
-        Dispatch(current => current.onDragonSoulsGained, new DragonSoulsGainedEventArgs(souls), nameof(OnDragonSoulsGainedHook));
+        instance!.onDragonSoulsGained.Raise(new DragonSoulsGainedEventArgs(souls));
     }
 
     [UnmanagedCallersOnly]
     private static void OnEnterBleedoutHook(nint actor)
     {
-        Dispatch(current => current.onEnterBleedout, new EnterBleedoutEventArgs(Actor.OrNull(actor)), nameof(OnEnterBleedoutHook));
+        instance!.onEnterBleedout.Raise(new EnterBleedoutEventArgs(Actor.OrNull(actor)));
     }
 
     [UnmanagedCallersOnly]
     private static void OnEquipHook(nint actor, uint baseObject, uint originalRefr, ushort uniqueID, int equipped)
     {
-        Dispatch(current => current.onEquip, new EquipEventArgs(Actor.OrNull(actor), baseObject != 0 ? new FormId<Form>(baseObject) : null, originalRefr != 0 ? new FormId<Form>(originalRefr) : null, uniqueID, equipped != 0), nameof(OnEquipHook));
+        instance!.onEquip.Raise(new EquipEventArgs(Actor.OrNull(actor), baseObject != 0 ? new FormId<Form>(baseObject) : null, originalRefr != 0 ? new FormId<Form>(originalRefr) : null, uniqueID, equipped != 0));
     }
 
     [UnmanagedCallersOnly]
     private static void OnEventProcessedHook()
     {
-        Dispatch(current => current.onEventProcessed, new EventProcessedEventArgs(), nameof(OnEventProcessedHook));
+        instance!.onEventProcessed.Raise(new EventProcessedEventArgs());
     }
 
     [UnmanagedCallersOnly]
     private static void OnFormDeleteHook(uint formID)
     {
-        Dispatch(current => current.onFormDelete, new FormDeleteEventArgs(formID != 0 ? new FormId<Form>(formID) : null), nameof(OnFormDeleteHook));
+        instance!.onFormDelete.Raise(new FormDeleteEventArgs(formID != 0 ? new FormId<Form>(formID) : null));
     }
 
     [UnmanagedCallersOnly]
     private static void OnFurnitureHook(nint actor, nint targetFurniture, uint type)
     {
-        Dispatch(current => current.onFurniture, new FurnitureEventArgs(Actor.OrNull(actor), ObjectReference.OrNull(targetFurniture), (TESFurnitureEvent.FurnitureEventType)type), nameof(OnFurnitureHook));
+        instance!.onFurniture.Raise(new FurnitureEventArgs(Actor.OrNull(actor), ObjectReference.OrNull(targetFurniture), (TESFurnitureEvent.FurnitureEventType)type));
     }
 
     [UnmanagedCallersOnly]
     private static void OnGrabReleaseHook(nint @ref, int grabbed)
     {
-        Dispatch(current => current.onGrabRelease, new GrabReleaseEventArgs(ObjectReference.OrNull(@ref), grabbed != 0), nameof(OnGrabReleaseHook));
+        instance!.onGrabRelease.Raise(new GrabReleaseEventArgs(ObjectReference.OrNull(@ref), grabbed != 0));
     }
 
     [UnmanagedCallersOnly]
     private static void OnHitHook(nint target, nint cause, uint source, uint projectile, byte flags)
     {
-        Dispatch(current => current.onHit, new HitEventArgs(ObjectReference.OrNull(target), ObjectReference.OrNull(cause), source != 0 ? new FormId<Form>(source) : null, projectile != 0 ? new FormId<Form>(projectile) : null, (TESHitEvent.Flag)flags), nameof(OnHitHook));
+        instance!.onHit.Raise(new HitEventArgs(ObjectReference.OrNull(target), ObjectReference.OrNull(cause), source != 0 ? new FormId<Form>(source) : null, projectile != 0 ? new FormId<Form>(projectile) : null, (TESHitEvent.Flag)flags));
     }
 
     [UnmanagedCallersOnly]
     private static void OnInitScriptHook(nint objectInitialized)
     {
-        Dispatch(current => current.onInitScript, new InitScriptEventArgs(ObjectReference.OrNull(objectInitialized)), nameof(OnInitScriptHook));
+        instance!.onInitScript.Raise(new InitScriptEventArgs(ObjectReference.OrNull(objectInitialized)));
     }
 
     [UnmanagedCallersOnly]
     private static void OnInputHook(nint raised)
     {
-        Dispatch(current => current.onInput, new InputEventArgs(InputEvent.OrNull(raised)!.Value), nameof(OnInputHook));
+        instance!.onInput.Raise(new InputEventArgs(InputEvent.OrNull(raised)!.Value));
     }
 
     [UnmanagedCallersOnly]
     private static void OnInventoryHook(nint objRefr, nint entryData, int newCount, int prevCount)
     {
-        Dispatch(current => current.onInventory, new InventoryEventArgs(ObjectReference.OrNull(objRefr), InventoryEntryData.OrNull(entryData), newCount, prevCount), nameof(OnInventoryHook));
+        instance!.onInventory.Raise(new InventoryEventArgs(ObjectReference.OrNull(objRefr), InventoryEntryData.OrNull(entryData), newCount, prevCount));
     }
 
     [UnmanagedCallersOnly]
     private static void OnItemCraftedHook(nint item)
     {
-        Dispatch(current => current.onItemCrafted, new ItemCraftedEventArgs(Form.OrNull(item)), nameof(OnItemCraftedHook));
+        instance!.onItemCrafted.Raise(new ItemCraftedEventArgs(Form.OrNull(item)));
     }
 
     [UnmanagedCallersOnly]
     private static void OnItemHarvestedHook(nint produceItem, nint harvester)
     {
-        Dispatch(current => current.onItemHarvested, new ItemHarvestedEventArgs(TESBoundObject.OrNull(produceItem), Actor.OrNull(harvester)), nameof(OnItemHarvestedHook));
+        instance!.onItemHarvested.Raise(new ItemHarvestedEventArgs(TESBoundObject.OrNull(produceItem), Actor.OrNull(harvester)));
     }
 
     [UnmanagedCallersOnly]
     private static void OnItemsPickpocketedHook(int numItems)
     {
-        Dispatch(current => current.onItemsPickpocketed, new ItemsPickpocketedEventArgs(numItems), nameof(OnItemsPickpocketedHook));
+        instance!.onItemsPickpocketed.Raise(new ItemsPickpocketedEventArgs(numItems));
     }
 
     [UnmanagedCallersOnly]
     private static void OnLevelIncreaseHook(nint player, ushort newLevel)
     {
-        Dispatch(current => current.onLevelIncrease, new LevelIncreaseEventArgs(PlayerCharacter.OrNull(player), newLevel), nameof(OnLevelIncreaseHook));
+        instance!.onLevelIncrease.Raise(new LevelIncreaseEventArgs(PlayerCharacter.OrNull(player), newLevel));
     }
 
     [UnmanagedCallersOnly]
     private static void OnLoadGameHook()
     {
-        Dispatch(current => current.onLoadGame, new LoadGameEventArgs(), nameof(OnLoadGameHook));
+        instance!.onLoadGame.Raise(new LoadGameEventArgs());
     }
 
     [UnmanagedCallersOnly]
     private static void OnLocationClearedHook()
     {
-        Dispatch(current => current.onLocationCleared, new LocationClearedEventArgs(), nameof(OnLocationClearedHook));
+        instance!.onLocationCleared.Raise(new LocationClearedEventArgs());
     }
 
     [UnmanagedCallersOnly]
     private static void OnLocationDiscoveryHook(nint mapMarkerData, nint worldspaceID)
     {
-        Dispatch(current => current.onLocationDiscovery, new LocationDiscoveryEventArgs(MapMarkerData.OrNull(mapMarkerData), Marshal.PtrToStringUTF8(worldspaceID)), nameof(OnLocationDiscoveryHook));
+        instance!.onLocationDiscovery.Raise(new LocationDiscoveryEventArgs(MapMarkerData.OrNull(mapMarkerData), Marshal.PtrToStringUTF8(worldspaceID)));
     }
 
     [UnmanagedCallersOnly]
     private static void OnLockChangedHook(nint lockedObject)
     {
-        Dispatch(current => current.onLockChanged, new LockChangedEventArgs(ObjectReference.OrNull(lockedObject)), nameof(OnLockChangedHook));
+        instance!.onLockChanged.Raise(new LockChangedEventArgs(ObjectReference.OrNull(lockedObject)));
     }
 
     [UnmanagedCallersOnly]
     private static void OnMagicEffectApplyHook(nint target, nint caster, uint magicEffect)
     {
-        Dispatch(current => current.onMagicEffectApply, new MagicEffectApplyEventArgs(ObjectReference.OrNull(target), ObjectReference.OrNull(caster), magicEffect != 0 ? new FormId<Form>(magicEffect) : null), nameof(OnMagicEffectApplyHook));
+        instance!.onMagicEffectApply.Raise(new MagicEffectApplyEventArgs(ObjectReference.OrNull(target), ObjectReference.OrNull(caster), magicEffect != 0 ? new FormId<Form>(magicEffect) : null));
     }
 
     [UnmanagedCallersOnly]
     private static void OnMagicWardHitHook()
     {
-        Dispatch(current => current.onMagicWardHit, new MagicWardHitEventArgs(), nameof(OnMagicWardHitHook));
+        instance!.onMagicWardHit.Raise(new MagicWardHitEventArgs());
     }
 
     [UnmanagedCallersOnly]
     private static void OnMenuModeChangeHook(nint menu, byte mode)
     {
-        Dispatch(current => current.onMenuModeChange, new MenuModeChangeEventArgs(BindingUtility.CopyNonNullString(menu), (MenuModeChangeEvent.Mode)BindingUtility.WidenEnum(mode)), nameof(OnMenuModeChangeHook));
+        instance!.onMenuModeChange.Raise(new MenuModeChangeEventArgs(BindingUtility.CopyNonNullString(menu), (MenuModeChangeEvent.Mode)BindingUtility.WidenEnum(mode)));
     }
 
     [UnmanagedCallersOnly]
     private static void OnMenuOpenCloseHook(nint menuName, int opening)
     {
-        Dispatch(current => current.onMenuOpenClose, new MenuOpenCloseEventArgs(BindingUtility.CopyNonNullString(menuName), opening != 0), nameof(OnMenuOpenCloseHook));
+        instance!.onMenuOpenClose.Raise(new MenuOpenCloseEventArgs(BindingUtility.CopyNonNullString(menuName), opening != 0));
     }
 
     [UnmanagedCallersOnly]
     private static void OnModCallbackHook(nint eventName, nint strArg, float numArg, nint sender)
     {
-        Dispatch(current => current.onModCallback, new ModCallbackEventArgs(BindingUtility.CopyNonNullString(eventName), BindingUtility.CopyNonNullString(strArg), numArg, Form.OrNull(sender)), nameof(OnModCallbackHook));
+        instance!.onModCallback.Raise(new ModCallbackEventArgs(BindingUtility.CopyNonNullString(eventName), BindingUtility.CopyNonNullString(strArg), numArg, Form.OrNull(sender)));
     }
 
     [UnmanagedCallersOnly]
     private static void OnMoveAttachDetachHook(nint movedRef, int isCellAttached)
     {
-        Dispatch(current => current.onMoveAttachDetach, new MoveAttachDetachEventArgs(ObjectReference.OrNull(movedRef), isCellAttached != 0), nameof(OnMoveAttachDetachHook));
+        instance!.onMoveAttachDetach.Raise(new MoveAttachDetachEventArgs(ObjectReference.OrNull(movedRef), isCellAttached != 0));
     }
 
     [UnmanagedCallersOnly]
     private static void OnNiNodeUpdateHook(nint reference)
     {
-        Dispatch(current => current.onNiNodeUpdate, new NiNodeUpdateEventArgs(ObjectReference.OrNull(reference)), nameof(OnNiNodeUpdateHook));
+        instance!.onNiNodeUpdate.Raise(new NiNodeUpdateEventArgs(ObjectReference.OrNull(reference)));
     }
 
     [UnmanagedCallersOnly]
     private static void OnObjectLoadedHook(uint formID, int loaded)
     {
-        Dispatch(current => current.onObjectLoaded, new ObjectLoadedEventArgs(formID != 0 ? new FormId<Form>(formID) : null, loaded != 0), nameof(OnObjectLoadedHook));
+        instance!.onObjectLoaded.Raise(new ObjectLoadedEventArgs(formID != 0 ? new FormId<Form>(formID) : null, loaded != 0));
     }
 
     [UnmanagedCallersOnly]
     private static void OnObjectREFRTranslationHook()
     {
-        Dispatch(current => current.onObjectREFRTranslation, new ObjectREFRTranslationEventArgs(), nameof(OnObjectREFRTranslationHook));
+        instance!.onObjectREFRTranslation.Raise(new ObjectREFRTranslationEventArgs());
     }
 
     [UnmanagedCallersOnly]
     private static void OnObjectiveStateHook(nint objective, QUEST_OBJECTIVE_STATE oldState, QUEST_OBJECTIVE_STATE newState)
     {
-        Dispatch(current => current.onObjectiveState, new ObjectiveStateEventArgs(BGSQuestObjective.OrNull(objective), oldState, newState), nameof(OnObjectiveStateHook));
+        instance!.onObjectiveState.Raise(new ObjectiveStateEventArgs(BGSQuestObjective.OrNull(objective), oldState, newState));
     }
 
     [UnmanagedCallersOnly]
     private static void OnOpenCloseHook(nint @ref, nint activeRef, int opened)
     {
-        Dispatch(current => current.onOpenClose, new OpenCloseEventArgs(ObjectReference.OrNull(@ref), ObjectReference.OrNull(activeRef), opened != 0), nameof(OnOpenCloseHook));
+        instance!.onOpenClose.Raise(new OpenCloseEventArgs(ObjectReference.OrNull(@ref), ObjectReference.OrNull(activeRef), opened != 0));
     }
 
     [UnmanagedCallersOnly]
     private static void OnPackageHook()
     {
-        Dispatch(current => current.onPackage, new PackageEventArgs(), nameof(OnPackageHook));
+        instance!.onPackage.Raise(new PackageEventArgs());
     }
 
     [UnmanagedCallersOnly]
     private static void OnPapyrusLogHook(nint errorMsg, SkyrimForge.Game.BSScript.ErrorLogger.Severity severity)
     {
-        Dispatch(current => current.onPapyrusLog, new PapyrusLogEventArgs(Marshal.PtrToStringUTF8(errorMsg), severity), nameof(OnPapyrusLogHook));
+        instance!.onPapyrusLog.Raise(new PapyrusLogEventArgs(Marshal.PtrToStringUTF8(errorMsg), severity));
     }
 
     [UnmanagedCallersOnly]
     private static void OnPapyrusStatsHook(uint runningStacksCount, uint suspendedStacksCount, uint functionMsgCount, uint detachedObjectCount)
     {
-        Dispatch(current => current.onPapyrusStats, new PapyrusStatsEventArgs(runningStacksCount, suspendedStacksCount, functionMsgCount, detachedObjectCount), nameof(OnPapyrusStatsHook));
+        instance!.onPapyrusStats.Raise(new PapyrusStatsEventArgs(runningStacksCount, suspendedStacksCount, functionMsgCount, detachedObjectCount));
     }
 
     [UnmanagedCallersOnly]
     private static void OnPerkEntryRunHook()
     {
-        Dispatch(current => current.onPerkEntryRun, new PerkEntryRunEventArgs(), nameof(OnPerkEntryRunHook));
+        instance!.onPerkEntryRun.Raise(new PerkEntryRunEventArgs());
     }
 
     [UnmanagedCallersOnly]
     private static void OnPlayerBowShotHook(uint weapon, uint ammo, float shotPower, int isSunGazing)
     {
-        Dispatch(current => current.onPlayerBowShot, new PlayerBowShotEventArgs(weapon != 0 ? new FormId<Form>(weapon) : null, ammo != 0 ? new FormId<Form>(ammo) : null, shotPower, isSunGazing != 0), nameof(OnPlayerBowShotHook));
+        instance!.onPlayerBowShot.Raise(new PlayerBowShotEventArgs(weapon != 0 ? new FormId<Form>(weapon) : null, ammo != 0 ? new FormId<Form>(ammo) : null, shotPower, isSunGazing != 0));
     }
 
     [UnmanagedCallersOnly]
     private static void OnPositionPlayerHook(uint type)
     {
-        Dispatch(current => current.onPositionPlayer, new PositionPlayerEventArgs((PositionPlayerEvent.EVENT_TYPE)type), nameof(OnPositionPlayerHook));
+        instance!.onPositionPlayer.Raise(new PositionPlayerEventArgs((PositionPlayerEvent.EVENT_TYPE)type));
     }
 
     [UnmanagedCallersOnly]
     private static void OnQuestInitHook(uint formID)
     {
-        Dispatch(current => current.onQuestInit, new QuestInitEventArgs(formID != 0 ? new FormId<Form>(formID) : null), nameof(OnQuestInitHook));
+        instance!.onQuestInit.Raise(new QuestInitEventArgs(formID != 0 ? new FormId<Form>(formID) : null));
     }
 
     [UnmanagedCallersOnly]
     private static void OnQuestStageHook(nint finishedCallback, uint formID, ushort stage, byte itemIndex)
     {
-        Dispatch(current => current.onQuestStage, new QuestStageEventArgs(finishedCallback, formID != 0 ? new FormId<Form>(formID) : null, stage, itemIndex), nameof(OnQuestStageHook));
+        instance!.onQuestStage.Raise(new QuestStageEventArgs(finishedCallback, formID != 0 ? new FormId<Form>(formID) : null, stage, itemIndex));
     }
 
     [UnmanagedCallersOnly]
     private static void OnQuestStageItemDoneHook()
     {
-        Dispatch(current => current.onQuestStageItemDone, new QuestStageItemDoneEventArgs(), nameof(OnQuestStageItemDoneHook));
+        instance!.onQuestStageItemDone.Raise(new QuestStageItemDoneEventArgs());
     }
 
     [UnmanagedCallersOnly]
     private static void OnQuestStartStopHook(uint formID, int started, int failed)
     {
-        Dispatch(current => current.onQuestStartStop, new QuestStartStopEventArgs(formID != 0 ? new FormId<Form>(formID) : null, started != 0, failed != 0), nameof(OnQuestStartStopHook));
+        instance!.onQuestStartStop.Raise(new QuestStartStopEventArgs(formID != 0 ? new FormId<Form>(formID) : null, started != 0, failed != 0));
     }
 
     [UnmanagedCallersOnly]
     private static void OnQuestStatusHook(nint quest, QuestStatus.Status status)
     {
-        Dispatch(current => current.onQuestStatus, new QuestStatusEventArgs(Quest.OrNull(quest), status), nameof(OnQuestStatusHook));
+        instance!.onQuestStatus.Raise(new QuestStatusEventArgs(Quest.OrNull(quest), status));
     }
 
     [UnmanagedCallersOnly]
     private static void OnResetHook(nint @object)
     {
-        Dispatch(current => current.onReset, new ResetEventArgs(ObjectReference.OrNull(@object)), nameof(OnResetHook));
+        instance!.onReset.Raise(new ResetEventArgs(ObjectReference.OrNull(@object)));
     }
 
     [UnmanagedCallersOnly]
     private static void OnResolveNPCTemplatesHook(uint templateID)
     {
-        Dispatch(current => current.onResolveNPCTemplates, new ResolveNPCTemplatesEventArgs(templateID != 0 ? new FormId<Form>(templateID) : null), nameof(OnResolveNPCTemplatesHook));
+        instance!.onResolveNPCTemplates.Raise(new ResolveNPCTemplatesEventArgs(templateID != 0 ? new FormId<Form>(templateID) : null));
     }
 
     [UnmanagedCallersOnly]
     private static void OnSceneHook()
     {
-        Dispatch(current => current.onScene, new SceneEventArgs(), nameof(OnSceneHook));
+        instance!.onScene.Raise(new SceneEventArgs());
     }
 
     [UnmanagedCallersOnly]
     private static void OnSceneActionHook()
     {
-        Dispatch(current => current.onSceneAction, new SceneActionEventArgs(), nameof(OnSceneActionHook));
+        instance!.onSceneAction.Raise(new SceneActionEventArgs());
     }
 
     [UnmanagedCallersOnly]
     private static void OnScenePhaseHook()
     {
-        Dispatch(current => current.onScenePhase, new ScenePhaseEventArgs(), nameof(OnScenePhaseHook));
+        instance!.onScenePhase.Raise(new ScenePhaseEventArgs());
     }
 
     [UnmanagedCallersOnly]
     private static void OnSellHook()
     {
-        Dispatch(current => current.onSell, new SellEventArgs(), nameof(OnSellHook));
+        instance!.onSell.Raise(new SellEventArgs());
     }
 
     [UnmanagedCallersOnly]
     private static void OnShoutAttackHook(nint shout)
     {
-        Dispatch(current => current.onShoutAttack, new ShoutAttackEventArgs(Shout.OrNull(shout)), nameof(OnShoutAttackHook));
+        instance!.onShoutAttack.Raise(new ShoutAttackEventArgs(Shout.OrNull(shout)));
     }
 
     [UnmanagedCallersOnly]
     private static void OnSkillIncreaseHook(nint player, ActorValue actorValue)
     {
-        Dispatch(current => current.onSkillIncrease, new SkillIncreaseEventArgs(PlayerCharacter.OrNull(player), actorValue), nameof(OnSkillIncreaseHook));
+        instance!.onSkillIncrease.Raise(new SkillIncreaseEventArgs(PlayerCharacter.OrNull(player), actorValue));
     }
 
     [UnmanagedCallersOnly]
     private static void OnSleepStartHook()
     {
-        Dispatch(current => current.onSleepStart, new SleepStartEventArgs(), nameof(OnSleepStartHook));
+        instance!.onSleepStart.Raise(new SleepStartEventArgs());
     }
 
     [UnmanagedCallersOnly]
     private static void OnSleepStopHook(int interrupted)
     {
-        Dispatch(current => current.onSleepStop, new SleepStopEventArgs(interrupted != 0), nameof(OnSleepStopHook));
+        instance!.onSleepStop.Raise(new SleepStopEventArgs(interrupted != 0));
     }
 
     [UnmanagedCallersOnly]
     private static void OnSoulsTrappedHook(nint trapper, nint target)
     {
-        Dispatch(current => current.onSoulsTrapped, new SoulsTrappedEventArgs(Actor.OrNull(trapper), Actor.OrNull(target)), nameof(OnSoulsTrappedHook));
+        instance!.onSoulsTrapped.Raise(new SoulsTrappedEventArgs(Actor.OrNull(trapper), Actor.OrNull(target)));
     }
 
     [UnmanagedCallersOnly]
     private static void OnSpellCastHook(nint @object, uint spell)
     {
-        Dispatch(current => current.onSpellCast, new SpellCastEventArgs(ObjectReference.OrNull(@object), spell != 0 ? new FormId<Form>(spell) : null), nameof(OnSpellCastHook));
+        instance!.onSpellCast.Raise(new SpellCastEventArgs(ObjectReference.OrNull(@object), spell != 0 ? new FormId<Form>(spell) : null));
     }
 
     [UnmanagedCallersOnly]
     private static void OnSpellsLearnedHook()
     {
-        Dispatch(current => current.onSpellsLearned, new SpellsLearnedEventArgs(), nameof(OnSpellsLearnedHook));
+        instance!.onSpellsLearned.Raise(new SpellsLearnedEventArgs());
     }
 
     [UnmanagedCallersOnly]
     private static void OnSwitchRaceCompleteHook(nint subject)
     {
-        Dispatch(current => current.onSwitchRaceComplete, new SwitchRaceCompleteEventArgs(Actor.OrNull(subject)), nameof(OnSwitchRaceCompleteHook));
+        instance!.onSwitchRaceComplete.Raise(new SwitchRaceCompleteEventArgs(Actor.OrNull(subject)));
     }
 
     [UnmanagedCallersOnly]
     private static void OnTopicInfoHook(nint callback, nint speakerRef, uint topicInfoFormID, uint type, ushort stage)
     {
-        Dispatch(current => current.onTopicInfo, new TopicInfoEventArgs(SkyrimForge.Game.REFREventCallbacks.IEventCallback.OrNull(callback), ObjectReference.OrNull(speakerRef), topicInfoFormID != 0 ? new FormId<Form>(topicInfoFormID) : null, (TESTopicInfoEvent.TopicInfoEventType)type, stage), nameof(OnTopicInfoHook));
+        instance!.onTopicInfo.Raise(new TopicInfoEventArgs(SkyrimForge.Game.REFREventCallbacks.IEventCallback.OrNull(callback), ObjectReference.OrNull(speakerRef), topicInfoFormID != 0 ? new FormId<Form>(topicInfoFormID) : null, (TESTopicInfoEvent.TopicInfoEventType)type, stage));
     }
 
     [UnmanagedCallersOnly]
     private static void OnTrackedStatsHook(nint stat, int value)
     {
-        Dispatch(current => current.onTrackedStats, new TrackedStatsEventArgs(BindingUtility.CopyNonNullString(stat), value), nameof(OnTrackedStatsHook));
+        instance!.onTrackedStats.Raise(new TrackedStatsEventArgs(BindingUtility.CopyNonNullString(stat), value));
     }
 
     [UnmanagedCallersOnly]
     private static void OnTrapHitHook()
     {
-        Dispatch(current => current.onTrapHit, new TrapHitEventArgs(), nameof(OnTrapHitHook));
+        instance!.onTrapHit.Raise(new TrapHitEventArgs());
     }
 
     [UnmanagedCallersOnly]
     private static void OnTriggerHook(nint trigger, nint actionRef)
     {
-        Dispatch(current => current.onTrigger, new TriggerEventArgs(ObjectReference.OrNull(trigger), ObjectReference.OrNull(actionRef)), nameof(OnTriggerHook));
+        instance!.onTrigger.Raise(new TriggerEventArgs(ObjectReference.OrNull(trigger), ObjectReference.OrNull(actionRef)));
     }
 
     [UnmanagedCallersOnly]
     private static void OnTriggerEnterHook(nint trigger, nint actionRef)
     {
-        Dispatch(current => current.onTriggerEnter, new TriggerEnterEventArgs(ObjectReference.OrNull(trigger), ObjectReference.OrNull(actionRef)), nameof(OnTriggerEnterHook));
+        instance!.onTriggerEnter.Raise(new TriggerEnterEventArgs(ObjectReference.OrNull(trigger), ObjectReference.OrNull(actionRef)));
     }
 
     [UnmanagedCallersOnly]
     private static void OnTriggerLeaveHook(nint trigger, nint actionRef)
     {
-        Dispatch(current => current.onTriggerLeave, new TriggerLeaveEventArgs(ObjectReference.OrNull(trigger), ObjectReference.OrNull(actionRef)), nameof(OnTriggerLeaveHook));
+        instance!.onTriggerLeave.Raise(new TriggerLeaveEventArgs(ObjectReference.OrNull(trigger), ObjectReference.OrNull(actionRef)));
     }
 
     [UnmanagedCallersOnly]
     private static void OnUniqueIDChangeHook(uint oldBaseID, uint newBaseID, uint objectID, ushort oldUniqueID, ushort newUniqueID)
     {
-        Dispatch(current => current.onUniqueIDChange, new UniqueIDChangeEventArgs(oldBaseID != 0 ? new FormId<Form>(oldBaseID) : null, newBaseID != 0 ? new FormId<Form>(newBaseID) : null, objectID != 0 ? new FormId<Form>(objectID) : null, oldUniqueID, newUniqueID), nameof(OnUniqueIDChangeHook));
+        instance!.onUniqueIDChange.Raise(new UniqueIDChangeEventArgs(oldBaseID != 0 ? new FormId<Form>(oldBaseID) : null, newBaseID != 0 ? new FormId<Form>(newBaseID) : null, objectID != 0 ? new FormId<Form>(objectID) : null, oldUniqueID, newUniqueID));
     }
 
     [UnmanagedCallersOnly]
     private static void OnUserEventEnabledHook(uint newUserEventFlag, uint oldUserEventFlag)
     {
-        Dispatch(current => current.onUserEventEnabled, new UserEventEnabledEventArgs((UserEvents.USER_EVENT_FLAG)newUserEventFlag, (UserEvents.USER_EVENT_FLAG)oldUserEventFlag), nameof(OnUserEventEnabledHook));
+        instance!.onUserEventEnabled.Raise(new UserEventEnabledEventArgs((UserEvents.USER_EVENT_FLAG)newUserEventFlag, (UserEvents.USER_EVENT_FLAG)oldUserEventFlag));
     }
 
     [UnmanagedCallersOnly]
     private static void OnWaitStartHook()
     {
-        Dispatch(current => current.onWaitStart, new WaitStartEventArgs(), nameof(OnWaitStartHook));
+        instance!.onWaitStart.Raise(new WaitStartEventArgs());
     }
 
     [UnmanagedCallersOnly]
     private static void OnWaitStopHook(int interrupted)
     {
-        Dispatch(current => current.onWaitStop, new WaitStopEventArgs(interrupted != 0), nameof(OnWaitStopHook));
+        instance!.onWaitStop.Raise(new WaitStopEventArgs(interrupted != 0));
     }
+
 }

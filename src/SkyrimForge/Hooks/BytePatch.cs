@@ -17,10 +17,8 @@ public sealed class BytePatch : CodePatch
     public BytePatch(nint address, BytePattern expected, int offset, ReadOnlySpan<byte> replacement) : base(address, expected)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset);
-        if (replacement.IsEmpty)
-        {
-            throw new ArgumentOutOfRangeException(nameof(replacement), "The replacement is empty.");
-        }
+        ArgumentOutOfRangeException.ThrowIfZero(replacement.Length, nameof(replacement));
+
         if (offset > expected.Length - replacement.Length)
         {
             throw new ArgumentOutOfRangeException(nameof(replacement),

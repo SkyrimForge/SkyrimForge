@@ -150,26 +150,18 @@ internal sealed class PapyrusFunctionRegistrar(ILog log) : IPapyrusFunctionRegis
         };
     }
 
-    // Exceptions are caught because none may propagate into the Papyrus VM's dispatch.
     [UnmanagedCallersOnly]
     private static byte OnCall(int token, nint returnValueAddress, nint frameAddress, nint selfAddress, uint stackId)
     {
-        try
-        {
-            // The Papyrus VM passes a receiver Variable for every function, None for a static one, so a zero address is a fault.
-            if (!implementations.TryGetValue(token, out Func<Variable, StackFrame, Variable, uint, bool>? implementation)
-                || Variable.OrNull(returnValueAddress) is not { } returnValue
-                || StackFrame.OrNull(frameAddress) is not { } frame
-                || Variable.OrNull(selfAddress) is not { } self)
-            {
-                return 0;
-            }
-            return implementation(returnValue, frame, self, stackId) ? (byte)1 : (byte)0;
-        }
-        catch (Exception)
+        // The Papyrus VM passes a receiver Variable for every function, None for a static one, so a zero address is a fault.
+        if (!implementations.TryGetValue(token, out Func<Variable, StackFrame, Variable, uint, bool>? implementation)
+            || Variable.OrNull(returnValueAddress) is not { } returnValue
+            || StackFrame.OrNull(frameAddress) is not { } frame
+            || Variable.OrNull(selfAddress) is not { } self)
         {
             return 0;
         }
+        return implementation(returnValue, frame, self, stackId) ? (byte)1 : (byte)0;
     }
 }
 

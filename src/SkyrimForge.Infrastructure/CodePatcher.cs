@@ -103,10 +103,7 @@ internal sealed unsafe partial class CodePatcher(string owner, ILog log) : ICode
     /// <inheritdoc/>
     public nint AllocateCode(nint near, int length)
     {
-        if (near == 0)
-        {
-            throw new ArgumentOutOfRangeException(nameof(near), "The address is 0.");
-        }
+        ArgumentOutOfRangeException.ThrowIfZero(near);
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(length);
         nint address = SF_Code_Allocate(near, (uint)length, owner);
         return address != 0 ? address : throw new InvalidOperationException($"No free memory for {length} bytes lies within a 32-bit displacement of 0x{near:X}.");

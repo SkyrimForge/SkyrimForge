@@ -107,45 +107,34 @@ internal sealed unsafe partial class GameEvents : IGameEvents
         return events;
     }
 
-    // Runs on the game's thread, except for kDataLoaded, which arrives on another thread. An exception thrown into SKSE's dispatch ends the process.
+    // Runs on the game's thread, except for kDataLoaded, which arrives on another thread. Each event reports its subscribers' exceptions, so none reaches SKSE's dispatch.
     [UnmanagedCallersOnly]
     private static void OnLifecycleHook(SessionMessage type, nint name, int length)
     {
-        GameEvents? events = instance;
-        if (events == null)
+        GameEvents events = instance!;
+        var save = new SaveEventArgs(name != 0 && length > 0 ? Marshal.PtrToStringUTF8(name, length) : null);
+        switch (type)
         {
-            return;
-        }
-        try
-        {
-            var save = new SaveEventArgs(name != 0 && length > 0 ? Marshal.PtrToStringUTF8(name, length) : null);
-            switch (type)
-            {
-                case SessionMessage.PostLoad: events.onPostLoad.Raise(default); break;
-                case SessionMessage.PostPostLoad: events.onPostPostLoad.Raise(default); break;
-                case SessionMessage.InputLoaded: events.onInputLoaded.Raise(default); break;
-                case SessionMessage.DataLoaded: events.onDataLoaded.Raise(default); break;
-                case SessionMessage.NewGame:
-                    events.onNewGameOrSaveLoading.Raise(default);
-                    events.onNewGame.Raise(default);
-                    events.onNewGameOrSaveLoaded.Raise(default);
-                    break;
-                case SessionMessage.PreLoadGame:
-                    events.onNewGameOrSaveLoading.Raise(default);
-                    events.onSaveLoading.Raise(save);
-                    break;
-                case SessionMessage.PostLoadGame:
-                    events.onSaveLoaded.Raise(default);
-                    events.onNewGameOrSaveLoaded.Raise(default);
-                    break;
-                case SessionMessage.SaveGame: events.onSaveWriting.Raise(save); break;
-                case SessionMessage.DeleteGame: events.onSaveDeleted.Raise(save); break;
-                default: break;
-            }
-        }
-        catch (Exception ex)
-        {
-            events.LogHookFailure(nameof(OnLifecycleHook), ex);
+            case SessionMessage.PostLoad: events.onPostLoad.Raise(default); break;
+            case SessionMessage.PostPostLoad: events.onPostPostLoad.Raise(default); break;
+            case SessionMessage.InputLoaded: events.onInputLoaded.Raise(default); break;
+            case SessionMessage.DataLoaded: events.onDataLoaded.Raise(default); break;
+            case SessionMessage.NewGame:
+                events.onNewGameOrSaveLoading.Raise(default);
+                events.onNewGame.Raise(default);
+                events.onNewGameOrSaveLoaded.Raise(default);
+                break;
+            case SessionMessage.PreLoadGame:
+                events.onNewGameOrSaveLoading.Raise(default);
+                events.onSaveLoading.Raise(save);
+                break;
+            case SessionMessage.PostLoadGame:
+                events.onSaveLoaded.Raise(default);
+                events.onNewGameOrSaveLoaded.Raise(default);
+                break;
+            case SessionMessage.SaveGame: events.onSaveWriting.Raise(save); break;
+            case SessionMessage.DeleteGame: events.onSaveDeleted.Raise(save); break;
+            default: break;
         }
     }
 
@@ -163,22 +152,11 @@ internal sealed unsafe partial class GameEvents : IGameEvents
         }
     }
 
-    // An exception thrown into the game's code ends the process.
     [UnmanagedCallersOnly]
     private static void OnFrameHook(float interval)
     {
-        GameEvents? events = instance;
-        if (events != null)
-        {
-            try
-            {
-                events.onFrame.Raise(new FrameEventArgs(TimeSpan.FromSeconds(interval), events.AdvanceUnpausedTime()));
-            }
-            catch (Exception ex)
-            {
-                events.LogHookFailure(nameof(OnFrameHook), ex);
-            }
-        }
+        GameEvents events = instance!;
+        events.onFrame.Raise(new FrameEventArgs(TimeSpan.FromSeconds(interval), events.AdvanceUnpausedTime()));
     }
 
     private TimeSpan AdvanceUnpausedTime()
@@ -214,10 +192,6 @@ internal sealed unsafe partial class GameEvents : IGameEvents
         log.Write($"{name} dropped a subscriber that threw: {exception.GetType().Name}: {exception.Message}");
     }
 
-    private void LogHookFailure(string hookName, Exception exception)
-    {
-        log.Write($"{hookName} threw and was dropped: {exception.GetType().Name}: {exception.Message}");
-    }
 
     private sealed class UnraisedVrEvent<TArgs>(IGameEvent<TArgs> inner, string name, ILog log) : IGameEvent<TArgs> where TArgs : struct
     {

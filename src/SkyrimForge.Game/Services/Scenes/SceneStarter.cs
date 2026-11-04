@@ -164,19 +164,10 @@ internal sealed class SceneStarter(IUtility utility, ISceneOwner owner, SceneRef
         Quest quest = hostQuest.Quest;
         for (int i = 0; i < maxQuestFrames && (quest.IsEnabled() || quest.IsStopping()); i++)
         {
-            if (quest.IsEnabled() && !quest.IsStopping())
-            {
-                quest.Stop();
-            }
+            quest.StopIfEnabledAndNotStopping();
             await utility.WaitAsync(TimeSpan.Zero, newGameOrSaveLoadingToken);
         }
-        foreach (QuestReferenceAlias alias in hostQuest.NamedAliases)
-        {
-            if (owner.GetReference(alias)?.FormOrNull is { } reference)
-            {
-                hostQuest.Aliases.Force(hostQuest.Aliases.GetId(alias), reference);
-            }
-        }
+        hostQuest.Aliases.ForceAll(owner.GetReference);
         if (!quest.Start())
         {
             log.Write($"The quest record of the scene \"{scene.Name}\" of the quest \"{questName}\" did not start.");

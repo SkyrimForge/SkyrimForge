@@ -92,21 +92,20 @@ internal sealed class AliasPackages(string questName, Func<QuestReferenceAlias, 
 
     private bool Passes(AliasPackage aliasPackage, Actor actor)
     {
-        try
-        {
-            return aliasPackage.Condition?.Invoke(actor) != false && aliasPackage switch
+        return ConditionGlobal.Evaluate(
+            () =>
             {
-                { LinkedPackage: { } linkedPackage } => linkedPackage.PackageId.FormOrNull != null && (linkedPackage.KeywordId is not { } keywordId || keywordId.FormOrNull != null)
-                    && aliasPackage.GetLinkedRefId!()?.FormOrNull != null,
-                { PackageId: { } packageId } => packageId.FormOrNull != null,
-                _ => aliasPackage.GetDestinationId!()?.FormOrNull != null
-            };
-        }
-        catch (Exception ex)
-        {
-            log.Write($"The condition of {aliasPackage.Name} on the alias \"{aliasPackage.Alias.Name}\" of the quest \"{questName}\" threw: {ex}");
-            return false;
-        }
+                return aliasPackage.Condition?.Invoke(actor) != false && aliasPackage switch
+                {
+                    { LinkedPackage: { } linkedPackage } =>
+                        linkedPackage.PackageId.FormOrNull != null
+                        && (linkedPackage.KeywordId is not { } keywordId || keywordId.FormOrNull != null)
+                        && aliasPackage.GetLinkedRefId!()?.FormOrNull != null,
+                    { PackageId: { } packageId } => packageId.FormOrNull != null,
+                    _ => aliasPackage.GetDestinationId!()?.FormOrNull != null
+                };
+            },
+            ex => log.Write($"The condition of {aliasPackage.Name} on the alias \"{aliasPackage.Alias.Name}\" of the quest \"{questName}\" threw: {ex}"));
     }
 
     private PreparedPackage? Prepare(Actor actor, AliasPackage aliasPackage)

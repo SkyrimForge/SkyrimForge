@@ -1,4 +1,5 @@
 ﻿using SkyrimForge.Quests;
+using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
@@ -56,6 +57,17 @@ internal sealed class QuestRecordAliases
             referenceTargetIds.Add((objective, position), id);
         }
         return id;
+    }
+
+    internal void ForceAll(Func<QuestReferenceAlias, FormId<ObjectReference>?> getReference)
+    {
+        foreach ((QuestReferenceAlias alias, uint id) in referenceAliasIds)
+        {
+            if (getReference(alias)?.FormOrNull is { } reference)
+            {
+                Force(id, reference);
+            }
+        }
     }
 
     internal void Force(uint id, ObjectReference reference)

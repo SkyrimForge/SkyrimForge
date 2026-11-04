@@ -126,8 +126,8 @@ internal sealed class RuntimeQuestScenes : IQuestScenes, IScenePlayback
         foreach (QuestScene scene in declaredScenes)
         {
             Quest quest = owner.CreateSceneQuestRecord($"{questName}: {scene.Name}");
-            QuestReferenceAlias[] namedAliases = [.. scene.Phases.SelectMany(phase => phase.Actions).SelectMany(action => action.Aliases).Distinct()];
-            hostQuests.Add(scene, new SceneHostQuest(quest, new QuestRecordAliases(gameTarget, quest, namedAliases), namedAliases));
+            IEnumerable<QuestReferenceAlias> namedAliases = scene.Phases.SelectMany(phase => phase.Actions).SelectMany(action => action.Aliases).Distinct();
+            hostQuests.Add(scene, new SceneHostQuest(quest, new QuestRecordAliases(gameTarget, quest, namedAliases)));
         }
     }
 
@@ -135,10 +135,7 @@ internal sealed class RuntimeQuestScenes : IQuestScenes, IScenePlayback
     {
         foreach (Quest quest in QuestRecords)
         {
-            if (quest.IsEnabled() && !quest.IsStopping())
-            {
-                quest.Stop();
-            }
+            quest.StopIfEnabledAndNotStopping();
         }
     }
 
@@ -465,11 +462,7 @@ internal sealed class RuntimeQuestScenes : IQuestScenes, IScenePlayback
         {
             starter.RecordRelease(scene.GetActors(play.FirstPhase));
         }
-        Quest quest = hostQuests[scene].Quest;
-        if (quest.IsEnabled() && !quest.IsStopping())
-        {
-            quest.Stop();
-        }
+        hostQuests[scene].Quest.StopIfEnabledAndNotStopping();
     }
 
     internal ScenePlayerControls DisabledControls =>

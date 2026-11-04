@@ -95,7 +95,7 @@ internal sealed partial class RuntimeQuest : IRuntimeQuest, IQuestObjectives, IQ
         set
         {
             ArgumentNullException.ThrowIfNull(value);
-            Write(store.Read() with { Description = ReplaceAliasTokens(value) });
+            record.Write(store.Read() with { Description = ReplaceAliasTokens(value) });
         }
     }
 
@@ -120,15 +120,8 @@ internal sealed partial class RuntimeQuest : IRuntimeQuest, IQuestObjectives, IQ
         SavedObjective? savedObjective = savedQuest.Objectives.FirstOrDefault(objective => objective.Index == index);
         SavedObjective displayedObjective = new(index, displayedText, savedObjective?.Completed == true, savedObjective?.Failed == true);
         SavedQuest displayedQuest = savedQuest with { Objectives = [.. savedQuest.Objectives.Where(objective => objective.Index != index), displayedObjective] };
-        if (activeOnStart && savedQuest.Objectives.Count == 0)
-        {
-            store.Write(displayedQuest with { Active = true });
-            record.Apply(true);
-        }
-        else
-        {
-            Write(displayedQuest);
-        }
+        bool activates = activeOnStart && savedQuest.Objectives.Count == 0;
+        record.Write(activates ? displayedQuest with { Active = true } : displayedQuest, activates);
         if (savedObjective == null)
         {
             if (savedQuest.Objectives.Count == 0)
@@ -152,8 +145,7 @@ internal sealed partial class RuntimeQuest : IRuntimeQuest, IQuestObjectives, IQ
         Scenes.StopAll();
         Aliases.ReleaseAllAliases();
         Scenes.ClearSaidLines();
-        store.Write(null);
-        record.Apply(false);
+        record.Write(null);
     }
 
     async Task<bool> IQuestStages.SetAsync(QuestStage stage)
@@ -173,7 +165,7 @@ internal sealed partial class RuntimeQuest : IRuntimeQuest, IQuestObjectives, IQ
         }
         (ushort Index, string Text)[] displayedObjectives =
             [.. stage.ObjectivesToDisplay.Select(objective => (GetIndex(objective), GetText(savedQuest, GetIndex(objective), objective)))];
-        Write(savedQuest with { Stages = [.. savedQuest.Stages, stage.Index] });
+        record.Write(savedQuest with { Stages = [.. savedQuest.Stages, stage.Index] });
         EndObjectives(stage, savedQuest);
         foreach ((ushort objectiveIndex, string text) in displayedObjectives)
         {
@@ -239,8 +231,7 @@ internal sealed partial class RuntimeQuest : IRuntimeQuest, IQuestObjectives, IQ
         {
             if (store.Read() is { Objectives.Count: > 0, Completed: false, Failed: false } savedQuest)
             {
-                store.Write(savedQuest with { Active = value });
-                record.Apply(true);
+                record.Write(savedQuest with { Active = value }, true);
             }
         }
     }
@@ -255,7 +246,7 @@ internal sealed partial class RuntimeQuest : IRuntimeQuest, IQuestObjectives, IQ
             [index] = text
         };
         string displayedText = ReplaceAliasTokens(text);
-        Write(savedQuest with
+        record.Write(savedQuest with
         {
             ObjectiveTexts = texts,
             Objectives = [.. savedQuest.Objectives.Select(savedObjective => savedObjective.Index == index ? savedObjective with { Text = displayedText } : savedObjective)]
@@ -277,7 +268,7 @@ internal sealed partial class RuntimeQuest : IRuntimeQuest, IQuestObjectives, IQ
         {
             targets.Remove(index);
         }
-        Write(savedQuest with { ObjectiveTargets = targets });
+        record.Write(savedQuest with { ObjectiveTargets = targets });
     }
 
     bool IQuestStages.IsDone(QuestStage stage) => store.Read().Stages.Contains(stage.Index);
@@ -294,7 +285,7 @@ internal sealed partial class RuntimeQuest : IRuntimeQuest, IQuestObjectives, IQ
         {
             throw new InvalidOperationException($"The quest \"{Name}\" has not displayed objective {index}.");
         }
-        Write(savedQuest with
+        record.Write(savedQuest with
         {
             Objectives = [.. savedQuest.Objectives.Select(objective => objective.Index == index ? objective with { Completed = !failed, Failed = failed } : objective)]
         });
@@ -312,7 +303,7 @@ internal sealed partial class RuntimeQuest : IRuntimeQuest, IQuestObjectives, IQ
             throw new InvalidOperationException($"The quest \"{Name}\" has displayed no objective.");
         }
         IReadOnlyList<SavedObjective> objectivesToEnd = endOpenObjectives ? [.. savedQuest.Objectives.Where(objective => objective.IsOpen)] : [];
-        Write(savedQuest with
+        record.Write(savedQuest with
         {
             Completed = !failed,
             Failed = failed,
@@ -326,12 +317,6 @@ internal sealed partial class RuntimeQuest : IRuntimeQuest, IQuestObjectives, IQ
         {
             record.ShowBanner(failed ? HUD_MESSAGE_TYPE.kQuestFailed : HUD_MESSAGE_TYPE.kQuestComplete, Name);
         }
-    }
-
-    private void Write(SavedQuest savedQuest)
-    {
-        store.Write(savedQuest);
-        record.Apply(false);
     }
 
     private string ReplaceAliasTokens(string text) => AliasToken.Replace(text, token => GetAliasText(token.Groups[1].Value) is { Length: > 0 } name ? name : token.Value);

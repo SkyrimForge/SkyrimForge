@@ -30,21 +30,26 @@ public static class QuestExtensions
         /// <summary>Adds <paramref name="topic"/> to this quest's player dialogue, in the branch it starts or else in a new top-level branch.</summary>
         /// <returns>Whether the quest's branch table lists the branch afterward.</returns>
         /// <remarks>The dialogue menu lists only the starting topics of top-level branches. Call on the game's thread, while no conversation is open.</remarks>
+        /// <exception cref="InvalidOperationException">The topic starts no branch, and the game's form factory created none.</exception>
         public bool AddPlayerTopic(Topic topic) =>
-            FindBranch(quest, topic) is { } branch
-            && NativeSupplements.SF_Repair_TESQuest_BranchedDialogue_Emplace(quest.Address, (int)DIALOGUE_TYPES.DIALOGUE_TYPE.kPlayerDialogue, branch.Address, topic.Address);
+            NativeSupplements.SF_Repair_TESQuest_BranchedDialogue_Emplace(quest.Address, (int)DIALOGUE_TYPES.DIALOGUE_TYPE.kPlayerDialogue, FindBranch(quest, topic).Address, topic.Address);
+
+        internal void StopIfEnabledAndNotStopping()
+        {
+            if (quest.IsEnabled() && !quest.IsStopping())
+            {
+                quest.Stop();
+            }
+        }
     }
 
-    private static BGSDialogueBranch? FindBranch(Quest quest, Topic topic)
+    private static BGSDialogueBranch FindBranch(Quest quest, Topic topic)
     {
-        if (topic.OwnerBranch is { } ownerBranch && ownerBranch.StartingTopic?.Address == topic.Address)
+        if (topic.OwnerBranch is { } ownerBranch && ownerBranch.StartingTopic == topic)
         {
             return ownerBranch;
         }
-        if (IFormFactory.GetFormFactoryByType(FormType.DialogueBranch)?.Create()?.AsBGSDialogueBranch() is not { } branch)
-        {
-            return null;
-        }
+        BGSDialogueBranch branch = RuntimeForms.Create(FormType.DialogueBranch).AsBGSDialogueBranch()!.Value;
         branch.Flags |= BGSDialogueBranch.Flag.kTopLevel;
         branch.Quest = quest;
         branch.StartingTopic = topic;

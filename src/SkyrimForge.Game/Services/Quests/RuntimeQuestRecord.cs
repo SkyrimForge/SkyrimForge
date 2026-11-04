@@ -71,6 +71,12 @@ internal sealed class RuntimeQuestRecord(GameTarget gameTarget, IUtility utility
         }
     }
 
+    internal void Write(SavedQuest? savedQuest, bool restoreActive = false)
+    {
+        store.Write(savedQuest);
+        Apply(restoreActive);
+    }
+
     // A save records the player's objectives by quest ID, which can resolve to this quest or to nothing, so the entries are replaced.
     // The active mark is restored only from a load, because the player may have set it in the journal since the last one.
     internal void Apply(bool restoreActive)
@@ -168,7 +174,7 @@ internal sealed class RuntimeQuestRecord(GameTarget gameTarget, IUtility utility
         bool started = quest.IsEnabled();
         if (runs)
         {
-            ForceAliases(aliases);
+            aliases.ForceAll(store.GetReference);
         }
         // A wait in progress applies the quest again once the start or stop finishes. A quest still stopping is not started, since the stop ends what the start begins.
         if (startOrStopTask is not { IsCompleted: false })
@@ -262,16 +268,6 @@ internal sealed class RuntimeQuestRecord(GameTarget gameTarget, IUtility utility
         return createdTargets;
     }
 
-    private void ForceAliases(QuestRecordAliases aliases)
-    {
-        foreach (QuestReferenceAlias alias in declaration.Aliases)
-        {
-            if (store.GetReference(alias)?.FormOrNull is { } reference)
-            {
-                aliases.Force(aliases.GetId(alias), reference);
-            }
-        }
-    }
 
     private List<ObjectiveTarget> GetTargets(SavedObjective objective, QuestRecordAliases aliases, SavedQuest savedQuest)
     {

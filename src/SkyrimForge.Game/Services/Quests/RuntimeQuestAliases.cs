@@ -180,7 +180,7 @@ internal sealed class RuntimeQuestAliases(IRuntimeQuest quest, RuntimeQuestFacto
         {
             aliases.Remove(alias.Name);
         }
-        Write(savedQuest with { Aliases = aliases });
+        record.Write(savedQuest with { Aliases = aliases });
     }
 
     public void Fill(QuestLocationAlias alias, FormId<Location> locationId) => SetLocation(alias, locationId);
@@ -199,7 +199,7 @@ internal sealed class RuntimeQuestAliases(IRuntimeQuest quest, RuntimeQuestFacto
         {
             locationAliasIds.Remove(alias.Name);
         }
-        Write(savedQuest with { LocationAliases = locationAliasIds });
+        record.Write(savedQuest with { LocationAliases = locationAliasIds });
     }
 
     public FormId<Location>? GetLocationId(QuestLocationAlias alias) => store.GetLocationId(alias);
@@ -223,11 +223,5 @@ internal sealed class RuntimeQuestAliases(IRuntimeQuest quest, RuntimeQuestFacto
         {
             ReleaseAlias(alias, null);
         }
-    }
-
-    private void Write(SavedQuest savedQuest)
-    {
-        store.Write(savedQuest);
-        record.Apply(false);
     }
 }

@@ -10,8 +10,6 @@ internal sealed class MouthAnimator(IUtility utility)
     private const int bigAah = 1;
     private static readonly TimeSpan openTime = TimeSpan.FromSeconds(0.14), nearlyClosedTime = TimeSpan.FromSeconds(0.11);
 
-    private readonly IUtility utility = utility;
-
     internal async Task AnimateAsync(FormId<Actor> speakerId, Task stopTask, CancellationToken newGameOrSaveLoadingToken)
     {
         const float openWeight = 0.6f, nearlyClosedWeight = 0.1f;

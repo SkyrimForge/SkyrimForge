@@ -8,8 +8,6 @@ namespace SkyrimForge.Game;
 
 internal sealed class AnimationEvents(ILog log) : IAnimationEvents
 {
-    private readonly ILog log = log;
-
     // Replaced, never mutated, because the animation thread reads it without the lock.
     private static volatile Dictionary<nint, HandlerRegistration<GameEventHandler<AnimationEventArgs>>[]> registrations = [];
     private static readonly Lock registrationsLock = new();
@@ -118,9 +116,6 @@ internal sealed class AnimationEvents(ILog log) : IAnimationEvents
 
     private sealed class Subscription(nint actorAddress, HandlerRegistration<GameEventHandler<AnimationEventArgs>> registration) : ISubscription
     {
-        private readonly nint actorAddress = actorAddress;
-        private readonly HandlerRegistration<GameEventHandler<AnimationEventArgs>> registration = registration;
-
         public void Unsubscribe() => RemoveRegistration(actorAddress, registration);
     }
 }

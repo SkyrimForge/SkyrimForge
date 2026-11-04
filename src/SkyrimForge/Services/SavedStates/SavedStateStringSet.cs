@@ -6,8 +6,6 @@ namespace SkyrimForge;
 
 internal sealed class SavedStateStringSet(ISavedStateEntries scope) : ISavedStateStringSet
 {
-    private readonly ISavedStateEntries scope = scope;
-
     public int Count => scope.GetStringKeys().Count;
 
     public bool Contains(string item)

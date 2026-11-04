@@ -86,8 +86,6 @@ public sealed class GameEvent<TArgs> : IGameEvent<TArgs> where TArgs : struct
 
     private sealed class Subscription(GameEvent<TArgs> owner, GameEventHandler<TArgs> handler) : ISubscription
     {
-        private readonly GameEvent<TArgs> owner = owner;
-        private readonly GameEventHandler<TArgs> handler = handler;
         private int unsubscribed;
 
         public void Unsubscribe()

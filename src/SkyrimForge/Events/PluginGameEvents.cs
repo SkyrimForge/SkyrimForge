@@ -6,9 +6,6 @@ namespace SkyrimForge.Events;
 
 internal sealed partial class PluginGameEvents(IGameEvents events, ILog log) : IGameEvents
 {
-    private readonly IGameEvents events = events;
-    private readonly ILog log = log;
-
     public IGameEvent<FrameEventArgs> OnFrame => WithLog(events.OnFrame, nameof(OnFrame));
 
     public IGameEvent<PostLoadEventArgs> OnPostLoad => WithLog(events.OnPostLoad, nameof(OnPostLoad));

@@ -10,9 +10,6 @@ internal sealed class SavedQuestStore(IPerPluginSavedState savedState, ISavedSta
 {
     private static readonly SavedQuest notStartedQuest = new(false, false, [], "", false, [], new Dictionary<ushort, string>());
 
-    private readonly IPerPluginSavedState savedState = savedState;
-    private readonly ISavedStateRecordPair<SavedQuest> questPair = questPair;
-
     // Alias events read the quest for every object the game loads, so the text is parsed again only when it has changed.
     // One reference, so a reader on another worker thread copies a text and the quest parsed from it together.
     private ParsedQuest? lastRead;

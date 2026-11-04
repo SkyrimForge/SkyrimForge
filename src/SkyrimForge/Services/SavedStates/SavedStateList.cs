@@ -7,8 +7,6 @@ namespace SkyrimForge;
 
 internal sealed class SavedStateList(ISavedStateEntries list) : ISavedStateList
 {
-    private readonly ISavedStateEntries list = list;
-
     // The count is stored, because an element with no entries is not stored and the nested stores cannot count the elements.
     private ISavedStatePair<int> CountPair => list.GetPair<int>("count");
 

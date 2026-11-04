@@ -8,8 +8,6 @@ internal sealed class SceneReferences(ISceneOwner owner)
 {
     internal static readonly FormId<ObjectReference> Player = new(KnownForms.PlayerRef.Value);
 
-    private readonly ISceneOwner owner = owner;
-
     internal bool IsPlayer(QuestReferenceAlias alias) => owner.GetReference(alias)?.Value == Player.Value;
 
     // The game ends a scene missing an actor that is only looked at.

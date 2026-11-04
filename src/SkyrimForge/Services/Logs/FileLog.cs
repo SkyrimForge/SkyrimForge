@@ -6,7 +6,6 @@ namespace SkyrimForge;
 
 internal sealed class FileLog(string path) : ILog
 {
-    private readonly string path = path;
     private readonly Lock writeLock = new();
 
     private int caughtMessageExceptions;

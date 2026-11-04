@@ -9,10 +9,6 @@ internal sealed class ForceGreet(GameTarget gameTarget, IUtility utility, IGameS
     // WIDeadBody01GuardForcegreetPlayer: targets the player, has no conditions, and opens the conversation at 300 units.
     internal static readonly FormId<Package> PackageId = new(0x0003877D);
 
-    private readonly GameTarget gameTarget = gameTarget;
-    private readonly IUtility utility = utility;
-    private readonly IGameSession session = session;
-
     public async Task StartAsync<TActor>(TActor actor, CancellationToken cancellationToken = default) where TActor : IActor
     {
         const float minimumDistanceToGiveAgain = 600f;

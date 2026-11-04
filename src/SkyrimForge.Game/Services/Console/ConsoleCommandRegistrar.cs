@@ -15,8 +15,6 @@ internal sealed unsafe class ConsoleCommandRegistrar(ILog log) : IConsoleCommand
 
     private sealed record Command(string Name, Func<ObjectReference?, IReadOnlyList<string>, Task> Handler, ILog Log);
 
-    private readonly ILog log = log;
-
     public void Register(string name, string? shortName, string help, IEnumerable<string> parameterNames, Func<ObjectReference?, IReadOnlyList<string>, Task> handler)
     {
         ArgumentException.ThrowIfNullOrEmpty(name);

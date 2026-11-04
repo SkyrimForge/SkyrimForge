@@ -6,9 +6,6 @@ namespace SkyrimForge.Game;
 
 internal sealed class AliasActorState(IPerPluginSavedState savedState, string key)
 {
-    private readonly IPerPluginSavedState savedState = savedState;
-    private readonly string key = key;
-
     internal void Apply(QuestReferenceAlias alias, FormId<ObjectReference>? referenceId, bool inAlias)
     {
         if (!(alias.IsEssential || alias.IsProtected || alias.Factions.Count > 0 || alias.ActorValues.Count > 0) || referenceId?.FormOrNull?.AsActor() is not { } actor)

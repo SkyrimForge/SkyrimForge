@@ -10,15 +10,6 @@ internal sealed class DialogueBranchFactory(PlayerTopicFactory topicFactory, Voi
 {
     private const string keyPrefix = "SkyrimForge.DialogueBranch.";
 
-    private readonly PlayerTopicFactory topicFactory = topicFactory;
-    private readonly VoiceSilencer voiceSilencer = voiceSilencer;
-    private readonly TopicHider topicHider = topicHider;
-    private readonly IGameEvents events = events;
-    private readonly IGameSession session = session;
-    private readonly GameTarget gameTarget = gameTarget;
-    private readonly IPerPluginSavedState savedState = savedState;
-    private readonly ILog log = log;
-    private readonly PluginVoices voices = voices;
     private readonly HashSet<string> keys = new(StringComparer.Ordinal);
 
     public IDialogueBranch Create(string key, DialogueTopic startingTopic, Func<Actor, IEnumerable<TopicResponse>>? greeting = null, Func<Actor, IEnumerable<TopicResponse>>? goodbye = null, bool resumes = false, FormId<Quest>? questId = null)

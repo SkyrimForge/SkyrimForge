@@ -17,7 +17,6 @@ internal sealed class ScaleformFunctionRegistrar(ILog log) : IScaleformFunctionR
     // Static because SKSE calls one callback for every plugin.
     private static readonly ConcurrentQueue<GameEvent<ScaleformMovieCreatedEventArgs>> movieEvents = new();
 
-    private readonly ILog log = log;
     private GameEvent<ScaleformMovieCreatedEventArgs>? onMovieCreated;
 
     public unsafe void Register(IGFxMovie movie, GFxValue target, string name, Action<GFxFunctionHandler.Params> handler)

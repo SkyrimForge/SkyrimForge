@@ -8,30 +8,12 @@ namespace SkyrimForge.Game;
 
 // The package is placed in the actor's instance of the alias, which the game runs ahead of the actor's own packages.
 // A package given with Actor.PutCreatedPackage ends as it completes, and the actor's own package then runs.
-internal sealed class AliasPackages
+internal sealed class AliasPackages(string questName, Func<QuestReferenceAlias, FormId<ObjectReference>?> getReference, Func<Actor, bool> isBusy, Action<QuestReferenceAlias, ObjectReference, Package?> setPackage, LinkedRefChanges linkedRefs, IGameSession session, ILog log)
 {
-    private readonly string questName;
-    private readonly Func<QuestReferenceAlias, FormId<ObjectReference>?> getReference;
-    private readonly Func<Actor, bool> isBusy;
-    private readonly Action<QuestReferenceAlias, ObjectReference, Package?> setPackage;
-    private readonly LinkedRefChanges linkedRefs;
-    private readonly IGameSession session;
-    private readonly ILog log;
-
     private readonly List<AliasPackage> packages = [];
 
     private readonly Dictionary<QuestReferenceAlias, AppliedPackage> appliedPackages = [];
 
-    internal AliasPackages(string questName, Func<QuestReferenceAlias, FormId<ObjectReference>?> getReference, Func<Actor, bool> isBusy, Action<QuestReferenceAlias, ObjectReference, Package?> setPackage, LinkedRefChanges linkedRefs, IGameSession session, ILog log)
-    {
-        this.questName = questName;
-        this.getReference = getReference;
-        this.isBusy = isBusy;
-        this.setPackage = setPackage;
-        this.linkedRefs = linkedRefs;
-        this.session = session;
-        this.log = log;
-    }
 
     internal ISubscription Add(QuestReferenceAlias alias, FormId<Package> packageId, Func<Actor, bool>? condition) => Add(new AliasPackage(alias, packageId, condition));
 

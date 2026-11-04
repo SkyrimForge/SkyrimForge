@@ -9,10 +9,6 @@ namespace SkyrimForge.Game;
 
 internal sealed class BookMenuPresenter(GameTarget gameTarget, IGameEvents events, ITaskQueue taskQueue) : IBookMenuPresenter
 {
-    private readonly GameTarget gameTarget = gameTarget;
-    private readonly IGameEvents events = events;
-    private readonly ITaskQueue taskQueue = taskQueue;
-
     public Task ShowAsync(IEnumerable<string> htmlPages, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(htmlPages);

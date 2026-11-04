@@ -8,12 +8,6 @@ namespace SkyrimForge.Game;
 
 internal sealed class ScenePlayerControl(GameTarget gameTarget, ISceneOwner owner, SceneReferences references, LinkedRefChanges linkedRefs, ILog log)
 {
-    private readonly GameTarget gameTarget = gameTarget;
-    private readonly ISceneOwner owner = owner;
-    private readonly SceneReferences references = references;
-    private readonly LinkedRefChanges linkedRefs = linkedRefs;
-    private readonly ILog log = log;
-
     internal void DisableControls(ScenePlayerControls controls) => CallControls(GameScript.DisablePlayerControls, controls).LogFault(log);
 
     // The game counts no disables, so its EnablePlayerControls enables a control another mod disabled too.

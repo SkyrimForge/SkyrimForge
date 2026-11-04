@@ -16,16 +16,6 @@ internal sealed class SceneRecordBuilder(GameTarget gameTarget, VoiceSilencer vo
 
     private static readonly TimeSpan conversationTimer = TimeSpan.FromDays(1);
 
-    private readonly GameTarget gameTarget = gameTarget;
-    private readonly VoiceSilencer voiceSilencer = voiceSilencer;
-    private readonly PluginVoices voices = voices;
-    private readonly Quest questRecord = questRecord;
-    private readonly QuestRecordAliases recordAliases = recordAliases;
-    private readonly QuestScene scene = scene;
-    private readonly int firstPhase = firstPhase;
-    private readonly Func<ScenePlay?> getPlay = getPlay;
-    private readonly Func<TimeSpan> getNow = getNow;
-
     private readonly List<SceneRecordTravel> travels = [];
     private readonly List<ConditionGlobal> conditions = [];
     private readonly Dictionary<int, ConditionGlobal> phaseStarts = [];

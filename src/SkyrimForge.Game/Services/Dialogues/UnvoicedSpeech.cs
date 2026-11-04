@@ -15,13 +15,6 @@ internal sealed class UnvoicedSpeech(GameTarget gameTarget, IUtility utility, IG
         shortestLineDuration = TimeSpan.FromSeconds(2),
         timeBetweenLines = TimeSpan.FromSeconds(0.3);
 
-    private readonly GameTarget gameTarget = gameTarget;
-    private readonly IUtility utility = utility;
-    private readonly IGameSession session = session;
-    private readonly MouthAnimator mouthAnimator = mouthAnimator;
-    private readonly SubtitleSwitch subtitleSwitch = subtitleSwitch;
-    private readonly ILog log = log;
-
     internal static TimeSpan LongestLine => TopicResponse.LongestSilentVoice;
 
     internal static TimeSpan GetLineDuration(string line)

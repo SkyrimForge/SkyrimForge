@@ -4,8 +4,6 @@ namespace SkyrimForge.Game;
 
 internal sealed class GreetingSilencer(VoiceSilencer voiceSilencer) : IGreetingSilencer
 {
-    private readonly VoiceSilencer voiceSilencer = voiceSilencer;
-
     public void SilenceGreetings<TActor>(TActor actor) where TActor : IActor => voiceSilencer.SilenceGreetings(actor.GetFormId<Actor>(), this);
 
     public void RestoreGreetings<TActor>(TActor actor) where TActor : IActor => voiceSilencer.RestoreGreetings(actor.GetFormId<Actor>(), this);

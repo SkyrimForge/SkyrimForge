@@ -92,8 +92,6 @@ public static class SavedStateEntriesExtensions
 
     private sealed class SavedStatePair<T>(ISavedStateEntries entries, string key) : ISavedStatePair<T> where T : struct, IParsable<T>
     {
-        private readonly ISavedStateEntries entries = entries;
-
         public string Key { get; } = key;
 
         public T? Value
@@ -131,8 +129,6 @@ public static class SavedStateEntriesExtensions
 
     private sealed class SavedStateStringPair(ISavedStateEntries entries, string key) : ISavedStateStringPair
     {
-        private readonly ISavedStateEntries entries = entries;
-
         public string Key { get; } = key;
 
         public string? Value
@@ -144,8 +140,6 @@ public static class SavedStateEntriesExtensions
 
     private sealed class SavedStateRecordPair<T>(ISavedStateEntries entries, string key) : ISavedStateRecordPair<T> where T : class
     {
-        private readonly ISavedStateEntries entries = entries;
-
         public string Key { get; } = key;
 
         public T? Value
@@ -164,8 +158,6 @@ public static class SavedStateEntriesExtensions
 
     private sealed class SavedStateFormIdPair<TForm>(ISavedStateEntries entries, string key) : ISavedStateFormIdPair<TForm> where TForm : struct, IForm
     {
-        private readonly ISavedStateEntries entries = entries;
-
         public string Key { get; } = key;
 
         public FormId<TForm>? Value

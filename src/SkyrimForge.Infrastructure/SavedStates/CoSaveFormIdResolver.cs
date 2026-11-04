@@ -9,9 +9,6 @@ namespace SkyrimForge.Infrastructure;
 
 internal sealed class CoSaveFormIdResolver(Func<uint, uint?> resolveFormId, ILog log)
 {
-    private readonly Func<uint, uint?> resolveFormId = resolveFormId;
-    private readonly ILog log = log;
-
     internal CoSaveEntries Resolve(CoSaveEntries storedEntries)
     {
         Dictionary<string, uint>? resolvedForms = null;

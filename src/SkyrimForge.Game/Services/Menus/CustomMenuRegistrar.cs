@@ -15,8 +15,6 @@ internal sealed class CustomMenuRegistrar(ILog log) : ICustomMenuRegistrar
 
     private static int nextToken;
 
-    private readonly ILog log = log;
-
     public unsafe void Register(string name, Func<UI_MESSAGE_TYPE, UI_MESSAGE_RESULTS> handler, string? movieFile = null, UI_MENU_FLAGS flags = UI_MENU_FLAGS.kNone, sbyte depth = 3, UserEvents.INPUT_CONTEXT_IDS.INPUT_CONTEXT_ID context = UserEvents.INPUT_CONTEXT_IDS.INPUT_CONTEXT_ID.kMenuMode)
     {
         ArgumentException.ThrowIfNullOrEmpty(name);

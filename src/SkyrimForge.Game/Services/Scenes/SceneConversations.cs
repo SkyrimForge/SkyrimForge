@@ -6,9 +6,6 @@ namespace SkyrimForge.Game;
 
 internal sealed class SceneConversations(ISceneOwner owner, GameTarget gameTarget)
 {
-    private readonly ISceneOwner owner = owner;
-    private readonly GameTarget gameTarget = gameTarget;
-
     internal void Show(QuestScene scene, ScenePlay play, int? phase)
     {
         if (phase == play.ConversationPhase)

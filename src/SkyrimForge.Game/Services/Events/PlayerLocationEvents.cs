@@ -2,24 +2,13 @@
 
 namespace SkyrimForge.Game;
 
-internal sealed class PlayerLocationEvents : IPlayerLocationEvents
+internal sealed class PlayerLocationEvents(GameTarget gameTarget, IGameEvents events, ILog log) : IPlayerLocationEvents
 {
-    private readonly GameTarget gameTarget;
-    private readonly IGameEvents events;
-    private readonly ILog log;
-    private readonly GameEvent<PlayerLocationEnterEventArgs> onEnter;
+    private readonly GameEvent<PlayerLocationEnterEventArgs> onEnter = new(ex => log.Write($"{nameof(OnEnter)} threw: {ex}"));
 
     private Location? pendingLocation;
     private bool watching;
     private ISubscription? frameSubscription;
-
-    public PlayerLocationEvents(GameTarget gameTarget, IGameEvents events, ILog log)
-    {
-        this.gameTarget = gameTarget;
-        this.events = events;
-        this.log = log;
-        onEnter = new GameEvent<PlayerLocationEnterEventArgs>(ex => this.log.Write($"{nameof(OnEnter)} threw: {ex}"));
-    }
 
     public IGameEvent<PlayerLocationEnterEventArgs> OnEnter
     {

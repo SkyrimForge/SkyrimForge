@@ -12,11 +12,8 @@ internal sealed class PapyrusFunctionRegistrar(ILog log) : IPapyrusFunctionRegis
     // Replaced rather than mutated, because calls on a Papyrus VM thread read it without a lock.
     private static volatile Dictionary<int, Func<Variable, StackFrame, Variable, uint, bool>> implementations = [];
 
-    private static bool installed;
-
+    // The first registration sets the native callback.
     private static int nextToken;
-
-    private readonly ILog log = log;
 
     public void RegisterStatic(string className, PapyrusType returnType, string functionName, IReadOnlyCollection<PapyrusType> parameterTypes, Action<PapyrusCall> body)
     {
@@ -99,13 +96,11 @@ internal sealed class PapyrusFunctionRegistrar(ILog log) : IPapyrusFunctionRegis
             }
         }
 
-        int token;
-        if (!installed)
+        if (nextToken == 0)
         {
             NativePapyrus.SF_Papyrus_SetCallback(&OnCall);
-            installed = true;
         }
-        token = nextToken++;
+        int token = nextToken++;
         implementations = new Dictionary<int, Func<Variable, StackFrame, Variable, uint, bool>>(implementations)
         {
             [token] = InvokeBodyWithTryCatch

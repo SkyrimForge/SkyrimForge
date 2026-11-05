@@ -25,14 +25,7 @@ public static class EnumerableExtensions
         /// Returns the first entry, or <c>null</c> for a sequence with none. <c>FirstOrDefault</c> returns a default struct there,
         /// which for a view has no address.
         /// </summary>
-        public T? FirstOrNull()
-        {
-            foreach (T value in source)
-            {
-                return value;
-            }
-            return null;
-        }
+        public T? FirstOrNull() => source.Select(value => (T?)value).FirstOrDefault();
 
         /// <summary>Returns the first entry <paramref name="predicate"/> accepts, or <c>null</c> if it accepts none.</summary>
         /// <exception cref="ArgumentNullException"><paramref name="predicate"/> is <c>null</c>.</exception>

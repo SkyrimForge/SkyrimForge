@@ -37,7 +37,11 @@ internal sealed class PapyrusDispatcher(GameTarget gameTarget, ITaskQueue taskQu
 
     internal Task<T?> DispatchPropertyGetAsync<T>(IForm receiver, string className, string propertyName)
     {
-        return DispatchAsync(className, propertyName, null, value => value.As<T>(), (_, callback) => GetPropertyIntoCallback(receiver, className, propertyName, callback));
+        return DispatchAsync(className, propertyName, null, value => value.As<T>(), (_, callback) =>
+        {
+            int status = NativePapyrus.SF_Papyrus_GetPropertyIntoCallback(receiver.Address, className, propertyName, callback.Functor.Address);
+            CheckPropertyStatus(status, className, propertyName, callback, "read");
+        });
     }
 
     // Returns no task because the Papyrus VM releases the callback before the setter runs.
@@ -59,7 +63,9 @@ internal sealed class PapyrusDispatcher(GameTarget gameTarget, ITaskQueue taskQu
         }
 
         // Outside the try. This call releases the callback if the Papyrus virtual machine returns false, so a catch around it would free the list twice.
-        SetPropertyFromCallback(receiver, className, propertyName, value, callback);
+        // The Papyrus VM copies the value during the call, then releases the callback and the value as the call returns.
+        int status = NativePapyrus.SF_Papyrus_SetPropertyIntoCallback(receiver.Address, className, propertyName, value.Address, callback.Functor.Address);
+        CheckPropertyStatus(status, className, propertyName, callback, "write");
     }
 
     internal Task DispatchFunctionCallAsync(IForm self, string className, string functionName, PapyrusArguments? arguments = null)
@@ -84,7 +90,7 @@ internal sealed class PapyrusDispatcher(GameTarget gameTarget, ITaskQueue taskQu
 
         // Built here, inside the task, so an argument the Papyrus VM did not allocate faults the task. Only the callback frees the list once it is built.
         // The handlers go to Create because the Papyrus VM can run and release the call as soon as it accepts it.
-        PapyrusCallback callback = PapyrusCallback.Create(log, (arguments ?? new PapyrusArguments()).Build(), returnValue =>
+        PapyrusCallback callback = PapyrusCallback.Create(log, arguments?.Build() ?? VirtualMachineArgumentList.Allocate(), returnValue =>
         {
             // Converted here, because returnValue points into the Papyrus VM's stack, which is released once this delegate returns.
             try
@@ -103,9 +109,8 @@ internal sealed class PapyrusDispatcher(GameTarget gameTarget, ITaskQueue taskQu
         return await taskCompletionSource.Task;
     }
 
-    private static void DispatchPropertyThroughCallback(string className, string propertyName, PapyrusCallback callback, string readOrWrite, Func<int> dispatch)
+    private static void CheckPropertyStatus(int status, string className, string propertyName, PapyrusCallback callback, string readOrWrite)
     {
-        int status = dispatch();
         // Statuses 1 and 2 return before the callback reaches a smart pointer. Status 3 returns after the repaired accessor's smart pointer has released it.
         if (status is 1 or 2)
         {
@@ -121,17 +126,6 @@ internal sealed class PapyrusDispatcher(GameTarget gameTarget, ITaskQueue taskQu
                 _ => $"The {readOrWrite} of {className}.{propertyName} returned the unrecognized status {status}."
             });
         }
-    }
-
-    private static void GetPropertyIntoCallback(IForm receiver, string className, string propertyName, PapyrusCallback callback)
-    {
-        DispatchPropertyThroughCallback(className, propertyName, callback, "read", () => NativePapyrus.SF_Papyrus_GetPropertyIntoCallback(receiver.Address, className, propertyName, callback.Functor.Address));
-    }
-
-    // The Papyrus VM copies the value during the call, then releases the callback and the value as the call returns.
-    private static void SetPropertyFromCallback(IForm receiver, string className, string propertyName, Variable value, PapyrusCallback callback)
-    {
-        DispatchPropertyThroughCallback(className, propertyName, callback, "write", () => NativePapyrus.SF_Papyrus_SetPropertyIntoCallback(receiver.Address, className, propertyName, value.Address, callback.Functor.Address));
     }
 }
 

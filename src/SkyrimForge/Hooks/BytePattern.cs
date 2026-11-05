@@ -80,7 +80,7 @@ public sealed class BytePattern
     }
 
     /// <summary>The pattern with each position as two uppercase hexadecimal digits or "??".</summary>
-    public override string ToString() => string.Join(" ", bytes.Select(value => value is byte fixedValue ? fixedValue.ToString("X2", CultureInfo.InvariantCulture) : "??"));
+    public override string ToString() => string.Join(" ", bytes.Select(value => value?.ToString("X2", CultureInfo.InvariantCulture) ?? "??"));
 
     private static byte? ParseToken(string token)
     {

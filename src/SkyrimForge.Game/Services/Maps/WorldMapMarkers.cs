@@ -84,7 +84,6 @@ internal sealed class WorldMapMarkers : IWorldMapMarkers
         }
     }
 
-
     // A save records neither the extra data of a map marker nor the player's listing of it.
     private void Restore()
     {

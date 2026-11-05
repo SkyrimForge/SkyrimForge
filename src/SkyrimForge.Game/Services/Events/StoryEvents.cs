@@ -107,20 +107,13 @@ internal sealed unsafe class StoryEvents : IStoryEvents
         return new StoryEventValue(declaredValue.Name, declaredValue.Kind, (nint)member, 0);
     }
 
-    private List<StoryEventKind> Describe()
-    {
-        var describedKinds = new List<StoryEventKind>();
-        foreach (BGSRegisteredStoryEvent storyEvent in gameTarget.StoryEventManager.RegisteredEvents.Get())
-        {
-            var values = new List<ValueDeclaration>();
-            foreach (BGSStoryEventMember member in storyEvent.Members.Get())
-            {
-                values.Add(new ValueDeclaration(member.Name, (StoryEventValueKind)member.Type));
-            }
-            describedKinds.Add(new StoryEventKind(storyEvent.UniqueID, storyEvent.Name, values));
-        }
-        return describedKinds;
-    }
+    private List<StoryEventKind> Describe() =>
+    [
+        .. gameTarget.StoryEventManager.RegisteredEvents.Get()
+            .Select(storyEvent =>
+                new StoryEventKind(storyEvent.UniqueID, storyEvent.Name,
+                    [.. storyEvent.Members.Get().Select(member => new ValueDeclaration(member.Name, (StoryEventValueKind)member.Type))]))
+    ];
 
     private void Report(string operation, Exception ex)
     {

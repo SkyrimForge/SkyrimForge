@@ -86,7 +86,7 @@ public static class TESExtensions
             {
                 return null;
             }
-            return new NiPoint3(-GetSlope(north.Z - south.Z, span), GetSlope(east.Z - west.Z, span), (float)(yawDegrees * Math.PI / 180.0));
+            return new NiPoint3(-GetSlope(north.Z - south.Z, span), GetSlope(east.Z - west.Z, span), float.DegreesToRadians(yawDegrees));
         }
 
         /// <summary>
@@ -100,7 +100,7 @@ public static class TESExtensions
             {
                 return null;
             }
-            return (float)(Math.Max(Math.Abs(surfaceAngle.X), Math.Abs(surfaceAngle.Y)) * 180.0 / Math.PI);
+            return float.RadiansToDegrees(Math.Max(Math.Abs(surfaceAngle.X), Math.Abs(surfaceAngle.Y)));
         }
 
         /// <summary>
@@ -118,7 +118,7 @@ public static class TESExtensions
             {
                 return null;
             }
-            return new NiPoint3(-GetSlope(north - south, span), GetSlope(east - west, span), (float)(yawDegrees * Math.PI / 180.0));
+            return new NiPoint3(-GetSlope(north - south, span), GetSlope(east - west, span), float.DegreesToRadians(yawDegrees));
         }
 
         /// <summary>Returns the loaded exterior cells within <paramref name="radius"/> of <paramref name="center"/>, or the interior cell the player is in.</summary>
@@ -174,6 +174,7 @@ public static class TESExtensions
             }
             return clearedReferences;
         }
+
     }
 
     private static bool Reaches(Cell cell, NiPoint3 center, float radius)
@@ -193,5 +194,4 @@ public static class TESExtensions
     }
 
     private static float GetSlope(float rise, float run) => (float)Math.Atan2(rise, run);
-
 }

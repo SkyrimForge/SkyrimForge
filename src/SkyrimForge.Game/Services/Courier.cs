@@ -43,9 +43,7 @@ internal sealed class Courier : ICourier
 
     public async Task SendAsync<TItem>(TItem item) where TItem : IObjectReference
     {
-        Quest form = KnownForms.WICourier.Form;
-        PapyrusArguments arguments = new PapyrusArguments().Add(item);
-        await script.CallAsync(form, "addRefToContainer", arguments);
+        await script.CallAsync(KnownForms.WICourier.Form, "addRefToContainer", new PapyrusArguments().Add(item));
     }
 
     private static string[] ReadNames() =>

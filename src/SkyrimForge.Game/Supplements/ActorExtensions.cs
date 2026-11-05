@@ -39,10 +39,7 @@ public static class ActorExtensions
         /// <remarks>Call on the game's thread.</remarks>
         public void ForceActorValue(ActorValue actorValue, float value)
         {
-            if (GetInfo(actorValue).Flags.HasFlag(ActorValueInfo.ActorValueFlag.kCannotBeAlteredByScripts))
-            {
-                throw new ArgumentOutOfRangeException(nameof(actorValue), actorValue, $"The game forbids scripts to change {actorValue}.");
-            }
+            _ = GetAlterableInfo(actorValue);
             ActorValueOwner owner = actor.AsActorValueOwner();
             owner.ModActorValue(ACTOR_VALUE_MODIFIERS.ACTOR_VALUE_MODIFIER.kPermanent, actorValue, value - owner.GetActorValue(actorValue));
         }
@@ -69,11 +66,7 @@ public static class ActorExtensions
         /// </remarks>
         public void RestoreDamage(ActorValue actorValue, float amount)
         {
-            ActorValueInfo info = GetInfo(actorValue);
-            if (info.Flags.HasFlag(ActorValueInfo.ActorValueFlag.kCannotBeAlteredByScripts))
-            {
-                throw new ArgumentOutOfRangeException(nameof(actorValue), actorValue, $"The game forbids scripts to change {actorValue}.");
-            }
+            ActorValueInfo info = GetAlterableInfo(actorValue);
             const ACTOR_VALUE_MODIFIERS.ACTOR_VALUE_MODIFIER damage = ACTOR_VALUE_MODIFIERS.ACTOR_VALUE_MODIFIER.kDamage;
             bool inverted = info.Flags.HasFlag(ActorValueInfo.ActorValueFlag.kInverted);
             float signedAmount = inverted ? -MathF.Abs(amount) : MathF.Abs(amount);
@@ -91,11 +84,7 @@ public static class ActorExtensions
         /// </remarks>
         public void DamageActorValue(ActorValue actorValue, float amount)
         {
-            ActorValueInfo info = GetInfo(actorValue);
-            if (info.Flags.HasFlag(ActorValueInfo.ActorValueFlag.kCannotBeAlteredByScripts))
-            {
-                throw new ArgumentOutOfRangeException(nameof(actorValue), actorValue, $"The game forbids scripts to change {actorValue}.");
-            }
+            ActorValueInfo info = GetAlterableInfo(actorValue);
             float signedAmount = info.Flags.HasFlag(ActorValueInfo.ActorValueFlag.kInverted) ? MathF.Abs(amount) : -MathF.Abs(amount);
             if (actorValue == ActorValue.kHealth && actor.IsChild())
             {
@@ -207,4 +196,9 @@ public static class ActorExtensions
 
     private static ActorValueInfo GetInfo(ActorValue actorValue) =>
         ActorValueList.GetActorValueInfo(actorValue) ?? throw new ArgumentOutOfRangeException(nameof(actorValue), actorValue, $"The game describes no actor value {actorValue}.");
+
+    private static ActorValueInfo GetAlterableInfo(ActorValue actorValue) =>
+        GetInfo(actorValue) is var info && !info.Flags.HasFlag(ActorValueInfo.ActorValueFlag.kCannotBeAlteredByScripts)
+            ? info
+            : throw new ArgumentOutOfRangeException(nameof(actorValue), actorValue, $"The game forbids scripts to change {actorValue}.");
 }

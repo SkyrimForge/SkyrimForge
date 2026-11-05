@@ -56,7 +56,7 @@ internal sealed unsafe class SksePluginMessenger(ILog log) : ISksePluginMessenge
     [UnmanagedCallersOnly]
     private static void OnMessage(uint messageType, nint data, uint length, nint sender)
     {
-        string name = sender != 0 ? Marshal.PtrToStringUTF8(sender) ?? string.Empty : string.Empty;
+        string name = Marshal.PtrToStringUTF8(sender) ?? string.Empty;
         HandlerRegistration<Action<SksePluginMessage>>[] registrations;
         lock (registrationsBySender)
         {

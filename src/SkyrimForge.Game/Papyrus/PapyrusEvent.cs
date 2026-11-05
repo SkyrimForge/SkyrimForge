@@ -105,7 +105,7 @@ public sealed class PapyrusEvent
     public void Send(PapyrusArguments? arguments = null)
     {
         arguments?.Consume();
-        VirtualMachineArgumentList virtualMachineArgumentList = (arguments ?? new PapyrusArguments()).Build();
+        VirtualMachineArgumentList virtualMachineArgumentList = arguments?.Build() ?? VirtualMachineArgumentList.Allocate();
         try
         {
             if (scriptName != null)

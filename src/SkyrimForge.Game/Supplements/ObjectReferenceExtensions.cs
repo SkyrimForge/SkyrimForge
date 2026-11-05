@@ -43,7 +43,7 @@ public static class ObjectReferenceExtensions
                 ? node.World.Translate.Z - node.WorldBound.Center.Z
                 : reference.GetBaseObject()?.OriginDrop ?? 0f;
             reference.SetPosition(position with { Z = position.Z + Math.Max(drop, 0f) });
-            reference.SetAngle(tes.GetLandAngle(position, yawDegrees, span) ?? new NiPoint3(0f, 0f, (float)(yawDegrees * Math.PI / 180.0)));
+            reference.SetAngle(tes.GetLandAngle(position, yawDegrees, span) ?? new NiPoint3(0f, 0f, float.DegreesToRadians(yawDegrees)));
             reference.Update3DPosition(false);
         }
 
@@ -292,8 +292,9 @@ public static class ObjectReferenceExtensions
             ThrowIfLeveledList(baseObject);
             // The last five arguments are the ones Papyrus's PlaceAtMe passes.
             // In an exterior the game puts the reference in the cell that contains the position, not in this reference's cell.
-            ObjectReference placedReference = dataHandler.CreateReferenceAtLocation(baseObject, position, new NiPoint3(0f, 0f, yawDegrees * MathF.PI / 180f), reference.ParentCell,
-                reference.GetWorldspace(), null, null, null, true, true) ?? throw new InvalidOperationException($"The game created no reference of {baseObject.FormID:X8}.");
+            ObjectReference placedReference = dataHandler.CreateReferenceAtLocation(baseObject, position, new NiPoint3(0f, 0f, float.DegreesToRadians(yawDegrees)),
+                reference.ParentCell, reference.GetWorldspace(), null, null, null, true, true)
+                ?? throw new InvalidOperationException($"The game created no reference of {baseObject.FormID:X8}.");
             // A reference Papyrus's PlaceAtMe returns has ObjectReference's script bound, which a Papyrus call on it requires.
             ObjectReferenceScript.Dispatcher.Bind(placedReference);
             return placedReference;

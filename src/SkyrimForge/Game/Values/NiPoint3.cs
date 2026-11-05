@@ -82,11 +82,7 @@ public readonly record struct NiPoint3(float X, float Y, float Z) : IFormattable
     public float GetSquaredDistance(NiPoint3 other) => (other - this).SquaredLength;
 
     /// <summary>Gets the distance to <paramref name="other"/>, in game units.</summary>
-    public float GetDistance(NiPoint3 other)
-    {
-        float dx = other.X - X, dy = other.Y - Y, dz = other.Z - Z;
-        return MathF.Sqrt((dx * dx) + (dy * dy) + (dz * dz));
-    }
+    public float GetDistance(NiPoint3 other) => (other - this).Length;
 
     /// <summary>Gets the distance to <paramref name="other"/> across the X and Y axes, in game units.</summary>
     public float GetHorizontalDistance(NiPoint3 other)
@@ -112,7 +108,7 @@ public readonly record struct NiPoint3(float X, float Y, float Z) : IFormattable
     /// </summary>
     public CompassDirection GetCompassDirection(NiPoint3 other)
     {
-        double degrees = ((Math.Atan2(other.X - X, other.Y - Y) * 180d / Math.PI) + 360d) % 360d;
+        double degrees = (double.RadiansToDegrees(Math.Atan2(other.X - X, other.Y - Y)) + 360d) % 360d;
         return (CompassDirection)((int)Math.Round(degrees / 45d) % 8);
     }
 

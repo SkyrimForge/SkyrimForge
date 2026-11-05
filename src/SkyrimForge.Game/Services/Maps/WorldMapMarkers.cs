@@ -144,7 +144,7 @@ internal sealed class WorldMapMarkers : IWorldMapMarkers
     }
 
     // CommonLib declares MapMarkerData without a constructor. Its first member is a TESFullName, whose first word is that type's virtual table.
-    private MapMarkerData CreateData() => MapMarkerData.OrNull(GameHeap.AllocateObject(gameTarget, mapMarkerDataSize, "TESFullName"))!.Value;
+    private MapMarkerData CreateData() => MapMarkerData.FromAddress(GameHeap.AllocateObject(gameTarget, mapMarkerDataSize, "TESFullName"));
 
     private Dictionary<string, SavedMapMarker> Read() => markersPair.Value ?? [];
 

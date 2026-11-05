@@ -133,6 +133,8 @@ namespace SkyrimForge.Game.BGSWaterCollisionManager
 
         nint IAddressable.Address => Address;
 
+        internal static bhkPlaceableWater FromAddress(nint address) => new bhkPlaceableWater(address);
+
         internal static bhkPlaceableWater? OrNull(nint address) => address != 0 ? new bhkPlaceableWater(address) : null;
 
         /// <summary>Whether both views are over one address.</summary>
@@ -235,6 +237,8 @@ namespace SkyrimForge.Game.BSAudioMonitor
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public Request() => address = 0;
 
+        internal static Request FromAddress(nint address) => new Request(address);
+
         internal static Request? OrNull(nint address) => address != 0 ? new Request(address) : null;
 
         /// <summary>Whether both views are over one address.</summary>
@@ -272,6 +276,8 @@ namespace SkyrimForge.Game.BSCurrent
         /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public Action() => address = 0;
+
+        internal static Action FromAddress(nint address) => new Action(address);
 
         internal static Action? OrNull(nint address) => address != 0 ? new Action(address) : null;
 
@@ -348,6 +354,8 @@ namespace SkyrimForge.Game.BSExternalAudioIO
         /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public ExternalIOInterface() => address = 0;
+
+        internal static ExternalIOInterface FromAddress(nint address) => new ExternalIOInterface(address);
 
         internal static ExternalIOInterface? OrNull(nint address) => address != 0 ? new ExternalIOInterface(address) : null;
 
@@ -835,6 +843,8 @@ namespace SkyrimForge.Game.BSGraphics
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public IndexBuffer() => address = 0;
 
+        internal static IndexBuffer FromAddress(nint address) => new IndexBuffer(address);
+
         internal static IndexBuffer? OrNull(nint address) => address != 0 ? new IndexBuffer(address) : null;
 
         /// <summary>Whether both views are over one address.</summary>
@@ -978,6 +988,8 @@ namespace SkyrimForge.Game.BSGraphics
         /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
         [Obsolete("Creates a view with no address. Use GameTarget.GraphicsRenderer, which returns the instance the game creates.", error: true)]
         public Renderer() => address = 0;
+
+        internal static Renderer FromAddress(nint address) => new Renderer(address);
 
         internal static Renderer? OrNull(nint address) => address != 0 ? new Renderer(address) : null;
 
@@ -1133,6 +1145,8 @@ namespace SkyrimForge.Game.BSGraphics
         [Obsolete("Creates a view with no address. Use GameTarget.GraphicsState, which returns the instance the game creates.", error: true)]
         public State() => address = 0;
 
+        internal static State FromAddress(nint address) => new State(address);
+
         internal static State? OrNull(nint address) => address != 0 ? new State(address) : null;
 
         /// <summary>Whether both views are over one address.</summary>
@@ -1167,6 +1181,8 @@ namespace SkyrimForge.Game.BSGraphics
             /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
             [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
             public FRAME_STATE_1799() => address = 0;
+
+            internal static FRAME_STATE_1799 FromAddress(nint address) => new FRAME_STATE_1799(address);
 
             internal static FRAME_STATE_1799? OrNull(nint address) => address != 0 ? new FRAME_STATE_1799(address) : null;
 
@@ -1577,6 +1593,8 @@ namespace SkyrimForge.Game.BSResource
 
         nint IAddressable.Address => Address;
 
+        internal static AsyncStream FromAddress(nint address) => new AsyncStream(address);
+
         internal static AsyncStream? OrNull(nint address) => address != 0 ? new AsyncStream(address) : null;
 
         /// <summary>Whether both views are over one address.</summary>
@@ -1759,6 +1777,8 @@ namespace SkyrimForge.Game.BSResource
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public Location() => address = 0;
 
+        internal static Location FromAddress(nint address) => new Location(address);
+
         internal static Location? OrNull(nint address) => address != 0 ? new Location(address) : null;
 
         /// <summary>Whether both views are over one address.</summary>
@@ -1792,6 +1812,8 @@ namespace SkyrimForge.Game.BSResource
         /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public LocationTraverser() => address = 0;
+
+        internal static LocationTraverser FromAddress(nint address) => new LocationTraverser(address);
 
         internal static LocationTraverser? OrNull(nint address) => address != 0 ? new LocationTraverser(address) : null;
 
@@ -1836,6 +1858,8 @@ namespace SkyrimForge.Game.BSResource
         public Stream() => address = 0;
 
         nint IAddressable.Address => Address;
+
+        internal static Stream FromAddress(nint address) => new Stream(address);
 
         internal static Stream? OrNull(nint address) => address != 0 ? new Stream(address) : null;
 
@@ -1912,6 +1936,8 @@ namespace SkyrimForge.Game.BSResource
             /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
             [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
             public AE_RUNTIME_DATA() => address = 0;
+
+            internal static AE_RUNTIME_DATA FromAddress(nint address) => new AE_RUNTIME_DATA(address);
 
             internal static AE_RUNTIME_DATA? OrNull(nint address) => address != 0 ? new AE_RUNTIME_DATA(address) : null;
 
@@ -2131,6 +2157,8 @@ namespace SkyrimForge.Game.BSScript
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public IForEachScriptObjectFunctor() => address = 0;
 
+        internal static IForEachScriptObjectFunctor FromAddress(nint address) => new IForEachScriptObjectFunctor(address);
+
         internal static IForEachScriptObjectFunctor? OrNull(nint address) => address != 0 ? new IForEachScriptObjectFunctor(address) : null;
 
         /// <summary>Whether both views are over one address.</summary>
@@ -2164,6 +2192,8 @@ namespace SkyrimForge.Game.BSScript
         /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public IFreezeQuery() => address = 0;
+
+        internal static IFreezeQuery FromAddress(nint address) => new IFreezeQuery(address);
 
         internal static IFreezeQuery? OrNull(nint address) => address != 0 ? new IFreezeQuery(address) : null;
 
@@ -2200,6 +2230,8 @@ namespace SkyrimForge.Game.BSScript
         public IFunction() => address = 0;
 
         nint IAddressable.Address => Address;
+
+        internal static IFunction FromAddress(nint address) => new IFunction(address);
 
         internal static IFunction? OrNull(nint address) => address != 0 ? new IFunction(address) : null;
 
@@ -2256,6 +2288,8 @@ namespace SkyrimForge.Game.BSScript
         /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public IFunctionArguments() => address = 0;
+
+        internal static IFunctionArguments FromAddress(nint address) => new IFunctionArguments(address);
 
         internal static IFunctionArguments? OrNull(nint address) => address != 0 ? new IFunctionArguments(address) : null;
 
@@ -2615,6 +2649,8 @@ namespace SkyrimForge.Game.BSScript
 
         nint IAddressable.Address => Address;
 
+        internal static IStackCallbackFunctor FromAddress(nint address) => new IStackCallbackFunctor(address);
+
         internal static IStackCallbackFunctor? OrNull(nint address) => address != 0 ? new IStackCallbackFunctor(address) : null;
 
         /// <summary>Whether both views are over one address.</summary>
@@ -2653,6 +2689,8 @@ namespace SkyrimForge.Game.BSScript
         /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public IStackCallbackSaveInterface() => address = 0;
+
+        internal static IStackCallbackSaveInterface FromAddress(nint address) => new IStackCallbackSaveInterface(address);
 
         internal static IStackCallbackSaveInterface? OrNull(nint address) => address != 0 ? new IStackCallbackSaveInterface(address) : null;
 
@@ -2740,6 +2778,8 @@ namespace SkyrimForge.Game.BSScript
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public ITypeLinkedCallback() => address = 0;
 
+        internal static ITypeLinkedCallback FromAddress(nint address) => new ITypeLinkedCallback(address);
+
         internal static ITypeLinkedCallback? OrNull(nint address) => address != 0 ? new ITypeLinkedCallback(address) : null;
 
         /// <summary>Whether both views are over one address.</summary>
@@ -2773,6 +2813,8 @@ namespace SkyrimForge.Game.BSScript
         /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public IVMDebugInterface() => address = 0;
+
+        internal static IVMDebugInterface FromAddress(nint address) => new IVMDebugInterface(address);
 
         internal static IVMDebugInterface? OrNull(nint address) => address != 0 ? new IVMDebugInterface(address) : null;
 
@@ -2808,6 +2850,8 @@ namespace SkyrimForge.Game.BSScript
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public IVMObjectBindInterface() => address = 0;
 
+        internal static IVMObjectBindInterface FromAddress(nint address) => new IVMObjectBindInterface(address);
+
         internal static IVMObjectBindInterface? OrNull(nint address) => address != 0 ? new IVMObjectBindInterface(address) : null;
 
         /// <summary>Whether both views are over one address.</summary>
@@ -2841,6 +2885,8 @@ namespace SkyrimForge.Game.BSScript
         /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public IVMSaveLoadInterface() => address = 0;
+
+        internal static IVMSaveLoadInterface FromAddress(nint address) => new IVMSaveLoadInterface(address);
 
         internal static IVMSaveLoadInterface? OrNull(nint address) => address != 0 ? new IVMSaveLoadInterface(address) : null;
 
@@ -3044,6 +3090,8 @@ namespace SkyrimForge.Game.BSScript
             [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
             public GlobalFuncInfo() => address = 0;
 
+            internal static GlobalFuncInfo FromAddress(nint address) => new GlobalFuncInfo(address);
+
             internal static GlobalFuncInfo? OrNull(nint address) => address != 0 ? new GlobalFuncInfo(address) : null;
 
             /// <summary>Whether both views are over one address.</summary>
@@ -3079,6 +3127,8 @@ namespace SkyrimForge.Game.BSScript
             /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
             [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
             public InitialValueInfo() => address = 0;
+
+            internal static InitialValueInfo FromAddress(nint address) => new InitialValueInfo(address);
 
             internal static InitialValueInfo? OrNull(nint address) => address != 0 ? new InitialValueInfo(address) : null;
 
@@ -3125,6 +3175,8 @@ namespace SkyrimForge.Game.BSScript
             [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
             public MemberFuncInfo() => address = 0;
 
+            internal static MemberFuncInfo FromAddress(nint address) => new MemberFuncInfo(address);
+
             internal static MemberFuncInfo? OrNull(nint address) => address != 0 ? new MemberFuncInfo(address) : null;
 
             /// <summary>Whether both views are over one address.</summary>
@@ -3161,6 +3213,8 @@ namespace SkyrimForge.Game.BSScript
             [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
             public NamedStateInfo() => address = 0;
 
+            internal static NamedStateInfo FromAddress(nint address) => new NamedStateInfo(address);
+
             internal static NamedStateInfo? OrNull(nint address) => address != 0 ? new NamedStateInfo(address) : null;
 
             /// <summary>Whether both views are over one address.</summary>
@@ -3196,6 +3250,8 @@ namespace SkyrimForge.Game.BSScript
                 /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
                 [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
                 public Func() => address = 0;
+
+                internal static Func FromAddress(nint address) => new Func(address);
 
                 internal static Func? OrNull(nint address) => address != 0 ? new Func(address) : null;
 
@@ -3235,6 +3291,8 @@ namespace SkyrimForge.Game.BSScript
             [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
             public PropertyInfo() => address = 0;
 
+            internal static PropertyInfo FromAddress(nint address) => new PropertyInfo(address);
+
             internal static PropertyInfo? OrNull(nint address) => address != 0 ? new PropertyInfo(address) : null;
 
             /// <summary>Whether both views are over one address.</summary>
@@ -3272,6 +3330,8 @@ namespace SkyrimForge.Game.BSScript
             [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
             public UnlinkedNativeFunction() => address = 0;
 
+            internal static UnlinkedNativeFunction FromAddress(nint address) => new UnlinkedNativeFunction(address);
+
             internal static UnlinkedNativeFunction? OrNull(nint address) => address != 0 ? new UnlinkedNativeFunction(address) : null;
 
             /// <summary>Whether both views are over one address.</summary>
@@ -3308,6 +3368,8 @@ namespace SkyrimForge.Game.BSScript
             [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
             public UserFlagInfo() => address = 0;
 
+            internal static UserFlagInfo FromAddress(nint address) => new UserFlagInfo(address);
+
             internal static UserFlagInfo? OrNull(nint address) => address != 0 ? new UserFlagInfo(address) : null;
 
             /// <summary>Whether both views are over one address.</summary>
@@ -3343,6 +3405,8 @@ namespace SkyrimForge.Game.BSScript
             /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
             [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
             public VariableInfo() => address = 0;
+
+            internal static VariableInfo FromAddress(nint address) => new VariableInfo(address);
 
             internal static VariableInfo? OrNull(nint address) => address != 0 ? new VariableInfo(address) : null;
 
@@ -3926,6 +3990,8 @@ namespace SkyrimForge.Game.BSScript.ByteCode
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public Argument() => address = 0;
 
+        internal static Argument FromAddress(nint address) => new Argument(address);
+
         internal static Argument? OrNull(nint address) => address != 0 ? new Argument(address) : null;
 
         /// <summary>Whether both views are over one address.</summary>
@@ -4056,6 +4122,8 @@ namespace SkyrimForge.Game.BSScript.Internal
         public CodeTasklet() => address = 0;
 
         nint IAddressable.Address => Address;
+
+        internal static CodeTasklet FromAddress(nint address) => new CodeTasklet(address);
 
         internal static CodeTasklet? OrNull(nint address) => address != 0 ? new CodeTasklet(address) : null;
 
@@ -4249,6 +4317,8 @@ namespace SkyrimForge.Game.BSScript.Internal
 
         nint IAddressable.Address => Address;
 
+        internal static VirtualMachine FromAddress(nint address) => new VirtualMachine(address);
+
         internal static VirtualMachine? OrNull(nint address) => address != 0 ? new VirtualMachine(address) : null;
 
         /// <summary>Whether both views are over one address.</summary>
@@ -4342,6 +4412,8 @@ namespace SkyrimForge.Game.BSScript.UnlinkedTypes
         /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public Function() => address = 0;
+
+        internal static Function FromAddress(nint address) => new Function(address);
 
         internal static Function? OrNull(nint address) => address != 0 ? new Function(address) : null;
 
@@ -4687,6 +4759,8 @@ namespace SkyrimForge.Game.CompactingStore
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public BlockHeader() => address = 0;
 
+        internal static BlockHeader FromAddress(nint address) => new BlockHeader(address);
+
         internal static BlockHeader? OrNull(nint address) => address != 0 ? new BlockHeader(address) : null;
 
         /// <summary>Whether both views are over one address.</summary>
@@ -4720,6 +4794,8 @@ namespace SkyrimForge.Game.CompactingStore
         /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public FreeBlock() => address = 0;
+
+        internal static FreeBlock FromAddress(nint address) => new FreeBlock(address);
 
         internal static FreeBlock? OrNull(nint address) => address != 0 ? new FreeBlock(address) : null;
 
@@ -4757,6 +4833,8 @@ namespace SkyrimForge.Game.CompactingStore
 
         nint IAddressable.Address => Address;
 
+        internal static Store FromAddress(nint address) => new Store(address);
+
         internal static Store? OrNull(nint address) => address != 0 ? new Store(address) : null;
 
         /// <summary>Whether both views are over one address.</summary>
@@ -4793,6 +4871,8 @@ namespace SkyrimForge.Game.CompactingStore
         /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public StoreBlock() => address = 0;
+
+        internal static StoreBlock FromAddress(nint address) => new StoreBlock(address);
 
         internal static StoreBlock? OrNull(nint address) => address != 0 ? new StoreBlock(address) : null;
 
@@ -4835,6 +4915,8 @@ namespace SkyrimForge.Game.CraftingSubMenus
         public CraftingSubMenu() => address = 0;
 
         nint IAddressable.Address => Address;
+
+        internal static CraftingSubMenu FromAddress(nint address) => new CraftingSubMenu(address);
 
         internal static CraftingSubMenu? OrNull(nint address) => address != 0 ? new CraftingSubMenu(address) : null;
 
@@ -5046,6 +5128,8 @@ namespace SkyrimForge.Game.REFREventCallbacks
         public IEventCallback() => address = 0;
 
         nint IAddressable.Address => Address;
+
+        internal static IEventCallback FromAddress(nint address) => new IEventCallback(address);
 
         internal static IEventCallback? OrNull(nint address) => address != 0 ? new IEventCallback(address) : null;
 
@@ -5341,6 +5425,8 @@ namespace SkyrimForge.Game.SkyrimScript
 
         nint IAddressable.Address => Address;
 
+        internal static SaveFileHandleReaderWriter FromAddress(nint address) => new SaveFileHandleReaderWriter(address);
+
         internal static SaveFileHandleReaderWriter? OrNull(nint address) => address != 0 ? new SaveFileHandleReaderWriter(address) : null;
 
         /// <summary>Whether both views are over one address.</summary>
@@ -5423,6 +5509,8 @@ namespace SkyrimForge.Game.SkyrimScript
         public Store() => address = 0;
 
         nint IAddressable.Address => Address;
+
+        internal static Store FromAddress(nint address) => new Store(address);
 
         internal static Store? OrNull(nint address) => address != 0 ? new Store(address) : null;
 
@@ -5507,6 +5595,8 @@ namespace SkyrimForge.Game.W32
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public D3DXMatrix() => address = 0;
 
+        internal static D3DXMatrix FromAddress(nint address) => new D3DXMatrix(address);
+
         internal static D3DXMatrix? OrNull(nint address) => address != 0 ? new D3DXMatrix(address) : null;
 
         /// <summary>Whether both views are over one address.</summary>
@@ -5540,6 +5630,8 @@ namespace SkyrimForge.Game.W32
         /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public D3D_SHADER_MACRO() => address = 0;
+
+        internal static D3D_SHADER_MACRO FromAddress(nint address) => new D3D_SHADER_MACRO(address);
 
         internal static D3D_SHADER_MACRO? OrNull(nint address) => address != 0 ? new D3D_SHADER_MACRO(address) : null;
 
@@ -5719,6 +5811,8 @@ namespace SkyrimForge.Game.W32
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public GUID() => address = 0;
 
+        internal static GUID FromAddress(nint address) => new GUID(address);
+
         internal static GUID? OrNull(nint address) => address != 0 ? new GUID(address) : null;
 
         /// <summary>Whether both views are over one address.</summary>
@@ -5752,6 +5846,8 @@ namespace SkyrimForge.Game.W32
         /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public HINSTANCE__() => address = 0;
+
+        internal static HINSTANCE__ FromAddress(nint address) => new HINSTANCE__(address);
 
         internal static HINSTANCE__? OrNull(nint address) => address != 0 ? new HINSTANCE__(address) : null;
 
@@ -5787,6 +5883,8 @@ namespace SkyrimForge.Game.W32
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public HWND__() => address = 0;
 
+        internal static HWND__ FromAddress(nint address) => new HWND__(address);
+
         internal static HWND__? OrNull(nint address) => address != 0 ? new HWND__(address) : null;
 
         /// <summary>Whether both views are over one address.</summary>
@@ -5820,6 +5918,8 @@ namespace SkyrimForge.Game.W32
         /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public ID3D11Buffer() => address = 0;
+
+        internal static ID3D11Buffer FromAddress(nint address) => new ID3D11Buffer(address);
 
         internal static ID3D11Buffer? OrNull(nint address) => address != 0 ? new ID3D11Buffer(address) : null;
 
@@ -5855,6 +5955,8 @@ namespace SkyrimForge.Game.W32
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public ID3D11ComputeShader() => address = 0;
 
+        internal static ID3D11ComputeShader FromAddress(nint address) => new ID3D11ComputeShader(address);
+
         internal static ID3D11ComputeShader? OrNull(nint address) => address != 0 ? new ID3D11ComputeShader(address) : null;
 
         /// <summary>Whether both views are over one address.</summary>
@@ -5888,6 +5990,8 @@ namespace SkyrimForge.Game.W32
         /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public ID3D11Device() => address = 0;
+
+        internal static ID3D11Device FromAddress(nint address) => new ID3D11Device(address);
 
         internal static ID3D11Device? OrNull(nint address) => address != 0 ? new ID3D11Device(address) : null;
 
@@ -5923,6 +6027,8 @@ namespace SkyrimForge.Game.W32
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public ID3D11DeviceContext() => address = 0;
 
+        internal static ID3D11DeviceContext FromAddress(nint address) => new ID3D11DeviceContext(address);
+
         internal static ID3D11DeviceContext? OrNull(nint address) => address != 0 ? new ID3D11DeviceContext(address) : null;
 
         /// <summary>Whether both views are over one address.</summary>
@@ -5956,6 +6062,8 @@ namespace SkyrimForge.Game.W32
         /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public ID3D11PixelShader() => address = 0;
+
+        internal static ID3D11PixelShader FromAddress(nint address) => new ID3D11PixelShader(address);
 
         internal static ID3D11PixelShader? OrNull(nint address) => address != 0 ? new ID3D11PixelShader(address) : null;
 
@@ -5991,6 +6099,8 @@ namespace SkyrimForge.Game.W32
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public ID3D11RenderTargetView() => address = 0;
 
+        internal static ID3D11RenderTargetView FromAddress(nint address) => new ID3D11RenderTargetView(address);
+
         internal static ID3D11RenderTargetView? OrNull(nint address) => address != 0 ? new ID3D11RenderTargetView(address) : null;
 
         /// <summary>Whether both views are over one address.</summary>
@@ -6024,6 +6134,8 @@ namespace SkyrimForge.Game.W32
         /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public ID3D11RenderTargetView1() => address = 0;
+
+        internal static ID3D11RenderTargetView1 FromAddress(nint address) => new ID3D11RenderTargetView1(address);
 
         internal static ID3D11RenderTargetView1? OrNull(nint address) => address != 0 ? new ID3D11RenderTargetView1(address) : null;
 
@@ -6059,6 +6171,8 @@ namespace SkyrimForge.Game.W32
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public ID3D11Resource() => address = 0;
 
+        internal static ID3D11Resource FromAddress(nint address) => new ID3D11Resource(address);
+
         internal static ID3D11Resource? OrNull(nint address) => address != 0 ? new ID3D11Resource(address) : null;
 
         /// <summary>Whether both views are over one address.</summary>
@@ -6092,6 +6206,8 @@ namespace SkyrimForge.Game.W32
         /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public ID3D11ShaderResourceView() => address = 0;
+
+        internal static ID3D11ShaderResourceView FromAddress(nint address) => new ID3D11ShaderResourceView(address);
 
         internal static ID3D11ShaderResourceView? OrNull(nint address) => address != 0 ? new ID3D11ShaderResourceView(address) : null;
 
@@ -6127,6 +6243,8 @@ namespace SkyrimForge.Game.W32
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public ID3D11ShaderResourceView1() => address = 0;
 
+        internal static ID3D11ShaderResourceView1 FromAddress(nint address) => new ID3D11ShaderResourceView1(address);
+
         internal static ID3D11ShaderResourceView1? OrNull(nint address) => address != 0 ? new ID3D11ShaderResourceView1(address) : null;
 
         /// <summary>Whether both views are over one address.</summary>
@@ -6160,6 +6278,8 @@ namespace SkyrimForge.Game.W32
         /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public ID3D11Texture2D() => address = 0;
+
+        internal static ID3D11Texture2D FromAddress(nint address) => new ID3D11Texture2D(address);
 
         internal static ID3D11Texture2D? OrNull(nint address) => address != 0 ? new ID3D11Texture2D(address) : null;
 
@@ -6195,6 +6315,8 @@ namespace SkyrimForge.Game.W32
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public ID3D11UnorderedAccessView() => address = 0;
 
+        internal static ID3D11UnorderedAccessView FromAddress(nint address) => new ID3D11UnorderedAccessView(address);
+
         internal static ID3D11UnorderedAccessView? OrNull(nint address) => address != 0 ? new ID3D11UnorderedAccessView(address) : null;
 
         /// <summary>Whether both views are over one address.</summary>
@@ -6228,6 +6350,8 @@ namespace SkyrimForge.Game.W32
         /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public ID3D11VertexShader() => address = 0;
+
+        internal static ID3D11VertexShader FromAddress(nint address) => new ID3D11VertexShader(address);
 
         internal static ID3D11VertexShader? OrNull(nint address) => address != 0 ? new ID3D11VertexShader(address) : null;
 
@@ -6263,6 +6387,8 @@ namespace SkyrimForge.Game.W32
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public IDXGISwapChain() => address = 0;
 
+        internal static IDXGISwapChain FromAddress(nint address) => new IDXGISwapChain(address);
+
         internal static IDXGISwapChain? OrNull(nint address) => address != 0 ? new IDXGISwapChain(address) : null;
 
         /// <summary>Whether both views are over one address.</summary>
@@ -6297,6 +6423,8 @@ namespace SkyrimForge.Game.W32
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public IDirectInput8A() => address = 0;
 
+        internal static IDirectInput8A FromAddress(nint address) => new IDirectInput8A(address);
+
         internal static IDirectInput8A? OrNull(nint address) => address != 0 ? new IDirectInput8A(address) : null;
 
         /// <summary>Whether both views are over one address.</summary>
@@ -6330,6 +6458,8 @@ namespace SkyrimForge.Game.W32
         /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public IDirectInputDevice8A() => address = 0;
+
+        internal static IDirectInputDevice8A FromAddress(nint address) => new IDirectInputDevice8A(address);
 
         internal static IDirectInputDevice8A? OrNull(nint address) => address != 0 ? new IDirectInputDevice8A(address) : null;
 

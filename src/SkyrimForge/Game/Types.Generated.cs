@@ -526,6 +526,8 @@ public readonly partial struct AIWorldLocationContext : IEquatable<AIWorldLocati
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public AIWorldLocationContext() => address = 0;
 
+    internal static AIWorldLocationContext FromAddress(nint address) => new AIWorldLocationContext(address);
+
     internal static AIWorldLocationContext? OrNull(nint address) => address != 0 ? new AIWorldLocationContext(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -643,6 +645,8 @@ public readonly partial struct AbsorbEffect : IValueModifierEffect, IEquatable<A
 
     nint IAddressable.Address => Address;
 
+    internal static AbsorbEffect FromAddress(nint address) => new AbsorbEffect(address);
+
     internal static AbsorbEffect? OrNull(nint address) => address != 0 ? new AbsorbEffect(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -684,6 +688,8 @@ public readonly partial struct AccumulatingValueModifierEffect : IValueModifierE
     public AccumulatingValueModifierEffect() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static AccumulatingValueModifierEffect FromAddress(nint address) => new AccumulatingValueModifierEffect(address);
 
     internal static AccumulatingValueModifierEffect? OrNull(nint address) => address != 0 ? new AccumulatingValueModifierEffect(address) : null;
 
@@ -838,6 +844,8 @@ public readonly partial struct ActivateHandler : IHeldStateHandler, IEquatable<A
 
     nint IAddressable.Address => Address;
 
+    internal static ActivateHandler FromAddress(nint address) => new ActivateHandler(address);
+
     internal static ActivateHandler? OrNull(nint address) => address != 0 ? new ActivateHandler(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -876,6 +884,8 @@ public readonly partial struct ActivateHandler : IHeldStateHandler, IEquatable<A
         /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public VR_RUNTIME_DATA() => address = 0;
+
+        internal static VR_RUNTIME_DATA FromAddress(nint address) => new VR_RUNTIME_DATA(address);
 
         internal static VR_RUNTIME_DATA? OrNull(nint address) => address != 0 ? new VR_RUNTIME_DATA(address) : null;
 
@@ -1216,6 +1226,8 @@ public readonly partial struct ActorBase : ITESActorBase, IEquatable<ActorBase>
 
     nint IAddressable.Address => Address;
 
+    internal static ActorBase FromAddress(nint address) => new ActorBase(address);
+
     internal static ActorBase? OrNull(nint address) => address != 0 ? new ActorBase(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -1488,6 +1500,8 @@ public readonly partial struct ActorEquipManager : IEquatable<ActorEquipManager>
     [Obsolete("Creates a view with no address. Use GameTarget.ActorEquipManager, which returns the instance the game creates.", error: true)]
     public ActorEquipManager() => address = 0;
 
+    internal static ActorEquipManager FromAddress(nint address) => new ActorEquipManager(address);
+
     internal static ActorEquipManager? OrNull(nint address) => address != 0 ? new ActorEquipManager(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -1523,6 +1537,8 @@ public readonly partial struct ActorMagicCaster : IMagicCaster, IEquatable<Actor
     public ActorMagicCaster() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ActorMagicCaster FromAddress(nint address) => new ActorMagicCaster(address);
 
     internal static ActorMagicCaster? OrNull(nint address) => address != 0 ? new ActorMagicCaster(address) : null;
 
@@ -1575,6 +1591,8 @@ public readonly partial struct ActorMotionFeedbackData : IEquatable<ActorMotionF
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public ActorMotionFeedbackData() => address = 0;
 
+    internal static ActorMotionFeedbackData FromAddress(nint address) => new ActorMotionFeedbackData(address);
+
     internal static ActorMotionFeedbackData? OrNull(nint address) => address != 0 ? new ActorMotionFeedbackData(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -1609,6 +1627,8 @@ public readonly partial struct ActorMotionFeedbackOutput : IEquatable<ActorMotio
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public ActorMotionFeedbackOutput() => address = 0;
 
+    internal static ActorMotionFeedbackOutput FromAddress(nint address) => new ActorMotionFeedbackOutput(address);
+
     internal static ActorMotionFeedbackOutput? OrNull(nint address) => address != 0 ? new ActorMotionFeedbackOutput(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -1642,6 +1662,8 @@ public readonly partial struct ActorMover : IEquatable<ActorMover>
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public ActorMover() => address = 0;
+
+    internal static ActorMover FromAddress(nint address) => new ActorMover(address);
 
     internal static ActorMover? OrNull(nint address) => address != 0 ? new ActorMover(address) : null;
 
@@ -1720,6 +1742,8 @@ public readonly partial struct ActorPackageData : IEquatable<ActorPackageData>
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public ActorPackageData() => address = 0;
+
+    internal static ActorPackageData FromAddress(nint address) => new ActorPackageData(address);
 
     internal static ActorPackageData? OrNull(nint address) => address != 0 ? new ActorPackageData(address) : null;
 
@@ -2045,6 +2069,8 @@ public readonly partial struct ActorValueInfo : IForm, IEquatable<ActorValueInfo
 
     nint IAddressable.Address => Address;
 
+    internal static ActorValueInfo FromAddress(nint address) => new ActorValueInfo(address);
+
     internal static ActorValueInfo? OrNull(nint address) => address != 0 ? new ActorValueInfo(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -2158,6 +2184,8 @@ public readonly partial struct ActorValueList : IEquatable<ActorValueList>
     [Obsolete("Creates a view with no address. Use GameTarget.ActorValueList, which returns the instance the game creates.", error: true)]
     public ActorValueList() => address = 0;
 
+    internal static ActorValueList FromAddress(nint address) => new ActorValueList(address);
+
     internal static ActorValueList? OrNull(nint address) => address != 0 ? new ActorValueList(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -2193,6 +2221,8 @@ public readonly partial struct ActorValueMeter : IHUDMeter, IEquatable<ActorValu
     public ActorValueMeter() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ActorValueMeter FromAddress(nint address) => new ActorValueMeter(address);
 
     internal static ActorValueMeter? OrNull(nint address) => address != 0 ? new ActorValueMeter(address) : null;
 
@@ -2308,6 +2338,8 @@ public readonly partial struct AddCellGrassTask : IQueuedFile, IEquatable<AddCel
 
     nint IAddressable.Address => Address;
 
+    internal static AddCellGrassTask FromAddress(nint address) => new AddCellGrassTask(address);
+
     internal static AddCellGrassTask? OrNull(nint address) => address != 0 ? new AddCellGrassTask(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -2349,6 +2381,8 @@ public readonly partial struct AddCellGrassTask : IQueuedFile, IEquatable<AddCel
         /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public RUNTIME_DATA() => address = 0;
+
+        internal static RUNTIME_DATA FromAddress(nint address) => new RUNTIME_DATA(address);
 
         internal static RUNTIME_DATA? OrNull(nint address) => address != 0 ? new RUNTIME_DATA(address) : null;
 
@@ -2472,6 +2506,8 @@ public readonly partial struct AmiiboEvent : IDEvent_, IEquatable<AmiiboEvent>
 
     nint IAddressable.Address => Address;
 
+    internal static AmiiboEvent FromAddress(nint address) => new AmiiboEvent(address);
+
     internal static AmiiboEvent? OrNull(nint address) => address != 0 ? new AmiiboEvent(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -2513,6 +2549,8 @@ public readonly partial struct Ammo : ITESBoundObject, IEquatable<Ammo>
     public Ammo() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static Ammo FromAddress(nint address) => new Ammo(address);
 
     internal static Ammo? OrNull(nint address) => address != 0 ? new Ammo(address) : null;
 
@@ -2633,6 +2671,8 @@ public readonly partial struct AnimationObjects : IEquatable<AnimationObjects>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public AnimationObjects() => address = 0;
 
+    internal static AnimationObjects FromAddress(nint address) => new AnimationObjects(address);
+
     internal static AnimationObjects? OrNull(nint address) => address != 0 ? new AnimationObjects(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -2668,6 +2708,8 @@ public readonly partial struct Apparatus : IMiscObject, IEquatable<Apparatus>
     public Apparatus() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static Apparatus FromAddress(nint address) => new Apparatus(address);
 
     internal static Apparatus? OrNull(nint address) => address != 0 ? new Apparatus(address) : null;
 
@@ -2720,6 +2762,8 @@ public readonly partial struct Armor : ITESBoundObject, IEquatable<Armor>
 
     nint IAddressable.Address => Address;
 
+    internal static Armor FromAddress(nint address) => new Armor(address);
+
     internal static Armor? OrNull(nint address) => address != 0 ? new Armor(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -2768,6 +2812,8 @@ public readonly partial struct ArmorAddon : ITESObject, IEquatable<ArmorAddon>
 
     nint IAddressable.Address => Address;
 
+    internal static ArmorAddon FromAddress(nint address) => new ArmorAddon(address);
+
     internal static ArmorAddon? OrNull(nint address) => address != 0 ? new ArmorAddon(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -2812,6 +2858,8 @@ public readonly partial struct ArrowProjectile : IMissileProjectile, IEquatable<
     public ArrowProjectile() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ArrowProjectile FromAddress(nint address) => new ArrowProjectile(address);
 
     internal static ArrowProjectile? OrNull(nint address) => address != 0 ? new ArrowProjectile(address) : null;
 
@@ -2902,6 +2950,8 @@ public readonly partial struct Art : ITESBoundObject, IEquatable<Art>
     public Art() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static Art FromAddress(nint address) => new Art(address);
 
     internal static Art? OrNull(nint address) => address != 0 ? new Art(address) : null;
 
@@ -2996,6 +3046,8 @@ public readonly partial struct AssociationType : IForm, IEquatable<AssociationTy
 
     nint IAddressable.Address => Address;
 
+    internal static AssociationType FromAddress(nint address) => new AssociationType(address);
+
     internal static AssociationType? OrNull(nint address) => address != 0 ? new AssociationType(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -3046,6 +3098,8 @@ public readonly partial struct Atmosphere : ISkyObject, IEquatable<Atmosphere>
 
     nint IAddressable.Address => Address;
 
+    internal static Atmosphere FromAddress(nint address) => new Atmosphere(address);
+
     internal static Atmosphere? OrNull(nint address) => address != 0 ? new Atmosphere(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -3085,6 +3139,8 @@ public readonly partial struct AttackAnimationArrayMap : INiRefObject, IEquatabl
 
     nint IAddressable.Address => Address;
 
+    internal static AttackAnimationArrayMap FromAddress(nint address) => new AttackAnimationArrayMap(address);
+
     internal static AttackAnimationArrayMap? OrNull(nint address) => address != 0 ? new AttackAnimationArrayMap(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -3123,6 +3179,8 @@ public readonly partial struct AttackBlockHandler : IHeldStateHandler, IEquatabl
     public AttackBlockHandler() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static AttackBlockHandler FromAddress(nint address) => new AttackBlockHandler(address);
 
     internal static AttackBlockHandler? OrNull(nint address) => address != 0 ? new AttackBlockHandler(address) : null;
 
@@ -3262,6 +3320,8 @@ public readonly partial struct AutoMoveHandler : IPlayerInputHandler, IEquatable
 
     nint IAddressable.Address => Address;
 
+    internal static AutoMoveHandler FromAddress(nint address) => new AutoMoveHandler(address);
+
     internal static AutoMoveHandler? OrNull(nint address) => address != 0 ? new AutoMoveHandler(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -3301,6 +3361,8 @@ public readonly partial struct BGSAbilityPerkEntry : IBGSPerkEntry, IEquatable<B
 
     nint IAddressable.Address => Address;
 
+    internal static BGSAbilityPerkEntry FromAddress(nint address) => new BGSAbilityPerkEntry(address);
+
     internal static BGSAbilityPerkEntry? OrNull(nint address) => address != 0 ? new BGSAbilityPerkEntry(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -3339,6 +3401,8 @@ public readonly partial struct BGSAcousticSpace : ITESBoundObject, IEquatable<BG
     public BGSAcousticSpace() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static BGSAcousticSpace FromAddress(nint address) => new BGSAcousticSpace(address);
 
     internal static BGSAcousticSpace? OrNull(nint address) => address != 0 ? new BGSAcousticSpace(address) : null;
 
@@ -3388,6 +3452,8 @@ public readonly partial struct BGSAcousticSpaceListener : IbhkEntityListener, IE
 
     nint IAddressable.Address => Address;
 
+    internal static BGSAcousticSpaceListener FromAddress(nint address) => new BGSAcousticSpaceListener(address);
+
     internal static BGSAcousticSpaceListener? OrNull(nint address) => address != 0 ? new BGSAcousticSpaceListener(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -3429,6 +3495,8 @@ public readonly partial struct BGSAction : IKeyword, IEquatable<BGSAction>
     public BGSAction() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static BGSAction FromAddress(nint address) => new BGSAction(address);
 
     internal static BGSAction? OrNull(nint address) => address != 0 ? new BGSAction(address) : null;
 
@@ -3474,6 +3542,8 @@ public readonly partial struct BGSActionData : IActionInput, IEquatable<BGSActio
     public BGSActionData() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static BGSActionData FromAddress(nint address) => new BGSActionData(address);
 
     internal static BGSActionData? OrNull(nint address) => address != 0 ? new BGSActionData(address) : null;
 
@@ -3524,6 +3594,8 @@ public readonly partial struct BGSAddonNode : ITESBoundObject, IEquatable<BGSAdd
     public BGSAddonNode() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static BGSAddonNode FromAddress(nint address) => new BGSAddonNode(address);
 
     internal static BGSAddonNode? OrNull(nint address) => address != 0 ? new BGSAddonNode(address) : null;
 
@@ -3609,6 +3681,8 @@ public readonly partial struct BGSAttackData : INiRefObject, IEquatable<BGSAttac
 
     nint IAddressable.Address => Address;
 
+    internal static BGSAttackData FromAddress(nint address) => new BGSAttackData(address);
+
     internal static BGSAttackData? OrNull(nint address) => address != 0 ? new BGSAttackData(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -3647,6 +3721,8 @@ public readonly partial struct BGSAttackDataForm : IBaseFormComponent, IEquatabl
     public BGSAttackDataForm() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static BGSAttackDataForm FromAddress(nint address) => new BGSAttackDataForm(address);
 
     internal static BGSAttackDataForm? OrNull(nint address) => address != 0 ? new BGSAttackDataForm(address) : null;
 
@@ -3687,6 +3763,8 @@ public readonly partial struct BGSAttackDataMap : INiRefObject, IEquatable<BGSAt
 
     nint IAddressable.Address => Address;
 
+    internal static BGSAttackDataMap FromAddress(nint address) => new BGSAttackDataMap(address);
+
     internal static BGSAttackDataMap? OrNull(nint address) => address != 0 ? new BGSAttackDataMap(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -3725,6 +3803,8 @@ public readonly partial struct BGSBehaviorGraphModel : ITESModel, IEquatable<BGS
     public BGSBehaviorGraphModel() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static BGSBehaviorGraphModel FromAddress(nint address) => new BGSBehaviorGraphModel(address);
 
     internal static BGSBehaviorGraphModel? OrNull(nint address) => address != 0 ? new BGSBehaviorGraphModel(address) : null;
 
@@ -3768,6 +3848,8 @@ public readonly partial struct BGSBipedObjectForm : IBaseFormComponent, IEquatab
 
     nint IAddressable.Address => Address;
 
+    internal static BGSBipedObjectForm FromAddress(nint address) => new BGSBipedObjectForm(address);
+
     internal static BGSBipedObjectForm? OrNull(nint address) => address != 0 ? new BGSBipedObjectForm(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -3807,6 +3889,8 @@ public readonly partial struct BGSBlockBashData : IBaseFormComponent, IEquatable
 
     nint IAddressable.Address => Address;
 
+    internal static BGSBlockBashData FromAddress(nint address) => new BGSBlockBashData(address);
+
     internal static BGSBlockBashData? OrNull(nint address) => address != 0 ? new BGSBlockBashData(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -3844,6 +3928,8 @@ public readonly partial struct BGSBodyPart : IEquatable<BGSBodyPart>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public BGSBodyPart() => address = 0;
 
+    internal static BGSBodyPart FromAddress(nint address) => new BGSBodyPart(address);
+
     internal static BGSBodyPart? OrNull(nint address) => address != 0 ? new BGSBodyPart(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -3879,6 +3965,8 @@ public readonly partial struct BGSBodyPartData : IForm, IEquatable<BGSBodyPartDa
     public BGSBodyPartData() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static BGSBodyPartData FromAddress(nint address) => new BGSBodyPartData(address);
 
     internal static BGSBodyPartData? OrNull(nint address) => address != 0 ? new BGSBodyPartData(address) : null;
 
@@ -3922,6 +4010,8 @@ public readonly partial struct BGSCameraPath : IForm, IEquatable<BGSCameraPath>
 
     nint IAddressable.Address => Address;
 
+    internal static BGSCameraPath FromAddress(nint address) => new BGSCameraPath(address);
+
     internal static BGSCameraPath? OrNull(nint address) => address != 0 ? new BGSCameraPath(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -3963,6 +4053,8 @@ public readonly partial struct BGSCameraShot : IForm, IEquatable<BGSCameraShot>
     public BGSCameraShot() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static BGSCameraShot FromAddress(nint address) => new BGSCameraShot(address);
 
     internal static BGSCameraShot? OrNull(nint address) => address != 0 ? new BGSCameraShot(address) : null;
 
@@ -4110,6 +4202,8 @@ public readonly partial struct BGSCollisionLayer : IForm, IEquatable<BGSCollisio
     public BGSCollisionLayer() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static BGSCollisionLayer FromAddress(nint address) => new BGSCollisionLayer(address);
 
     internal static BGSCollisionLayer? OrNull(nint address) => address != 0 ? new BGSCollisionLayer(address) : null;
 
@@ -4414,6 +4508,8 @@ public readonly partial struct BGSCreatedObjectManager : IEquatable<BGSCreatedOb
     [Obsolete("Creates a view with no address. Use GameTarget.CreatedObjectManager, which returns the instance the game creates.", error: true)]
     public BGSCreatedObjectManager() => address = 0;
 
+    internal static BGSCreatedObjectManager FromAddress(nint address) => new BGSCreatedObjectManager(address);
+
     internal static BGSCreatedObjectManager? OrNull(nint address) => address != 0 ? new BGSCreatedObjectManager(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -4488,6 +4584,8 @@ public readonly partial struct BGSDebris : IForm, IEquatable<BGSDebris>
     public BGSDebris() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static BGSDebris FromAddress(nint address) => new BGSDebris(address);
 
     internal static BGSDebris? OrNull(nint address) => address != 0 ? new BGSDebris(address) : null;
 
@@ -4609,6 +4707,8 @@ public readonly partial struct BGSDecalManager : IEquatable<BGSDecalManager>
     [Obsolete("Creates a view with no address. Use GameTarget.DecalManager, which returns the instance the game creates.", error: true)]
     public BGSDecalManager() => address = 0;
 
+    internal static BGSDecalManager FromAddress(nint address) => new BGSDecalManager(address);
+
     internal static BGSDecalManager? OrNull(nint address) => address != 0 ? new BGSDecalManager(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -4644,6 +4744,8 @@ public readonly partial struct BGSDecalNode : INiNode, IEquatable<BGSDecalNode>
     public BGSDecalNode() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static BGSDecalNode FromAddress(nint address) => new BGSDecalNode(address);
 
     internal static BGSDecalNode? OrNull(nint address) => address != 0 ? new BGSDecalNode(address) : null;
 
@@ -4774,6 +4876,8 @@ public readonly partial struct BGSDialogueBranch : IForm, IEquatable<BGSDialogue
 
     nint IAddressable.Address => Address;
 
+    internal static BGSDialogueBranch FromAddress(nint address) => new BGSDialogueBranch(address);
+
     internal static BGSDialogueBranch? OrNull(nint address) => address != 0 ? new BGSDialogueBranch(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -4901,6 +5005,8 @@ public readonly partial struct BGSDualCastData : ITESBoundObject, IEquatable<BGS
     public BGSDualCastData() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static BGSDualCastData FromAddress(nint address) => new BGSDualCastData(address);
 
     internal static BGSDualCastData? OrNull(nint address) => address != 0 ? new BGSDualCastData(address) : null;
 
@@ -5187,6 +5293,8 @@ public readonly partial struct BGSEntryPointFunctionDataActivateChoice : IBGSEnt
 
     nint IAddressable.Address => Address;
 
+    internal static BGSEntryPointFunctionDataActivateChoice FromAddress(nint address) => new BGSEntryPointFunctionDataActivateChoice(address);
+
     internal static BGSEntryPointFunctionDataActivateChoice? OrNull(nint address) => address != 0 ? new BGSEntryPointFunctionDataActivateChoice(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -5235,6 +5343,8 @@ public readonly partial struct BGSEntryPointFunctionDataOneValue : IBGSEntryPoin
 
     nint IAddressable.Address => Address;
 
+    internal static BGSEntryPointFunctionDataOneValue FromAddress(nint address) => new BGSEntryPointFunctionDataOneValue(address);
+
     internal static BGSEntryPointFunctionDataOneValue? OrNull(nint address) => address != 0 ? new BGSEntryPointFunctionDataOneValue(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -5273,6 +5383,8 @@ public readonly partial struct BGSEntryPointFunctionDataSpellItem : IBGSEntryPoi
     public BGSEntryPointFunctionDataSpellItem() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static BGSEntryPointFunctionDataSpellItem FromAddress(nint address) => new BGSEntryPointFunctionDataSpellItem(address);
 
     internal static BGSEntryPointFunctionDataSpellItem? OrNull(nint address) => address != 0 ? new BGSEntryPointFunctionDataSpellItem(address) : null;
 
@@ -5313,6 +5425,8 @@ public readonly partial struct BGSEntryPointFunctionDataText : IBGSEntryPointFun
 
     nint IAddressable.Address => Address;
 
+    internal static BGSEntryPointFunctionDataText FromAddress(nint address) => new BGSEntryPointFunctionDataText(address);
+
     internal static BGSEntryPointFunctionDataText? OrNull(nint address) => address != 0 ? new BGSEntryPointFunctionDataText(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -5351,6 +5465,8 @@ public readonly partial struct BGSEntryPointPerkEntry : IBGSPerkEntry, IEquatabl
     public BGSEntryPointPerkEntry() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static BGSEntryPointPerkEntry FromAddress(nint address) => new BGSEntryPointPerkEntry(address);
 
     internal static BGSEntryPointPerkEntry? OrNull(nint address) => address != 0 ? new BGSEntryPointPerkEntry(address) : null;
 
@@ -5430,6 +5546,8 @@ public readonly partial struct BGSEquipType : IBaseFormComponent, IEquatable<BGS
 
     nint IAddressable.Address => Address;
 
+    internal static BGSEquipType FromAddress(nint address) => new BGSEquipType(address);
+
     internal static BGSEquipType? OrNull(nint address) => address != 0 ? new BGSEquipType(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -5468,6 +5586,8 @@ public readonly partial struct BGSExplosion : ITESBoundObject, IEquatable<BGSExp
     public BGSExplosion() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static BGSExplosion FromAddress(nint address) => new BGSExplosion(address);
 
     internal static BGSExplosion? OrNull(nint address) => address != 0 ? new BGSExplosion(address) : null;
 
@@ -5569,6 +5689,8 @@ public readonly partial struct BGSFootstep : IForm, IEquatable<BGSFootstep>
 
     nint IAddressable.Address => Address;
 
+    internal static BGSFootstep FromAddress(nint address) => new BGSFootstep(address);
+
     internal static BGSFootstep? OrNull(nint address) => address != 0 ? new BGSFootstep(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -5611,6 +5733,8 @@ public readonly partial struct BGSFootstepSet : IForm, IEquatable<BGSFootstepSet
 
     nint IAddressable.Address => Address;
 
+    internal static BGSFootstepSet FromAddress(nint address) => new BGSFootstepSet(address);
+
     internal static BGSFootstepSet? OrNull(nint address) => address != 0 ? new BGSFootstepSet(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -5651,6 +5775,8 @@ public readonly partial struct BGSGrassManager : IEquatable<BGSGrassManager>
     [Obsolete("Creates a view with no address. Use GameTarget.GrassManager, which returns the instance the game creates.", error: true)]
     public BGSGrassManager() => address = 0;
 
+    internal static BGSGrassManager FromAddress(nint address) => new BGSGrassManager(address);
+
     internal static BGSGrassManager? OrNull(nint address) => address != 0 ? new BGSGrassManager(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -5686,6 +5812,8 @@ public readonly partial struct BGSHazard : ITESBoundObject, IEquatable<BGSHazard
     public BGSHazard() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static BGSHazard FromAddress(nint address) => new BGSHazard(address);
 
     internal static BGSHazard? OrNull(nint address) => address != 0 ? new BGSHazard(address) : null;
 
@@ -5784,6 +5912,8 @@ public readonly partial struct BGSIdleCollection : IBaseFormComponent, IEquatabl
 
     nint IAddressable.Address => Address;
 
+    internal static BGSIdleCollection FromAddress(nint address) => new BGSIdleCollection(address);
+
     internal static BGSIdleCollection? OrNull(nint address) => address != 0 ? new BGSIdleCollection(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -5836,6 +5966,8 @@ public readonly partial struct BGSIdleMarker : ITESBoundObject, IEquatable<BGSId
 
     nint IAddressable.Address => Address;
 
+    internal static BGSIdleMarker FromAddress(nint address) => new BGSIdleMarker(address);
+
     internal static BGSIdleMarker? OrNull(nint address) => address != 0 ? new BGSIdleMarker(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -5883,6 +6015,8 @@ public readonly partial struct BGSImpactData : IForm, IEquatable<BGSImpactData>
     public BGSImpactData() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static BGSImpactData FromAddress(nint address) => new BGSImpactData(address);
 
     internal static BGSImpactData? OrNull(nint address) => address != 0 ? new BGSImpactData(address) : null;
 
@@ -5976,6 +6110,8 @@ public readonly partial struct BGSImpactManager : IEquatable<BGSImpactManager>
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. Use GameTarget.ImpactManager, which returns the instance the game creates.", error: true)]
     public BGSImpactManager() => address = 0;
+
+    internal static BGSImpactManager FromAddress(nint address) => new BGSImpactManager(address);
 
     internal static BGSImpactManager? OrNull(nint address) => address != 0 ? new BGSImpactManager(address) : null;
 
@@ -6242,6 +6378,8 @@ public readonly partial struct BGSLensFlare : IForm, IEquatable<BGSLensFlare>
 
     nint IAddressable.Address => Address;
 
+    internal static BGSLensFlare FromAddress(nint address) => new BGSLensFlare(address);
+
     internal static BGSLensFlare? OrNull(nint address) => address != 0 ? new BGSLensFlare(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -6284,6 +6422,8 @@ public readonly partial struct BGSLightingTemplate : IForm, IEquatable<BGSLighti
 
     nint IAddressable.Address => Address;
 
+    internal static BGSLightingTemplate FromAddress(nint address) => new BGSLightingTemplate(address);
+
     internal static BGSLightingTemplate? OrNull(nint address) => address != 0 ? new BGSLightingTemplate(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -6325,6 +6465,8 @@ public readonly partial struct BGSLoadFormBuffer : IBGSLoadGameBuffer, IEquatabl
     public BGSLoadFormBuffer() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static BGSLoadFormBuffer FromAddress(nint address) => new BGSLoadFormBuffer(address);
 
     internal static BGSLoadFormBuffer? OrNull(nint address) => address != 0 ? new BGSLoadFormBuffer(address) : null;
 
@@ -6524,6 +6666,8 @@ public readonly partial struct BGSMaterialObject : IForm, IEquatable<BGSMaterial
 
     nint IAddressable.Address => Address;
 
+    internal static BGSMaterialObject FromAddress(nint address) => new BGSMaterialObject(address);
+
     internal static BGSMaterialObject? OrNull(nint address) => address != 0 ? new BGSMaterialObject(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -6603,6 +6747,8 @@ public readonly partial struct BGSMaterialType : IForm, IEquatable<BGSMaterialTy
 
     nint IAddressable.Address => Address;
 
+    internal static BGSMaterialType FromAddress(nint address) => new BGSMaterialType(address);
+
     internal static BGSMaterialType? OrNull(nint address) => address != 0 ? new BGSMaterialType(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -6654,6 +6800,8 @@ public readonly partial struct BGSMenuDisplayObject : IBaseFormComponent, IEquat
 
     nint IAddressable.Address => Address;
 
+    internal static BGSMenuDisplayObject FromAddress(nint address) => new BGSMenuDisplayObject(address);
+
     internal static BGSMenuDisplayObject? OrNull(nint address) => address != 0 ? new BGSMenuDisplayObject(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -6692,6 +6840,8 @@ public readonly partial struct BGSMenuIcon : IForm, IEquatable<BGSMenuIcon>
     public BGSMenuIcon() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static BGSMenuIcon FromAddress(nint address) => new BGSMenuIcon(address);
 
     internal static BGSMenuIcon? OrNull(nint address) => address != 0 ? new BGSMenuIcon(address) : null;
 
@@ -6735,6 +6885,8 @@ public readonly partial struct BGSMessageIcon : IBaseFormComponent, IEquatable<B
 
     nint IAddressable.Address => Address;
 
+    internal static BGSMessageIcon FromAddress(nint address) => new BGSMessageIcon(address);
+
     internal static BGSMessageIcon? OrNull(nint address) => address != 0 ? new BGSMessageIcon(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -6773,6 +6925,8 @@ public readonly partial struct BGSMovableStatic : ITESFullName, IEquatable<BGSMo
     public BGSMovableStatic() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static BGSMovableStatic FromAddress(nint address) => new BGSMovableStatic(address);
 
     internal static BGSMovableStatic? OrNull(nint address) => address != 0 ? new BGSMovableStatic(address) : null;
 
@@ -6816,6 +6970,8 @@ public readonly partial struct BGSMovementType : IForm, IEquatable<BGSMovementTy
 
     nint IAddressable.Address => Address;
 
+    internal static BGSMovementType FromAddress(nint address) => new BGSMovementType(address);
+
     internal static BGSMovementType? OrNull(nint address) => address != 0 ? new BGSMovementType(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -6858,6 +7014,8 @@ public readonly partial struct BGSMusicTrack : IBSIMusicTrack, IEquatable<BGSMus
 
     nint IAddressable.Address => Address;
 
+    internal static BGSMusicTrack FromAddress(nint address) => new BGSMusicTrack(address);
+
     internal static BGSMusicTrack? OrNull(nint address) => address != 0 ? new BGSMusicTrack(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -6896,6 +7054,8 @@ public readonly partial struct BGSMusicTrackFormWrapper : IForm, IEquatable<BGSM
     public BGSMusicTrackFormWrapper() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static BGSMusicTrackFormWrapper FromAddress(nint address) => new BGSMusicTrackFormWrapper(address);
 
     internal static BGSMusicTrackFormWrapper? OrNull(nint address) => address != 0 ? new BGSMusicTrackFormWrapper(address) : null;
 
@@ -6938,6 +7098,8 @@ public readonly partial struct BGSNote : ITESBoundObject, IEquatable<BGSNote>
     public BGSNote() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static BGSNote FromAddress(nint address) => new BGSNote(address);
 
     internal static BGSNote? OrNull(nint address) => address != 0 ? new BGSNote(address) : null;
 
@@ -6985,6 +7147,8 @@ public readonly partial struct BGSOpenCloseForm : IEquatable<BGSOpenCloseForm>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public BGSOpenCloseForm() => address = 0;
 
+    internal static BGSOpenCloseForm FromAddress(nint address) => new BGSOpenCloseForm(address);
+
     internal static BGSOpenCloseForm? OrNull(nint address) => address != 0 ? new BGSOpenCloseForm(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -7031,6 +7195,8 @@ public readonly partial struct BGSOverridePackCollection : IBaseFormComponent, I
     public BGSOverridePackCollection() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static BGSOverridePackCollection FromAddress(nint address) => new BGSOverridePackCollection(address);
 
     internal static BGSOverridePackCollection? OrNull(nint address) => address != 0 ? new BGSOverridePackCollection(address) : null;
 
@@ -7262,6 +7428,8 @@ public readonly partial struct BGSPerkRankArray : IBaseFormComponent, IEquatable
 
     nint IAddressable.Address => Address;
 
+    internal static BGSPerkRankArray FromAddress(nint address) => new BGSPerkRankArray(address);
+
     internal static BGSPerkRankArray? OrNull(nint address) => address != 0 ? new BGSPerkRankArray(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -7342,6 +7510,8 @@ public readonly partial struct BGSPreloadable : IBaseFormComponent, IEquatable<B
 
     nint IAddressable.Address => Address;
 
+    internal static BGSPreloadable FromAddress(nint address) => new BGSPreloadable(address);
+
     internal static BGSPreloadable? OrNull(nint address) => address != 0 ? new BGSPreloadable(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -7379,6 +7549,8 @@ public readonly partial struct BGSPrimitive : IEquatable<BGSPrimitive>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public BGSPrimitive() => address = 0;
 
+    internal static BGSPrimitive FromAddress(nint address) => new BGSPrimitive(address);
+
     internal static BGSPrimitive? OrNull(nint address) => address != 0 ? new BGSPrimitive(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -7414,6 +7586,8 @@ public readonly partial struct BGSProjectile : ITESBoundObject, IEquatable<BGSPr
     public BGSProjectile() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static BGSProjectile FromAddress(nint address) => new BGSProjectile(address);
 
     internal static BGSProjectile? OrNull(nint address) => address != 0 ? new BGSProjectile(address) : null;
 
@@ -7678,6 +7852,8 @@ public readonly partial struct BGSRagdoll : IForm, IEquatable<BGSRagdoll>
 
     nint IAddressable.Address => Address;
 
+    internal static BGSRagdoll FromAddress(nint address) => new BGSRagdoll(address);
+
     internal static BGSRagdoll? OrNull(nint address) => address != 0 ? new BGSRagdoll(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -7792,6 +7968,8 @@ public readonly partial struct BGSRelationship : IForm, IEquatable<BGSRelationsh
 
     nint IAddressable.Address => Address;
 
+    internal static BGSRelationship FromAddress(nint address) => new BGSRelationship(address);
+
     internal static BGSRelationship? OrNull(nint address) => address != 0 ? new BGSRelationship(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -7855,6 +8033,8 @@ public readonly partial struct BGSReverbParameters : IForm, IEquatable<BGSReverb
     public BGSReverbParameters() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static BGSReverbParameters FromAddress(nint address) => new BGSReverbParameters(address);
 
     internal static BGSReverbParameters? OrNull(nint address) => address != 0 ? new BGSReverbParameters(address) : null;
 
@@ -7936,6 +8116,8 @@ public readonly partial struct BGSSaveFormBuffer : IBGSSaveGameBuffer, IEquatabl
     public BGSSaveFormBuffer() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static BGSSaveFormBuffer FromAddress(nint address) => new BGSSaveFormBuffer(address);
 
     internal static BGSSaveFormBuffer? OrNull(nint address) => address != 0 ? new BGSSaveFormBuffer(address) : null;
 
@@ -8047,6 +8229,8 @@ public readonly partial struct BGSSaveLoadChangesMap : IEquatable<BGSSaveLoadCha
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public BGSSaveLoadChangesMap() => address = 0;
+
+    internal static BGSSaveLoadChangesMap FromAddress(nint address) => new BGSSaveLoadChangesMap(address);
 
     internal static BGSSaveLoadChangesMap? OrNull(nint address) => address != 0 ? new BGSSaveLoadChangesMap(address) : null;
 
@@ -8163,6 +8347,8 @@ public readonly partial struct BGSSaveLoadGame : IEquatable<BGSSaveLoadGame>
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. Use GameTarget.SaveLoadGame, which returns the instance the game creates.", error: true)]
     public BGSSaveLoadGame() => address = 0;
+
+    internal static BGSSaveLoadGame FromAddress(nint address) => new BGSSaveLoadGame(address);
 
     internal static BGSSaveLoadGame? OrNull(nint address) => address != 0 ? new BGSSaveLoadGame(address) : null;
 
@@ -8356,6 +8542,8 @@ public readonly partial struct BGSSaveLoadManager : IEquatable<BGSSaveLoadManage
     [Obsolete("Creates a view with no address. Use GameTarget.SaveLoadManager, which returns the instance the game creates.", error: true)]
     public BGSSaveLoadManager() => address = 0;
 
+    internal static BGSSaveLoadManager FromAddress(nint address) => new BGSSaveLoadManager(address);
+
     internal static BGSSaveLoadManager? OrNull(nint address) => address != 0 ? new BGSSaveLoadManager(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -8390,6 +8578,8 @@ public readonly partial struct BGSSaveLoadManager : IEquatable<BGSSaveLoadManage
         /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public AE_RUNTIME_DATA() => address = 0;
+
+        internal static AE_RUNTIME_DATA FromAddress(nint address) => new AE_RUNTIME_DATA(address);
 
         internal static AE_RUNTIME_DATA? OrNull(nint address) => address != 0 ? new AE_RUNTIME_DATA(address) : null;
 
@@ -8678,6 +8868,8 @@ public readonly partial struct BGSSceneActionDialogue : IBGSSceneAction, IEquata
 
     nint IAddressable.Address => Address;
 
+    internal static BGSSceneActionDialogue FromAddress(nint address) => new BGSSceneActionDialogue(address);
+
     internal static BGSSceneActionDialogue? OrNull(nint address) => address != 0 ? new BGSSceneActionDialogue(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -8717,6 +8909,8 @@ public readonly partial struct BGSSceneActionPackage : IBGSSceneAction, IEquatab
 
     nint IAddressable.Address => Address;
 
+    internal static BGSSceneActionPackage FromAddress(nint address) => new BGSSceneActionPackage(address);
+
     internal static BGSSceneActionPackage? OrNull(nint address) => address != 0 ? new BGSSceneActionPackage(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -8755,6 +8949,8 @@ public readonly partial struct BGSSceneActionTimer : IBGSSceneAction, IEquatable
     public BGSSceneActionTimer() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static BGSSceneActionTimer FromAddress(nint address) => new BGSSceneActionTimer(address);
 
     internal static BGSSceneActionTimer? OrNull(nint address) => address != 0 ? new BGSSceneActionTimer(address) : null;
 
@@ -8829,6 +9025,8 @@ public readonly partial struct BGSSkillPerkTreeNode : IEquatable<BGSSkillPerkTre
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public BGSSkillPerkTreeNode() => address = 0;
 
+    internal static BGSSkillPerkTreeNode FromAddress(nint address) => new BGSSkillPerkTreeNode(address);
+
     internal static BGSSkillPerkTreeNode? OrNull(nint address) => address != 0 ? new BGSSkillPerkTreeNode(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -8864,6 +9062,8 @@ public readonly partial struct BGSSkinForm : IBaseFormComponent, IEquatable<BGSS
     public BGSSkinForm() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static BGSSkinForm FromAddress(nint address) => new BGSSkinForm(address);
 
     internal static BGSSkinForm? OrNull(nint address) => address != 0 ? new BGSSkinForm(address) : null;
 
@@ -8904,6 +9104,8 @@ public readonly partial struct BGSSoundDescriptor : IBSISoundDescriptor, IEquata
 
     nint IAddressable.Address => Address;
 
+    internal static BGSSoundDescriptor FromAddress(nint address) => new BGSSoundDescriptor(address);
+
     internal static BGSSoundDescriptor? OrNull(nint address) => address != 0 ? new BGSSoundDescriptor(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -8942,6 +9144,8 @@ public readonly partial struct BGSSoundOutput : IForm, IEquatable<BGSSoundOutput
     public BGSSoundOutput() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static BGSSoundOutput FromAddress(nint address) => new BGSSoundOutput(address);
 
     internal static BGSSoundOutput? OrNull(nint address) => address != 0 ? new BGSSoundOutput(address) : null;
 
@@ -9030,6 +9234,8 @@ public readonly partial struct BGSSoundOutput : IForm, IEquatable<BGSSoundOutput
         public DynamicAttenuationCharacteristics() => address = 0;
 
         nint IAddressable.Address => Address;
+
+        internal static DynamicAttenuationCharacteristics FromAddress(nint address) => new DynamicAttenuationCharacteristics(address);
 
         internal static DynamicAttenuationCharacteristics? OrNull(nint address) => address != 0 ? new DynamicAttenuationCharacteristics(address) : null;
 
@@ -9194,6 +9400,8 @@ public readonly partial struct BGSStaticCollection : ITESBoundObject, IEquatable
 
     nint IAddressable.Address => Address;
 
+    internal static BGSStaticCollection FromAddress(nint address) => new BGSStaticCollection(address);
+
     internal static BGSStaticCollection? OrNull(nint address) => address != 0 ? new BGSStaticCollection(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -9275,6 +9483,8 @@ public readonly partial struct BGSStoryEventManager : IEquatable<BGSStoryEventMa
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. Use GameTarget.StoryEventManager, which returns the instance the game creates.", error: true)]
     public BGSStoryEventManager() => address = 0;
+
+    internal static BGSStoryEventManager FromAddress(nint address) => new BGSStoryEventManager(address);
 
     internal static BGSStoryEventManager? OrNull(nint address) => address != 0 ? new BGSStoryEventManager(address) : null;
 
@@ -9408,6 +9618,8 @@ public readonly partial struct BGSStoryManagerEventNode : IBGSStoryManagerBranch
     public BGSStoryManagerEventNode() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static BGSStoryManagerEventNode FromAddress(nint address) => new BGSStoryManagerEventNode(address);
 
     internal static BGSStoryManagerEventNode? OrNull(nint address) => address != 0 ? new BGSStoryManagerEventNode(address) : null;
 
@@ -9563,6 +9775,8 @@ public readonly partial struct BGSStoryManagerQuestNode : IBGSStoryManagerNodeBa
 
     nint IAddressable.Address => Address;
 
+    internal static BGSStoryManagerQuestNode FromAddress(nint address) => new BGSStoryManagerQuestNode(address);
+
     internal static BGSStoryManagerQuestNode? OrNull(nint address) => address != 0 ? new BGSStoryManagerQuestNode(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -9652,6 +9866,8 @@ public readonly partial struct BGSStoryTeller : IEquatable<BGSStoryTeller>
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. Use GameTarget.StoryTeller, which returns the instance the game creates.", error: true)]
     public BGSStoryTeller() => address = 0;
+
+    internal static BGSStoryTeller FromAddress(nint address) => new BGSStoryTeller(address);
 
     internal static BGSStoryTeller? OrNull(nint address) => address != 0 ? new BGSStoryTeller(address) : null;
 
@@ -9867,6 +10083,8 @@ public readonly partial struct BGSTextureModel : ITESModel, IEquatable<BGSTextur
 
     nint IAddressable.Address => Address;
 
+    internal static BGSTextureModel FromAddress(nint address) => new BGSTextureModel(address);
+
     internal static BGSTextureModel? OrNull(nint address) => address != 0 ? new BGSTextureModel(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -9908,6 +10126,8 @@ public readonly partial struct BGSVolumetricLighting : IForm, IEquatable<BGSVolu
     public BGSVolumetricLighting() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static BGSVolumetricLighting FromAddress(nint address) => new BGSVolumetricLighting(address);
 
     internal static BGSVolumetricLighting? OrNull(nint address) => address != 0 ? new BGSVolumetricLighting(address) : null;
 
@@ -10203,6 +10423,8 @@ public readonly partial struct BSAnimNote : INiObject, IEquatable<BSAnimNote>
 
     nint IAddressable.Address => Address;
 
+    internal static BSAnimNote FromAddress(nint address) => new BSAnimNote(address);
+
     internal static BSAnimNote? OrNull(nint address) => address != 0 ? new BSAnimNote(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -10327,6 +10549,8 @@ public readonly partial struct BSAnimNoteReceiver : IEquatable<BSAnimNoteReceive
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public BSAnimNoteReceiver() => address = 0;
 
+    internal static BSAnimNoteReceiver FromAddress(nint address) => new BSAnimNoteReceiver(address);
+
     internal static BSAnimNoteReceiver? OrNull(nint address) => address != 0 ? new BSAnimNoteReceiver(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -10362,6 +10586,8 @@ public readonly partial struct BSAnimationGraphChannel : IBSIntrusiveRefCounted,
     public BSAnimationGraphChannel() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static BSAnimationGraphChannel FromAddress(nint address) => new BSAnimationGraphChannel(address);
 
     internal static BSAnimationGraphChannel? OrNull(nint address) => address != 0 ? new BSAnimationGraphChannel(address) : null;
 
@@ -10399,6 +10625,8 @@ public readonly partial struct BSAnimationGraphManager : IEquatable<BSAnimationG
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public BSAnimationGraphManager() => address = 0;
+
+    internal static BSAnimationGraphManager FromAddress(nint address) => new BSAnimationGraphManager(address);
 
     internal static BSAnimationGraphManager? OrNull(nint address) => address != 0 ? new BSAnimationGraphManager(address) : null;
 
@@ -10545,6 +10773,8 @@ public readonly partial struct BSAudio : IEquatable<BSAudio>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public BSAudio() => address = 0;
 
+    internal static BSAudio FromAddress(nint address) => new BSAudio(address);
+
     internal static BSAudio? OrNull(nint address) => address != 0 ? new BSAudio(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -10651,6 +10881,8 @@ public readonly partial struct BSAudioListener : IEquatable<BSAudioListener>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public BSAudioListener() => address = 0;
 
+    internal static BSAudioListener FromAddress(nint address) => new BSAudioListener(address);
+
     internal static BSAudioListener? OrNull(nint address) => address != 0 ? new BSAudioListener(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -10684,6 +10916,8 @@ public readonly partial struct BSAudioManager : IEquatable<BSAudioManager>
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. Use GameTarget.AudioManager, which returns the instance the game creates.", error: true)]
     public BSAudioManager() => address = 0;
+
+    internal static BSAudioManager FromAddress(nint address) => new BSAudioManager(address);
 
     internal static BSAudioManager? OrNull(nint address) => address != 0 ? new BSAudioManager(address) : null;
 
@@ -10734,6 +10968,8 @@ public readonly partial struct BSAudioManagerThread : IBSThread, IEquatable<BSAu
 
     nint IAddressable.Address => Address;
 
+    internal static BSAudioManagerThread FromAddress(nint address) => new BSAudioManagerThread(address);
+
     internal static BSAudioManagerThread? OrNull(nint address) => address != 0 ? new BSAudioManagerThread(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -10770,6 +11006,8 @@ public readonly partial struct BSBatchRenderer : IEquatable<BSBatchRenderer>
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public BSBatchRenderer() => address = 0;
+
+    internal static BSBatchRenderer FromAddress(nint address) => new BSBatchRenderer(address);
 
     internal static BSBatchRenderer? OrNull(nint address) => address != 0 ? new BSBatchRenderer(address) : null;
 
@@ -11036,6 +11274,8 @@ public readonly partial struct BSCompressedNavmeshBounds : IEquatable<BSCompress
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public BSCompressedNavmeshBounds() => address = 0;
 
+    internal static BSCompressedNavmeshBounds FromAddress(nint address) => new BSCompressedNavmeshBounds(address);
+
     internal static BSCompressedNavmeshBounds? OrNull(nint address) => address != 0 ? new BSCompressedNavmeshBounds(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -11071,6 +11311,8 @@ public readonly partial struct BSComputeShader : INiRefObject, IEquatable<BSComp
     public BSComputeShader() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static BSComputeShader FromAddress(nint address) => new BSComputeShader(address);
 
     internal static BSComputeShader? OrNull(nint address) => address != 0 ? new BSComputeShader(address) : null;
 
@@ -11146,6 +11388,8 @@ public readonly partial struct BSCubeMapCamera : INiCamera, IEquatable<BSCubeMap
     public BSCubeMapCamera() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static BSCubeMapCamera FromAddress(nint address) => new BSCubeMapCamera(address);
 
     internal static BSCubeMapCamera? OrNull(nint address) => address != 0 ? new BSCubeMapCamera(address) : null;
 
@@ -11320,6 +11564,8 @@ public readonly partial struct BSDirectInputManager : IEquatable<BSDirectInputMa
     [Obsolete("Creates a view with no address. Use GameTarget.DirectInputManager, which returns the instance the game creates.", error: true)]
     public BSDirectInputManager() => address = 0;
 
+    internal static BSDirectInputManager FromAddress(nint address) => new BSDirectInputManager(address);
+
     internal static BSDirectInputManager? OrNull(nint address) => address != 0 ? new BSDirectInputManager(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -11355,6 +11601,8 @@ public readonly partial struct BSDynamicTriShape : IBSTriShape, IEquatable<BSDyn
     public BSDynamicTriShape() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static BSDynamicTriShape FromAddress(nint address) => new BSDynamicTriShape(address);
 
     internal static BSDynamicTriShape? OrNull(nint address) => address != 0 ? new BSDynamicTriShape(address) : null;
 
@@ -11564,6 +11812,8 @@ public readonly partial struct BSFaceGenAnimationData : INiExtraData, IEquatable
 
     nint IAddressable.Address => Address;
 
+    internal static BSFaceGenAnimationData FromAddress(nint address) => new BSFaceGenAnimationData(address);
+
     internal static BSFaceGenAnimationData? OrNull(nint address) => address != 0 ? new BSFaceGenAnimationData(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -11747,6 +11997,8 @@ public readonly partial struct BSFaceGenManager : IEquatable<BSFaceGenManager>
     [Obsolete("Creates a view with no address. Use GameTarget.FaceGenManager, which returns the instance the game creates.", error: true)]
     public BSFaceGenManager() => address = 0;
 
+    internal static BSFaceGenManager FromAddress(nint address) => new BSFaceGenManager(address);
+
     internal static BSFaceGenManager? OrNull(nint address) => address != 0 ? new BSFaceGenManager(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -11782,6 +12034,8 @@ public readonly partial struct BSFaceGenModel : INiRefObject, IEquatable<BSFaceG
     public BSFaceGenModel() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static BSFaceGenModel FromAddress(nint address) => new BSFaceGenModel(address);
 
     internal static BSFaceGenModel? OrNull(nint address) => address != 0 ? new BSFaceGenModel(address) : null;
 
@@ -11857,6 +12111,8 @@ public readonly partial struct BSFaceGenModelMap : IEquatable<BSFaceGenModelMap>
 
         nint IAddressable.Address => Address;
 
+        internal static Entry FromAddress(nint address) => new Entry(address);
+
         internal static Entry? OrNull(nint address) => address != 0 ? new Entry(address) : null;
 
         /// <summary>Whether both views are over one address.</summary>
@@ -11896,6 +12152,8 @@ public readonly partial struct BSFaceGenModelMeshData : IEquatable<BSFaceGenMode
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public BSFaceGenModelMeshData() => address = 0;
 
+    internal static BSFaceGenModelMeshData FromAddress(nint address) => new BSFaceGenModelMeshData(address);
+
     internal static BSFaceGenModelMeshData? OrNull(nint address) => address != 0 ? new BSFaceGenModelMeshData(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -11931,6 +12189,8 @@ public readonly partial struct BSFaceGenNiNode : INiNode, IEquatable<BSFaceGenNi
     public BSFaceGenNiNode() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static BSFaceGenNiNode FromAddress(nint address) => new BSFaceGenNiNode(address);
 
     internal static BSFaceGenNiNode? OrNull(nint address) => address != 0 ? new BSFaceGenNiNode(address) : null;
 
@@ -12110,6 +12370,8 @@ public readonly partial struct BSFile : INiFile, IEquatable<BSFile>
 
     nint IAddressable.Address => Address;
 
+    internal static BSFile FromAddress(nint address) => new BSFile(address);
+
     internal static BSFile? OrNull(nint address) => address != 0 ? new BSFile(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -12151,6 +12413,8 @@ public readonly partial struct BSFlattenedBoneTree : INiNode, IEquatable<BSFlatt
     public BSFlattenedBoneTree() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static BSFlattenedBoneTree FromAddress(nint address) => new BSFlattenedBoneTree(address);
 
     internal static BSFlattenedBoneTree? OrNull(nint address) => address != 0 ? new BSFlattenedBoneTree(address) : null;
 
@@ -12278,6 +12542,8 @@ public readonly partial struct BSFogProperty : INiFogProperty, IEquatable<BSFogP
 
     nint IAddressable.Address => Address;
 
+    internal static BSFogProperty FromAddress(nint address) => new BSFogProperty(address);
+
     internal static BSFogProperty? OrNull(nint address) => address != 0 ? new BSFogProperty(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -12326,6 +12592,8 @@ public readonly partial struct BSGameSound : IEquatable<BSGameSound>
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public BSGameSound() => address = 0;
+
+    internal static BSGameSound FromAddress(nint address) => new BSGameSound(address);
 
     internal static BSGameSound? OrNull(nint address) => address != 0 ? new BSGameSound(address) : null;
 
@@ -12427,6 +12695,8 @@ public readonly partial struct BSGamepadDevice : IBSGamepadDevice, IEquatable<BS
         /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public RUNTIME_DATA() => address = 0;
+
+        internal static RUNTIME_DATA FromAddress(nint address) => new RUNTIME_DATA(address);
 
         internal static RUNTIME_DATA? OrNull(nint address) => address != 0 ? new RUNTIME_DATA(address) : null;
 
@@ -12607,6 +12877,8 @@ public readonly partial struct BSGeometry : IBSGeometry, IEquatable<BSGeometry>
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public VR_MODEL_BOUND_BOX() => address = 0;
 
+        internal static VR_MODEL_BOUND_BOX FromAddress(nint address) => new VR_MODEL_BOUND_BOX(address);
+
         internal static VR_MODEL_BOUND_BOX? OrNull(nint address) => address != 0 ? new VR_MODEL_BOUND_BOX(address) : null;
 
         /// <summary>Whether both views are over one address.</summary>
@@ -12644,6 +12916,8 @@ public readonly partial struct BSGeometryListCullingProcess : IBSCullingProcess,
     public BSGeometryListCullingProcess() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static BSGeometryListCullingProcess FromAddress(nint address) => new BSGeometryListCullingProcess(address);
 
     internal static BSGeometryListCullingProcess? OrNull(nint address) => address != 0 ? new BSGeometryListCullingProcess(address) : null;
 
@@ -12686,6 +12960,8 @@ public readonly partial struct BSHandleRefObject : INiRefObject, IEquatable<BSHa
     public BSHandleRefObject() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static BSHandleRefObject FromAddress(nint address) => new BSHandleRefObject(address);
 
     internal static BSHandleRefObject? OrNull(nint address) => address != 0 ? new BSHandleRefObject(address) : null;
 
@@ -12819,6 +13095,8 @@ public readonly partial struct BSIMusicType : IEquatable<BSIMusicType>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public BSIMusicType() => address = 0;
 
+    internal static BSIMusicType FromAddress(nint address) => new BSIMusicType(address);
+
     internal static BSIMusicType? OrNull(nint address) => address != 0 ? new BSIMusicType(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -12916,6 +13194,8 @@ public readonly partial struct BSIReverbType : IEquatable<BSIReverbType>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public BSIReverbType() => address = 0;
 
+    internal static BSIReverbType FromAddress(nint address) => new BSIReverbType(address);
+
     internal static BSIReverbType? OrNull(nint address) => address != 0 ? new BSIReverbType(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -12949,6 +13229,8 @@ public readonly partial struct BSISoundCategory : IEquatable<BSISoundCategory>
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public BSISoundCategory() => address = 0;
+
+    internal static BSISoundCategory FromAddress(nint address) => new BSISoundCategory(address);
 
     internal static BSISoundCategory? OrNull(nint address) => address != 0 ? new BSISoundCategory(address) : null;
 
@@ -13023,6 +13305,8 @@ public readonly partial struct BSISoundDescriptor : IBSISoundDescriptor, IEquata
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public BSIPlaybackCharacteristics() => address = 0;
 
+        internal static BSIPlaybackCharacteristics FromAddress(nint address) => new BSIPlaybackCharacteristics(address);
+
         internal static BSIPlaybackCharacteristics? OrNull(nint address) => address != 0 ? new BSIPlaybackCharacteristics(address) : null;
 
         /// <summary>Whether both views are over one address.</summary>
@@ -13056,6 +13340,8 @@ public readonly partial struct BSISoundDescriptor : IBSISoundDescriptor, IEquata
         /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public Resolution() => address = 0;
+
+        internal static Resolution FromAddress(nint address) => new Resolution(address);
 
         internal static Resolution? OrNull(nint address) => address != 0 ? new Resolution(address) : null;
 
@@ -13092,6 +13378,8 @@ public readonly partial struct BSISoundOutputModel : IEquatable<BSISoundOutputMo
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public BSISoundOutputModel() => address = 0;
+
+    internal static BSISoundOutputModel FromAddress(nint address) => new BSISoundOutputModel(address);
 
     internal static BSISoundOutputModel? OrNull(nint address) => address != 0 ? new BSISoundOutputModel(address) : null;
 
@@ -13259,6 +13547,8 @@ public readonly partial struct BSImagespaceShaderISTemporalAA : IBSShader, IEqua
 
     nint IAddressable.Address => Address;
 
+    internal static BSImagespaceShaderISTemporalAA FromAddress(nint address) => new BSImagespaceShaderISTemporalAA(address);
+
     internal static BSImagespaceShaderISTemporalAA? OrNull(nint address) => address != 0 ? new BSImagespaceShaderISTemporalAA(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -13416,6 +13706,8 @@ public readonly partial struct BSInputDeviceManager : IEquatable<BSInputDeviceMa
     [Obsolete("Creates a view with no address. Use GameTarget.InputDeviceManager, which returns the instance the game creates.", error: true)]
     public BSInputDeviceManager() => address = 0;
 
+    internal static BSInputDeviceManager FromAddress(nint address) => new BSInputDeviceManager(address);
+
     internal static BSInputDeviceManager? OrNull(nint address) => address != 0 ? new BSInputDeviceManager(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -13489,6 +13781,8 @@ public readonly partial struct BSInputEventQueue : IEquatable<BSInputEventQueue>
     [Obsolete("Creates a view with no address. Use GameTarget.InputEventQueue, which returns the instance the game creates.", error: true)]
     public BSInputEventQueue() => address = 0;
 
+    internal static BSInputEventQueue FromAddress(nint address) => new BSInputEventQueue(address);
+
     internal static BSInputEventQueue? OrNull(nint address) => address != 0 ? new BSInputEventQueue(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -13523,6 +13817,8 @@ public readonly partial struct BSInputEventQueue : IEquatable<BSInputEventQueue>
         /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public AE1799_EVENT_DATA() => address = 0;
+
+        internal static AE1799_EVENT_DATA FromAddress(nint address) => new AE1799_EVENT_DATA(address);
 
         internal static AE1799_EVENT_DATA? OrNull(nint address) => address != 0 ? new AE1799_EVENT_DATA(address) : null;
 
@@ -13596,6 +13892,8 @@ public readonly partial struct BSInputEventQueue : IEquatable<BSInputEventQueue>
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public VRTOUCHPADEVENT_DATA() => address = 0;
 
+        internal static VRTOUCHPADEVENT_DATA FromAddress(nint address) => new VRTOUCHPADEVENT_DATA(address);
+
         internal static VRTOUCHPADEVENT_DATA? OrNull(nint address) => address != 0 ? new VRTOUCHPADEVENT_DATA(address) : null;
 
         /// <summary>Whether both views are over one address.</summary>
@@ -13631,6 +13929,8 @@ public readonly partial struct BSInputEventQueue : IEquatable<BSInputEventQueue>
         /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public VRTOUCHPAD_DATA() => address = 0;
+
+        internal static VRTOUCHPAD_DATA FromAddress(nint address) => new VRTOUCHPAD_DATA(address);
 
         internal static VRTOUCHPAD_DATA? OrNull(nint address) => address != 0 ? new VRTOUCHPAD_DATA(address) : null;
 
@@ -13799,6 +14099,8 @@ public static class BSJobs
         /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public JobListLocal() => address = 0;
+
+        internal static JobListLocal FromAddress(nint address) => new JobListLocal(address);
 
         internal static JobListLocal? OrNull(nint address) => address != 0 ? new JobListLocal(address) : null;
 
@@ -14035,6 +14337,8 @@ public readonly partial struct BSLODTriShape : INiTriShape, IEquatable<BSLODTriS
 
     nint IAddressable.Address => Address;
 
+    internal static BSLODTriShape FromAddress(nint address) => new BSLODTriShape(address);
+
     internal static BSLODTriShape? OrNull(nint address) => address != 0 ? new BSLODTriShape(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -14185,6 +14489,8 @@ public readonly partial struct BSLensFlareRenderData : IEquatable<BSLensFlareRen
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public BSLensFlareRenderData() => address = 0;
 
+    internal static BSLensFlareRenderData FromAddress(nint address) => new BSLensFlareRenderData(address);
+
     internal static BSLensFlareRenderData? OrNull(nint address) => address != 0 ? new BSLensFlareRenderData(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -14262,6 +14568,8 @@ public readonly partial struct BSLightingShaderProperty : IBSShaderProperty, IEq
 
     nint IAddressable.Address => Address;
 
+    internal static BSLightingShaderProperty FromAddress(nint address) => new BSLightingShaderProperty(address);
+
     internal static BSLightingShaderProperty? OrNull(nint address) => address != 0 ? new BSLightingShaderProperty(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -14314,6 +14622,8 @@ public readonly partial struct BSLines : IEquatable<BSLines>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public BSLines() => address = 0;
 
+    internal static BSLines FromAddress(nint address) => new BSLines(address);
+
     internal static BSLines? OrNull(nint address) => address != 0 ? new BSLines(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -14349,6 +14659,8 @@ public readonly partial struct BSMasterParticleSystem : INiNode, IEquatable<BSMa
     public BSMasterParticleSystem() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static BSMasterParticleSystem FromAddress(nint address) => new BSMasterParticleSystem(address);
 
     internal static BSMasterParticleSystem? OrNull(nint address) => address != 0 ? new BSMasterParticleSystem(address) : null;
 
@@ -14438,6 +14750,8 @@ public readonly partial struct BSMaterialObject : IEquatable<BSMaterialObject>
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public BSMaterialObject() => address = 0;
+
+    internal static BSMaterialObject FromAddress(nint address) => new BSMaterialObject(address);
 
     internal static BSMaterialObject? OrNull(nint address) => address != 0 ? new BSMaterialObject(address) : null;
 
@@ -14565,6 +14879,8 @@ public readonly partial struct BSMeshLODTriShape : IBSTriShape, IEquatable<BSMes
     public BSMeshLODTriShape() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static BSMeshLODTriShape FromAddress(nint address) => new BSMeshLODTriShape(address);
 
     internal static BSMeshLODTriShape? OrNull(nint address) => address != 0 ? new BSMeshLODTriShape(address) : null;
 
@@ -14700,6 +15016,8 @@ public readonly partial struct BSMouseDevice : IBSMouseDevice, IEquatable<BSMous
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public RUNTIME_DATA() => address = 0;
 
+        internal static RUNTIME_DATA FromAddress(nint address) => new RUNTIME_DATA(address);
+
         internal static RUNTIME_DATA? OrNull(nint address) => address != 0 ? new RUNTIME_DATA(address) : null;
 
         /// <summary>Whether both views are over one address.</summary>
@@ -14737,6 +15055,8 @@ public readonly partial struct BSMultiBound : INiObject, IEquatable<BSMultiBound
     public BSMultiBound() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static BSMultiBound FromAddress(nint address) => new BSMultiBound(address);
 
     internal static BSMultiBound? OrNull(nint address) => address != 0 ? new BSMultiBound(address) : null;
 
@@ -14920,6 +15240,8 @@ public readonly partial struct BSMultiBoundRoom : IBSMultiBoundNode, IEquatable<
 
     nint IAddressable.Address => Address;
 
+    internal static BSMultiBoundRoom FromAddress(nint address) => new BSMultiBoundRoom(address);
+
     internal static BSMultiBoundRoom? OrNull(nint address) => address != 0 ? new BSMultiBoundRoom(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -15021,6 +15343,8 @@ public readonly partial struct BSMultiIndexTriShape : IBSTriShape, IEquatable<BS
 
     nint IAddressable.Address => Address;
 
+    internal static BSMultiIndexTriShape FromAddress(nint address) => new BSMultiIndexTriShape(address);
+
     internal static BSMultiIndexTriShape? OrNull(nint address) => address != 0 ? new BSMultiIndexTriShape(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -15115,6 +15439,8 @@ public readonly partial struct BSMultiStreamInstanceTriShape : IBSInstanceTriSha
 
     nint IAddressable.Address => Address;
 
+    internal static BSMultiStreamInstanceTriShape FromAddress(nint address) => new BSMultiStreamInstanceTriShape(address);
+
     internal static BSMultiStreamInstanceTriShape? OrNull(nint address) => address != 0 ? new BSMultiStreamInstanceTriShape(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -15172,6 +15498,8 @@ public readonly partial struct BSMultiStreamInstanceTriShape : IBSInstanceTriSha
         public InstanceGroup() => address = 0;
 
         nint IAddressable.Address => Address;
+
+        internal static InstanceGroup FromAddress(nint address) => new InstanceGroup(address);
 
         internal static InstanceGroup? OrNull(nint address) => address != 0 ? new InstanceGroup(address) : null;
 
@@ -15260,6 +15588,8 @@ public readonly partial struct BSMusicManager : IEquatable<BSMusicManager>
     [Obsolete("Creates a view with no address. Use GameTarget.MusicManager, which returns the instance the game creates.", error: true)]
     public BSMusicManager() => address = 0;
 
+    internal static BSMusicManager FromAddress(nint address) => new BSMusicManager(address);
+
     internal static BSMusicManager? OrNull(nint address) => address != 0 ? new BSMusicManager(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -15295,6 +15625,8 @@ public readonly partial struct BSNavmesh : IBSIntrusiveRefCounted, IEquatable<BS
     public BSNavmesh() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static BSNavmesh FromAddress(nint address) => new BSNavmesh(address);
 
     internal static BSNavmesh? OrNull(nint address) => address != 0 ? new BSNavmesh(address) : null;
 
@@ -15514,6 +15846,8 @@ public readonly partial struct BSNavmeshInfoMap : IEquatable<BSNavmeshInfoMap>
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public BSNavmeshInfoMap() => address = 0;
+
+    internal static BSNavmeshInfoMap FromAddress(nint address) => new BSNavmeshInfoMap(address);
 
     internal static BSNavmeshInfoMap? OrNull(nint address) => address != 0 ? new BSNavmeshInfoMap(address) : null;
 
@@ -15909,6 +16243,8 @@ public readonly partial struct BSOrderedNode : IBSNiNode, IEquatable<BSOrderedNo
 
     nint IAddressable.Address => Address;
 
+    internal static BSOrderedNode FromAddress(nint address) => new BSOrderedNode(address);
+
     internal static BSOrderedNode? OrNull(nint address) => address != 0 ? new BSOrderedNode(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -16000,6 +16336,8 @@ public readonly partial struct BSPCGamepadDeviceDelegate : IBSGamepadDevice, IEq
 
     nint IAddressable.Address => Address;
 
+    internal static BSPCGamepadDeviceDelegate FromAddress(nint address) => new BSPCGamepadDeviceDelegate(address);
+
     internal static BSPCGamepadDeviceDelegate? OrNull(nint address) => address != 0 ? new BSPCGamepadDeviceDelegate(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -16044,6 +16382,8 @@ public readonly partial struct BSPCGamepadDeviceDelegate : IBSGamepadDevice, IEq
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public RUNTIME_DATA() => address = 0;
 
+        internal static RUNTIME_DATA FromAddress(nint address) => new RUNTIME_DATA(address);
+
         internal static RUNTIME_DATA? OrNull(nint address) => address != 0 ? new RUNTIME_DATA(address) : null;
 
         /// <summary>Whether both views are over one address.</summary>
@@ -16081,6 +16421,8 @@ public readonly partial struct BSPCGamepadDeviceHandler : IBSIInputDevice, IEqua
     public BSPCGamepadDeviceHandler() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static BSPCGamepadDeviceHandler FromAddress(nint address) => new BSPCGamepadDeviceHandler(address);
 
     internal static BSPCGamepadDeviceHandler? OrNull(nint address) => address != 0 ? new BSPCGamepadDeviceHandler(address) : null;
 
@@ -16405,6 +16747,8 @@ public readonly partial struct BSParticleShaderObjectEmitter : IBSParticleShader
 
     nint IAddressable.Address => Address;
 
+    internal static BSParticleShaderObjectEmitter FromAddress(nint address) => new BSParticleShaderObjectEmitter(address);
+
     internal static BSParticleShaderObjectEmitter? OrNull(nint address) => address != 0 ? new BSParticleShaderObjectEmitter(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -16446,6 +16790,8 @@ public readonly partial struct BSParticleShaderProperty : IBSShaderProperty, IEq
     public BSParticleShaderProperty() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static BSParticleShaderProperty FromAddress(nint address) => new BSParticleShaderProperty(address);
 
     internal static BSParticleShaderProperty? OrNull(nint address) => address != 0 ? new BSParticleShaderProperty(address) : null;
 
@@ -16501,6 +16847,8 @@ public readonly partial struct BSParticleShaderRainEmitter : IBSParticleShaderEm
 
     nint IAddressable.Address => Address;
 
+    internal static BSParticleShaderRainEmitter FromAddress(nint address) => new BSParticleShaderRainEmitter(address);
+
     internal static BSParticleShaderRainEmitter? OrNull(nint address) => address != 0 ? new BSParticleShaderRainEmitter(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -16545,6 +16893,8 @@ public readonly partial struct BSParticleSystemManager : INiNode, IEquatable<BSP
     public BSParticleSystemManager() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static BSParticleSystemManager FromAddress(nint address) => new BSParticleSystemManager(address);
 
     internal static BSParticleSystemManager? OrNull(nint address) => address != 0 ? new BSParticleSystemManager(address) : null;
 
@@ -16597,6 +16947,8 @@ public readonly partial struct BSPathingCell : IBSIntrusiveRefCounted, IEquatabl
 
     nint IAddressable.Address => Address;
 
+    internal static BSPathingCell FromAddress(nint address) => new BSPathingCell(address);
+
     internal static BSPathingCell? OrNull(nint address) => address != 0 ? new BSPathingCell(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -16636,6 +16988,8 @@ public readonly partial struct BSPathingDoor : IBSIntrusiveRefCounted, IEquatabl
 
     nint IAddressable.Address => Address;
 
+    internal static BSPathingDoor FromAddress(nint address) => new BSPathingDoor(address);
+
     internal static BSPathingDoor? OrNull(nint address) => address != 0 ? new BSPathingDoor(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -16673,6 +17027,8 @@ public readonly partial struct BSPathingLOSGridMap : IEquatable<BSPathingLOSGrid
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public BSPathingLOSGridMap() => address = 0;
 
+    internal static BSPathingLOSGridMap FromAddress(nint address) => new BSPathingLOSGridMap(address);
+
     internal static BSPathingLOSGridMap? OrNull(nint address) => address != 0 ? new BSPathingLOSGridMap(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -16706,6 +17062,8 @@ public readonly partial struct BSPathingNumericIDVisitor : IEquatable<BSPathingN
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public BSPathingNumericIDVisitor() => address = 0;
+
+    internal static BSPathingNumericIDVisitor FromAddress(nint address) => new BSPathingNumericIDVisitor(address);
 
     internal static BSPathingNumericIDVisitor? OrNull(nint address) => address != 0 ? new BSPathingNumericIDVisitor(address) : null;
 
@@ -16741,6 +17099,8 @@ public readonly partial struct BSPathingStreamRead : IEquatable<BSPathingStreamR
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public BSPathingStreamRead() => address = 0;
 
+    internal static BSPathingStreamRead FromAddress(nint address) => new BSPathingStreamRead(address);
+
     internal static BSPathingStreamRead? OrNull(nint address) => address != 0 ? new BSPathingStreamRead(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -16774,6 +17134,8 @@ public readonly partial struct BSPathingStreamWrite : IEquatable<BSPathingStream
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public BSPathingStreamWrite() => address = 0;
+
+    internal static BSPathingStreamWrite FromAddress(nint address) => new BSPathingStreamWrite(address);
 
     internal static BSPathingStreamWrite? OrNull(nint address) => address != 0 ? new BSPathingStreamWrite(address) : null;
 
@@ -16810,6 +17172,8 @@ public readonly partial struct BSPortal : IBSOcclusionPlane, IEquatable<BSPortal
     public BSPortal() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static BSPortal FromAddress(nint address) => new BSPortal(address);
 
     internal static BSPortal? OrNull(nint address) => address != 0 ? new BSPortal(address) : null;
 
@@ -16859,6 +17223,8 @@ public readonly partial struct BSPortalGraph : INiRefObject, IEquatable<BSPortal
 
     nint IAddressable.Address => Address;
 
+    internal static BSPortalGraph FromAddress(nint address) => new BSPortalGraph(address);
+
     internal static BSPortalGraph? OrNull(nint address) => address != 0 ? new BSPortalGraph(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -16898,6 +17264,8 @@ public readonly partial struct BSPortalGraphEntry : INiRefObject, IEquatable<BSP
 
     nint IAddressable.Address => Address;
 
+    internal static BSPortalGraphEntry FromAddress(nint address) => new BSPortalGraphEntry(address);
+
     internal static BSPortalGraphEntry? OrNull(nint address) => address != 0 ? new BSPortalGraphEntry(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -16936,6 +17304,8 @@ public readonly partial struct BSPortalSharedNode : INiNode, IEquatable<BSPortal
     public BSPortalSharedNode() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static BSPortalSharedNode FromAddress(nint address) => new BSPortalSharedNode(address);
 
     internal static BSPortalSharedNode? OrNull(nint address) => address != 0 ? new BSPortalSharedNode(address) : null;
 
@@ -17059,6 +17429,8 @@ public readonly partial struct BSReloadShaderI : IEquatable<BSReloadShaderI>
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public BSReloadShaderI() => address = 0;
+
+    internal static BSReloadShaderI FromAddress(nint address) => new BSReloadShaderI(address);
 
     internal static BSReloadShaderI? OrNull(nint address) => address != 0 ? new BSReloadShaderI(address) : null;
 
@@ -17289,6 +17661,8 @@ public readonly partial struct BSScaleformImageLoader : IGFxImageLoader, IEquata
 
     nint IAddressable.Address => Address;
 
+    internal static BSScaleformImageLoader FromAddress(nint address) => new BSScaleformImageLoader(address);
+
     internal static BSScaleformImageLoader? OrNull(nint address) => address != 0 ? new BSScaleformImageLoader(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -17330,6 +17704,8 @@ public readonly partial struct BSScaleformImageLoader : IGFxImageLoader, IEquata
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public TextureEntry() => address = 0;
 
+        internal static TextureEntry FromAddress(nint address) => new TextureEntry(address);
+
         internal static TextureEntry? OrNull(nint address) => address != 0 ? new TextureEntry(address) : null;
 
         /// <summary>Whether both views are over one address.</summary>
@@ -17365,6 +17741,8 @@ public readonly partial struct BSScaleformManager : IEquatable<BSScaleformManage
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. Use GameTarget.ScaleformManager, which returns the instance the game creates.", error: true)]
     public BSScaleformManager() => address = 0;
+
+    internal static BSScaleformManager FromAddress(nint address) => new BSScaleformManager(address);
 
     internal static BSScaleformManager? OrNull(nint address) => address != 0 ? new BSScaleformManager(address) : null;
 
@@ -17437,6 +17815,8 @@ public readonly partial struct BSScaleformTranslator : IGFxTranslator, IEquatabl
     public BSScaleformTranslator() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static BSScaleformTranslator FromAddress(nint address) => new BSScaleformTranslator(address);
 
     internal static BSScaleformTranslator? OrNull(nint address) => address != 0 ? new BSScaleformTranslator(address) : null;
 
@@ -17569,6 +17949,8 @@ public readonly partial struct BSSegmentedTriShape : IEquatable<BSSegmentedTriSh
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public BSSegmentedTriShape() => address = 0;
+
+    internal static BSSegmentedTriShape FromAddress(nint address) => new BSSegmentedTriShape(address);
 
     internal static BSSegmentedTriShape? OrNull(nint address) => address != 0 ? new BSSegmentedTriShape(address) : null;
 
@@ -17748,6 +18130,8 @@ public readonly partial struct BSShaderAccumulator : INiAlphaAccumulator, IEquat
 
     nint IAddressable.Address => Address;
 
+    internal static BSShaderAccumulator FromAddress(nint address) => new BSShaderAccumulator(address);
+
     internal static BSShaderAccumulator? OrNull(nint address) => address != 0 ? new BSShaderAccumulator(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -17797,6 +18181,8 @@ public readonly partial struct BSShaderAccumulator : INiAlphaAccumulator, IEquat
         /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public FLAT_RUNTIME_DATA() => address = 0;
+
+        internal static FLAT_RUNTIME_DATA FromAddress(nint address) => new FLAT_RUNTIME_DATA(address);
 
         internal static FLAT_RUNTIME_DATA? OrNull(nint address) => address != 0 ? new FLAT_RUNTIME_DATA(address) : null;
 
@@ -17970,6 +18356,8 @@ public readonly partial struct BSShaderAccumulator : INiAlphaAccumulator, IEquat
         /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public VR_RUNTIME_DATA() => address = 0;
+
+        internal static VR_RUNTIME_DATA FromAddress(nint address) => new VR_RUNTIME_DATA(address);
 
         internal static VR_RUNTIME_DATA? OrNull(nint address) => address != 0 ? new VR_RUNTIME_DATA(address) : null;
 
@@ -18352,6 +18740,8 @@ public readonly partial struct BSShadowDirectionalLight : IBSShadowLight, IEquat
 
     nint IAddressable.Address => Address;
 
+    internal static BSShadowDirectionalLight FromAddress(nint address) => new BSShadowDirectionalLight(address);
+
     internal static BSShadowDirectionalLight? OrNull(nint address) => address != 0 ? new BSShadowDirectionalLight(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -18627,6 +19017,8 @@ public readonly partial struct BSSkinnedDecalTriShape : IEquatable<BSSkinnedDeca
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public BSSkinnedDecalTriShape() => address = 0;
 
+    internal static BSSkinnedDecalTriShape FromAddress(nint address) => new BSSkinnedDecalTriShape(address);
+
     internal static BSSkinnedDecalTriShape? OrNull(nint address) => address != 0 ? new BSSkinnedDecalTriShape(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -18662,6 +19054,8 @@ public readonly partial struct BSSmallBlockAllocator : IMemoryStore_, IEquatable
     public BSSmallBlockAllocator() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static BSSmallBlockAllocator FromAddress(nint address) => new BSSmallBlockAllocator(address);
 
     internal static BSSmallBlockAllocator? OrNull(nint address) => address != 0 ? new BSSmallBlockAllocator(address) : null;
 
@@ -18865,6 +19259,8 @@ public readonly partial struct BSSoundMessage : IEquatable<BSSoundMessage>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public BSSoundMessage() => address = 0;
 
+    internal static BSSoundMessage FromAddress(nint address) => new BSSoundMessage(address);
+
     internal static BSSoundMessage? OrNull(nint address) => address != 0 ? new BSSoundMessage(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -19051,6 +19447,8 @@ public readonly partial struct BSStripParticleSystem : INiParticleSystem, IEquat
 
     nint IAddressable.Address => Address;
 
+    internal static BSStripParticleSystem FromAddress(nint address) => new BSStripParticleSystem(address);
+
     internal static BSStripParticleSystem? OrNull(nint address) => address != 0 ? new BSStripParticleSystem(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -19107,6 +19505,8 @@ public readonly partial struct BSSubIndexTriShape : IBSTriShape, IEquatable<BSSu
     public BSSubIndexTriShape() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static BSSubIndexTriShape FromAddress(nint address) => new BSSubIndexTriShape(address);
 
     internal static BSSubIndexTriShape? OrNull(nint address) => address != 0 ? new BSSubIndexTriShape(address) : null;
 
@@ -19283,6 +19683,8 @@ public readonly partial struct BSTempEffectParticle : IBSTempEffect, IEquatable<
 
     nint IAddressable.Address => Address;
 
+    internal static BSTempEffectParticle FromAddress(nint address) => new BSTempEffectParticle(address);
+
     internal static BSTempEffectParticle? OrNull(nint address) => address != 0 ? new BSTempEffectParticle(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -19327,6 +19729,8 @@ public readonly partial struct BSTempNodeManager : INiNode, IEquatable<BSTempNod
     public BSTempNodeManager() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static BSTempNodeManager FromAddress(nint address) => new BSTempNodeManager(address);
 
     internal static BSTempNodeManager? OrNull(nint address) => address != 0 ? new BSTempNodeManager(address) : null;
 
@@ -19378,6 +19782,8 @@ public readonly partial struct BSTextureSet : INiObject, IEquatable<BSTextureSet
     public BSTextureSet() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static BSTextureSet FromAddress(nint address) => new BSTextureSet(address);
 
     internal static BSTextureSet? OrNull(nint address) => address != 0 ? new BSTextureSet(address) : null;
 
@@ -19520,6 +19926,8 @@ public readonly partial struct BSTrackedControllerDevice : IBSInputDevice, IEqua
 
     nint IAddressable.Address => Address;
 
+    internal static BSTrackedControllerDevice FromAddress(nint address) => new BSTrackedControllerDevice(address);
+
     internal static BSTrackedControllerDevice? OrNull(nint address) => address != 0 ? new BSTrackedControllerDevice(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -19560,6 +19968,8 @@ public readonly partial struct BSTrackedControllerDevice : IBSInputDevice, IEqua
         /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public RUNTIME_DATA() => address = 0;
+
+        internal static RUNTIME_DATA FromAddress(nint address) => new RUNTIME_DATA(address);
 
         internal static RUNTIME_DATA? OrNull(nint address) => address != 0 ? new RUNTIME_DATA(address) : null;
 
@@ -19633,6 +20043,8 @@ public readonly partial struct BSTreeManager : IEquatable<BSTreeManager>
     [Obsolete("Creates a view with no address. Use GameTarget.TreeManager, which returns the instance the game creates.", error: true)]
     public BSTreeManager() => address = 0;
 
+    internal static BSTreeManager FromAddress(nint address) => new BSTreeManager(address);
+
     internal static BSTreeManager? OrNull(nint address) => address != 0 ? new BSTreeManager(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -19667,6 +20079,8 @@ public readonly partial struct BSTreeManager : IEquatable<BSTreeManager>
         /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public IQueryCullingCamera() => address = 0;
+
+        internal static IQueryCullingCamera FromAddress(nint address) => new IQueryCullingCamera(address);
 
         internal static IQueryCullingCamera? OrNull(nint address) => address != 0 ? new IQueryCullingCamera(address) : null;
 
@@ -19705,6 +20119,8 @@ public readonly partial struct BSTreeNode : IBSLeafAnimNode, IEquatable<BSTreeNo
     public BSTreeNode() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static BSTreeNode FromAddress(nint address) => new BSTreeNode(address);
 
     internal static BSTreeNode? OrNull(nint address) => address != 0 ? new BSTreeNode(address) : null;
 
@@ -19855,6 +20271,8 @@ public readonly partial struct BSUIMessageData : IUIMessageData_, IEquatable<BSU
 
     nint IAddressable.Address => Address;
 
+    internal static BSUIMessageData FromAddress(nint address) => new BSUIMessageData(address);
+
     internal static BSUIMessageData? OrNull(nint address) => address != 0 ? new BSUIMessageData(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -19933,6 +20351,8 @@ public readonly partial struct BSValueNode : IBSNiNode, IEquatable<BSValueNode>
     public BSValueNode() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static BSValueNode FromAddress(nint address) => new BSValueNode(address);
 
     internal static BSValueNode? OrNull(nint address) => address != 0 ? new BSValueNode(address) : null;
 
@@ -20300,6 +20720,8 @@ public readonly partial struct BSWaterShaderMaterial : IBSShaderMaterial, IEquat
 
     nint IAddressable.Address => Address;
 
+    internal static BSWaterShaderMaterial FromAddress(nint address) => new BSWaterShaderMaterial(address);
+
     internal static BSWaterShaderMaterial? OrNull(nint address) => address != 0 ? new BSWaterShaderMaterial(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -20373,6 +20795,8 @@ public readonly partial struct BSWin32KeyboardDevice : IBSKeyboardDevice, IEquat
 
     nint IAddressable.Address => Address;
 
+    internal static BSWin32KeyboardDevice FromAddress(nint address) => new BSWin32KeyboardDevice(address);
+
     internal static BSWin32KeyboardDevice? OrNull(nint address) => address != 0 ? new BSWin32KeyboardDevice(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -20417,6 +20841,8 @@ public readonly partial struct BSWin32KeyboardDevice : IBSKeyboardDevice, IEquat
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public RUNTIME_DATA() => address = 0;
 
+        internal static RUNTIME_DATA FromAddress(nint address) => new RUNTIME_DATA(address);
+
         internal static RUNTIME_DATA? OrNull(nint address) => address != 0 ? new RUNTIME_DATA(address) : null;
 
         /// <summary>Whether both views are over one address.</summary>
@@ -20454,6 +20880,8 @@ public readonly partial struct BSWin32MouseDevice : IBSMouseDevice, IEquatable<B
     public BSWin32MouseDevice() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static BSWin32MouseDevice FromAddress(nint address) => new BSWin32MouseDevice(address);
 
     internal static BSWin32MouseDevice? OrNull(nint address) => address != 0 ? new BSWin32MouseDevice(address) : null;
 
@@ -20516,6 +20944,8 @@ public readonly partial struct BSWin32MouseDevice : IBSMouseDevice, IEquatable<B
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public RUNTIME_DATA() => address = 0;
 
+        internal static RUNTIME_DATA FromAddress(nint address) => new RUNTIME_DATA(address);
+
         internal static RUNTIME_DATA? OrNull(nint address) => address != 0 ? new RUNTIME_DATA(address) : null;
 
         /// <summary>Whether both views are over one address.</summary>
@@ -20553,6 +20983,8 @@ public readonly partial struct BSWin32SaveDataSystemUtility : IBSSaveDataSystemU
     public BSWin32SaveDataSystemUtility() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static BSWin32SaveDataSystemUtility FromAddress(nint address) => new BSWin32SaveDataSystemUtility(address);
 
     internal static BSWin32SaveDataSystemUtility? OrNull(nint address) => address != 0 ? new BSWin32SaveDataSystemUtility(address) : null;
 
@@ -20592,6 +21024,8 @@ public readonly partial struct BSWin32VirtualKeyboardDevice : IBSVirtualKeyboard
     public BSWin32VirtualKeyboardDevice() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static BSWin32VirtualKeyboardDevice FromAddress(nint address) => new BSWin32VirtualKeyboardDevice(address);
 
     internal static BSWin32VirtualKeyboardDevice? OrNull(nint address) => address != 0 ? new BSWin32VirtualKeyboardDevice(address) : null;
 
@@ -20639,6 +21073,8 @@ public readonly partial struct BShkFloatController : IEquatable<BShkFloatControl
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public BShkFloatController() => address = 0;
 
+    internal static BShkFloatController FromAddress(nint address) => new BShkFloatController(address);
+
     internal static BShkFloatController? OrNull(nint address) => address != 0 ? new BShkFloatController(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -20674,6 +21110,8 @@ public readonly partial struct BShkbAnimationGraph : IBSIRagdollDriver, IEquatab
     public BShkbAnimationGraph() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static BShkbAnimationGraph FromAddress(nint address) => new BShkbAnimationGraph(address);
 
     internal static BShkbAnimationGraph? OrNull(nint address) => address != 0 ? new BShkbAnimationGraph(address) : null;
 
@@ -20791,6 +21229,8 @@ public readonly partial struct BanishEffect : IDemoralizeEffect, IEquatable<Bani
 
     nint IAddressable.Address => Address;
 
+    internal static BanishEffect FromAddress(nint address) => new BanishEffect(address);
+
     internal static BanishEffect? OrNull(nint address) => address != 0 ? new BanishEffect(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -20838,6 +21278,8 @@ public readonly partial struct BarrierProjectile : IProjectile, IEquatable<Barri
     public BarrierProjectile() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static BarrierProjectile FromAddress(nint address) => new BarrierProjectile(address);
 
     internal static BarrierProjectile? OrNull(nint address) => address != 0 ? new BarrierProjectile(address) : null;
 
@@ -20961,6 +21403,8 @@ public readonly partial struct BarterMenu : IMenu_, IEquatable<BarterMenu>
     public BarterMenu() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static BarterMenu FromAddress(nint address) => new BarterMenu(address);
 
     /// <summary>The name the game registers this menu under, which <see cref="MenuOpenCloseEventArgs.MenuName"/> reports and the UI members that take a menu name accept.</summary>
     public const string MenuName = "BarterMenu";
@@ -21122,6 +21566,8 @@ public readonly partial struct BeamProjectile : IProjectile, IEquatable<BeamProj
     public BeamProjectile() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static BeamProjectile FromAddress(nint address) => new BeamProjectile(address);
 
     internal static BeamProjectile? OrNull(nint address) => address != 0 ? new BeamProjectile(address) : null;
 
@@ -21323,6 +21769,8 @@ public readonly partial struct Book : ITESBoundObject, IEquatable<Book>
 
     nint IAddressable.Address => Address;
 
+    internal static Book FromAddress(nint address) => new Book(address);
+
     internal static Book? OrNull(nint address) => address != 0 ? new Book(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -21371,6 +21819,8 @@ public readonly partial struct BookMenu : IMenu_, IEquatable<BookMenu>
 
     nint IAddressable.Address => Address;
 
+    internal static BookMenu FromAddress(nint address) => new BookMenu(address);
+
     /// <summary>The name the game registers this menu under, which <see cref="MenuOpenCloseEventArgs.MenuName"/> reports and the UI members that take a menu name accept.</summary>
     public const string MenuName = "Book Menu";
 
@@ -21412,6 +21862,8 @@ public readonly partial struct BookMenu : IMenu_, IEquatable<BookMenu>
         /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public AE1799_RUNTIME_DATA() => address = 0;
+
+        internal static AE1799_RUNTIME_DATA FromAddress(nint address) => new AE1799_RUNTIME_DATA(address);
 
         internal static AE1799_RUNTIME_DATA? OrNull(nint address) => address != 0 ? new AE1799_RUNTIME_DATA(address) : null;
 
@@ -21485,6 +21937,8 @@ public readonly partial struct BottomBar : IEquatable<BottomBar>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public BottomBar() => address = 0;
 
+    internal static BottomBar FromAddress(nint address) => new BottomBar(address);
+
     internal static BottomBar? OrNull(nint address) => address != 0 ? new BottomBar(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -21520,6 +21974,8 @@ public readonly partial struct BoundItemEffect : IActiveMagicEffect, IEquatable<
     public BoundItemEffect() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static BoundItemEffect FromAddress(nint address) => new BoundItemEffect(address);
 
     internal static BoundItemEffect? OrNull(nint address) => address != 0 ? new BoundItemEffect(address) : null;
 
@@ -21559,6 +22015,8 @@ public readonly partial struct ButtonEvent : IInputEvent, IEquatable<ButtonEvent
     public ButtonEvent() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ButtonEvent FromAddress(nint address) => new ButtonEvent(address);
 
     internal static ButtonEvent? OrNull(nint address) => address != 0 ? new ButtonEvent(address) : null;
 
@@ -22236,6 +22694,8 @@ public readonly partial struct Calendar : IEquatable<Calendar>
     [Obsolete("Creates a view with no address. Use GameTarget.Calendar, which returns the instance the game creates.", error: true)]
     public Calendar() => address = 0;
 
+    internal static Calendar FromAddress(nint address) => new Calendar(address);
+
     internal static Calendar? OrNull(nint address) => address != 0 ? new Calendar(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -22271,6 +22731,8 @@ public readonly partial struct CalibrationOptionMenu : IMenu_, IEquatable<Calibr
     public CalibrationOptionMenu() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static CalibrationOptionMenu FromAddress(nint address) => new CalibrationOptionMenu(address);
 
     internal static CalibrationOptionMenu? OrNull(nint address) => address != 0 ? new CalibrationOptionMenu(address) : null;
 
@@ -22313,6 +22775,8 @@ public readonly partial struct CalmEffect : ITargetValueModifierEffect, IEquatab
     public CalmEffect() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static CalmEffect FromAddress(nint address) => new CalmEffect(address);
 
     internal static CalmEffect? OrNull(nint address) => address != 0 ? new CalmEffect(address) : null;
 
@@ -22387,6 +22851,8 @@ public readonly partial struct Cell : IForm, IEquatable<Cell>
     public Cell() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static Cell FromAddress(nint address) => new Cell(address);
 
     internal static Cell? OrNull(nint address) => address != 0 ? new Cell(address) : null;
 
@@ -22608,6 +23074,8 @@ public readonly partial struct CellMopp : INiRefObject, IEquatable<CellMopp>
 
     nint IAddressable.Address => Address;
 
+    internal static CellMopp FromAddress(nint address) => new CellMopp(address);
+
     internal static CellMopp? OrNull(nint address) => address != 0 ? new CellMopp(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -22646,6 +23114,8 @@ public readonly partial struct ChainExplosion : IExplosion, IEquatable<ChainExpl
     public ChainExplosion() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ChainExplosion FromAddress(nint address) => new ChainExplosion(address);
 
     internal static ChainExplosion? OrNull(nint address) => address != 0 ? new ChainExplosion(address) : null;
 
@@ -22694,6 +23164,8 @@ public readonly partial struct CharEvent : IInputEvent, IEquatable<CharEvent>
     public CharEvent() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static CharEvent FromAddress(nint address) => new CharEvent(address);
 
     internal static CharEvent? OrNull(nint address) => address != 0 ? new CharEvent(address) : null;
 
@@ -22784,6 +23256,8 @@ public readonly partial struct Class : IForm, IEquatable<Class>
 
     nint IAddressable.Address => Address;
 
+    internal static Class FromAddress(nint address) => new Class(address);
+
     internal static Class? OrNull(nint address) => address != 0 ? new Class(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -22825,6 +23299,8 @@ public readonly partial struct ClickHandler : IMenuEventHandler, IEquatable<Clic
     public ClickHandler() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ClickHandler FromAddress(nint address) => new ClickHandler(address);
 
     internal static ClickHandler? OrNull(nint address) => address != 0 ? new ClickHandler(address) : null;
 
@@ -22868,6 +23344,8 @@ public readonly partial struct CloakEffect : IActiveMagicEffect, IEquatable<Cloa
 
     nint IAddressable.Address => Address;
 
+    internal static CloakEffect FromAddress(nint address) => new CloakEffect(address);
+
     internal static CloakEffect? OrNull(nint address) => address != 0 ? new CloakEffect(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -22906,6 +23384,8 @@ public readonly partial struct Clouds : ISkyObject, IEquatable<Clouds>
     public Clouds() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static Clouds FromAddress(nint address) => new Clouds(address);
 
     internal static Clouds? OrNull(nint address) => address != 0 ? new Clouds(address) : null;
 
@@ -22982,6 +23462,8 @@ public readonly partial struct ColorForm : IForm, IEquatable<ColorForm>
 
     nint IAddressable.Address => Address;
 
+    internal static ColorForm FromAddress(nint address) => new ColorForm(address);
+
     internal static ColorForm? OrNull(nint address) => address != 0 ? new ColorForm(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -23031,6 +23513,8 @@ public readonly partial struct CombatAimController : ICombatObject, IEquatable<C
     public CombatAimController() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static CombatAimController FromAddress(nint address) => new CombatAimController(address);
 
     internal static CombatAimController? OrNull(nint address) => address != 0 ? new CombatAimController(address) : null;
 
@@ -23097,6 +23581,8 @@ public readonly partial struct CombatAreaStandard : IEquatable<CombatAreaStandar
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public CombatAreaStandard() => address = 0;
 
+    internal static CombatAreaStandard FromAddress(nint address) => new CombatAreaStandard(address);
+
     internal static CombatAreaStandard? OrNull(nint address) => address != 0 ? new CombatAreaStandard(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -23130,6 +23616,8 @@ public readonly partial struct CombatBehaviorController : IEquatable<CombatBehav
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public CombatBehaviorController() => address = 0;
+
+    internal static CombatBehaviorController FromAddress(nint address) => new CombatBehaviorController(address);
 
     internal static CombatBehaviorController? OrNull(nint address) => address != 0 ? new CombatBehaviorController(address) : null;
 
@@ -23166,6 +23654,8 @@ public readonly partial struct CombatBehaviorResource : INiRefObject, IEquatable
     public CombatBehaviorResource() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static CombatBehaviorResource FromAddress(nint address) => new CombatBehaviorResource(address);
 
     internal static CombatBehaviorResource? OrNull(nint address) => address != 0 ? new CombatBehaviorResource(address) : null;
 
@@ -23277,6 +23767,8 @@ public readonly partial struct CombatBehaviorThread : IEquatable<CombatBehaviorT
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public CombatBehaviorThread() => address = 0;
 
+    internal static CombatBehaviorThread FromAddress(nint address) => new CombatBehaviorThread(address);
+
     internal static CombatBehaviorThread? OrNull(nint address) => address != 0 ? new CombatBehaviorThread(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -23338,6 +23830,8 @@ public readonly partial struct CombatBehaviorTreeNode : IEquatable<CombatBehavio
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public CombatBehaviorTreeNode() => address = 0;
+
+    internal static CombatBehaviorTreeNode FromAddress(nint address) => new CombatBehaviorTreeNode(address);
 
     internal static CombatBehaviorTreeNode? OrNull(nint address) => address != 0 ? new CombatBehaviorTreeNode(address) : null;
 
@@ -23409,6 +23903,8 @@ public readonly partial struct CombatBlackboardKeyBase : IEquatable<CombatBlackb
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public CombatBlackboardKeyBase() => address = 0;
 
+    internal static CombatBlackboardKeyBase FromAddress(nint address) => new CombatBlackboardKeyBase(address);
+
     internal static CombatBlackboardKeyBase? OrNull(nint address) => address != 0 ? new CombatBlackboardKeyBase(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -23479,6 +23975,8 @@ public readonly partial struct CombatController : IEquatable<CombatController>
         /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public AE_RUNTIME_DATA() => address = 0;
+
+        internal static AE_RUNTIME_DATA FromAddress(nint address) => new AE_RUNTIME_DATA(address);
 
         internal static AE_RUNTIME_DATA? OrNull(nint address) => address != 0 ? new AE_RUNTIME_DATA(address) : null;
 
@@ -23633,6 +24131,8 @@ public readonly partial struct CombatGroupDetectionListener : INiRefObject, IEqu
 
     nint IAddressable.Address => Address;
 
+    internal static CombatGroupDetectionListener FromAddress(nint address) => new CombatGroupDetectionListener(address);
+
     internal static CombatGroupDetectionListener? OrNull(nint address) => address != 0 ? new CombatGroupDetectionListener(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -23673,6 +24173,8 @@ public readonly partial struct CombatInventory : IEquatable<CombatInventory>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public CombatInventory() => address = 0;
 
+    internal static CombatInventory FromAddress(nint address) => new CombatInventory(address);
+
     internal static CombatInventory? OrNull(nint address) => address != 0 ? new CombatInventory(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -23708,6 +24210,8 @@ public readonly partial struct CombatInventoryItem : ICombatObject, IEquatable<C
     public CombatInventoryItem() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static CombatInventoryItem FromAddress(nint address) => new CombatInventoryItem(address);
 
     internal static CombatInventoryItem? OrNull(nint address) => address != 0 ? new CombatInventoryItem(address) : null;
 
@@ -23843,6 +24347,8 @@ public readonly partial struct CombatManager : IEquatable<CombatManager>
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. Use GameTarget.CombatManager, which returns the instance the game creates.", error: true)]
     public CombatManager() => address = 0;
+
+    internal static CombatManager FromAddress(nint address) => new CombatManager(address);
 
     internal static CombatManager? OrNull(nint address) => address != 0 ? new CombatManager(address) : null;
 
@@ -24027,6 +24533,8 @@ public readonly partial struct CombatState : IEquatable<CombatState>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public CombatState() => address = 0;
 
+    internal static CombatState FromAddress(nint address) => new CombatState(address);
+
     internal static CombatState? OrNull(nint address) => address != 0 ? new CombatState(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -24062,6 +24570,8 @@ public readonly partial struct CombatStyle : IForm, IEquatable<CombatStyle>
     public CombatStyle() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static CombatStyle FromAddress(nint address) => new CombatStyle(address);
 
     internal static CombatStyle? OrNull(nint address) => address != 0 ? new CombatStyle(address) : null;
 
@@ -24339,6 +24849,8 @@ public readonly partial struct CombatTargetSelectorStandard : IEquatable<CombatT
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public CombatTargetSelectorStandard() => address = 0;
 
+    internal static CombatTargetSelectorStandard FromAddress(nint address) => new CombatTargetSelectorStandard(address);
+
     internal static CombatTargetSelectorStandard? OrNull(nint address) => address != 0 ? new CombatTargetSelectorStandard(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -24374,6 +24886,8 @@ public readonly partial struct CombatThreat : ICombatObject, IEquatable<CombatTh
     public CombatThreat() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static CombatThreat FromAddress(nint address) => new CombatThreat(address);
 
     internal static CombatThreat? OrNull(nint address) => address != 0 ? new CombatThreat(address) : null;
 
@@ -24494,6 +25008,8 @@ public readonly partial struct CommandSummonedEffect : IActiveMagicEffect, IEqua
 
     nint IAddressable.Address => Address;
 
+    internal static CommandSummonedEffect FromAddress(nint address) => new CommandSummonedEffect(address);
+
     internal static CommandSummonedEffect? OrNull(nint address) => address != 0 ? new CommandSummonedEffect(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -24569,6 +25085,8 @@ public readonly partial struct ConcussionEffect : IActiveMagicEffect, IEquatable
 
     nint IAddressable.Address => Address;
 
+    internal static ConcussionEffect FromAddress(nint address) => new ConcussionEffect(address);
+
     internal static ConcussionEffect? OrNull(nint address) => address != 0 ? new ConcussionEffect(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -24606,6 +25124,8 @@ public readonly partial struct ConditionCheckParams : IEquatable<ConditionCheckP
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public ConditionCheckParams() => address = 0;
 
+    internal static ConditionCheckParams FromAddress(nint address) => new ConditionCheckParams(address);
+
     internal static ConditionCheckParams? OrNull(nint address) => address != 0 ? new ConditionCheckParams(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -24641,6 +25161,8 @@ public readonly partial struct ConeProjectile : IProjectile, IEquatable<ConeProj
     public ConeProjectile() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ConeProjectile FromAddress(nint address) => new ConeProjectile(address);
 
     internal static ConeProjectile? OrNull(nint address) => address != 0 ? new ConeProjectile(address) : null;
 
@@ -24729,6 +25251,8 @@ public readonly partial struct Console : IMenu_, IEquatable<Console>
 
     nint IAddressable.Address => Address;
 
+    internal static Console FromAddress(nint address) => new Console(address);
+
     /// <summary>The name the game registers this menu under, which <see cref="MenuOpenCloseEventArgs.MenuName"/> reports and the UI members that take a menu name accept.</summary>
     public const string MenuName = "Console";
 
@@ -24770,6 +25294,8 @@ public readonly partial struct Console : IMenu_, IEquatable<Console>
         /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public EXTENDED_CONSOLE_DATA() => address = 0;
+
+        internal static EXTENDED_CONSOLE_DATA FromAddress(nint address) => new EXTENDED_CONSOLE_DATA(address);
 
         internal static EXTENDED_CONSOLE_DATA? OrNull(nint address) => address != 0 ? new EXTENDED_CONSOLE_DATA(address) : null;
 
@@ -24879,6 +25405,8 @@ public readonly partial struct ConsoleLog : IEquatable<ConsoleLog>
     [Obsolete("Creates a view with no address. Use GameTarget.ConsoleLog, which returns the instance the game creates.", error: true)]
     public ConsoleLog() => address = 0;
 
+    internal static ConsoleLog FromAddress(nint address) => new ConsoleLog(address);
+
     internal static ConsoleLog? OrNull(nint address) => address != 0 ? new ConsoleLog(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -24914,6 +25442,8 @@ public readonly partial struct ConsoleNativeUIMenu : IMenu_, IEquatable<ConsoleN
     public ConsoleNativeUIMenu() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ConsoleNativeUIMenu FromAddress(nint address) => new ConsoleNativeUIMenu(address);
 
     /// <summary>The name the game registers this menu under, which <see cref="MenuOpenCloseEventArgs.MenuName"/> reports and the UI members that take a menu name accept.</summary>
     public const string MenuName = "Console Native UI Menu";
@@ -24999,6 +25529,8 @@ public readonly partial struct ConsoleOpenHandler : IMenuEventHandler, IEquatabl
 
     nint IAddressable.Address => Address;
 
+    internal static ConsoleOpenHandler FromAddress(nint address) => new ConsoleOpenHandler(address);
+
     internal static ConsoleOpenHandler? OrNull(nint address) => address != 0 ? new ConsoleOpenHandler(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -25076,6 +25608,8 @@ public readonly partial struct ConstructibleObject : IForm, IEquatable<Construct
     public ConstructibleObject() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ConstructibleObject FromAddress(nint address) => new ConstructibleObject(address);
 
     internal static ConstructibleObject? OrNull(nint address) => address != 0 ? new ConstructibleObject(address) : null;
 
@@ -25157,6 +25691,8 @@ public readonly partial struct Container : ITESBoundAnimObject, IEquatable<Conta
     public Container() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static Container FromAddress(nint address) => new Container(address);
 
     internal static Container? OrNull(nint address) => address != 0 ? new Container(address) : null;
 
@@ -25285,6 +25821,8 @@ public readonly partial struct ContainerMenu : IMenu_, IEquatable<ContainerMenu>
 
     nint IAddressable.Address => Address;
 
+    internal static ContainerMenu FromAddress(nint address) => new ContainerMenu(address);
+
     /// <summary>The name the game registers this menu under, which <see cref="MenuOpenCloseEventArgs.MenuName"/> reports and the UI members that take a menu name accept.</summary>
     public const string MenuName = "ContainerMenu";
 
@@ -25409,6 +25947,8 @@ public readonly partial struct ControlMap : IEquatable<ControlMap>
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. Use GameTarget.ControlMap, which returns the instance the game creates.", error: true)]
     public ControlMap() => address = 0;
+
+    internal static ControlMap FromAddress(nint address) => new ControlMap(address);
 
     internal static ControlMap? OrNull(nint address) => address != 0 ? new ControlMap(address) : null;
 
@@ -25563,6 +26103,8 @@ public readonly partial struct CraftingMenu : IMenu_, IEquatable<CraftingMenu>
 
     nint IAddressable.Address => Address;
 
+    internal static CraftingMenu FromAddress(nint address) => new CraftingMenu(address);
+
     /// <summary>The name the game registers this menu under, which <see cref="MenuOpenCloseEventArgs.MenuName"/> reports and the UI members that take a menu name accept.</summary>
     public const string MenuName = "Crafting Menu";
 
@@ -25607,6 +26149,8 @@ public readonly partial struct CreationClubMenu : IMenu_, IEquatable<CreationClu
     public CreationClubMenu() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static CreationClubMenu FromAddress(nint address) => new CreationClubMenu(address);
 
     /// <summary>The name the game registers this menu under, which <see cref="MenuOpenCloseEventArgs.MenuName"/> reports and the UI members that take a menu name accept.</summary>
     public const string MenuName = "Creation Club Menu";
@@ -25688,6 +26232,8 @@ public readonly partial struct CreditsMenu : IMenu_, IEquatable<CreditsMenu>
     public CreditsMenu() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static CreditsMenu FromAddress(nint address) => new CreditsMenu(address);
 
     /// <summary>The name the game registers this menu under, which <see cref="MenuOpenCloseEventArgs.MenuName"/> reports and the UI members that take a menu name accept.</summary>
     public const string MenuName = "Credits Menu";
@@ -25804,6 +26350,8 @@ public readonly partial struct CrosshairPickData : IEquatable<CrosshairPickData>
     [Obsolete("Creates a view with no address. Use GameTarget.CrosshairPickData, which returns the instance the game creates.", error: true)]
     public CrosshairPickData() => address = 0;
 
+    internal static CrosshairPickData FromAddress(nint address) => new CrosshairPickData(address);
+
     internal static CrosshairPickData? OrNull(nint address) => address != 0 ? new CrosshairPickData(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -25839,6 +26387,8 @@ public readonly partial struct CureEffect : IActiveMagicEffect, IEquatable<CureE
     public CureEffect() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static CureEffect FromAddress(nint address) => new CureEffect(address);
 
     internal static CureEffect? OrNull(nint address) => address != 0 ? new CureEffect(address) : null;
 
@@ -25878,6 +26428,8 @@ public readonly partial struct CursorMenu : IMenu_, IEquatable<CursorMenu>
     public CursorMenu() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static CursorMenu FromAddress(nint address) => new CursorMenu(address);
 
     /// <summary>The name the game registers this menu under, which <see cref="MenuOpenCloseEventArgs.MenuName"/> reports and the UI members that take a menu name accept.</summary>
     public const string MenuName = "Cursor Menu";
@@ -26432,6 +26984,8 @@ public readonly partial struct DarknessEffect : IValueModifierEffect, IEquatable
 
     nint IAddressable.Address => Address;
 
+    internal static DarknessEffect FromAddress(nint address) => new DarknessEffect(address);
+
     internal static DarknessEffect? OrNull(nint address) => address != 0 ? new DarknessEffect(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -26895,6 +27449,8 @@ public readonly partial struct DefaultObjectManager : IForm, IEquatable<DefaultO
 
     nint IAddressable.Address => Address;
 
+    internal static DefaultObjectManager FromAddress(nint address) => new DefaultObjectManager(address);
+
     internal static DefaultObjectManager? OrNull(nint address) => address != 0 ? new DefaultObjectManager(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -27125,6 +27681,8 @@ public readonly partial struct DetectLifeEffect : IActiveMagicEffect, IEquatable
 
     nint IAddressable.Address => Address;
 
+    internal static DetectLifeEffect FromAddress(nint address) => new DetectLifeEffect(address);
+
     internal static DetectLifeEffect? OrNull(nint address) => address != 0 ? new DetectLifeEffect(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -27241,6 +27799,8 @@ public readonly partial struct DeviceConnectEvent : IInputEvent, IEquatable<Devi
 
     nint IAddressable.Address => Address;
 
+    internal static DeviceConnectEvent FromAddress(nint address) => new DeviceConnectEvent(address);
+
     internal static DeviceConnectEvent? OrNull(nint address) => address != 0 ? new DeviceConnectEvent(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -27280,6 +27840,8 @@ public readonly partial struct DialogueItem : IBSIntrusiveRefCounted, IEquatable
 
     nint IAddressable.Address => Address;
 
+    internal static DialogueItem FromAddress(nint address) => new DialogueItem(address);
+
     internal static DialogueItem? OrNull(nint address) => address != 0 ? new DialogueItem(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -27318,6 +27880,8 @@ public readonly partial struct DialogueMenu : IMenu_, IEquatable<DialogueMenu>
     public DialogueMenu() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static DialogueMenu FromAddress(nint address) => new DialogueMenu(address);
 
     /// <summary>The name the game registers this menu under, which <see cref="MenuOpenCloseEventArgs.MenuName"/> reports and the UI members that take a menu name accept.</summary>
     public const string MenuName = "Dialogue Menu";
@@ -27401,6 +27965,8 @@ public readonly partial struct DialoguePackage : IPackage, IEquatable<DialoguePa
 
     nint IAddressable.Address => Address;
 
+    internal static DialoguePackage FromAddress(nint address) => new DialoguePackage(address);
+
     internal static DialoguePackage? OrNull(nint address) => address != 0 ? new DialoguePackage(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -27482,6 +28048,8 @@ public readonly partial struct DirectionHandler : IMenuEventHandler, IEquatable<
 
     nint IAddressable.Address => Address;
 
+    internal static DirectionHandler FromAddress(nint address) => new DirectionHandler(address);
+
     internal static DirectionHandler? OrNull(nint address) => address != 0 ? new DirectionHandler(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -27524,6 +28092,8 @@ public readonly partial struct DisarmEffect : IStaggerEffect, IEquatable<DisarmE
 
     nint IAddressable.Address => Address;
 
+    internal static DisarmEffect FromAddress(nint address) => new DisarmEffect(address);
+
     internal static DisarmEffect? OrNull(nint address) => address != 0 ? new DisarmEffect(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -27565,6 +28135,8 @@ public readonly partial struct DisguiseEffect : IActiveMagicEffect, IEquatable<D
     public DisguiseEffect() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static DisguiseEffect FromAddress(nint address) => new DisguiseEffect(address);
 
     internal static DisguiseEffect? OrNull(nint address) => address != 0 ? new DisguiseEffect(address) : null;
 
@@ -27651,6 +28223,8 @@ public readonly partial struct DispelEffect : IActiveMagicEffect, IEquatable<Dis
 
     nint IAddressable.Address => Address;
 
+    internal static DispelEffect FromAddress(nint address) => new DispelEffect(address);
+
     internal static DispelEffect? OrNull(nint address) => address != 0 ? new DispelEffect(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -27689,6 +28263,8 @@ public readonly partial struct Door : ITESBoundAnimObject, IEquatable<Door>
     public Door() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static Door FromAddress(nint address) => new Door(address);
 
     internal static Door? OrNull(nint address) => address != 0 ? new Door(address) : null;
 
@@ -28103,6 +28679,8 @@ public readonly partial struct EffectItem : IEquatable<EffectItem>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public EffectItem() => address = 0;
 
+    internal static EffectItem FromAddress(nint address) => new EffectItem(address);
+
     internal static EffectItem? OrNull(nint address) => address != 0 ? new EffectItem(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -28138,6 +28716,8 @@ public readonly partial struct EffectShader : IForm, IEquatable<EffectShader>
     public EffectShader() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static EffectShader FromAddress(nint address) => new EffectShader(address);
 
     internal static EffectShader? OrNull(nint address) => address != 0 ? new EffectShader(address) : null;
 
@@ -28255,6 +28835,8 @@ public readonly partial struct Enchantment : IMagicItem, IEquatable<Enchantment>
 
     nint IAddressable.Address => Address;
 
+    internal static Enchantment FromAddress(nint address) => new Enchantment(address);
+
     internal static Enchantment? OrNull(nint address) => address != 0 ? new Enchantment(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -28353,6 +28935,8 @@ public readonly partial struct EncounterZone : IForm, IEquatable<EncounterZone>
 
     nint IAddressable.Address => Address;
 
+    internal static EncounterZone FromAddress(nint address) => new EncounterZone(address);
+
     internal static EncounterZone? OrNull(nint address) => address != 0 ? new EncounterZone(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -28394,6 +28978,8 @@ public readonly partial struct EnhanceWeaponEffect : IDualValueModifierEffect, I
     public EnhanceWeaponEffect() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static EnhanceWeaponEffect FromAddress(nint address) => new EnhanceWeaponEffect(address);
 
     internal static EnhanceWeaponEffect? OrNull(nint address) => address != 0 ? new EnhanceWeaponEffect(address) : null;
 
@@ -28439,6 +29025,8 @@ public readonly partial struct EquipSlot : IForm, IEquatable<EquipSlot>
     public EquipSlot() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static EquipSlot FromAddress(nint address) => new EquipSlot(address);
 
     internal static EquipSlot? OrNull(nint address) => address != 0 ? new EquipSlot(address) : null;
 
@@ -28492,6 +29080,8 @@ public readonly partial struct EtherealizationEffect : IActiveMagicEffect, IEqua
     public EtherealizationEffect() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static EtherealizationEffect FromAddress(nint address) => new EtherealizationEffect(address);
 
     internal static EtherealizationEffect? OrNull(nint address) => address != 0 ? new EtherealizationEffect(address) : null;
 
@@ -28635,6 +29225,8 @@ public readonly partial struct ExtraAction : IBSExtraData, IEquatable<ExtraActio
 
     nint IAddressable.Address => Address;
 
+    internal static ExtraAction FromAddress(nint address) => new ExtraAction(address);
+
     internal static ExtraAction? OrNull(nint address) => address != 0 ? new ExtraAction(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -28673,6 +29265,8 @@ public readonly partial struct ExtraActivateLoopSound : IBSExtraData, IEquatable
     public ExtraActivateLoopSound() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ExtraActivateLoopSound FromAddress(nint address) => new ExtraActivateLoopSound(address);
 
     internal static ExtraActivateLoopSound? OrNull(nint address) => address != 0 ? new ExtraActivateLoopSound(address) : null;
 
@@ -28713,6 +29307,8 @@ public readonly partial struct ExtraActivateRef : IBSExtraData, IEquatable<Extra
 
     nint IAddressable.Address => Address;
 
+    internal static ExtraActivateRef FromAddress(nint address) => new ExtraActivateRef(address);
+
     internal static ExtraActivateRef? OrNull(nint address) => address != 0 ? new ExtraActivateRef(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -28751,6 +29347,8 @@ public readonly partial struct ExtraActivateRefChildren : IBSExtraData, IEquatab
     public ExtraActivateRefChildren() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ExtraActivateRefChildren FromAddress(nint address) => new ExtraActivateRefChildren(address);
 
     internal static ExtraActivateRefChildren? OrNull(nint address) => address != 0 ? new ExtraActivateRefChildren(address) : null;
 
@@ -28791,6 +29389,8 @@ public readonly partial struct ExtraActorCause : IBSExtraData, IEquatable<ExtraA
 
     nint IAddressable.Address => Address;
 
+    internal static ExtraActorCause FromAddress(nint address) => new ExtraActorCause(address);
+
     internal static ExtraActorCause? OrNull(nint address) => address != 0 ? new ExtraActorCause(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -28829,6 +29429,8 @@ public readonly partial struct ExtraAliasInstanceArray : IBSExtraData, IEquatabl
     public ExtraAliasInstanceArray() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ExtraAliasInstanceArray FromAddress(nint address) => new ExtraAliasInstanceArray(address);
 
     internal static ExtraAliasInstanceArray? OrNull(nint address) => address != 0 ? new ExtraAliasInstanceArray(address) : null;
 
@@ -28869,6 +29471,8 @@ public readonly partial struct ExtraAlphaCutoff : IBSExtraData, IEquatable<Extra
 
     nint IAddressable.Address => Address;
 
+    internal static ExtraAlphaCutoff FromAddress(nint address) => new ExtraAlphaCutoff(address);
+
     internal static ExtraAlphaCutoff? OrNull(nint address) => address != 0 ? new ExtraAlphaCutoff(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -28907,6 +29511,8 @@ public readonly partial struct ExtraAmmo : IBSExtraData, IEquatable<ExtraAmmo>
     public ExtraAmmo() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ExtraAmmo FromAddress(nint address) => new ExtraAmmo(address);
 
     internal static ExtraAmmo? OrNull(nint address) => address != 0 ? new ExtraAmmo(address) : null;
 
@@ -28947,6 +29553,8 @@ public readonly partial struct ExtraAnimGraphManager : IBSExtraData, IEquatable<
 
     nint IAddressable.Address => Address;
 
+    internal static ExtraAnimGraphManager FromAddress(nint address) => new ExtraAnimGraphManager(address);
+
     internal static ExtraAnimGraphManager? OrNull(nint address) => address != 0 ? new ExtraAnimGraphManager(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -28985,6 +29593,8 @@ public readonly partial struct ExtraAnimNoteReceiver : IBSExtraData, IEquatable<
     public ExtraAnimNoteReceiver() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ExtraAnimNoteReceiver FromAddress(nint address) => new ExtraAnimNoteReceiver(address);
 
     internal static ExtraAnimNoteReceiver? OrNull(nint address) => address != 0 ? new ExtraAnimNoteReceiver(address) : null;
 
@@ -29025,6 +29635,8 @@ public readonly partial struct ExtraAnimationSequencer : IBSExtraData, IEquatabl
 
     nint IAddressable.Address => Address;
 
+    internal static ExtraAnimationSequencer FromAddress(nint address) => new ExtraAnimationSequencer(address);
+
     internal static ExtraAnimationSequencer? OrNull(nint address) => address != 0 ? new ExtraAnimationSequencer(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -29063,6 +29675,8 @@ public readonly partial struct ExtraAshPileRef : IBSExtraData, IEquatable<ExtraA
     public ExtraAshPileRef() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ExtraAshPileRef FromAddress(nint address) => new ExtraAshPileRef(address);
 
     internal static ExtraAshPileRef? OrNull(nint address) => address != 0 ? new ExtraAshPileRef(address) : null;
 
@@ -29103,6 +29717,8 @@ public readonly partial struct ExtraAttachRef : IBSExtraData, IEquatable<ExtraAt
 
     nint IAddressable.Address => Address;
 
+    internal static ExtraAttachRef FromAddress(nint address) => new ExtraAttachRef(address);
+
     internal static ExtraAttachRef? OrNull(nint address) => address != 0 ? new ExtraAttachRef(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -29142,6 +29758,8 @@ public readonly partial struct ExtraAttachRefChildren : IBSExtraData, IEquatable
 
     nint IAddressable.Address => Address;
 
+    internal static ExtraAttachRefChildren FromAddress(nint address) => new ExtraAttachRefChildren(address);
+
     internal static ExtraAttachRefChildren? OrNull(nint address) => address != 0 ? new ExtraAttachRefChildren(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -29180,6 +29798,8 @@ public readonly partial struct ExtraAttachedArrows3D : IBSExtraData, IEquatable<
     public ExtraAttachedArrows3D() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ExtraAttachedArrows3D FromAddress(nint address) => new ExtraAttachedArrows3D(address);
 
     internal static ExtraAttachedArrows3D? OrNull(nint address) => address != 0 ? new ExtraAttachedArrows3D(address) : null;
 
@@ -29257,6 +29877,8 @@ public readonly partial struct ExtraBadPosition : IBSExtraData, IEquatable<Extra
 
     nint IAddressable.Address => Address;
 
+    internal static ExtraBadPosition FromAddress(nint address) => new ExtraBadPosition(address);
+
     internal static ExtraBadPosition? OrNull(nint address) => address != 0 ? new ExtraBadPosition(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -29295,6 +29917,8 @@ public readonly partial struct ExtraBiped : IBSExtraData, IEquatable<ExtraBiped>
     public ExtraBiped() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ExtraBiped FromAddress(nint address) => new ExtraBiped(address);
 
     internal static ExtraBiped? OrNull(nint address) => address != 0 ? new ExtraBiped(address) : null;
 
@@ -29335,6 +29959,8 @@ public readonly partial struct ExtraCachedScale : IBSExtraData, IEquatable<Extra
 
     nint IAddressable.Address => Address;
 
+    internal static ExtraCachedScale FromAddress(nint address) => new ExtraCachedScale(address);
+
     internal static ExtraCachedScale? OrNull(nint address) => address != 0 ? new ExtraCachedScale(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -29373,6 +29999,8 @@ public readonly partial struct ExtraCanTalkToPlayer : IBSExtraData, IEquatable<E
     public ExtraCanTalkToPlayer() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ExtraCanTalkToPlayer FromAddress(nint address) => new ExtraCanTalkToPlayer(address);
 
     internal static ExtraCanTalkToPlayer? OrNull(nint address) => address != 0 ? new ExtraCanTalkToPlayer(address) : null;
 
@@ -29413,6 +30041,8 @@ public readonly partial struct ExtraCannotWear : IBSExtraData, IEquatable<ExtraC
 
     nint IAddressable.Address => Address;
 
+    internal static ExtraCannotWear FromAddress(nint address) => new ExtraCannotWear(address);
+
     internal static ExtraCannotWear? OrNull(nint address) => address != 0 ? new ExtraCannotWear(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -29451,6 +30081,8 @@ public readonly partial struct ExtraCell3D : IBSExtraData, IEquatable<ExtraCell3
     public ExtraCell3D() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ExtraCell3D FromAddress(nint address) => new ExtraCell3D(address);
 
     internal static ExtraCell3D? OrNull(nint address) => address != 0 ? new ExtraCell3D(address) : null;
 
@@ -29491,6 +30123,8 @@ public readonly partial struct ExtraCellAcousticSpace : IBSExtraData, IEquatable
 
     nint IAddressable.Address => Address;
 
+    internal static ExtraCellAcousticSpace FromAddress(nint address) => new ExtraCellAcousticSpace(address);
+
     internal static ExtraCellAcousticSpace? OrNull(nint address) => address != 0 ? new ExtraCellAcousticSpace(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -29529,6 +30163,8 @@ public readonly partial struct ExtraCellGrassData : IBSExtraData, IEquatable<Ext
     public ExtraCellGrassData() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ExtraCellGrassData FromAddress(nint address) => new ExtraCellGrassData(address);
 
     internal static ExtraCellGrassData? OrNull(nint address) => address != 0 ? new ExtraCellGrassData(address) : null;
 
@@ -29569,6 +30205,8 @@ public readonly partial struct ExtraCellImageSpace : IBSExtraData, IEquatable<Ex
 
     nint IAddressable.Address => Address;
 
+    internal static ExtraCellImageSpace FromAddress(nint address) => new ExtraCellImageSpace(address);
+
     internal static ExtraCellImageSpace? OrNull(nint address) => address != 0 ? new ExtraCellImageSpace(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -29607,6 +30245,8 @@ public readonly partial struct ExtraCellMusicType : IBSExtraData, IEquatable<Ext
     public ExtraCellMusicType() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ExtraCellMusicType FromAddress(nint address) => new ExtraCellMusicType(address);
 
     internal static ExtraCellMusicType? OrNull(nint address) => address != 0 ? new ExtraCellMusicType(address) : null;
 
@@ -29647,6 +30287,8 @@ public readonly partial struct ExtraCellSkyRegion : IBSExtraData, IEquatable<Ext
 
     nint IAddressable.Address => Address;
 
+    internal static ExtraCellSkyRegion FromAddress(nint address) => new ExtraCellSkyRegion(address);
+
     internal static ExtraCellSkyRegion? OrNull(nint address) => address != 0 ? new ExtraCellSkyRegion(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -29685,6 +30327,8 @@ public readonly partial struct ExtraCellWaterEnvMap : IBSExtraData, IEquatable<E
     public ExtraCellWaterEnvMap() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ExtraCellWaterEnvMap FromAddress(nint address) => new ExtraCellWaterEnvMap(address);
 
     internal static ExtraCellWaterEnvMap? OrNull(nint address) => address != 0 ? new ExtraCellWaterEnvMap(address) : null;
 
@@ -29725,6 +30369,8 @@ public readonly partial struct ExtraCellWaterType : IBSExtraData, IEquatable<Ext
 
     nint IAddressable.Address => Address;
 
+    internal static ExtraCellWaterType FromAddress(nint address) => new ExtraCellWaterType(address);
+
     internal static ExtraCellWaterType? OrNull(nint address) => address != 0 ? new ExtraCellWaterType(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -29763,6 +30409,8 @@ public readonly partial struct ExtraCharge : IBSExtraData, IEquatable<ExtraCharg
     public ExtraCharge() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ExtraCharge FromAddress(nint address) => new ExtraCharge(address);
 
     internal static ExtraCharge? OrNull(nint address) => address != 0 ? new ExtraCharge(address) : null;
 
@@ -29803,6 +30451,8 @@ public readonly partial struct ExtraCollisionData : IBSExtraData, IEquatable<Ext
 
     nint IAddressable.Address => Address;
 
+    internal static ExtraCollisionData FromAddress(nint address) => new ExtraCollisionData(address);
+
     internal static ExtraCollisionData? OrNull(nint address) => address != 0 ? new ExtraCollisionData(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -29841,6 +30491,8 @@ public readonly partial struct ExtraCombatStyle : IBSExtraData, IEquatable<Extra
     public ExtraCombatStyle() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ExtraCombatStyle FromAddress(nint address) => new ExtraCombatStyle(address);
 
     internal static ExtraCombatStyle? OrNull(nint address) => address != 0 ? new ExtraCombatStyle(address) : null;
 
@@ -29881,6 +30533,8 @@ public readonly partial struct ExtraContainerChanges : IBSExtraData, IEquatable<
 
     nint IAddressable.Address => Address;
 
+    internal static ExtraContainerChanges FromAddress(nint address) => new ExtraContainerChanges(address);
+
     internal static ExtraContainerChanges? OrNull(nint address) => address != 0 ? new ExtraContainerChanges(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -29919,6 +30573,8 @@ public readonly partial struct ExtraCount : IBSExtraData, IEquatable<ExtraCount>
     public ExtraCount() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ExtraCount FromAddress(nint address) => new ExtraCount(address);
 
     internal static ExtraCount? OrNull(nint address) => address != 0 ? new ExtraCount(address) : null;
 
@@ -29959,6 +30615,8 @@ public readonly partial struct ExtraCreatureAwakeSound : IBSExtraData, IEquatabl
 
     nint IAddressable.Address => Address;
 
+    internal static ExtraCreatureAwakeSound FromAddress(nint address) => new ExtraCreatureAwakeSound(address);
+
     internal static ExtraCreatureAwakeSound? OrNull(nint address) => address != 0 ? new ExtraCreatureAwakeSound(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -29997,6 +30655,8 @@ public readonly partial struct ExtraCreatureMovementSound : IBSExtraData, IEquat
     public ExtraCreatureMovementSound() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ExtraCreatureMovementSound FromAddress(nint address) => new ExtraCreatureMovementSound(address);
 
     internal static ExtraCreatureMovementSound? OrNull(nint address) => address != 0 ? new ExtraCreatureMovementSound(address) : null;
 
@@ -30270,6 +30930,8 @@ public readonly partial struct ExtraDecalGroup : IBSExtraData, IEquatable<ExtraD
 
     nint IAddressable.Address => Address;
 
+    internal static ExtraDecalGroup FromAddress(nint address) => new ExtraDecalGroup(address);
+
     internal static ExtraDecalGroup? OrNull(nint address) => address != 0 ? new ExtraDecalGroup(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -30308,6 +30970,8 @@ public readonly partial struct ExtraDetachTime : IBSExtraData, IEquatable<ExtraD
     public ExtraDetachTime() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ExtraDetachTime FromAddress(nint address) => new ExtraDetachTime(address);
 
     internal static ExtraDetachTime? OrNull(nint address) => address != 0 ? new ExtraDetachTime(address) : null;
 
@@ -30348,6 +31012,8 @@ public readonly partial struct ExtraDismemberedLimbs : IBSExtraData, IEquatable<
 
     nint IAddressable.Address => Address;
 
+    internal static ExtraDismemberedLimbs FromAddress(nint address) => new ExtraDismemberedLimbs(address);
+
     internal static ExtraDismemberedLimbs? OrNull(nint address) => address != 0 ? new ExtraDismemberedLimbs(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -30386,6 +31052,8 @@ public readonly partial struct ExtraDistantData : IBSExtraData, IEquatable<Extra
     public ExtraDistantData() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ExtraDistantData FromAddress(nint address) => new ExtraDistantData(address);
 
     internal static ExtraDistantData? OrNull(nint address) => address != 0 ? new ExtraDistantData(address) : null;
 
@@ -30426,6 +31094,8 @@ public readonly partial struct ExtraDroppedItemList : IBSExtraData, IEquatable<E
 
     nint IAddressable.Address => Address;
 
+    internal static ExtraDroppedItemList FromAddress(nint address) => new ExtraDroppedItemList(address);
+
     internal static ExtraDroppedItemList? OrNull(nint address) => address != 0 ? new ExtraDroppedItemList(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -30464,6 +31134,8 @@ public readonly partial struct ExtraEditorID : IBSExtraData, IEquatable<ExtraEdi
     public ExtraEditorID() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ExtraEditorID FromAddress(nint address) => new ExtraEditorID(address);
 
     internal static ExtraEditorID? OrNull(nint address) => address != 0 ? new ExtraEditorID(address) : null;
 
@@ -30504,6 +31176,8 @@ public readonly partial struct ExtraEditorRef3DData : IBSExtraData, IEquatable<E
 
     nint IAddressable.Address => Address;
 
+    internal static ExtraEditorRef3DData FromAddress(nint address) => new ExtraEditorRef3DData(address);
+
     internal static ExtraEditorRef3DData? OrNull(nint address) => address != 0 ? new ExtraEditorRef3DData(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -30542,6 +31216,8 @@ public readonly partial struct ExtraEditorRefMoveData : IBSExtraData, IEquatable
     public ExtraEditorRefMoveData() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ExtraEditorRefMoveData FromAddress(nint address) => new ExtraEditorRefMoveData(address);
 
     internal static ExtraEditorRefMoveData? OrNull(nint address) => address != 0 ? new ExtraEditorRefMoveData(address) : null;
 
@@ -30582,6 +31258,8 @@ public readonly partial struct ExtraEmittanceSource : IBSExtraData, IEquatable<E
 
     nint IAddressable.Address => Address;
 
+    internal static ExtraEmittanceSource FromAddress(nint address) => new ExtraEmittanceSource(address);
+
     internal static ExtraEmittanceSource? OrNull(nint address) => address != 0 ? new ExtraEmittanceSource(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -30620,6 +31298,8 @@ public readonly partial struct ExtraEnableStateChildren : IBSExtraData, IEquatab
     public ExtraEnableStateChildren() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ExtraEnableStateChildren FromAddress(nint address) => new ExtraEnableStateChildren(address);
 
     internal static ExtraEnableStateChildren? OrNull(nint address) => address != 0 ? new ExtraEnableStateChildren(address) : null;
 
@@ -30660,6 +31340,8 @@ public readonly partial struct ExtraEnableStateParent : IBSExtraData, IEquatable
 
     nint IAddressable.Address => Address;
 
+    internal static ExtraEnableStateParent FromAddress(nint address) => new ExtraEnableStateParent(address);
+
     internal static ExtraEnableStateParent? OrNull(nint address) => address != 0 ? new ExtraEnableStateParent(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -30698,6 +31380,8 @@ public readonly partial struct ExtraEnchantment : IBSExtraData, IEquatable<Extra
     public ExtraEnchantment() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ExtraEnchantment FromAddress(nint address) => new ExtraEnchantment(address);
 
     internal static ExtraEnchantment? OrNull(nint address) => address != 0 ? new ExtraEnchantment(address) : null;
 
@@ -30738,6 +31422,8 @@ public readonly partial struct ExtraEncounterZone : IBSExtraData, IEquatable<Ext
 
     nint IAddressable.Address => Address;
 
+    internal static ExtraEncounterZone FromAddress(nint address) => new ExtraEncounterZone(address);
+
     internal static ExtraEncounterZone? OrNull(nint address) => address != 0 ? new ExtraEncounterZone(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -30776,6 +31462,8 @@ public readonly partial struct ExtraFactionChanges : IBSExtraData, IEquatable<Ex
     public ExtraFactionChanges() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ExtraFactionChanges FromAddress(nint address) => new ExtraFactionChanges(address);
 
     internal static ExtraFactionChanges? OrNull(nint address) => address != 0 ? new ExtraFactionChanges(address) : null;
 
@@ -30816,6 +31504,8 @@ public readonly partial struct ExtraFavorCost : IBSExtraData, IEquatable<ExtraFa
 
     nint IAddressable.Address => Address;
 
+    internal static ExtraFavorCost FromAddress(nint address) => new ExtraFavorCost(address);
+
     internal static ExtraFavorCost? OrNull(nint address) => address != 0 ? new ExtraFavorCost(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -30854,6 +31544,8 @@ public readonly partial struct ExtraFlags : IBSExtraData, IEquatable<ExtraFlags>
     public ExtraFlags() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ExtraFlags FromAddress(nint address) => new ExtraFlags(address);
 
     internal static ExtraFlags? OrNull(nint address) => address != 0 ? new ExtraFlags(address) : null;
 
@@ -30906,6 +31598,8 @@ public readonly partial struct ExtraFollower : IBSExtraData, IEquatable<ExtraFol
     public ExtraFollower() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ExtraFollower FromAddress(nint address) => new ExtraFollower(address);
 
     internal static ExtraFollower? OrNull(nint address) => address != 0 ? new ExtraFollower(address) : null;
 
@@ -31019,6 +31713,8 @@ public readonly partial struct ExtraFollowerSwimBreadcrumbs : IBSExtraData, IEqu
 
     nint IAddressable.Address => Address;
 
+    internal static ExtraFollowerSwimBreadcrumbs FromAddress(nint address) => new ExtraFollowerSwimBreadcrumbs(address);
+
     internal static ExtraFollowerSwimBreadcrumbs? OrNull(nint address) => address != 0 ? new ExtraFollowerSwimBreadcrumbs(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -31057,6 +31753,8 @@ public readonly partial struct ExtraForcedLandingMarker : IBSExtraData, IEquatab
     public ExtraForcedLandingMarker() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ExtraForcedLandingMarker FromAddress(nint address) => new ExtraForcedLandingMarker(address);
 
     internal static ExtraForcedLandingMarker? OrNull(nint address) => address != 0 ? new ExtraForcedLandingMarker(address) : null;
 
@@ -31097,6 +31795,8 @@ public readonly partial struct ExtraForcedTarget : IBSExtraData, IEquatable<Extr
 
     nint IAddressable.Address => Address;
 
+    internal static ExtraForcedTarget FromAddress(nint address) => new ExtraForcedTarget(address);
+
     internal static ExtraForcedTarget? OrNull(nint address) => address != 0 ? new ExtraForcedTarget(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -31135,6 +31835,8 @@ public readonly partial struct ExtraFriendHits : IBSExtraData, IEquatable<ExtraF
     public ExtraFriendHits() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ExtraFriendHits FromAddress(nint address) => new ExtraFriendHits(address);
 
     internal static ExtraFriendHits? OrNull(nint address) => address != 0 ? new ExtraFriendHits(address) : null;
 
@@ -31175,6 +31877,8 @@ public readonly partial struct ExtraFromAlias : IBSExtraData, IEquatable<ExtraFr
 
     nint IAddressable.Address => Address;
 
+    internal static ExtraFromAlias FromAddress(nint address) => new ExtraFromAlias(address);
+
     internal static ExtraFromAlias? OrNull(nint address) => address != 0 ? new ExtraFromAlias(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -31213,6 +31917,8 @@ public readonly partial struct ExtraGIDBuffer : IBSExtraData, IEquatable<ExtraGI
     public ExtraGIDBuffer() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ExtraGIDBuffer FromAddress(nint address) => new ExtraGIDBuffer(address);
 
     internal static ExtraGIDBuffer? OrNull(nint address) => address != 0 ? new ExtraGIDBuffer(address) : null;
 
@@ -31253,6 +31959,8 @@ public readonly partial struct ExtraGhost : IBSExtraData, IEquatable<ExtraGhost>
 
     nint IAddressable.Address => Address;
 
+    internal static ExtraGhost FromAddress(nint address) => new ExtraGhost(address);
+
     internal static ExtraGhost? OrNull(nint address) => address != 0 ? new ExtraGhost(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -31291,6 +31999,8 @@ public readonly partial struct ExtraGlobal : IBSExtraData, IEquatable<ExtraGloba
     public ExtraGlobal() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ExtraGlobal FromAddress(nint address) => new ExtraGlobal(address);
 
     internal static ExtraGlobal? OrNull(nint address) => address != 0 ? new ExtraGlobal(address) : null;
 
@@ -31331,6 +32041,8 @@ public readonly partial struct ExtraGroupConstraint : IBSExtraData, IEquatable<E
 
     nint IAddressable.Address => Address;
 
+    internal static ExtraGroupConstraint FromAddress(nint address) => new ExtraGroupConstraint(address);
+
     internal static ExtraGroupConstraint? OrNull(nint address) => address != 0 ? new ExtraGroupConstraint(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -31369,6 +32081,8 @@ public readonly partial struct ExtraGuardedRefData : IBSExtraData, IEquatable<Ex
     public ExtraGuardedRefData() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ExtraGuardedRefData FromAddress(nint address) => new ExtraGuardedRefData(address);
 
     internal static ExtraGuardedRefData? OrNull(nint address) => address != 0 ? new ExtraGuardedRefData(address) : null;
 
@@ -31446,6 +32160,8 @@ public readonly partial struct ExtraHasNoRumors : IBSExtraData, IEquatable<Extra
 
     nint IAddressable.Address => Address;
 
+    internal static ExtraHasNoRumors FromAddress(nint address) => new ExtraHasNoRumors(address);
+
     internal static ExtraHasNoRumors? OrNull(nint address) => address != 0 ? new ExtraHasNoRumors(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -31484,6 +32200,8 @@ public readonly partial struct ExtraHavok : IBSExtraData, IEquatable<ExtraHavok>
     public ExtraHavok() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ExtraHavok FromAddress(nint address) => new ExtraHavok(address);
 
     internal static ExtraHavok? OrNull(nint address) => address != 0 ? new ExtraHavok(address) : null;
 
@@ -31524,6 +32242,8 @@ public readonly partial struct ExtraHeadTrackingWeight : IBSExtraData, IEquatabl
 
     nint IAddressable.Address => Address;
 
+    internal static ExtraHeadTrackingWeight FromAddress(nint address) => new ExtraHeadTrackingWeight(address);
+
     internal static ExtraHeadTrackingWeight? OrNull(nint address) => address != 0 ? new ExtraHeadTrackingWeight(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -31562,6 +32282,8 @@ public readonly partial struct ExtraHeadingTarget : IBSExtraData, IEquatable<Ext
     public ExtraHeadingTarget() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ExtraHeadingTarget FromAddress(nint address) => new ExtraHeadingTarget(address);
 
     internal static ExtraHeadingTarget? OrNull(nint address) => address != 0 ? new ExtraHeadingTarget(address) : null;
 
@@ -31602,6 +32324,8 @@ public readonly partial struct ExtraHealth : IBSExtraData, IEquatable<ExtraHealt
 
     nint IAddressable.Address => Address;
 
+    internal static ExtraHealth FromAddress(nint address) => new ExtraHealth(address);
+
     internal static ExtraHealth? OrNull(nint address) => address != 0 ? new ExtraHealth(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -31640,6 +32364,8 @@ public readonly partial struct ExtraHealthPerc : IBSExtraData, IEquatable<ExtraH
     public ExtraHealthPerc() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ExtraHealthPerc FromAddress(nint address) => new ExtraHealthPerc(address);
 
     internal static ExtraHealthPerc? OrNull(nint address) => address != 0 ? new ExtraHealthPerc(address) : null;
 
@@ -31680,6 +32406,8 @@ public readonly partial struct ExtraHorse : IBSExtraData, IEquatable<ExtraHorse>
 
     nint IAddressable.Address => Address;
 
+    internal static ExtraHorse FromAddress(nint address) => new ExtraHorse(address);
+
     internal static ExtraHorse? OrNull(nint address) => address != 0 ? new ExtraHorse(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -31718,6 +32446,8 @@ public readonly partial struct ExtraHotkey : IBSExtraData, IEquatable<ExtraHotke
     public ExtraHotkey() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ExtraHotkey FromAddress(nint address) => new ExtraHotkey(address);
 
     internal static ExtraHotkey? OrNull(nint address) => address != 0 ? new ExtraHotkey(address) : null;
 
@@ -31773,6 +32503,8 @@ public readonly partial struct ExtraIgnoredBySandbox : IBSExtraData, IEquatable<
 
     nint IAddressable.Address => Address;
 
+    internal static ExtraIgnoredBySandbox FromAddress(nint address) => new ExtraIgnoredBySandbox(address);
+
     internal static ExtraIgnoredBySandbox? OrNull(nint address) => address != 0 ? new ExtraIgnoredBySandbox(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -31811,6 +32543,8 @@ public readonly partial struct ExtraInfoGeneralTopic : IBSExtraData, IEquatable<
     public ExtraInfoGeneralTopic() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ExtraInfoGeneralTopic FromAddress(nint address) => new ExtraInfoGeneralTopic(address);
 
     internal static ExtraInfoGeneralTopic? OrNull(nint address) => address != 0 ? new ExtraInfoGeneralTopic(address) : null;
 
@@ -31888,6 +32622,8 @@ public readonly partial struct ExtraInteraction : IBSExtraData, IEquatable<Extra
 
     nint IAddressable.Address => Address;
 
+    internal static ExtraInteraction FromAddress(nint address) => new ExtraInteraction(address);
+
     internal static ExtraInteraction? OrNull(nint address) => address != 0 ? new ExtraInteraction(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -31926,6 +32662,8 @@ public readonly partial struct ExtraItemDropper : IBSExtraData, IEquatable<Extra
     public ExtraItemDropper() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ExtraItemDropper FromAddress(nint address) => new ExtraItemDropper(address);
 
     internal static ExtraItemDropper? OrNull(nint address) => address != 0 ? new ExtraItemDropper(address) : null;
 
@@ -31966,6 +32704,8 @@ public readonly partial struct ExtraLargeRefOwnerCells : IBSExtraData, IEquatabl
 
     nint IAddressable.Address => Address;
 
+    internal static ExtraLargeRefOwnerCells FromAddress(nint address) => new ExtraLargeRefOwnerCells(address);
+
     internal static ExtraLargeRefOwnerCells? OrNull(nint address) => address != 0 ? new ExtraLargeRefOwnerCells(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -32004,6 +32744,8 @@ public readonly partial struct ExtraLastFinishedSequence : IBSExtraData, IEquata
     public ExtraLastFinishedSequence() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ExtraLastFinishedSequence FromAddress(nint address) => new ExtraLastFinishedSequence(address);
 
     internal static ExtraLastFinishedSequence? OrNull(nint address) => address != 0 ? new ExtraLastFinishedSequence(address) : null;
 
@@ -32044,6 +32786,8 @@ public readonly partial struct ExtraLevCreaModifier : IBSExtraData, IEquatable<E
 
     nint IAddressable.Address => Address;
 
+    internal static ExtraLevCreaModifier FromAddress(nint address) => new ExtraLevCreaModifier(address);
+
     internal static ExtraLevCreaModifier? OrNull(nint address) => address != 0 ? new ExtraLevCreaModifier(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -32082,6 +32826,8 @@ public readonly partial struct ExtraLeveledCreature : IBSExtraData, IEquatable<E
     public ExtraLeveledCreature() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ExtraLeveledCreature FromAddress(nint address) => new ExtraLeveledCreature(address);
 
     internal static ExtraLeveledCreature? OrNull(nint address) => address != 0 ? new ExtraLeveledCreature(address) : null;
 
@@ -32122,6 +32868,8 @@ public readonly partial struct ExtraLeveledItem : IBSExtraData, IEquatable<Extra
 
     nint IAddressable.Address => Address;
 
+    internal static ExtraLeveledItem FromAddress(nint address) => new ExtraLeveledItem(address);
+
     internal static ExtraLeveledItem? OrNull(nint address) => address != 0 ? new ExtraLeveledItem(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -32160,6 +32908,8 @@ public readonly partial struct ExtraLeveledItemBase : IBSExtraData, IEquatable<E
     public ExtraLeveledItemBase() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ExtraLeveledItemBase FromAddress(nint address) => new ExtraLeveledItemBase(address);
 
     internal static ExtraLeveledItemBase? OrNull(nint address) => address != 0 ? new ExtraLeveledItemBase(address) : null;
 
@@ -32241,6 +32991,8 @@ public readonly partial struct ExtraLightData : IBSExtraData, IEquatable<ExtraLi
 
     nint IAddressable.Address => Address;
 
+    internal static ExtraLightData FromAddress(nint address) => new ExtraLightData(address);
+
     internal static ExtraLightData? OrNull(nint address) => address != 0 ? new ExtraLightData(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -32315,6 +33067,8 @@ public readonly partial struct ExtraLinkedRef : IBSExtraData, IEquatable<ExtraLi
     public ExtraLinkedRef() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ExtraLinkedRef FromAddress(nint address) => new ExtraLinkedRef(address);
 
     internal static ExtraLinkedRef? OrNull(nint address) => address != 0 ? new ExtraLinkedRef(address) : null;
 
@@ -32391,6 +33145,8 @@ public readonly partial struct ExtraLinkedRefChildren : IBSExtraData, IEquatable
     public ExtraLinkedRefChildren() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ExtraLinkedRefChildren FromAddress(nint address) => new ExtraLinkedRefChildren(address);
 
     internal static ExtraLinkedRefChildren? OrNull(nint address) => address != 0 ? new ExtraLinkedRefChildren(address) : null;
 
@@ -32470,6 +33226,8 @@ public readonly partial struct ExtraLitWaterRefs : IBSExtraData, IEquatable<Extr
 
     nint IAddressable.Address => Address;
 
+    internal static ExtraLitWaterRefs FromAddress(nint address) => new ExtraLitWaterRefs(address);
+
     internal static ExtraLitWaterRefs? OrNull(nint address) => address != 0 ? new ExtraLitWaterRefs(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -32508,6 +33266,8 @@ public readonly partial struct ExtraLocation : IBSExtraData, IEquatable<ExtraLoc
     public ExtraLocation() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ExtraLocation FromAddress(nint address) => new ExtraLocation(address);
 
     internal static ExtraLocation? OrNull(nint address) => address != 0 ? new ExtraLocation(address) : null;
 
@@ -32548,6 +33308,8 @@ public readonly partial struct ExtraLocationRefType : IBSExtraData, IEquatable<E
 
     nint IAddressable.Address => Address;
 
+    internal static ExtraLocationRefType FromAddress(nint address) => new ExtraLocationRefType(address);
+
     internal static ExtraLocationRefType? OrNull(nint address) => address != 0 ? new ExtraLocationRefType(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -32587,6 +33349,8 @@ public readonly partial struct ExtraLock : IBSExtraData, IEquatable<ExtraLock>
 
     nint IAddressable.Address => Address;
 
+    internal static ExtraLock FromAddress(nint address) => new ExtraLock(address);
+
     internal static ExtraLock? OrNull(nint address) => address != 0 ? new ExtraLock(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -32625,6 +33389,8 @@ public readonly partial struct ExtraLockList : IBSExtraData, IEquatable<ExtraLoc
     public ExtraLockList() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ExtraLockList FromAddress(nint address) => new ExtraLockList(address);
 
     internal static ExtraLockList? OrNull(nint address) => address != 0 ? new ExtraLockList(address) : null;
 
@@ -32706,6 +33472,8 @@ public readonly partial struct ExtraMagicLight : IExtraLight, IEquatable<ExtraMa
 
     nint IAddressable.Address => Address;
 
+    internal static ExtraMagicLight FromAddress(nint address) => new ExtraMagicLight(address);
+
     internal static ExtraMagicLight? OrNull(nint address) => address != 0 ? new ExtraMagicLight(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -32748,6 +33516,8 @@ public readonly partial struct ExtraMapMarker : IBSExtraData, IEquatable<ExtraMa
 
     nint IAddressable.Address => Address;
 
+    internal static ExtraMapMarker FromAddress(nint address) => new ExtraMapMarker(address);
+
     internal static ExtraMapMarker? OrNull(nint address) => address != 0 ? new ExtraMapMarker(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -32786,6 +33556,8 @@ public readonly partial struct ExtraMissingLinkedRefIDs : IBSExtraData, IEquatab
     public ExtraMissingLinkedRefIDs() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ExtraMissingLinkedRefIDs FromAddress(nint address) => new ExtraMissingLinkedRefIDs(address);
 
     internal static ExtraMissingLinkedRefIDs? OrNull(nint address) => address != 0 ? new ExtraMissingLinkedRefIDs(address) : null;
 
@@ -32939,6 +33711,8 @@ public readonly partial struct ExtraMissingRefIDs : IBSExtraData, IEquatable<Ext
 
     nint IAddressable.Address => Address;
 
+    internal static ExtraMissingRefIDs FromAddress(nint address) => new ExtraMissingRefIDs(address);
+
     internal static ExtraMissingRefIDs? OrNull(nint address) => address != 0 ? new ExtraMissingRefIDs(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -32977,6 +33751,8 @@ public readonly partial struct ExtraModelSwap : IBSExtraData, IEquatable<ExtraMo
     public ExtraModelSwap() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ExtraModelSwap FromAddress(nint address) => new ExtraModelSwap(address);
 
     internal static ExtraModelSwap? OrNull(nint address) => address != 0 ? new ExtraModelSwap(address) : null;
 
@@ -33017,6 +33793,8 @@ public readonly partial struct ExtraMultiBound : IBSExtraData, IEquatable<ExtraM
 
     nint IAddressable.Address => Address;
 
+    internal static ExtraMultiBound FromAddress(nint address) => new ExtraMultiBound(address);
+
     internal static ExtraMultiBound? OrNull(nint address) => address != 0 ? new ExtraMultiBound(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -33055,6 +33833,8 @@ public readonly partial struct ExtraMultiBoundRef : IBSExtraData, IEquatable<Ext
     public ExtraMultiBoundRef() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ExtraMultiBoundRef FromAddress(nint address) => new ExtraMultiBoundRef(address);
 
     internal static ExtraMultiBoundRef? OrNull(nint address) => address != 0 ? new ExtraMultiBoundRef(address) : null;
 
@@ -33095,6 +33875,8 @@ public readonly partial struct ExtraNavMeshPortal : IBSExtraData, IEquatable<Ext
 
     nint IAddressable.Address => Address;
 
+    internal static ExtraNavMeshPortal FromAddress(nint address) => new ExtraNavMeshPortal(address);
+
     internal static ExtraNavMeshPortal? OrNull(nint address) => address != 0 ? new ExtraNavMeshPortal(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -33133,6 +33915,8 @@ public readonly partial struct ExtraNorthRotation : IBSExtraData, IEquatable<Ext
     public ExtraNorthRotation() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ExtraNorthRotation FromAddress(nint address) => new ExtraNorthRotation(address);
 
     internal static ExtraNorthRotation? OrNull(nint address) => address != 0 ? new ExtraNorthRotation(address) : null;
 
@@ -33173,6 +33957,8 @@ public readonly partial struct ExtraObjectHealth : IBSExtraData, IEquatable<Extr
 
     nint IAddressable.Address => Address;
 
+    internal static ExtraObjectHealth FromAddress(nint address) => new ExtraObjectHealth(address);
+
     internal static ExtraObjectHealth? OrNull(nint address) => address != 0 ? new ExtraObjectHealth(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -33211,6 +33997,8 @@ public readonly partial struct ExtraOcclusionPlaneRefData : IBSExtraData, IEquat
     public ExtraOcclusionPlaneRefData() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ExtraOcclusionPlaneRefData FromAddress(nint address) => new ExtraOcclusionPlaneRefData(address);
 
     internal static ExtraOcclusionPlaneRefData? OrNull(nint address) => address != 0 ? new ExtraOcclusionPlaneRefData(address) : null;
 
@@ -33251,6 +34039,8 @@ public readonly partial struct ExtraOcclusionShape : IBSExtraData, IEquatable<Ex
 
     nint IAddressable.Address => Address;
 
+    internal static ExtraOcclusionShape FromAddress(nint address) => new ExtraOcclusionShape(address);
+
     internal static ExtraOcclusionShape? OrNull(nint address) => address != 0 ? new ExtraOcclusionShape(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -33289,6 +34079,8 @@ public readonly partial struct ExtraOpenCloseActivateRef : IBSExtraData, IEquata
     public ExtraOpenCloseActivateRef() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ExtraOpenCloseActivateRef FromAddress(nint address) => new ExtraOpenCloseActivateRef(address);
 
     internal static ExtraOpenCloseActivateRef? OrNull(nint address) => address != 0 ? new ExtraOpenCloseActivateRef(address) : null;
 
@@ -33329,6 +34121,8 @@ public readonly partial struct ExtraOriginalReference : IBSExtraData, IEquatable
 
     nint IAddressable.Address => Address;
 
+    internal static ExtraOriginalReference FromAddress(nint address) => new ExtraOriginalReference(address);
+
     internal static ExtraOriginalReference? OrNull(nint address) => address != 0 ? new ExtraOriginalReference(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -33367,6 +34161,8 @@ public readonly partial struct ExtraOutfitItem : IBSExtraData, IEquatable<ExtraO
     public ExtraOutfitItem() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ExtraOutfitItem FromAddress(nint address) => new ExtraOutfitItem(address);
 
     internal static ExtraOutfitItem? OrNull(nint address) => address != 0 ? new ExtraOutfitItem(address) : null;
 
@@ -33407,6 +34203,8 @@ public readonly partial struct ExtraOwnership : IBSExtraData, IEquatable<ExtraOw
 
     nint IAddressable.Address => Address;
 
+    internal static ExtraOwnership FromAddress(nint address) => new ExtraOwnership(address);
+
     internal static ExtraOwnership? OrNull(nint address) => address != 0 ? new ExtraOwnership(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -33445,6 +34243,8 @@ public readonly partial struct ExtraPackage : IBSExtraData, IEquatable<ExtraPack
     public ExtraPackage() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ExtraPackage FromAddress(nint address) => new ExtraPackage(address);
 
     internal static ExtraPackage? OrNull(nint address) => address != 0 ? new ExtraPackage(address) : null;
 
@@ -33485,6 +34285,8 @@ public readonly partial struct ExtraPackageData : IBSExtraData, IEquatable<Extra
 
     nint IAddressable.Address => Address;
 
+    internal static ExtraPackageData FromAddress(nint address) => new ExtraPackageData(address);
+
     internal static ExtraPackageData? OrNull(nint address) => address != 0 ? new ExtraPackageData(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -33523,6 +34325,8 @@ public readonly partial struct ExtraPackageStartLocation : IBSExtraData, IEquata
     public ExtraPackageStartLocation() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ExtraPackageStartLocation FromAddress(nint address) => new ExtraPackageStartLocation(address);
 
     internal static ExtraPackageStartLocation? OrNull(nint address) => address != 0 ? new ExtraPackageStartLocation(address) : null;
 
@@ -33563,6 +34367,8 @@ public readonly partial struct ExtraPatrolRefData : IBSExtraData, IEquatable<Ext
 
     nint IAddressable.Address => Address;
 
+    internal static ExtraPatrolRefData FromAddress(nint address) => new ExtraPatrolRefData(address);
+
     internal static ExtraPatrolRefData? OrNull(nint address) => address != 0 ? new ExtraPatrolRefData(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -33601,6 +34407,8 @@ public readonly partial struct ExtraPatrolRefInUseData : IBSExtraData, IEquatabl
     public ExtraPatrolRefInUseData() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ExtraPatrolRefInUseData FromAddress(nint address) => new ExtraPatrolRefInUseData(address);
 
     internal static ExtraPatrolRefInUseData? OrNull(nint address) => address != 0 ? new ExtraPatrolRefInUseData(address) : null;
 
@@ -33641,6 +34449,8 @@ public readonly partial struct ExtraPersistentCell : IBSExtraData, IEquatable<Ex
 
     nint IAddressable.Address => Address;
 
+    internal static ExtraPersistentCell FromAddress(nint address) => new ExtraPersistentCell(address);
+
     internal static ExtraPersistentCell? OrNull(nint address) => address != 0 ? new ExtraPersistentCell(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -33679,6 +34489,8 @@ public readonly partial struct ExtraPlayerCrimeList : IBSExtraData, IEquatable<E
     public ExtraPlayerCrimeList() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ExtraPlayerCrimeList FromAddress(nint address) => new ExtraPlayerCrimeList(address);
 
     internal static ExtraPlayerCrimeList? OrNull(nint address) => address != 0 ? new ExtraPlayerCrimeList(address) : null;
 
@@ -33719,6 +34531,8 @@ public readonly partial struct ExtraPoison : IBSExtraData, IEquatable<ExtraPoiso
 
     nint IAddressable.Address => Address;
 
+    internal static ExtraPoison FromAddress(nint address) => new ExtraPoison(address);
+
     internal static ExtraPoison? OrNull(nint address) => address != 0 ? new ExtraPoison(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -33757,6 +34571,8 @@ public readonly partial struct ExtraPortal : IBSExtraData, IEquatable<ExtraPorta
     public ExtraPortal() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ExtraPortal FromAddress(nint address) => new ExtraPortal(address);
 
     internal static ExtraPortal? OrNull(nint address) => address != 0 ? new ExtraPortal(address) : null;
 
@@ -33797,6 +34613,8 @@ public readonly partial struct ExtraPortalRefData : IBSExtraData, IEquatable<Ext
 
     nint IAddressable.Address => Address;
 
+    internal static ExtraPortalRefData FromAddress(nint address) => new ExtraPortalRefData(address);
+
     internal static ExtraPortalRefData? OrNull(nint address) => address != 0 ? new ExtraPortalRefData(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -33835,6 +34653,8 @@ public readonly partial struct ExtraPrimitive : IBSExtraData, IEquatable<ExtraPr
     public ExtraPrimitive() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ExtraPrimitive FromAddress(nint address) => new ExtraPrimitive(address);
 
     internal static ExtraPrimitive? OrNull(nint address) => address != 0 ? new ExtraPrimitive(address) : null;
 
@@ -33875,6 +34695,8 @@ public readonly partial struct ExtraProcessMiddleLow : IBSExtraData, IEquatable<
 
     nint IAddressable.Address => Address;
 
+    internal static ExtraProcessMiddleLow FromAddress(nint address) => new ExtraProcessMiddleLow(address);
+
     internal static ExtraProcessMiddleLow? OrNull(nint address) => address != 0 ? new ExtraProcessMiddleLow(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -33913,6 +34735,8 @@ public readonly partial struct ExtraPromotedRef : IBSExtraData, IEquatable<Extra
     public ExtraPromotedRef() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ExtraPromotedRef FromAddress(nint address) => new ExtraPromotedRef(address);
 
     internal static ExtraPromotedRef? OrNull(nint address) => address != 0 ? new ExtraPromotedRef(address) : null;
 
@@ -33953,6 +34777,8 @@ public readonly partial struct ExtraRaceData : IBSExtraData, IEquatable<ExtraRac
 
     nint IAddressable.Address => Address;
 
+    internal static ExtraRaceData FromAddress(nint address) => new ExtraRaceData(address);
+
     internal static ExtraRaceData? OrNull(nint address) => address != 0 ? new ExtraRaceData(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -33991,6 +34817,8 @@ public readonly partial struct ExtraRadius : IBSExtraData, IEquatable<ExtraRadiu
     public ExtraRadius() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ExtraRadius FromAddress(nint address) => new ExtraRadius(address);
 
     internal static ExtraRadius? OrNull(nint address) => address != 0 ? new ExtraRadius(address) : null;
 
@@ -34031,6 +34859,8 @@ public readonly partial struct ExtraRagDollData : IBSExtraData, IEquatable<Extra
 
     nint IAddressable.Address => Address;
 
+    internal static ExtraRagDollData FromAddress(nint address) => new ExtraRagDollData(address);
+
     internal static ExtraRagDollData? OrNull(nint address) => address != 0 ? new ExtraRagDollData(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -34069,6 +34899,8 @@ public readonly partial struct ExtraRandomTeleportMarker : IBSExtraData, IEquata
     public ExtraRandomTeleportMarker() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ExtraRandomTeleportMarker FromAddress(nint address) => new ExtraRandomTeleportMarker(address);
 
     internal static ExtraRandomTeleportMarker? OrNull(nint address) => address != 0 ? new ExtraRandomTeleportMarker(address) : null;
 
@@ -34109,6 +34941,8 @@ public readonly partial struct ExtraRank : IBSExtraData, IEquatable<ExtraRank>
 
     nint IAddressable.Address => Address;
 
+    internal static ExtraRank FromAddress(nint address) => new ExtraRank(address);
+
     internal static ExtraRank? OrNull(nint address) => address != 0 ? new ExtraRank(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -34147,6 +34981,8 @@ public readonly partial struct ExtraReferenceHandle : IBSExtraData, IEquatable<E
     public ExtraReferenceHandle() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ExtraReferenceHandle FromAddress(nint address) => new ExtraReferenceHandle(address);
 
     internal static ExtraReferenceHandle? OrNull(nint address) => address != 0 ? new ExtraReferenceHandle(address) : null;
 
@@ -34187,6 +35023,8 @@ public readonly partial struct ExtraReflectedRefs : IBSExtraData, IEquatable<Ext
 
     nint IAddressable.Address => Address;
 
+    internal static ExtraReflectedRefs FromAddress(nint address) => new ExtraReflectedRefs(address);
+
     internal static ExtraReflectedRefs? OrNull(nint address) => address != 0 ? new ExtraReflectedRefs(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -34225,6 +35063,8 @@ public readonly partial struct ExtraReflectorRefs : IBSExtraData, IEquatable<Ext
     public ExtraReflectorRefs() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ExtraReflectorRefs FromAddress(nint address) => new ExtraReflectorRefs(address);
 
     internal static ExtraReflectorRefs? OrNull(nint address) => address != 0 ? new ExtraReflectorRefs(address) : null;
 
@@ -34265,6 +35105,8 @@ public readonly partial struct ExtraRefrPath : IBSExtraData, IEquatable<ExtraRef
 
     nint IAddressable.Address => Address;
 
+    internal static ExtraRefrPath FromAddress(nint address) => new ExtraRefrPath(address);
+
     internal static ExtraRefrPath? OrNull(nint address) => address != 0 ? new ExtraRefrPath(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -34303,6 +35145,8 @@ public readonly partial struct ExtraRefractionProperty : IBSExtraData, IEquatabl
     public ExtraRefractionProperty() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ExtraRefractionProperty FromAddress(nint address) => new ExtraRefractionProperty(address);
 
     internal static ExtraRefractionProperty? OrNull(nint address) => address != 0 ? new ExtraRefractionProperty(address) : null;
 
@@ -34343,6 +35187,8 @@ public readonly partial struct ExtraRegionList : IBSExtraData, IEquatable<ExtraR
 
     nint IAddressable.Address => Address;
 
+    internal static ExtraRegionList FromAddress(nint address) => new ExtraRegionList(address);
+
     internal static ExtraRegionList? OrNull(nint address) => address != 0 ? new ExtraRegionList(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -34381,6 +35227,8 @@ public readonly partial struct ExtraReservedMarkers : IBSExtraData, IEquatable<E
     public ExtraReservedMarkers() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ExtraReservedMarkers FromAddress(nint address) => new ExtraReservedMarkers(address);
 
     internal static ExtraReservedMarkers? OrNull(nint address) => address != 0 ? new ExtraReservedMarkers(address) : null;
 
@@ -34421,6 +35269,8 @@ public readonly partial struct ExtraResourcesPreload : IBSExtraData, IEquatable<
 
     nint IAddressable.Address => Address;
 
+    internal static ExtraResourcesPreload FromAddress(nint address) => new ExtraResourcesPreload(address);
+
     internal static ExtraResourcesPreload? OrNull(nint address) => address != 0 ? new ExtraResourcesPreload(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -34459,6 +35309,8 @@ public readonly partial struct ExtraRoom : IBSExtraData, IEquatable<ExtraRoom>
     public ExtraRoom() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ExtraRoom FromAddress(nint address) => new ExtraRoom(address);
 
     internal static ExtraRoom? OrNull(nint address) => address != 0 ? new ExtraRoom(address) : null;
 
@@ -34499,6 +35351,8 @@ public readonly partial struct ExtraRoomRefData : IBSExtraData, IEquatable<Extra
 
     nint IAddressable.Address => Address;
 
+    internal static ExtraRoomRefData FromAddress(nint address) => new ExtraRoomRefData(address);
+
     internal static ExtraRoomRefData? OrNull(nint address) => address != 0 ? new ExtraRoomRefData(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -34537,6 +35391,8 @@ public readonly partial struct ExtraRunOncePacks : IBSExtraData, IEquatable<Extr
     public ExtraRunOncePacks() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ExtraRunOncePacks FromAddress(nint address) => new ExtraRunOncePacks(address);
 
     internal static ExtraRunOncePacks? OrNull(nint address) => address != 0 ? new ExtraRunOncePacks(address) : null;
 
@@ -34577,6 +35433,8 @@ public readonly partial struct ExtraSavedAnimation : IBSExtraData, IEquatable<Ex
 
     nint IAddressable.Address => Address;
 
+    internal static ExtraSavedAnimation FromAddress(nint address) => new ExtraSavedAnimation(address);
+
     internal static ExtraSavedAnimation? OrNull(nint address) => address != 0 ? new ExtraSavedAnimation(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -34615,6 +35473,8 @@ public readonly partial struct ExtraSavedHavokData : IBSExtraData, IEquatable<Ex
     public ExtraSavedHavokData() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ExtraSavedHavokData FromAddress(nint address) => new ExtraSavedHavokData(address);
 
     internal static ExtraSavedHavokData? OrNull(nint address) => address != 0 ? new ExtraSavedHavokData(address) : null;
 
@@ -34655,6 +35515,8 @@ public readonly partial struct ExtraSayToTopicInfo : IBSExtraData, IEquatable<Ex
 
     nint IAddressable.Address => Address;
 
+    internal static ExtraSayToTopicInfo FromAddress(nint address) => new ExtraSayToTopicInfo(address);
+
     internal static ExtraSayToTopicInfo? OrNull(nint address) => address != 0 ? new ExtraSayToTopicInfo(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -34693,6 +35555,8 @@ public readonly partial struct ExtraSayTopicInfoOnceADay : IBSExtraData, IEquata
     public ExtraSayTopicInfoOnceADay() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ExtraSayTopicInfoOnceADay FromAddress(nint address) => new ExtraSayTopicInfoOnceADay(address);
 
     internal static ExtraSayTopicInfoOnceADay? OrNull(nint address) => address != 0 ? new ExtraSayTopicInfoOnceADay(address) : null;
 
@@ -34733,6 +35597,8 @@ public readonly partial struct ExtraScale : IBSExtraData, IEquatable<ExtraScale>
 
     nint IAddressable.Address => Address;
 
+    internal static ExtraScale FromAddress(nint address) => new ExtraScale(address);
+
     internal static ExtraScale? OrNull(nint address) => address != 0 ? new ExtraScale(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -34771,6 +35637,8 @@ public readonly partial struct ExtraSceneData : IBSExtraData, IEquatable<ExtraSc
     public ExtraSceneData() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ExtraSceneData FromAddress(nint address) => new ExtraSceneData(address);
 
     internal static ExtraSceneData? OrNull(nint address) => address != 0 ? new ExtraSceneData(address) : null;
 
@@ -34811,6 +35679,8 @@ public readonly partial struct ExtraScriptedAnimDependence : IBSExtraData, IEqua
 
     nint IAddressable.Address => Address;
 
+    internal static ExtraScriptedAnimDependence FromAddress(nint address) => new ExtraScriptedAnimDependence(address);
+
     internal static ExtraScriptedAnimDependence? OrNull(nint address) => address != 0 ? new ExtraScriptedAnimDependence(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -34849,6 +35719,8 @@ public readonly partial struct ExtraSeenData : IBSExtraData, IEquatable<ExtraSee
     public ExtraSeenData() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ExtraSeenData FromAddress(nint address) => new ExtraSeenData(address);
 
     internal static ExtraSeenData? OrNull(nint address) => address != 0 ? new ExtraSeenData(address) : null;
 
@@ -34889,6 +35761,8 @@ public readonly partial struct ExtraShouldWear : IBSExtraData, IEquatable<ExtraS
 
     nint IAddressable.Address => Address;
 
+    internal static ExtraShouldWear FromAddress(nint address) => new ExtraShouldWear(address);
+
     internal static ExtraShouldWear? OrNull(nint address) => address != 0 ? new ExtraShouldWear(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -34927,6 +35801,8 @@ public readonly partial struct ExtraSoul : IBSExtraData, IEquatable<ExtraSoul>
     public ExtraSoul() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ExtraSoul FromAddress(nint address) => new ExtraSoul(address);
 
     internal static ExtraSoul? OrNull(nint address) => address != 0 ? new ExtraSoul(address) : null;
 
@@ -34967,6 +35843,8 @@ public readonly partial struct ExtraSound : IBSExtraData, IEquatable<ExtraSound>
 
     nint IAddressable.Address => Address;
 
+    internal static ExtraSound FromAddress(nint address) => new ExtraSound(address);
+
     internal static ExtraSound? OrNull(nint address) => address != 0 ? new ExtraSound(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -35005,6 +35883,8 @@ public readonly partial struct ExtraSpawnContainer : IBSExtraData, IEquatable<Ex
     public ExtraSpawnContainer() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ExtraSpawnContainer FromAddress(nint address) => new ExtraSpawnContainer(address);
 
     internal static ExtraSpawnContainer? OrNull(nint address) => address != 0 ? new ExtraSpawnContainer(address) : null;
 
@@ -35045,6 +35925,8 @@ public readonly partial struct ExtraStartingPosition : IBSExtraData, IEquatable<
 
     nint IAddressable.Address => Address;
 
+    internal static ExtraStartingPosition FromAddress(nint address) => new ExtraStartingPosition(address);
+
     internal static ExtraStartingPosition? OrNull(nint address) => address != 0 ? new ExtraStartingPosition(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -35083,6 +35965,8 @@ public readonly partial struct ExtraStartingWorldOrCell : IBSExtraData, IEquatab
     public ExtraStartingWorldOrCell() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ExtraStartingWorldOrCell FromAddress(nint address) => new ExtraStartingWorldOrCell(address);
 
     internal static ExtraStartingWorldOrCell? OrNull(nint address) => address != 0 ? new ExtraStartingWorldOrCell(address) : null;
 
@@ -35123,6 +36007,8 @@ public readonly partial struct ExtraTeleport : IBSExtraData, IEquatable<ExtraTel
 
     nint IAddressable.Address => Address;
 
+    internal static ExtraTeleport FromAddress(nint address) => new ExtraTeleport(address);
+
     internal static ExtraTeleport? OrNull(nint address) => address != 0 ? new ExtraTeleport(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -35161,6 +36047,8 @@ public readonly partial struct ExtraTeleportName : IBSExtraData, IEquatable<Extr
     public ExtraTeleportName() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ExtraTeleportName FromAddress(nint address) => new ExtraTeleportName(address);
 
     internal static ExtraTeleportName? OrNull(nint address) => address != 0 ? new ExtraTeleportName(address) : null;
 
@@ -35201,6 +36089,8 @@ public readonly partial struct ExtraTerminalState : IBSExtraData, IEquatable<Ext
 
     nint IAddressable.Address => Address;
 
+    internal static ExtraTerminalState FromAddress(nint address) => new ExtraTerminalState(address);
+
     internal static ExtraTerminalState? OrNull(nint address) => address != 0 ? new ExtraTerminalState(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -35239,6 +36129,8 @@ public readonly partial struct ExtraTextDisplayData : IBSExtraData, IEquatable<E
     public ExtraTextDisplayData() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ExtraTextDisplayData FromAddress(nint address) => new ExtraTextDisplayData(address);
 
     internal static ExtraTextDisplayData? OrNull(nint address) => address != 0 ? new ExtraTextDisplayData(address) : null;
 
@@ -35287,6 +36179,8 @@ public readonly partial struct ExtraTimeLeft : IBSExtraData, IEquatable<ExtraTim
 
     nint IAddressable.Address => Address;
 
+    internal static ExtraTimeLeft FromAddress(nint address) => new ExtraTimeLeft(address);
+
     internal static ExtraTimeLeft? OrNull(nint address) => address != 0 ? new ExtraTimeLeft(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -35325,6 +36219,8 @@ public readonly partial struct ExtraTresPassPackage : IBSExtraData, IEquatable<E
     public ExtraTresPassPackage() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ExtraTresPassPackage FromAddress(nint address) => new ExtraTresPassPackage(address);
 
     internal static ExtraTresPassPackage? OrNull(nint address) => address != 0 ? new ExtraTresPassPackage(address) : null;
 
@@ -35365,6 +36261,8 @@ public readonly partial struct ExtraUniqueID : IBSExtraData, IEquatable<ExtraUni
 
     nint IAddressable.Address => Address;
 
+    internal static ExtraUniqueID FromAddress(nint address) => new ExtraUniqueID(address);
+
     internal static ExtraUniqueID? OrNull(nint address) => address != 0 ? new ExtraUniqueID(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -35403,6 +36301,8 @@ public readonly partial struct ExtraUsedMarkers : IBSExtraData, IEquatable<Extra
     public ExtraUsedMarkers() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ExtraUsedMarkers FromAddress(nint address) => new ExtraUsedMarkers(address);
 
     internal static ExtraUsedMarkers? OrNull(nint address) => address != 0 ? new ExtraUsedMarkers(address) : null;
 
@@ -35443,6 +36343,8 @@ public readonly partial struct ExtraWaterCurrentZoneData : IBSExtraData, IEquata
 
     nint IAddressable.Address => Address;
 
+    internal static ExtraWaterCurrentZoneData FromAddress(nint address) => new ExtraWaterCurrentZoneData(address);
+
     internal static ExtraWaterCurrentZoneData? OrNull(nint address) => address != 0 ? new ExtraWaterCurrentZoneData(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -35481,6 +36383,8 @@ public readonly partial struct ExtraWaterData : IBSExtraData, IEquatable<ExtraWa
     public ExtraWaterData() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ExtraWaterData FromAddress(nint address) => new ExtraWaterData(address);
 
     internal static ExtraWaterData? OrNull(nint address) => address != 0 ? new ExtraWaterData(address) : null;
 
@@ -35521,6 +36425,8 @@ public readonly partial struct ExtraWaterLightRefs : IBSExtraData, IEquatable<Ex
 
     nint IAddressable.Address => Address;
 
+    internal static ExtraWaterLightRefs FromAddress(nint address) => new ExtraWaterLightRefs(address);
+
     internal static ExtraWaterLightRefs? OrNull(nint address) => address != 0 ? new ExtraWaterLightRefs(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -35559,6 +36465,8 @@ public readonly partial struct ExtraWeaponAttackSound : IBSExtraData, IEquatable
     public ExtraWeaponAttackSound() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ExtraWeaponAttackSound FromAddress(nint address) => new ExtraWeaponAttackSound(address);
 
     internal static ExtraWeaponAttackSound? OrNull(nint address) => address != 0 ? new ExtraWeaponAttackSound(address) : null;
 
@@ -35599,6 +36507,8 @@ public readonly partial struct ExtraWeaponIdleSound : IBSExtraData, IEquatable<E
 
     nint IAddressable.Address => Address;
 
+    internal static ExtraWeaponIdleSound FromAddress(nint address) => new ExtraWeaponIdleSound(address);
+
     internal static ExtraWeaponIdleSound? OrNull(nint address) => address != 0 ? new ExtraWeaponIdleSound(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -35638,6 +36548,8 @@ public readonly partial struct ExtraWorn : IBSExtraData, IEquatable<ExtraWorn>
 
     nint IAddressable.Address => Address;
 
+    internal static ExtraWorn FromAddress(nint address) => new ExtraWorn(address);
+
     internal static ExtraWorn? OrNull(nint address) => address != 0 ? new ExtraWorn(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -35676,6 +36588,8 @@ public readonly partial struct ExtraWornLeft : IBSExtraData, IEquatable<ExtraWor
     public ExtraWornLeft() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ExtraWornLeft FromAddress(nint address) => new ExtraWornLeft(address);
 
     internal static ExtraWornLeft? OrNull(nint address) => address != 0 ? new ExtraWornLeft(address) : null;
 
@@ -36011,6 +36925,8 @@ public readonly partial struct FOCollisionListener : IbhkBackfaceContactListener
     public FOCollisionListener() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static FOCollisionListener FromAddress(nint address) => new FOCollisionListener(address);
 
     internal static FOCollisionListener? OrNull(nint address) => address != 0 ? new FOCollisionListener(address) : null;
 
@@ -37059,6 +37975,8 @@ public readonly partial struct Faction : IForm, IEquatable<Faction>
 
     nint IAddressable.Address => Address;
 
+    internal static Faction FromAddress(nint address) => new Faction(address);
+
     internal static Faction? OrNull(nint address) => address != 0 ? new Faction(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -37100,6 +38018,8 @@ public readonly partial struct FaderMenu : IMenu_, IEquatable<FaderMenu>
     public FaderMenu() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static FaderMenu FromAddress(nint address) => new FaderMenu(address);
 
     /// <summary>The name the game registers this menu under, which <see cref="MenuOpenCloseEventArgs.MenuName"/> reports and the UI members that take a menu name accept.</summary>
     public const string MenuName = "Fader Menu";
@@ -37183,6 +38103,8 @@ public readonly partial struct FavoritesHandler : IMenuEventHandler, IEquatable<
 
     nint IAddressable.Address => Address;
 
+    internal static FavoritesHandler FromAddress(nint address) => new FavoritesHandler(address);
+
     internal static FavoritesHandler? OrNull(nint address) => address != 0 ? new FavoritesHandler(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -37224,6 +38146,8 @@ public readonly partial struct FavoritesMenu : IMenu_, IEquatable<FavoritesMenu>
     public FavoritesMenu() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static FavoritesMenu FromAddress(nint address) => new FavoritesMenu(address);
 
     /// <summary>The name the game registers this menu under, which <see cref="MenuOpenCloseEventArgs.MenuName"/> reports and the UI members that take a menu name accept.</summary>
     public const string MenuName = "FavoritesMenu";
@@ -37341,6 +38265,8 @@ public readonly partial struct FixedStrings : IEquatable<FixedStrings>
     [Obsolete("Creates a view with no address. Use GameTarget.FixedStrings, which returns the instance the game creates.", error: true)]
     public FixedStrings() => address = 0;
 
+    internal static FixedStrings FromAddress(nint address) => new FixedStrings(address);
+
     internal static FixedStrings? OrNull(nint address) => address != 0 ? new FixedStrings(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -37376,6 +38302,8 @@ public readonly partial struct FlameProjectile : IProjectile, IEquatable<FlamePr
     public FlameProjectile() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static FlameProjectile FromAddress(nint address) => new FlameProjectile(address);
 
     internal static FlameProjectile? OrNull(nint address) => address != 0 ? new FlameProjectile(address) : null;
 
@@ -37463,6 +38391,8 @@ public readonly partial struct Flora : ITESObjectACTI, IEquatable<Flora>
     public Flora() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static Flora FromAddress(nint address) => new Flora(address);
 
     internal static Flora? OrNull(nint address) => address != 0 ? new Flora(address) : null;
 
@@ -37620,6 +38550,8 @@ public readonly partial struct FormList : IForm, IEquatable<FormList>
     public FormList() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static FormList FromAddress(nint address) => new FormList(address);
 
     internal static FormList? OrNull(nint address) => address != 0 ? new FormList(address) : null;
 
@@ -37807,6 +38739,8 @@ public readonly partial struct FrenzyEffect : ITargetValueModifierEffect, IEquat
 
     nint IAddressable.Address => Address;
 
+    internal static FrenzyEffect FromAddress(nint address) => new FrenzyEffect(address);
+
     internal static FrenzyEffect? OrNull(nint address) => address != 0 ? new FrenzyEffect(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -37887,6 +38821,8 @@ public readonly partial struct Furniture : ITESObjectACTI, IEquatable<Furniture>
     public Furniture() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static Furniture FromAddress(nint address) => new Furniture(address);
 
     internal static Furniture? OrNull(nint address) => address != 0 ? new Furniture(address) : null;
 
@@ -38120,6 +39056,8 @@ public readonly partial struct FxDelegate : IGFxExternalInterface, IEquatable<Fx
 
     nint IAddressable.Address => Address;
 
+    internal static FxDelegate FromAddress(nint address) => new FxDelegate(address);
+
     internal static FxDelegate? OrNull(nint address) => address != 0 ? new FxDelegate(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -38159,6 +39097,8 @@ public readonly partial struct FxDelegateArgs : IEquatable<FxDelegateArgs>
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public FxDelegateArgs() => address = 0;
+
+    internal static FxDelegateArgs FromAddress(nint address) => new FxDelegateArgs(address);
 
     internal static FxDelegateArgs? OrNull(nint address) => address != 0 ? new FxDelegateArgs(address) : null;
 
@@ -38233,6 +39173,8 @@ public readonly partial struct FxDelegateHandler : IFxDelegateHandler, IEquatabl
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public CallbackProcessor() => address = 0;
 
+        internal static CallbackProcessor FromAddress(nint address) => new CallbackProcessor(address);
+
         internal static CallbackProcessor? OrNull(nint address) => address != 0 ? new CallbackProcessor(address) : null;
 
         /// <summary>Whether both views are over one address.</summary>
@@ -38268,6 +39210,8 @@ public readonly partial struct FxResponseArgsBase : IEquatable<FxResponseArgsBas
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public FxResponseArgsBase() => address = 0;
+
+    internal static FxResponseArgsBase FromAddress(nint address) => new FxResponseArgsBase(address);
 
     internal static FxResponseArgsBase? OrNull(nint address) => address != 0 ? new FxResponseArgsBase(address) : null;
 
@@ -38415,6 +39359,8 @@ public readonly partial struct GFxDrawTextManager : IEquatable<GFxDrawTextManage
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public GFxDrawTextManager() => address = 0;
 
+    internal static GFxDrawTextManager FromAddress(nint address) => new GFxDrawTextManager(address);
+
     internal static GFxDrawTextManager? OrNull(nint address) => address != 0 ? new GFxDrawTextManager(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -38448,6 +39394,8 @@ public readonly partial struct GFxEvent : IEquatable<GFxEvent>
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public GFxEvent() => address = 0;
+
+    internal static GFxEvent FromAddress(nint address) => new GFxEvent(address);
 
     internal static GFxEvent? OrNull(nint address) => address != 0 ? new GFxEvent(address) : null;
 
@@ -38503,6 +39451,8 @@ public readonly partial struct GFxExporterInfo : IEquatable<GFxExporterInfo>
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public GFxExporterInfo() => address = 0;
+
+    internal static GFxExporterInfo FromAddress(nint address) => new GFxExporterInfo(address);
 
     internal static GFxExporterInfo? OrNull(nint address) => address != 0 ? new GFxExporterInfo(address) : null;
 
@@ -38652,6 +39602,8 @@ public readonly partial struct GFxFunctionHandler : IEquatable<GFxFunctionHandle
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public Params() => address = 0;
 
+        internal static Params FromAddress(nint address) => new Params(address);
+
         internal static Params? OrNull(nint address) => address != 0 ? new Params(address) : null;
 
         /// <summary>Whether both views are over one address.</summary>
@@ -38731,6 +39683,8 @@ public readonly partial struct GFxLoader : IGFxStateBag, IEquatable<GFxLoader>
 
     nint IAddressable.Address => Address;
 
+    internal static GFxLoader FromAddress(nint address) => new GFxLoader(address);
+
     internal static GFxLoader? OrNull(nint address) => address != 0 ? new GFxLoader(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -38789,6 +39743,8 @@ public readonly partial struct GFxLoaderImpl : IEquatable<GFxLoaderImpl>
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public GFxLoaderImpl() => address = 0;
+
+    internal static GFxLoaderImpl FromAddress(nint address) => new GFxLoaderImpl(address);
 
     internal static GFxLoaderImpl? OrNull(nint address) => address != 0 ? new GFxLoaderImpl(address) : null;
 
@@ -38891,6 +39847,8 @@ public readonly partial struct GFxMovieDef : IGFxResource, IEquatable<GFxMovieDe
 
     nint IAddressable.Address => Address;
 
+    internal static GFxMovieDef FromAddress(nint address) => new GFxMovieDef(address);
+
     internal static GFxMovieDef? OrNull(nint address) => address != 0 ? new GFxMovieDef(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -38927,6 +39885,8 @@ public readonly partial struct GFxMovieDef : IGFxResource, IEquatable<GFxMovieDe
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public MemoryContext() => address = 0;
 
+        internal static MemoryContext FromAddress(nint address) => new MemoryContext(address);
+
         internal static MemoryContext? OrNull(nint address) => address != 0 ? new MemoryContext(address) : null;
 
         /// <summary>Whether both views are over one address.</summary>
@@ -38960,6 +39920,8 @@ public readonly partial struct GFxMovieDef : IGFxResource, IEquatable<GFxMovieDe
         /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public MemoryParams() => address = 0;
+
+        internal static MemoryParams FromAddress(nint address) => new MemoryParams(address);
 
         internal static MemoryParams? OrNull(nint address) => address != 0 ? new MemoryParams(address) : null;
 
@@ -38998,6 +39960,8 @@ public readonly partial struct GFxMovieView : IGFxMovie, IEquatable<GFxMovieView
     public GFxMovieView() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static GFxMovieView FromAddress(nint address) => new GFxMovieView(address);
 
     internal static GFxMovieView? OrNull(nint address) => address != 0 ? new GFxMovieView(address) : null;
 
@@ -39079,6 +40043,8 @@ public readonly partial struct GFxRenderConfig : IGFxState, IEquatable<GFxRender
     public GFxRenderConfig() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static GFxRenderConfig FromAddress(nint address) => new GFxRenderConfig(address);
 
     internal static GFxRenderConfig? OrNull(nint address) => address != 0 ? new GFxRenderConfig(address) : null;
 
@@ -39201,6 +40167,8 @@ public readonly partial struct GFxResourceLib : IEquatable<GFxResourceLib>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public GFxResourceLib() => address = 0;
 
+    internal static GFxResourceLib FromAddress(nint address) => new GFxResourceLib(address);
+
     internal static GFxResourceLib? OrNull(nint address) => address != 0 ? new GFxResourceLib(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -39273,6 +40241,8 @@ public readonly partial struct GFxResourceReport : IEquatable<GFxResourceReport>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public GFxResourceReport() => address = 0;
 
+    internal static GFxResourceReport FromAddress(nint address) => new GFxResourceReport(address);
+
     internal static GFxResourceReport? OrNull(nint address) => address != 0 ? new GFxResourceReport(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -39308,6 +40278,8 @@ public readonly partial struct GFxResourceWeakLib : IGFxResourceLibBase, IEquata
     public GFxResourceWeakLib() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static GFxResourceWeakLib FromAddress(nint address) => new GFxResourceWeakLib(address);
 
     internal static GFxResourceWeakLib? OrNull(nint address) => address != 0 ? new GFxResourceWeakLib(address) : null;
 
@@ -39469,6 +40441,8 @@ public readonly partial struct GFxStateBagImpl : IEquatable<GFxStateBagImpl>
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public GFxStateBagImpl() => address = 0;
+
+    internal static GFxStateBagImpl FromAddress(nint address) => new GFxStateBagImpl(address);
 
     internal static GFxStateBagImpl? OrNull(nint address) => address != 0 ? new GFxStateBagImpl(address) : null;
 
@@ -39836,6 +40810,8 @@ public readonly partial struct GHeapMemVisitor : IEquatable<GHeapMemVisitor>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public GHeapMemVisitor() => address = 0;
 
+    internal static GHeapMemVisitor FromAddress(nint address) => new GHeapMemVisitor(address);
+
     internal static GHeapMemVisitor? OrNull(nint address) => address != 0 ? new GHeapMemVisitor(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -39869,6 +40845,8 @@ public readonly partial struct GHeapSegVisitor : IEquatable<GHeapSegVisitor>
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public GHeapSegVisitor() => address = 0;
+
+    internal static GHeapSegVisitor FromAddress(nint address) => new GHeapSegVisitor(address);
 
     internal static GHeapSegVisitor? OrNull(nint address) => address != 0 ? new GHeapSegVisitor(address) : null;
 
@@ -39956,6 +40934,8 @@ public readonly partial struct GImageInfoBase : IEquatable<GImageInfoBase>
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public GImageInfoBase() => address = 0;
+
+    internal static GImageInfoBase FromAddress(nint address) => new GImageInfoBase(address);
 
     internal static GImageInfoBase? OrNull(nint address) => address != 0 ? new GImageInfoBase(address) : null;
 
@@ -40099,6 +41079,8 @@ public readonly partial struct GMemoryHeap : IEquatable<GMemoryHeap>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public GMemoryHeap() => address = 0;
 
+    internal static GMemoryHeap FromAddress(nint address) => new GMemoryHeap(address);
+
     internal static GMemoryHeap? OrNull(nint address) => address != 0 ? new GMemoryHeap(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -40217,6 +41199,8 @@ public readonly partial struct GMemoryHeap : IEquatable<GMemoryHeap>
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public HeapTracer() => address = 0;
 
+        internal static HeapTracer FromAddress(nint address) => new HeapTracer(address);
+
         internal static HeapTracer? OrNull(nint address) => address != 0 ? new HeapTracer(address) : null;
 
         /// <summary>Whether both views are over one address.</summary>
@@ -40250,6 +41234,8 @@ public readonly partial struct GMemoryHeap : IEquatable<GMemoryHeap>
         /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public LimitHandler() => address = 0;
+
+        internal static LimitHandler FromAddress(nint address) => new LimitHandler(address);
 
         internal static LimitHandler? OrNull(nint address) => address != 0 ? new LimitHandler(address) : null;
 
@@ -40323,6 +41309,8 @@ public readonly partial struct GPoint3F : IEquatable<GPoint3F>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public GPoint3F() => address = 0;
 
+    internal static GPoint3F FromAddress(nint address) => new GPoint3F(address);
+
     internal static GPoint3F? OrNull(nint address) => address != 0 ? new GPoint3F(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -40393,6 +41381,8 @@ public readonly partial struct GRenderTarget : IEquatable<GRenderTarget>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public GRenderTarget() => address = 0;
 
+    internal static GRenderTarget FromAddress(nint address) => new GRenderTarget(address);
+
     internal static GRenderTarget? OrNull(nint address) => address != 0 ? new GRenderTarget(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -40426,6 +41416,8 @@ public readonly partial struct GRenderer : IEquatable<GRenderer>
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public GRenderer() => address = 0;
+
+    internal static GRenderer FromAddress(nint address) => new GRenderer(address);
 
     internal static GRenderer? OrNull(nint address) => address != 0 ? new GRenderer(address) : null;
 
@@ -40565,6 +41557,8 @@ public readonly partial struct GRenderer : IEquatable<GRenderer>
         /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public CacheProvider() => address = 0;
+
+        internal static CacheProvider FromAddress(nint address) => new CacheProvider(address);
 
         internal static CacheProvider? OrNull(nint address) => address != 0 ? new CacheProvider(address) : null;
 
@@ -40981,6 +41975,8 @@ public readonly partial struct GRendererEventHandler : IEquatable<GRendererEvent
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public GRendererEventHandler() => address = 0;
 
+    internal static GRendererEventHandler FromAddress(nint address) => new GRendererEventHandler(address);
+
     internal static GRendererEventHandler? OrNull(nint address) => address != 0 ? new GRendererEventHandler(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -41022,6 +42018,8 @@ public readonly partial struct GStatBag : IEquatable<GStatBag>
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public GStatBag() => address = 0;
+
+    internal static GStatBag FromAddress(nint address) => new GStatBag(address);
 
     internal static GStatBag? OrNull(nint address) => address != 0 ? new GStatBag(address) : null;
 
@@ -41097,6 +42095,8 @@ public readonly partial struct GSysAllocPaged : IGSysAllocBase, IEquatable<GSysA
 
     nint IAddressable.Address => Address;
 
+    internal static GSysAllocPaged FromAddress(nint address) => new GSysAllocPaged(address);
+
     internal static GSysAllocPaged? OrNull(nint address) => address != 0 ? new GSysAllocPaged(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -41171,6 +42171,8 @@ public readonly partial struct GTexture : IEquatable<GTexture>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public GTexture() => address = 0;
 
+    internal static GTexture FromAddress(nint address) => new GTexture(address);
+
     internal static GTexture? OrNull(nint address) => address != 0 ? new GTexture(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -41203,6 +42205,8 @@ public readonly partial struct GTexture : IEquatable<GTexture>
         /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public ChangeHandler() => address = 0;
+
+        internal static ChangeHandler FromAddress(nint address) => new ChangeHandler(address);
 
         internal static ChangeHandler? OrNull(nint address) => address != 0 ? new ChangeHandler(address) : null;
 
@@ -41386,6 +42390,8 @@ public readonly partial struct GameSettingCollection : IEquatable<GameSettingCol
     [Obsolete("Creates a view with no address. Use GameTarget.GameSettingCollection, which returns the instance the game creates.", error: true)]
     public GameSettingCollection() => address = 0;
 
+    internal static GameSettingCollection FromAddress(nint address) => new GameSettingCollection(address);
+
     internal static GameSettingCollection? OrNull(nint address) => address != 0 ? new GameSettingCollection(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -41421,6 +42427,8 @@ public readonly partial struct GiftMenu : IMenu_, IEquatable<GiftMenu>
     public GiftMenu() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static GiftMenu FromAddress(nint address) => new GiftMenu(address);
 
     /// <summary>The name the game registers this menu under, which <see cref="MenuOpenCloseEventArgs.MenuName"/> reports and the UI members that take a menu name accept.</summary>
     public const string MenuName = "GiftMenu";
@@ -41504,6 +42512,8 @@ public readonly partial struct GlobalVariable : IForm, IEquatable<GlobalVariable
 
     nint IAddressable.Address => Address;
 
+    internal static GlobalVariable FromAddress(nint address) => new GlobalVariable(address);
+
     internal static GlobalVariable? OrNull(nint address) => address != 0 ? new GlobalVariable(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -41554,6 +42564,8 @@ public readonly partial struct GrabActorEffect : IValueModifierEffect, IEquatabl
     public GrabActorEffect() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static GrabActorEffect FromAddress(nint address) => new GrabActorEffect(address);
 
     internal static GrabActorEffect? OrNull(nint address) => address != 0 ? new GrabActorEffect(address) : null;
 
@@ -41668,6 +42680,8 @@ public readonly partial struct GrenadeProjectile : IProjectile, IEquatable<Grena
     public GrenadeProjectile() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static GrenadeProjectile FromAddress(nint address) => new GrenadeProjectile(address);
 
     internal static GrenadeProjectile? OrNull(nint address) => address != 0 ? new GrenadeProjectile(address) : null;
 
@@ -41794,6 +42808,8 @@ public readonly partial struct GridCellArray : IGridArray, IEquatable<GridCellAr
 
     nint IAddressable.Address => Address;
 
+    internal static GridCellArray FromAddress(nint address) => new GridCellArray(address);
+
     internal static GridCellArray? OrNull(nint address) => address != 0 ? new GridCellArray(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -41832,6 +42848,8 @@ public readonly partial struct GuideEffect : IActiveMagicEffect, IEquatable<Guid
     public GuideEffect() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static GuideEffect FromAddress(nint address) => new GuideEffect(address);
 
     internal static GuideEffect? OrNull(nint address) => address != 0 ? new GuideEffect(address) : null;
 
@@ -41872,6 +42890,8 @@ public readonly partial struct HUDData : IUIMessageData_, IEquatable<HUDData>
 
     nint IAddressable.Address => Address;
 
+    internal static HUDData FromAddress(nint address) => new HUDData(address);
+
     internal static HUDData? OrNull(nint address) => address != 0 ? new HUDData(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -41910,6 +42930,8 @@ public readonly partial struct HUDMenu : IMenu_, IEquatable<HUDMenu>
     public HUDMenu() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static HUDMenu FromAddress(nint address) => new HUDMenu(address);
 
     /// <summary>The name the game registers this menu under, which <see cref="MenuOpenCloseEventArgs.MenuName"/> reports and the UI members that take a menu name accept.</summary>
     public const string MenuName = "HUD Menu";
@@ -42115,6 +43137,8 @@ public readonly partial struct Hazard : IObjectReference, IEquatable<Hazard>
 
     nint IAddressable.Address => Address;
 
+    internal static Hazard FromAddress(nint address) => new Hazard(address);
+
     internal static Hazard? OrNull(nint address) => address != 0 ? new Hazard(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -42196,6 +43220,8 @@ public readonly partial struct HeadPart : IForm, IEquatable<HeadPart>
     public HeadPart() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static HeadPart FromAddress(nint address) => new HeadPart(address);
 
     internal static HeadPart? OrNull(nint address) => address != 0 ? new HeadPart(address) : null;
 
@@ -42339,6 +43365,8 @@ public readonly partial struct HighProcessData : IEquatable<HighProcessData>
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public HighProcessData() => address = 0;
+
+    internal static HighProcessData FromAddress(nint address) => new HighProcessData(address);
 
     internal static HighProcessData? OrNull(nint address) => address != 0 ? new HighProcessData(address) : null;
 
@@ -42510,6 +43538,8 @@ public readonly partial struct IAIWorldLocation : IEquatable<IAIWorldLocation>
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public IAIWorldLocation() => address = 0;
+
+    internal static IAIWorldLocation FromAddress(nint address) => new IAIWorldLocation(address);
 
     internal static IAIWorldLocation? OrNull(nint address) => address != 0 ? new IAIWorldLocation(address) : null;
 
@@ -42732,6 +43762,8 @@ public readonly partial struct IBSAnimNoteReceiver : IEquatable<IBSAnimNoteRecei
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public IBSAnimNoteReceiver() => address = 0;
+
+    internal static IBSAnimNoteReceiver FromAddress(nint address) => new IBSAnimNoteReceiver(address);
 
     internal static IBSAnimNoteReceiver? OrNull(nint address) => address != 0 ? new IBSAnimNoteReceiver(address) : null;
 
@@ -43302,6 +44334,8 @@ public readonly partial struct IFormFactory : IEquatable<IFormFactory>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public IFormFactory() => address = 0;
 
+    internal static IFormFactory FromAddress(nint address) => new IFormFactory(address);
+
     internal static IFormFactory? OrNull(nint address) => address != 0 ? new IFormFactory(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -43425,6 +44459,8 @@ public readonly partial struct IGiftMenuScriptCallback : IBSIntrusiveRefCounted,
     public IGiftMenuScriptCallback() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static IGiftMenuScriptCallback FromAddress(nint address) => new IGiftMenuScriptCallback(address);
 
     internal static IGiftMenuScriptCallback? OrNull(nint address) => address != 0 ? new IGiftMenuScriptCallback(address) : null;
 
@@ -43568,6 +44604,8 @@ public readonly partial struct IMemoryHeap : IMemoryStore_, IEquatable<IMemoryHe
     public IMemoryHeap() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static IMemoryHeap FromAddress(nint address) => new IMemoryHeap(address);
 
     internal static IMemoryHeap? OrNull(nint address) => address != 0 ? new IMemoryHeap(address) : null;
 
@@ -43744,6 +44782,8 @@ public readonly partial struct IMenu : IMenu_, IEquatable<IMenu>
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public VR_RUNTIME_DATA() => address = 0;
 
+        internal static VR_RUNTIME_DATA FromAddress(nint address) => new VR_RUNTIME_DATA(address);
+
         internal static VR_RUNTIME_DATA? OrNull(nint address) => address != 0 ? new VR_RUNTIME_DATA(address) : null;
 
         /// <summary>Whether both views are over one address.</summary>
@@ -43797,6 +44837,8 @@ public readonly partial struct IMessageBoxCallback : IBSIntrusiveRefCounted, IEq
     public IMessageBoxCallback() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static IMessageBoxCallback FromAddress(nint address) => new IMessageBoxCallback(address);
 
     internal static IMessageBoxCallback? OrNull(nint address) => address != 0 ? new IMessageBoxCallback(address) : null;
 
@@ -44001,6 +45043,8 @@ public readonly partial struct INIPrefSettingCollection : INISettingCollection_,
     public INIPrefSettingCollection() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static INIPrefSettingCollection FromAddress(nint address) => new INIPrefSettingCollection(address);
 
     internal static INIPrefSettingCollection? OrNull(nint address) => address != 0 ? new INIPrefSettingCollection(address) : null;
 
@@ -44558,6 +45602,8 @@ public readonly partial struct IProcedureTreeExecState : IEquatable<IProcedureTr
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public IProcedureTreeExecState() => address = 0;
 
+    internal static IProcedureTreeExecState FromAddress(nint address) => new IProcedureTreeExecState(address);
+
     internal static IProcedureTreeExecState? OrNull(nint address) => address != 0 ? new IProcedureTreeExecState(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -44591,6 +45637,8 @@ public readonly partial struct IProcedureTreeItem : IEquatable<IProcedureTreeIte
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public IProcedureTreeItem() => address = 0;
+
+    internal static IProcedureTreeItem FromAddress(nint address) => new IProcedureTreeItem(address);
 
     internal static IProcedureTreeItem? OrNull(nint address) => address != 0 ? new IProcedureTreeItem(address) : null;
 
@@ -45033,6 +46081,8 @@ public readonly partial struct Idle : IForm, IEquatable<Idle>
     public Idle() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static Idle FromAddress(nint address) => new Idle(address);
 
     internal static Idle? OrNull(nint address) => address != 0 ? new Idle(address) : null;
 
@@ -45577,6 +46627,8 @@ public readonly partial struct ImageSpaceEffect : IEquatable<ImageSpaceEffect>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public ImageSpaceEffect() => address = 0;
 
+    internal static ImageSpaceEffect FromAddress(nint address) => new ImageSpaceEffect(address);
+
     internal static ImageSpaceEffect? OrNull(nint address) => address != 0 ? new ImageSpaceEffect(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -45609,6 +46661,8 @@ public readonly partial struct ImageSpaceEffect : IEquatable<ImageSpaceEffect>
         /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public EffectInput() => address = 0;
+
+        internal static EffectInput FromAddress(nint address) => new EffectInput(address);
 
         internal static EffectInput? OrNull(nint address) => address != 0 ? new EffectInput(address) : null;
 
@@ -45683,6 +46737,8 @@ public readonly partial struct ImageSpaceManager : IEquatable<ImageSpaceManager>
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. Use GameTarget.ImageSpaceManager, which returns the instance the game creates.", error: true)]
     public ImageSpaceManager() => address = 0;
+
+    internal static ImageSpaceManager FromAddress(nint address) => new ImageSpaceManager(address);
 
     internal static ImageSpaceManager? OrNull(nint address) => address != 0 ? new ImageSpaceManager(address) : null;
 
@@ -46275,6 +47331,8 @@ public readonly partial struct ImageSpaceManager : IEquatable<ImageSpaceManager>
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public VR_RUNTIME_DATA() => address = 0;
 
+        internal static VR_RUNTIME_DATA FromAddress(nint address) => new VR_RUNTIME_DATA(address);
+
         internal static VR_RUNTIME_DATA? OrNull(nint address) => address != 0 ? new VR_RUNTIME_DATA(address) : null;
 
         /// <summary>Whether both views are over one address.</summary>
@@ -46348,6 +47406,8 @@ public readonly partial struct ImageSpaceModifier : IForm, IEquatable<ImageSpace
     public ImageSpaceModifier() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ImageSpaceModifier FromAddress(nint address) => new ImageSpaceModifier(address);
 
     internal static ImageSpaceModifier? OrNull(nint address) => address != 0 ? new ImageSpaceModifier(address) : null;
 
@@ -46801,6 +47861,8 @@ public readonly partial struct ImageSpaceModifierInstanceDOF : IImageSpaceModifi
 
     nint IAddressable.Address => Address;
 
+    internal static ImageSpaceModifierInstanceDOF FromAddress(nint address) => new ImageSpaceModifierInstanceDOF(address);
+
     internal static ImageSpaceModifierInstanceDOF? OrNull(nint address) => address != 0 ? new ImageSpaceModifierInstanceDOF(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -46858,6 +47920,8 @@ public readonly partial struct ImageSpaceModifierInstanceForm : IImageSpaceModif
     public ImageSpaceModifierInstanceForm() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ImageSpaceModifierInstanceForm FromAddress(nint address) => new ImageSpaceModifierInstanceForm(address);
 
     internal static ImageSpaceModifierInstanceForm? OrNull(nint address) => address != 0 ? new ImageSpaceModifierInstanceForm(address) : null;
 
@@ -47028,6 +48092,8 @@ public readonly partial struct ImpactDataSet : IForm, IEquatable<ImpactDataSet>
 
     nint IAddressable.Address => Address;
 
+    internal static ImpactDataSet FromAddress(nint address) => new ImpactDataSet(address);
+
     internal static ImpactDataSet? OrNull(nint address) => address != 0 ? new ImpactDataSet(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -47079,6 +48145,8 @@ public readonly partial struct Ingredient : IMagicItem, IEquatable<Ingredient>
     public Ingredient() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static Ingredient FromAddress(nint address) => new Ingredient(address);
 
     internal static Ingredient? OrNull(nint address) => address != 0 ? new Ingredient(address) : null;
 
@@ -47251,6 +48319,8 @@ public readonly partial struct InterfaceStrings : IEquatable<InterfaceStrings>
     [Obsolete("Creates a view with no address. Use GameTarget.InterfaceStrings, which returns the instance the game creates.", error: true)]
     public InterfaceStrings() => address = 0;
 
+    internal static InterfaceStrings FromAddress(nint address) => new InterfaceStrings(address);
+
     internal static InterfaceStrings? OrNull(nint address) => address != 0 ? new InterfaceStrings(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -47397,6 +48467,8 @@ public readonly partial struct Inventory3DManager : IEquatable<Inventory3DManage
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. Use GameTarget.Inventory3DManager, which returns the instance the game creates.", error: true)]
     public Inventory3DManager() => address = 0;
+
+    internal static Inventory3DManager FromAddress(nint address) => new Inventory3DManager(address);
 
     internal static Inventory3DManager? OrNull(nint address) => address != 0 ? new Inventory3DManager(address) : null;
 
@@ -47581,6 +48653,8 @@ public readonly partial struct InventoryMenu : IMenu_, IEquatable<InventoryMenu>
 
     nint IAddressable.Address => Address;
 
+    internal static InventoryMenu FromAddress(nint address) => new InventoryMenu(address);
+
     /// <summary>The name the game registers this menu under, which <see cref="MenuOpenCloseEventArgs.MenuName"/> reports and the UI members that take a menu name accept.</summary>
     public const string MenuName = "InventoryMenu";
 
@@ -47663,6 +48737,8 @@ public readonly partial struct InvisibilityEffect : IValueModifierEffect, IEquat
 
     nint IAddressable.Address => Address;
 
+    internal static InvisibilityEffect FromAddress(nint address) => new InvisibilityEffect(address);
+
     internal static InvisibilityEffect? OrNull(nint address) => address != 0 ? new InvisibilityEffect(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -47702,6 +48778,8 @@ public readonly partial struct ItemCard : IEquatable<ItemCard>
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public ItemCard() => address = 0;
+
+    internal static ItemCard FromAddress(nint address) => new ItemCard(address);
 
     internal static ItemCard? OrNull(nint address) => address != 0 ? new ItemCard(address) : null;
 
@@ -47772,6 +48850,8 @@ public readonly partial struct ItemList : IEquatable<ItemList>
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public Item() => address = 0;
 
+        internal static Item FromAddress(nint address) => new Item(address);
+
         internal static Item? OrNull(nint address) => address != 0 ? new Item(address) : null;
 
         /// <summary>Whether both views are over one address.</summary>
@@ -47809,6 +48889,8 @@ public readonly partial struct JournalMenu : IMenu_, IEquatable<JournalMenu>
     public JournalMenu() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static JournalMenu FromAddress(nint address) => new JournalMenu(address);
 
     /// <summary>The name the game registers this menu under, which <see cref="MenuOpenCloseEventArgs.MenuName"/> reports and the UI members that take a menu name accept.</summary>
     public const string MenuName = "Journal Menu";
@@ -48065,6 +49147,8 @@ public readonly partial struct JumpHandler : IPlayerInputHandler, IEquatable<Jum
 
     nint IAddressable.Address => Address;
 
+    internal static JumpHandler FromAddress(nint address) => new JumpHandler(address);
+
     internal static JumpHandler? OrNull(nint address) => address != 0 ? new JumpHandler(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -48100,6 +49184,8 @@ public readonly partial struct JumpHandler : IPlayerInputHandler, IEquatable<Jum
         /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public VR_RUNTIME_DATA() => address = 0;
+
+        internal static VR_RUNTIME_DATA FromAddress(nint address) => new VR_RUNTIME_DATA(address);
 
         internal static VR_RUNTIME_DATA? OrNull(nint address) => address != 0 ? new VR_RUNTIME_DATA(address) : null;
 
@@ -48152,6 +49238,8 @@ public readonly partial struct Key : IMiscObject, IEquatable<Key>
     public Key() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static Key FromAddress(nint address) => new Key(address);
 
     internal static Key? OrNull(nint address) => address != 0 ? new Key(address) : null;
 
@@ -48248,6 +49336,8 @@ public readonly partial struct KinectEvent : IDEvent_, IEquatable<KinectEvent>
 
     nint IAddressable.Address => Address;
 
+    internal static KinectEvent FromAddress(nint address) => new KinectEvent(address);
+
     internal static KinectEvent? OrNull(nint address) => address != 0 ? new KinectEvent(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -48289,6 +49379,8 @@ public readonly partial struct KinectMenu : IMenu_, IEquatable<KinectMenu>
     public KinectMenu() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static KinectMenu FromAddress(nint address) => new KinectMenu(address);
 
     /// <summary>The name the game registers this menu under, which <see cref="MenuOpenCloseEventArgs.MenuName"/> reports and the UI members that take a menu name accept.</summary>
     public const string MenuName = "Kinect Menu";
@@ -48379,6 +49471,8 @@ public readonly partial struct LOADED_CELL_DATA : IEquatable<LOADED_CELL_DATA>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public LOADED_CELL_DATA() => address = 0;
 
+    internal static LOADED_CELL_DATA FromAddress(nint address) => new LOADED_CELL_DATA(address);
+
     internal static LOADED_CELL_DATA? OrNull(nint address) => address != 0 ? new LOADED_CELL_DATA(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -48463,6 +49557,8 @@ public readonly partial struct LevelUpMenu : IMenu_, IEquatable<LevelUpMenu>
 
     nint IAddressable.Address => Address;
 
+    internal static LevelUpMenu FromAddress(nint address) => new LevelUpMenu(address);
+
     /// <summary>The name the game registers this menu under, which <see cref="MenuOpenCloseEventArgs.MenuName"/> reports and the UI members that take a menu name accept.</summary>
     public const string MenuName = "LevelUp Menu";
 
@@ -48545,6 +49641,8 @@ public readonly partial struct LeveledActor : ITESBoundAnimObject, IEquatable<Le
 
     nint IAddressable.Address => Address;
 
+    internal static LeveledActor FromAddress(nint address) => new LeveledActor(address);
+
     internal static LeveledActor? OrNull(nint address) => address != 0 ? new LeveledActor(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -48596,6 +49694,8 @@ public readonly partial struct LeveledItem : ITESBoundObject, IEquatable<Leveled
 
     nint IAddressable.Address => Address;
 
+    internal static LeveledItem FromAddress(nint address) => new LeveledItem(address);
+
     internal static LeveledItem? OrNull(nint address) => address != 0 ? new LeveledItem(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -48644,6 +49744,8 @@ public readonly partial struct LeveledSpell : ITESBoundObject, IEquatable<Levele
 
     nint IAddressable.Address => Address;
 
+    internal static LeveledSpell FromAddress(nint address) => new LeveledSpell(address);
+
     internal static LeveledSpell? OrNull(nint address) => address != 0 ? new LeveledSpell(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -48691,6 +49793,8 @@ public readonly partial struct Light : ITESBoundAnimObject, IEquatable<Light>
     public Light() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static Light FromAddress(nint address) => new Light(address);
 
     internal static Light? OrNull(nint address) => address != 0 ? new Light(address) : null;
 
@@ -48743,6 +49847,8 @@ public readonly partial struct LightEffect : IActiveMagicEffect, IEquatable<Ligh
 
     nint IAddressable.Address => Address;
 
+    internal static LightEffect FromAddress(nint address) => new LightEffect(address);
+
     internal static LightEffect? OrNull(nint address) => address != 0 ? new LightEffect(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -48781,6 +49887,8 @@ public readonly partial struct LoadStorageWrapper : IBSMemStorage, IEquatable<Lo
     public LoadStorageWrapper() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static LoadStorageWrapper FromAddress(nint address) => new LoadStorageWrapper(address);
 
     internal static LoadStorageWrapper? OrNull(nint address) => address != 0 ? new LoadStorageWrapper(address) : null;
 
@@ -48826,6 +49934,8 @@ public readonly partial struct LoadWaitSpinner : IMenu_, IEquatable<LoadWaitSpin
     public LoadWaitSpinner() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static LoadWaitSpinner FromAddress(nint address) => new LoadWaitSpinner(address);
 
     /// <summary>The name the game registers this menu under, which <see cref="MenuOpenCloseEventArgs.MenuName"/> reports and the UI members that take a menu name accept.</summary>
     public const string MenuName = "LoadWaitSpinner";
@@ -48908,6 +50018,8 @@ public readonly partial struct LoadedAreaBound : INiRefObject, IEquatable<Loaded
     public LoadedAreaBound() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static LoadedAreaBound FromAddress(nint address) => new LoadedAreaBound(address);
 
     internal static LoadedAreaBound? OrNull(nint address) => address != 0 ? new LoadedAreaBound(address) : null;
 
@@ -49019,6 +50131,8 @@ public readonly partial struct LoadingMenu : IMenu_, IEquatable<LoadingMenu>
     public LoadingMenu() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static LoadingMenu FromAddress(nint address) => new LoadingMenu(address);
 
     /// <summary>The name the game registers this menu under, which <see cref="MenuOpenCloseEventArgs.MenuName"/> reports and the UI members that take a menu name accept.</summary>
     public const string MenuName = "Loading Menu";
@@ -49141,6 +50255,8 @@ public readonly partial struct LocalMapCamera : ITESCamera, IEquatable<LocalMapC
         public DefaultState() => address = 0;
 
         nint IAddressable.Address => Address;
+
+        internal static DefaultState FromAddress(nint address) => new DefaultState(address);
 
         internal static DefaultState? OrNull(nint address) => address != 0 ? new DefaultState(address) : null;
 
@@ -49337,6 +50453,8 @@ public readonly partial struct LocalMapMenu : IEquatable<LocalMapMenu>
             [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
             public VR_RENDERER_DATA() => address = 0;
 
+            internal static VR_RENDERER_DATA FromAddress(nint address) => new VR_RENDERER_DATA(address);
+
             internal static VR_RENDERER_DATA? OrNull(nint address) => address != 0 ? new VR_RENDERER_DATA(address) : null;
 
             /// <summary>Whether both views are over one address.</summary>
@@ -49412,6 +50530,8 @@ public readonly partial struct Location : IForm, IEquatable<Location>
     public Location() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static Location FromAddress(nint address) => new Location(address);
 
     internal static Location? OrNull(nint address) => address != 0 ? new Location(address) : null;
 
@@ -49492,6 +50612,8 @@ public readonly partial struct LocationAlias : IAlias, IEquatable<LocationAlias>
 
     nint IAddressable.Address => Address;
 
+    internal static LocationAlias FromAddress(nint address) => new LocationAlias(address);
+
     internal static LocationAlias? OrNull(nint address) => address != 0 ? new LocationAlias(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -49530,6 +50652,8 @@ public readonly partial struct LocationRefType : IKeyword, IEquatable<LocationRe
     public LocationRefType() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static LocationRefType FromAddress(nint address) => new LocationRefType(address);
 
     internal static LocationRefType? OrNull(nint address) => address != 0 ? new LocationRefType(address) : null;
 
@@ -49576,6 +50700,8 @@ public readonly partial struct LockEffect : IActiveMagicEffect, IEquatable<LockE
 
     nint IAddressable.Address => Address;
 
+    internal static LockEffect FromAddress(nint address) => new LockEffect(address);
+
     internal static LockEffect? OrNull(nint address) => address != 0 ? new LockEffect(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -49614,6 +50740,8 @@ public readonly partial struct LockpickingMenu : IMenu_, IEquatable<LockpickingM
     public LockpickingMenu() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static LockpickingMenu FromAddress(nint address) => new LockpickingMenu(address);
 
     /// <summary>The name the game registers this menu under, which <see cref="MenuOpenCloseEventArgs.MenuName"/> reports and the UI members that take a menu name accept.</summary>
     public const string MenuName = "Lockpicking Menu";
@@ -49658,6 +50786,8 @@ public readonly partial struct LockpickingMenu : IMenu_, IEquatable<LockpickingM
         /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public AE1799_RUNTIME_DATA() => address = 0;
+
+        internal static AE1799_RUNTIME_DATA FromAddress(nint address) => new AE1799_RUNTIME_DATA(address);
 
         internal static AE1799_RUNTIME_DATA? OrNull(nint address) => address != 0 ? new AE1799_RUNTIME_DATA(address) : null;
 
@@ -49733,6 +50863,8 @@ public readonly partial struct LookHandler : IPlayerInputHandler, IEquatable<Loo
 
     nint IAddressable.Address => Address;
 
+    internal static LookHandler FromAddress(nint address) => new LookHandler(address);
+
     internal static LookHandler? OrNull(nint address) => address != 0 ? new LookHandler(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -49769,6 +50901,8 @@ public readonly partial struct LookHandler : IPlayerInputHandler, IEquatable<Loo
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public AE1799_RUNTIME_DATA() => address = 0;
 
+        internal static AE1799_RUNTIME_DATA FromAddress(nint address) => new AE1799_RUNTIME_DATA(address);
+
         internal static AE1799_RUNTIME_DATA? OrNull(nint address) => address != 0 ? new AE1799_RUNTIME_DATA(address) : null;
 
         /// <summary>Whether both views are over one address.</summary>
@@ -49802,6 +50936,8 @@ public readonly partial struct LookHandler : IPlayerInputHandler, IEquatable<Loo
         /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public VR_RUNTIME_DATA() => address = 0;
+
+        internal static VR_RUNTIME_DATA FromAddress(nint address) => new VR_RUNTIME_DATA(address);
 
         internal static VR_RUNTIME_DATA? OrNull(nint address) => address != 0 ? new VR_RUNTIME_DATA(address) : null;
 
@@ -50105,6 +51241,8 @@ public readonly partial struct MagicEffect : IForm, IEquatable<MagicEffect>
 
     nint IAddressable.Address => Address;
 
+    internal static MagicEffect FromAddress(nint address) => new MagicEffect(address);
+
     internal static MagicEffect? OrNull(nint address) => address != 0 ? new MagicEffect(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -50244,6 +51382,8 @@ public readonly partial struct MagicFavorites : IEquatable<MagicFavorites>
     [Obsolete("Creates a view with no address. Use GameTarget.MagicFavorites, which returns the instance the game creates.", error: true)]
     public MagicFavorites() => address = 0;
 
+    internal static MagicFavorites FromAddress(nint address) => new MagicFavorites(address);
+
     internal static MagicFavorites? OrNull(nint address) => address != 0 ? new MagicFavorites(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -50326,6 +51466,8 @@ public readonly partial struct MagicItem : IMagicItem, IEquatable<MagicItem>
         /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public Data() => address = 0;
+
+        internal static Data FromAddress(nint address) => new Data(address);
 
         internal static Data? OrNull(nint address) => address != 0 ? new Data(address) : null;
 
@@ -50470,6 +51612,8 @@ public readonly partial struct MagicItemList : IEquatable<MagicItemList>
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public Item() => address = 0;
 
+        internal static Item FromAddress(nint address) => new Item(address);
+
         internal static Item? OrNull(nint address) => address != 0 ? new Item(address) : null;
 
         /// <summary>Whether both views are over one address.</summary>
@@ -50506,6 +51650,8 @@ public readonly partial struct MagicItemTraversalFunctor : IEquatable<MagicItemT
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public MagicItemTraversalFunctor() => address = 0;
 
+    internal static MagicItemTraversalFunctor FromAddress(nint address) => new MagicItemTraversalFunctor(address);
+
     internal static MagicItemTraversalFunctor? OrNull(nint address) => address != 0 ? new MagicItemTraversalFunctor(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -50541,6 +51687,8 @@ public readonly partial struct MagicMenu : IMenu_, IEquatable<MagicMenu>
     public MagicMenu() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static MagicMenu FromAddress(nint address) => new MagicMenu(address);
 
     /// <summary>The name the game registers this menu under, which <see cref="MenuOpenCloseEventArgs.MenuName"/> reports and the UI members that take a menu name accept.</summary>
     public const string MenuName = "MagicMenu";
@@ -50657,6 +51805,8 @@ public readonly partial struct MagicTarget : IEquatable<MagicTarget>
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public AddTargetData() => address = 0;
 
+        internal static AddTargetData FromAddress(nint address) => new AddTargetData(address);
+
         internal static AddTargetData? OrNull(nint address) => address != 0 ? new AddTargetData(address) : null;
 
         /// <summary>Whether both views are over one address.</summary>
@@ -50692,6 +51842,8 @@ public readonly partial struct MagicTarget : IEquatable<MagicTarget>
         /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public IPostCreationModification() => address = 0;
+
+        internal static IPostCreationModification FromAddress(nint address) => new IPostCreationModification(address);
 
         internal static IPostCreationModification? OrNull(nint address) => address != 0 ? new IPostCreationModification(address) : null;
 
@@ -50763,6 +51915,8 @@ public readonly partial struct MagicTarget : IEquatable<MagicTarget>
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public SpellDispelData() => address = 0;
 
+        internal static SpellDispelData FromAddress(nint address) => new SpellDispelData(address);
+
         internal static SpellDispelData? OrNull(nint address) => address != 0 ? new SpellDispelData(address) : null;
 
         /// <summary>Whether both views are over one address.</summary>
@@ -50798,6 +51952,8 @@ public readonly partial struct Main : IEquatable<Main>
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. Use GameTarget.Main, which returns the instance the game creates.", error: true)]
     public Main() => address = 0;
+
+    internal static Main FromAddress(nint address) => new Main(address);
 
     internal static Main? OrNull(nint address) => address != 0 ? new Main(address) : null;
 
@@ -50907,6 +52063,8 @@ public readonly partial struct MainMenu : IMenu_, IEquatable<MainMenu>
     public MainMenu() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static MainMenu FromAddress(nint address) => new MainMenu(address);
 
     /// <summary>The name the game registers this menu under, which <see cref="MenuOpenCloseEventArgs.MenuName"/> reports and the UI members that take a menu name accept.</summary>
     public const string MenuName = "Main Menu";
@@ -51075,6 +52233,8 @@ public readonly partial struct MapLookHandler : IMapInputHandler, IEquatable<Map
 
     nint IAddressable.Address => Address;
 
+    internal static MapLookHandler FromAddress(nint address) => new MapLookHandler(address);
+
     internal static MapLookHandler? OrNull(nint address) => address != 0 ? new MapLookHandler(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -51117,6 +52277,8 @@ public readonly partial struct MapMarkerData : IEquatable<MapMarkerData>
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public MapMarkerData() => address = 0;
+
+    internal static MapMarkerData FromAddress(nint address) => new MapMarkerData(address);
 
     internal static MapMarkerData? OrNull(nint address) => address != 0 ? new MapMarkerData(address) : null;
 
@@ -51169,6 +52331,8 @@ public readonly partial struct MapMenu : IMenu_, IEquatable<MapMenu>
     public MapMenu() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static MapMenu FromAddress(nint address) => new MapMenu(address);
 
     /// <summary>The name the game registers this menu under, which <see cref="MenuOpenCloseEventArgs.MenuName"/> reports and the UI members that take a menu name accept.</summary>
     public const string MenuName = "MapMenu";
@@ -51284,6 +52448,8 @@ public readonly partial struct MapMenu : IMenu_, IEquatable<MapMenu>
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public VR_RUNTIME_DATA() => address = 0;
 
+        internal static VR_RUNTIME_DATA FromAddress(nint address) => new VR_RUNTIME_DATA(address);
+
         internal static VR_RUNTIME_DATA? OrNull(nint address) => address != 0 ? new VR_RUNTIME_DATA(address) : null;
 
         /// <summary>Whether both views are over one address.</summary>
@@ -51317,6 +52483,8 @@ public readonly partial struct MapMenu : IMenu_, IEquatable<MapMenu>
         /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public VR_RUNTIME_DATA2() => address = 0;
+
+        internal static VR_RUNTIME_DATA2 FromAddress(nint address) => new VR_RUNTIME_DATA2(address);
 
         internal static VR_RUNTIME_DATA2? OrNull(nint address) => address != 0 ? new VR_RUNTIME_DATA2(address) : null;
 
@@ -51392,6 +52560,8 @@ public readonly partial struct MapMoveHandler : IMapInputHandler, IEquatable<Map
 
     nint IAddressable.Address => Address;
 
+    internal static MapMoveHandler FromAddress(nint address) => new MapMoveHandler(address);
+
     internal static MapMoveHandler? OrNull(nint address) => address != 0 ? new MapMoveHandler(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -51436,6 +52606,8 @@ public readonly partial struct MapZoomHandler : IMapInputHandler, IEquatable<Map
     public MapZoomHandler() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static MapZoomHandler FromAddress(nint address) => new MapZoomHandler(address);
 
     internal static MapZoomHandler? OrNull(nint address) => address != 0 ? new MapZoomHandler(address) : null;
 
@@ -51516,6 +52688,8 @@ public readonly partial struct MemoryManager : IEquatable<MemoryManager>
     [Obsolete("Creates a view with no address. Use GameTarget.MemoryManager, which returns the instance the game creates.", error: true)]
     public MemoryManager() => address = 0;
 
+    internal static MemoryManager FromAddress(nint address) => new MemoryManager(address);
+
     internal static MemoryManager? OrNull(nint address) => address != 0 ? new MemoryManager(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -51548,6 +52722,8 @@ public readonly partial struct MemoryManager : IEquatable<MemoryManager>
         /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public ThreadScrapHeap() => address = 0;
+
+        internal static ThreadScrapHeap FromAddress(nint address) => new ThreadScrapHeap(address);
 
         internal static ThreadScrapHeap? OrNull(nint address) => address != 0 ? new ThreadScrapHeap(address) : null;
 
@@ -51621,6 +52797,8 @@ public readonly partial struct MenuControls : IEquatable<MenuControls>
     [Obsolete("Creates a view with no address. Use GameTarget.MenuControls, which returns the instance the game creates.", error: true)]
     public MenuControls() => address = 0;
 
+    internal static MenuControls FromAddress(nint address) => new MenuControls(address);
+
     internal static MenuControls? OrNull(nint address) => address != 0 ? new MenuControls(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -51653,6 +52831,8 @@ public readonly partial struct MenuControls : IEquatable<MenuControls>
         /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public QueuedReg() => address = 0;
+
+        internal static QueuedReg FromAddress(nint address) => new QueuedReg(address);
 
         internal static QueuedReg? OrNull(nint address) => address != 0 ? new QueuedReg(address) : null;
 
@@ -51725,6 +52905,8 @@ public readonly partial struct MenuCursor : IEquatable<MenuCursor>
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. Use GameTarget.MenuCursor, which returns the instance the game creates.", error: true)]
     public MenuCursor() => address = 0;
+
+    internal static MenuCursor FromAddress(nint address) => new MenuCursor(address);
 
     internal static MenuCursor? OrNull(nint address) => address != 0 ? new MenuCursor(address) : null;
 
@@ -51888,6 +53070,8 @@ public readonly partial struct MenuOpenHandler : IMenuEventHandler, IEquatable<M
 
     nint IAddressable.Address => Address;
 
+    internal static MenuOpenHandler FromAddress(nint address) => new MenuOpenHandler(address);
+
     internal static MenuOpenHandler? OrNull(nint address) => address != 0 ? new MenuOpenHandler(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -51927,6 +53111,8 @@ public readonly partial struct MenuTopicManager : IEquatable<MenuTopicManager>
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. Use GameTarget.MenuTopicManager, which returns the instance the game creates.", error: true)]
     public MenuTopicManager() => address = 0;
+
+    internal static MenuTopicManager FromAddress(nint address) => new MenuTopicManager(address);
 
     internal static MenuTopicManager? OrNull(nint address) => address != 0 ? new MenuTopicManager(address) : null;
 
@@ -52000,6 +53186,8 @@ public readonly partial struct Message : IForm, IEquatable<Message>
     public Message() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static Message FromAddress(nint address) => new Message(address);
 
     internal static Message? OrNull(nint address) => address != 0 ? new Message(address) : null;
 
@@ -52088,6 +53276,8 @@ public readonly partial struct MessageBoxData : IUIMessageData_, IEquatable<Mess
 
     nint IAddressable.Address => Address;
 
+    internal static MessageBoxData FromAddress(nint address) => new MessageBoxData(address);
+
     internal static MessageBoxData? OrNull(nint address) => address != 0 ? new MessageBoxData(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -52126,6 +53316,8 @@ public readonly partial struct MessageBoxMenu : IMenu_, IEquatable<MessageBoxMen
     public MessageBoxMenu() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static MessageBoxMenu FromAddress(nint address) => new MessageBoxMenu(address);
 
     /// <summary>The name the game registers this menu under, which <see cref="MenuOpenCloseEventArgs.MenuName"/> reports and the UI members that take a menu name accept.</summary>
     public const string MenuName = "MessageBoxMenu";
@@ -52206,6 +53398,8 @@ public readonly partial struct MiddleHighProcessData : IEquatable<MiddleHighProc
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public MiddleHighProcessData() => address = 0;
+
+    internal static MiddleHighProcessData FromAddress(nint address) => new MiddleHighProcessData(address);
 
     internal static MiddleHighProcessData? OrNull(nint address) => address != 0 ? new MiddleHighProcessData(address) : null;
 
@@ -52418,6 +53612,8 @@ public readonly partial struct MistMenu : IMenu_, IEquatable<MistMenu>
 
     nint IAddressable.Address => Address;
 
+    internal static MistMenu FromAddress(nint address) => new MistMenu(address);
+
     /// <summary>The name the game registers this menu under, which <see cref="MenuOpenCloseEventArgs.MenuName"/> reports and the UI members that take a menu name accept.</summary>
     public const string MenuName = "Mist Menu";
 
@@ -52496,6 +53692,8 @@ public readonly partial struct MistMenu : IMenu_, IEquatable<MistMenu>
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public VR_RUNTIME_DATA() => address = 0;
 
+        internal static VR_RUNTIME_DATA FromAddress(nint address) => new VR_RUNTIME_DATA(address);
+
         internal static VR_RUNTIME_DATA? OrNull(nint address) => address != 0 ? new VR_RUNTIME_DATA(address) : null;
 
         /// <summary>Whether both views are over one address.</summary>
@@ -52533,6 +53731,8 @@ public readonly partial struct ModManagerMenu : IMenu_, IEquatable<ModManagerMen
     public ModManagerMenu() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ModManagerMenu FromAddress(nint address) => new ModManagerMenu(address);
 
     /// <summary>The name the game registers this menu under, which <see cref="MenuOpenCloseEventArgs.MenuName"/> reports and the UI members that take a menu name accept.</summary>
     public const string MenuName = "Mod Manager Menu";
@@ -52615,6 +53815,8 @@ public readonly partial struct ModelReferenceEffect : IReferenceEffect, IEquatab
     public ModelReferenceEffect() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ModelReferenceEffect FromAddress(nint address) => new ModelReferenceEffect(address);
 
     internal static ModelReferenceEffect? OrNull(nint address) => address != 0 ? new ModelReferenceEffect(address) : null;
 
@@ -52709,6 +53911,8 @@ public readonly partial struct Moon : ISkyObject, IEquatable<Moon>
 
     nint IAddressable.Address => Address;
 
+    internal static Moon FromAddress(nint address) => new Moon(address);
+
     internal static Moon? OrNull(nint address) => address != 0 ? new Moon(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -52757,6 +53961,8 @@ public readonly partial struct MotionGestureEvent : IDEvent_, IEquatable<MotionG
 
     nint IAddressable.Address => Address;
 
+    internal static MotionGestureEvent FromAddress(nint address) => new MotionGestureEvent(address);
+
     internal static MotionGestureEvent? OrNull(nint address) => address != 0 ? new MotionGestureEvent(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -52798,6 +54004,8 @@ public readonly partial struct MouseMoveEvent : IDEvent_, IEquatable<MouseMoveEv
     public MouseMoveEvent() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static MouseMoveEvent FromAddress(nint address) => new MouseMoveEvent(address);
 
     internal static MouseMoveEvent? OrNull(nint address) => address != 0 ? new MouseMoveEvent(address) : null;
 
@@ -52882,6 +54090,8 @@ public readonly partial struct MovementControllerNPC : IMovementControllerAI, IE
 
     nint IAddressable.Address => Address;
 
+    internal static MovementControllerNPC FromAddress(nint address) => new MovementControllerNPC(address);
+
     internal static MovementControllerNPC? OrNull(nint address) => address != 0 ? new MovementControllerNPC(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -52924,6 +54134,8 @@ public readonly partial struct MovementHandler : IPlayerInputHandler, IEquatable
 
     nint IAddressable.Address => Address;
 
+    internal static MovementHandler FromAddress(nint address) => new MovementHandler(address);
+
     internal static MovementHandler? OrNull(nint address) => address != 0 ? new MovementHandler(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -52961,6 +54173,8 @@ public readonly partial struct MovementMessage : IEquatable<MovementMessage>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public MovementMessage() => address = 0;
 
+    internal static MovementMessage FromAddress(nint address) => new MovementMessage(address);
+
     internal static MovementMessage? OrNull(nint address) => address != 0 ? new MovementMessage(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -52996,6 +54210,8 @@ public readonly partial struct MultiBoundMarkerData : IBSExtraData, IEquatable<M
     public MultiBoundMarkerData() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static MultiBoundMarkerData FromAddress(nint address) => new MultiBoundMarkerData(address);
 
     internal static MultiBoundMarkerData? OrNull(nint address) => address != 0 ? new MultiBoundMarkerData(address) : null;
 
@@ -53035,6 +54251,8 @@ public readonly partial struct MusicType : IForm, IEquatable<MusicType>
     public MusicType() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static MusicType FromAddress(nint address) => new MusicType(address);
 
     internal static MusicType? OrNull(nint address) => address != 0 ? new MusicType(address) : null;
 
@@ -53154,6 +54372,8 @@ public readonly partial struct NavMesh : IForm, IEquatable<NavMesh>
 
     nint IAddressable.Address => Address;
 
+    internal static NavMesh FromAddress(nint address) => new NavMesh(address);
+
     internal static NavMesh? OrNull(nint address) => address != 0 ? new NavMesh(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -53193,6 +54413,8 @@ public readonly partial struct NavMeshArray : IEquatable<NavMeshArray>
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public NavMeshArray() => address = 0;
+
+    internal static NavMeshArray FromAddress(nint address) => new NavMeshArray(address);
 
     internal static NavMeshArray? OrNull(nint address) => address != 0 ? new NavMeshArray(address) : null;
 
@@ -53270,6 +54492,8 @@ public readonly partial struct NavMeshInfoMap : IForm, IEquatable<NavMeshInfoMap
     public NavMeshInfoMap() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static NavMeshInfoMap FromAddress(nint address) => new NavMeshInfoMap(address);
 
     internal static NavMeshInfoMap? OrNull(nint address) => address != 0 ? new NavMeshInfoMap(address) : null;
 
@@ -53392,6 +54616,8 @@ public readonly partial struct NiAVObject : INiAVObject, IEquatable<NiAVObject>
         /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public VR_OCCLUSION_BOX() => address = 0;
+
+        internal static VR_OCCLUSION_BOX FromAddress(nint address) => new VR_OCCLUSION_BOX(address);
 
         internal static VR_OCCLUSION_BOX? OrNull(nint address) => address != 0 ? new VR_OCCLUSION_BOX(address) : null;
 
@@ -53517,6 +54743,8 @@ public readonly partial struct NiAllocator : IEquatable<NiAllocator>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public NiAllocator() => address = 0;
 
+    internal static NiAllocator FromAddress(nint address) => new NiAllocator(address);
+
     internal static NiAllocator? OrNull(nint address) => address != 0 ? new NiAllocator(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -53602,6 +54830,8 @@ public readonly partial struct NiAlphaProperty : INiProperty, IEquatable<NiAlpha
     public NiAlphaProperty() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static NiAlphaProperty FromAddress(nint address) => new NiAlphaProperty(address);
 
     internal static NiAlphaProperty? OrNull(nint address) => address != 0 ? new NiAlphaProperty(address) : null;
 
@@ -53778,6 +55008,8 @@ public readonly partial struct NiBillboardNode : INiNode, IEquatable<NiBillboard
 
     nint IAddressable.Address => Address;
 
+    internal static NiBillboardNode FromAddress(nint address) => new NiBillboardNode(address);
+
     internal static NiBillboardNode? OrNull(nint address) => address != 0 ? new NiBillboardNode(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -53914,6 +55146,8 @@ public readonly partial struct NiBlendInterpolator : IEquatable<NiBlendInterpola
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public NiBlendInterpolator() => address = 0;
 
+    internal static NiBlendInterpolator FromAddress(nint address) => new NiBlendInterpolator(address);
+
     internal static NiBlendInterpolator? OrNull(nint address) => address != 0 ? new NiBlendInterpolator(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -53948,6 +55182,8 @@ public readonly partial struct NiBoneMatrixSetterI : IEquatable<NiBoneMatrixSett
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public NiBoneMatrixSetterI() => address = 0;
 
+    internal static NiBoneMatrixSetterI FromAddress(nint address) => new NiBoneMatrixSetterI(address);
+
     internal static NiBoneMatrixSetterI? OrNull(nint address) => address != 0 ? new NiBoneMatrixSetterI(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -53981,6 +55217,8 @@ public readonly partial struct NiBoolInterpolator : IEquatable<NiBoolInterpolato
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public NiBoolInterpolator() => address = 0;
+
+    internal static NiBoolInterpolator FromAddress(nint address) => new NiBoolInterpolator(address);
 
     internal static NiBoolInterpolator? OrNull(nint address) => address != 0 ? new NiBoolInterpolator(address) : null;
 
@@ -54293,6 +55531,8 @@ public readonly partial struct NiColorData : INiObject, IEquatable<NiColorData>
 
     nint IAddressable.Address => Address;
 
+    internal static NiColorData FromAddress(nint address) => new NiColorData(address);
+
     internal static NiColorData? OrNull(nint address) => address != 0 ? new NiColorData(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -54334,6 +55574,8 @@ public readonly partial struct NiColorInterpolator : INiKeyBasedInterpolator, IE
     public NiColorInterpolator() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static NiColorInterpolator FromAddress(nint address) => new NiColorInterpolator(address);
 
     internal static NiColorInterpolator? OrNull(nint address) => address != 0 ? new NiColorInterpolator(address) : null;
 
@@ -54424,6 +55666,8 @@ public readonly partial struct NiControllerManager : INiTimeController, IEquatab
 
     nint IAddressable.Address => Address;
 
+    internal static NiControllerManager FromAddress(nint address) => new NiControllerManager(address);
+
     internal static NiControllerManager? OrNull(nint address) => address != 0 ? new NiControllerManager(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -54468,6 +55712,8 @@ public readonly partial struct NiControllerSequence : INiObject, IEquatable<NiCo
     public NiControllerSequence() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static NiControllerSequence FromAddress(nint address) => new NiControllerSequence(address);
 
     internal static NiControllerSequence? OrNull(nint address) => address != 0 ? new NiControllerSequence(address) : null;
 
@@ -54636,6 +55882,8 @@ public readonly partial struct NiDefaultAVObjectPalette : INiAVObjectPalette, IE
 
     nint IAddressable.Address => Address;
 
+    internal static NiDefaultAVObjectPalette FromAddress(nint address) => new NiDefaultAVObjectPalette(address);
+
     internal static NiDefaultAVObjectPalette? OrNull(nint address) => address != 0 ? new NiDefaultAVObjectPalette(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -54680,6 +55928,8 @@ public readonly partial struct NiDirectionalLight : INiLight, IEquatable<NiDirec
     public NiDirectionalLight() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static NiDirectionalLight FromAddress(nint address) => new NiDirectionalLight(address);
 
     internal static NiDirectionalLight? OrNull(nint address) => address != 0 ? new NiDirectionalLight(address) : null;
 
@@ -54865,6 +56115,8 @@ public readonly partial struct NiFloatData : INiObject, IEquatable<NiFloatData>
 
     nint IAddressable.Address => Address;
 
+    internal static NiFloatData FromAddress(nint address) => new NiFloatData(address);
+
     internal static NiFloatData? OrNull(nint address) => address != 0 ? new NiFloatData(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -54906,6 +56158,8 @@ public readonly partial struct NiFloatInterpolator : INiKeyBasedInterpolator, IE
     public NiFloatInterpolator() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static NiFloatInterpolator FromAddress(nint address) => new NiFloatInterpolator(address);
 
     internal static NiFloatInterpolator? OrNull(nint address) => address != 0 ? new NiFloatInterpolator(address) : null;
 
@@ -55344,6 +56598,8 @@ public readonly partial struct NiInterpController : INiTimeController, IEquatabl
 
     nint IAddressable.Address => Address;
 
+    internal static NiInterpController FromAddress(nint address) => new NiInterpController(address);
+
     internal static NiInterpController? OrNull(nint address) => address != 0 ? new NiInterpController(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -55619,6 +56875,8 @@ public readonly partial struct NiMemManager : IEquatable<NiMemManager>
     [Obsolete("Creates a view with no address. Use GameTarget.NiMemManager, which returns the instance the game creates.", error: true)]
     public NiMemManager() => address = 0;
 
+    internal static NiMemManager FromAddress(nint address) => new NiMemManager(address);
+
     internal static NiMemManager? OrNull(nint address) => address != 0 ? new NiMemManager(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -55654,6 +56912,8 @@ public readonly partial struct NiMeshParticleSystem : INiParticleSystem, IEquata
     public NiMeshParticleSystem() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static NiMeshParticleSystem FromAddress(nint address) => new NiMeshParticleSystem(address);
 
     internal static NiMeshParticleSystem? OrNull(nint address) => address != 0 ? new NiMeshParticleSystem(address) : null;
 
@@ -55959,6 +57219,8 @@ public readonly partial struct NiPSysData : INiParticlesData, IEquatable<NiPSysD
 
     nint IAddressable.Address => Address;
 
+    internal static NiPSysData FromAddress(nint address) => new NiPSysData(address);
+
     internal static NiPSysData? OrNull(nint address) => address != 0 ? new NiPSysData(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -56040,6 +57302,8 @@ public readonly partial struct NiPSysModifier : INiObject, IEquatable<NiPSysModi
     public NiPSysModifier() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static NiPSysModifier FromAddress(nint address) => new NiPSysModifier(address);
 
     internal static NiPSysModifier? OrNull(nint address) => address != 0 ? new NiPSysModifier(address) : null;
 
@@ -56478,6 +57742,8 @@ public readonly partial struct NiPointLight : INiLight, IEquatable<NiPointLight>
 
     nint IAddressable.Address => Address;
 
+    internal static NiPointLight FromAddress(nint address) => new NiPointLight(address);
+
     internal static NiPointLight? OrNull(nint address) => address != 0 ? new NiPointLight(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -56620,6 +57886,8 @@ public readonly partial struct NiQuatTransform : IEquatable<NiQuatTransform>
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public NiQuatTransform() => address = 0;
+
+    internal static NiQuatTransform FromAddress(nint address) => new NiQuatTransform(address);
 
     internal static NiQuatTransform? OrNull(nint address) => address != 0 ? new NiQuatTransform(address) : null;
 
@@ -56817,6 +58085,8 @@ public readonly partial struct NiSkinData : INiObject, IEquatable<NiSkinData>
 
     nint IAddressable.Address => Address;
 
+    internal static NiSkinData FromAddress(nint address) => new NiSkinData(address);
+
     internal static NiSkinData? OrNull(nint address) => address != 0 ? new NiSkinData(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -56896,6 +58166,8 @@ public readonly partial struct NiSkinInstance : INiObject, IEquatable<NiSkinInst
 
     nint IAddressable.Address => Address;
 
+    internal static NiSkinInstance FromAddress(nint address) => new NiSkinInstance(address);
+
     internal static NiSkinInstance? OrNull(nint address) => address != 0 ? new NiSkinInstance(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -56937,6 +58209,8 @@ public readonly partial struct NiSkinPartition : INiObject, IEquatable<NiSkinPar
     public NiSkinPartition() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static NiSkinPartition FromAddress(nint address) => new NiSkinPartition(address);
 
     internal static NiSkinPartition? OrNull(nint address) => address != 0 ? new NiSkinPartition(address) : null;
 
@@ -57053,6 +58327,8 @@ public readonly partial struct NiSourceTexture : INiTexture, IEquatable<NiSource
 
     nint IAddressable.Address => Address;
 
+    internal static NiSourceTexture FromAddress(nint address) => new NiSourceTexture(address);
+
     internal static NiSourceTexture? OrNull(nint address) => address != 0 ? new NiSourceTexture(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -57096,6 +58372,8 @@ public readonly partial struct NiStream : IEquatable<NiStream>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public NiStream() => address = 0;
 
+    internal static NiStream FromAddress(nint address) => new NiStream(address);
+
     internal static NiStream? OrNull(nint address) => address != 0 ? new NiStream(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -57131,6 +58409,8 @@ public readonly partial struct NiSwitchNode : INiNode, IEquatable<NiSwitchNode>
     public NiSwitchNode() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static NiSwitchNode FromAddress(nint address) => new NiSwitchNode(address);
 
     internal static NiSwitchNode? OrNull(nint address) => address != 0 ? new NiSwitchNode(address) : null;
 
@@ -57298,6 +58578,8 @@ public readonly partial struct NiTexture : INiTexture, IEquatable<NiTexture>
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public RendererData() => address = 0;
 
+        internal static RendererData FromAddress(nint address) => new RendererData(address);
+
         internal static RendererData? OrNull(nint address) => address != 0 ? new RendererData(address) : null;
 
         /// <summary>Whether both views are over one address.</summary>
@@ -57440,6 +58722,8 @@ public readonly partial struct NiTriBasedGeom : IEquatable<NiTriBasedGeom>
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public NiTriBasedGeom() => address = 0;
+
+    internal static NiTriBasedGeom FromAddress(nint address) => new NiTriBasedGeom(address);
 
     internal static NiTriBasedGeom? OrNull(nint address) => address != 0 ? new NiTriBasedGeom(address) : null;
 
@@ -57670,6 +58954,8 @@ public readonly partial struct NiTriShapeData : INiTriBasedGeomData, IEquatable<
 
     nint IAddressable.Address => Address;
 
+    internal static NiTriShapeData FromAddress(nint address) => new NiTriShapeData(address);
+
     internal static NiTriShapeData? OrNull(nint address) => address != 0 ? new NiTriShapeData(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -57715,6 +59001,8 @@ public readonly partial struct NiTriShapeData : INiTriBasedGeomData, IEquatable<
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public RUNTIME_DATA() => address = 0;
 
+        internal static RUNTIME_DATA FromAddress(nint address) => new RUNTIME_DATA(address);
+
         internal static RUNTIME_DATA? OrNull(nint address) => address != 0 ? new RUNTIME_DATA(address) : null;
 
         /// <summary>Whether both views are over one address.</summary>
@@ -57752,6 +59040,8 @@ public readonly partial struct NiTriStrips : INiTriBasedGeometry, IEquatable<NiT
     public NiTriStrips() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static NiTriStrips FromAddress(nint address) => new NiTriStrips(address);
 
     internal static NiTriStrips? OrNull(nint address) => address != 0 ? new NiTriStrips(address) : null;
 
@@ -57807,6 +59097,8 @@ public readonly partial struct NiTriStripsData : INiTriBasedGeomData, IEquatable
 
     nint IAddressable.Address => Address;
 
+    internal static NiTriStripsData FromAddress(nint address) => new NiTriStripsData(address);
+
     internal static NiTriStripsData? OrNull(nint address) => address != 0 ? new NiTriStripsData(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -57851,6 +59143,8 @@ public readonly partial struct NiTriStripsData : INiTriBasedGeomData, IEquatable
         /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public RUNTIME_DATA() => address = 0;
+
+        internal static RUNTIME_DATA FromAddress(nint address) => new RUNTIME_DATA(address);
 
         internal static RUNTIME_DATA? OrNull(nint address) => address != 0 ? new RUNTIME_DATA(address) : null;
 
@@ -57971,6 +59265,8 @@ public readonly partial struct NightEyeEffect : IValueModifierEffect, IEquatable
 
     nint IAddressable.Address => Address;
 
+    internal static NightEyeEffect FromAddress(nint address) => new NightEyeEffect(address);
+
     internal static NightEyeEffect? OrNull(nint address) => address != 0 ? new NightEyeEffect(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -58013,6 +59309,8 @@ public readonly partial struct NonActorMagicCaster : IExtraMagicCaster, IEquatab
 
     nint IAddressable.Address => Address;
 
+    internal static NonActorMagicCaster FromAddress(nint address) => new NonActorMagicCaster(address);
+
     internal static NonActorMagicCaster? OrNull(nint address) => address != 0 ? new NonActorMagicCaster(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -58054,6 +59352,8 @@ public readonly partial struct NonActorMagicTarget : IBSExtraData, IEquatable<No
     public NonActorMagicTarget() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static NonActorMagicTarget FromAddress(nint address) => new NonActorMagicTarget(address);
 
     internal static NonActorMagicTarget? OrNull(nint address) => address != 0 ? new NonActorMagicTarget(address) : null;
 
@@ -58708,6 +60008,8 @@ public readonly partial struct OpenEffect : IActiveMagicEffect, IEquatable<OpenE
 
     nint IAddressable.Address => Address;
 
+    internal static OpenEffect FromAddress(nint address) => new OpenEffect(address);
+
     internal static OpenEffect? OrNull(nint address) => address != 0 ? new OpenEffect(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -58746,6 +60048,8 @@ public readonly partial struct Outfit : IForm, IEquatable<Outfit>
     public Outfit() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static Outfit FromAddress(nint address) => new Outfit(address);
 
     internal static Outfit? OrNull(nint address) => address != 0 ? new Outfit(address) : null;
 
@@ -58786,6 +60090,8 @@ public readonly partial struct OverrideData : IEquatable<OverrideData>
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public OverrideData() => address = 0;
+
+    internal static OverrideData FromAddress(nint address) => new OverrideData(address);
 
     internal static OverrideData? OrNull(nint address) => address != 0 ? new OverrideData(address) : null;
 
@@ -59453,6 +60759,8 @@ public readonly partial struct PackageLocation : IAIWorldLocationHandle_, IEquat
 
     nint IAddressable.Address => Address;
 
+    internal static PackageLocation FromAddress(nint address) => new PackageLocation(address);
+
     internal static PackageLocation? OrNull(nint address) => address != 0 ? new PackageLocation(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -59661,6 +60969,8 @@ public readonly partial struct ParalysisEffect : IValueModifierEffect, IEquatabl
 
     nint IAddressable.Address => Address;
 
+    internal static ParalysisEffect FromAddress(nint address) => new ParalysisEffect(address);
+
     internal static ParalysisEffect? OrNull(nint address) => address != 0 ? new ParalysisEffect(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -59739,6 +61049,8 @@ public readonly partial struct PeakValueModifierEffect : IValueModifierEffect, I
 
     nint IAddressable.Address => Address;
 
+    internal static PeakValueModifierEffect FromAddress(nint address) => new PeakValueModifierEffect(address);
+
     internal static PeakValueModifierEffect? OrNull(nint address) => address != 0 ? new PeakValueModifierEffect(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -59779,6 +61091,8 @@ public readonly partial struct PerformOpFunc : IEquatable<PerformOpFunc>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public PerformOpFunc() => address = 0;
 
+    internal static PerformOpFunc FromAddress(nint address) => new PerformOpFunc(address);
+
     internal static PerformOpFunc? OrNull(nint address) => address != 0 ? new PerformOpFunc(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -59814,6 +61128,8 @@ public readonly partial struct Perk : IForm, IEquatable<Perk>
     public Perk() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static Perk FromAddress(nint address) => new Perk(address);
 
     internal static Perk? OrNull(nint address) => address != 0 ? new Perk(address) : null;
 
@@ -59965,6 +61281,8 @@ public readonly partial struct PlayerCamera : ITESCamera, IEquatable<PlayerCamer
 
     nint IAddressable.Address => Address;
 
+    internal static PlayerCamera FromAddress(nint address) => new PlayerCamera(address);
+
     internal static PlayerCamera? OrNull(nint address) => address != 0 ? new PlayerCamera(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -60073,6 +61391,8 @@ public readonly partial struct PlayerCamera : ITESCamera, IEquatable<PlayerCamer
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public VR_RUNTIME_DATA() => address = 0;
 
+        internal static VR_RUNTIME_DATA FromAddress(nint address) => new VR_RUNTIME_DATA(address);
+
         internal static VR_RUNTIME_DATA? OrNull(nint address) => address != 0 ? new VR_RUNTIME_DATA(address) : null;
 
         /// <summary>Whether both views are over one address.</summary>
@@ -60110,6 +61430,8 @@ public readonly partial struct PlayerCharacter : ICharacter, IEquatable<PlayerCh
     public PlayerCharacter() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static PlayerCharacter FromAddress(nint address) => new PlayerCharacter(address);
 
     internal static PlayerCharacter? OrNull(nint address) => address != 0 ? new PlayerCharacter(address) : null;
 
@@ -60622,6 +61944,8 @@ public readonly partial struct PlayerCharacter : ICharacter, IEquatable<PlayerCh
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public VRGrabData() => address = 0;
 
+        internal static VRGrabData FromAddress(nint address) => new VRGrabData(address);
+
         internal static VRGrabData? OrNull(nint address) => address != 0 ? new VRGrabData(address) : null;
 
         /// <summary>Whether both views are over one address.</summary>
@@ -60696,6 +62020,8 @@ public readonly partial struct PlayerCharacter : ICharacter, IEquatable<PlayerCh
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public VR_INFO_RUNTIME_DATA() => address = 0;
 
+        internal static VR_INFO_RUNTIME_DATA FromAddress(nint address) => new VR_INFO_RUNTIME_DATA(address);
+
         internal static VR_INFO_RUNTIME_DATA? OrNull(nint address) => address != 0 ? new VR_INFO_RUNTIME_DATA(address) : null;
 
         /// <summary>Whether both views are over one address.</summary>
@@ -60732,6 +62058,8 @@ public readonly partial struct PlayerCharacter : ICharacter, IEquatable<PlayerCh
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public VR_PLAYER_RUNTIME_DATA() => address = 0;
 
+        internal static VR_PLAYER_RUNTIME_DATA FromAddress(nint address) => new VR_PLAYER_RUNTIME_DATA(address);
+
         internal static VR_PLAYER_RUNTIME_DATA? OrNull(nint address) => address != 0 ? new VR_PLAYER_RUNTIME_DATA(address) : null;
 
         /// <summary>Whether both views are over one address.</summary>
@@ -60767,6 +62095,8 @@ public readonly partial struct PlayerControls : IEquatable<PlayerControls>
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. Use GameTarget.PlayerControls, which returns the instance the game creates.", error: true)]
     public PlayerControls() => address = 0;
+
+    internal static PlayerControls FromAddress(nint address) => new PlayerControls(address);
 
     internal static PlayerControls? OrNull(nint address) => address != 0 ? new PlayerControls(address) : null;
 
@@ -60928,6 +62258,8 @@ public readonly partial struct Potion : IMagicItem, IEquatable<Potion>
 
     nint IAddressable.Address => Address;
 
+    internal static Potion FromAddress(nint address) => new Potion(address);
+
     internal static Potion? OrNull(nint address) => address != 0 ? new Potion(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -61025,6 +62357,8 @@ public readonly partial struct Precipitation : IEquatable<Precipitation>
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public Precipitation() => address = 0;
+
+    internal static Precipitation FromAddress(nint address) => new Precipitation(address);
 
     internal static Precipitation? OrNull(nint address) => address != 0 ? new Precipitation(address) : null;
 
@@ -61137,6 +62471,8 @@ public readonly partial struct ProcessLists : IEquatable<ProcessLists>
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. Use GameTarget.ProcessLists, which returns the instance the game creates.", error: true)]
     public ProcessLists() => address = 0;
+
+    internal static ProcessLists FromAddress(nint address) => new ProcessLists(address);
 
     internal static ProcessLists? OrNull(nint address) => address != 0 ? new ProcessLists(address) : null;
 
@@ -61293,6 +62629,8 @@ public readonly partial struct Projectile : IProjectile, IEquatable<Projectile>
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public LaunchData() => address = 0;
 
+        internal static LaunchData FromAddress(nint address) => new LaunchData(address);
+
         internal static LaunchData? OrNull(nint address) => address != 0 ? new LaunchData(address) : null;
 
         /// <summary>Whether both views are over one address.</summary>
@@ -61326,6 +62664,8 @@ public readonly partial struct Projectile : IProjectile, IEquatable<Projectile>
         /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
         [Obsolete("Creates a view with no address. Use GameTarget.ProjectileManager, which returns the instance the game creates.", error: true)]
         public Manager() => address = 0;
+
+        internal static Manager FromAddress(nint address) => new Manager(address);
 
         internal static Manager? OrNull(nint address) => address != 0 ? new Manager(address) : null;
 
@@ -61559,6 +62899,8 @@ public readonly partial struct Quest : IBGSStoryManagerTreeForm, IEquatable<Ques
 
     nint IAddressable.Address => Address;
 
+    internal static Quest FromAddress(nint address) => new Quest(address);
+
     internal static Quest? OrNull(nint address) => address != 0 ? new Quest(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -61672,6 +63014,8 @@ public readonly partial struct QueuedDialogueType : IEquatable<QueuedDialogueTyp
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public QueuedDialogueType() => address = 0;
+
+    internal static QueuedDialogueType FromAddress(nint address) => new QueuedDialogueType(address);
 
     internal static QueuedDialogueType? OrNull(nint address) => address != 0 ? new QueuedDialogueType(address) : null;
 
@@ -61825,6 +63169,8 @@ public readonly partial struct QuickSaveLoadHandler : IMenuEventHandler, IEquata
     public QuickSaveLoadHandler() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static QuickSaveLoadHandler FromAddress(nint address) => new QuickSaveLoadHandler(address);
 
     internal static QuickSaveLoadHandler? OrNull(nint address) => address != 0 ? new QuickSaveLoadHandler(address) : null;
 
@@ -61996,6 +63342,8 @@ public readonly partial struct RANK_DATA : IEquatable<RANK_DATA>
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public RANK_DATA() => address = 0;
+
+    internal static RANK_DATA FromAddress(nint address) => new RANK_DATA(address);
 
     internal static RANK_DATA? OrNull(nint address) => address != 0 ? new RANK_DATA(address) : null;
 
@@ -62349,6 +63697,8 @@ public readonly partial struct Race : IForm, IEquatable<Race>
 
     nint IAddressable.Address => Address;
 
+    internal static Race FromAddress(nint address) => new Race(address);
+
     internal static Race? OrNull(nint address) => address != 0 ? new Race(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -62482,6 +63832,8 @@ public readonly partial struct Race : IForm, IEquatable<Race>
             /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
             [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
             public TintAsset() => address = 0;
+
+            internal static TintAsset FromAddress(nint address) => new TintAsset(address);
 
             internal static TintAsset? OrNull(nint address) => address != 0 ? new TintAsset(address) : null;
 
@@ -62736,6 +64088,8 @@ public readonly partial struct RaceSexMenu : IMenu_, IEquatable<RaceSexMenu>
 
     nint IAddressable.Address => Address;
 
+    internal static RaceSexMenu FromAddress(nint address) => new RaceSexMenu(address);
+
     /// <summary>The name the game registers this menu under, which <see cref="MenuOpenCloseEventArgs.MenuName"/> reports and the UI members that take a menu name accept.</summary>
     public const string MenuName = "RaceSex Menu";
 
@@ -62813,6 +64167,8 @@ public readonly partial struct RaceSexMenu : IMenu_, IEquatable<RaceSexMenu>
         /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public VR_RUNTIME_DATA() => address = 0;
+
+        internal static VR_RUNTIME_DATA FromAddress(nint address) => new VR_RUNTIME_DATA(address);
 
         internal static VR_RUNTIME_DATA? OrNull(nint address) => address != 0 ? new VR_RUNTIME_DATA(address) : null;
 
@@ -62924,6 +64280,8 @@ public readonly partial struct RallyEffect : ITargetValueModifierEffect, IEquata
 
     nint IAddressable.Address => Address;
 
+    internal static RallyEffect FromAddress(nint address) => new RallyEffect(address);
+
     internal static RallyEffect? OrNull(nint address) => address != 0 ? new RallyEffect(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -62969,6 +64327,8 @@ public readonly partial struct ReadyWeaponHandler : IPlayerInputHandler, IEquata
 
     nint IAddressable.Address => Address;
 
+    internal static ReadyWeaponHandler FromAddress(nint address) => new ReadyWeaponHandler(address);
+
     internal static ReadyWeaponHandler? OrNull(nint address) => address != 0 ? new ReadyWeaponHandler(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -63007,6 +64367,8 @@ public readonly partial struct ReadyWeaponHandler : IPlayerInputHandler, IEquata
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public VR_RUNTIME_DATA() => address = 0;
 
+        internal static VR_RUNTIME_DATA FromAddress(nint address) => new VR_RUNTIME_DATA(address);
+
         internal static VR_RUNTIME_DATA? OrNull(nint address) => address != 0 ? new VR_RUNTIME_DATA(address) : null;
 
         /// <summary>Whether both views are over one address.</summary>
@@ -63044,6 +64406,8 @@ public readonly partial struct ReanimateEffect : ICommandEffect, IEquatable<Rean
     public ReanimateEffect() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ReanimateEffect FromAddress(nint address) => new ReanimateEffect(address);
 
     internal static ReanimateEffect? OrNull(nint address) => address != 0 ? new ReanimateEffect(address) : null;
 
@@ -63127,6 +64491,8 @@ public readonly partial struct ReferenceAlias : IAlias, IEquatable<ReferenceAlia
     public ReferenceAlias() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ReferenceAlias FromAddress(nint address) => new ReferenceAlias(address);
 
     internal static ReferenceAlias? OrNull(nint address) => address != 0 ? new ReferenceAlias(address) : null;
 
@@ -63611,6 +64977,8 @@ public readonly partial struct RefrInteraction : ISyncQueueObj, IEquatable<RefrI
 
     nint IAddressable.Address => Address;
 
+    internal static RefrInteraction FromAddress(nint address) => new RefrInteraction(address);
+
     internal static RefrInteraction? OrNull(nint address) => address != 0 ? new RefrInteraction(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -63688,6 +65056,8 @@ public readonly partial struct RunHandler : IHeldStateHandler, IEquatable<RunHan
     public RunHandler() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static RunHandler FromAddress(nint address) => new RunHandler(address);
 
     internal static RunHandler? OrNull(nint address) => address != 0 ? new RunHandler(address) : null;
 
@@ -64174,6 +65544,8 @@ public readonly partial struct SafeZoneMenu : IMenu_, IEquatable<SafeZoneMenu>
 
     nint IAddressable.Address => Address;
 
+    internal static SafeZoneMenu FromAddress(nint address) => new SafeZoneMenu(address);
+
     /// <summary>The name the game registers this menu under, which <see cref="MenuOpenCloseEventArgs.MenuName"/> reports and the UI members that take a menu name accept.</summary>
     public const string MenuName = "SafeZoneMenu";
 
@@ -64218,6 +65590,8 @@ public readonly partial struct SaveStorageWrapper : IBSMemStorage, IEquatable<Sa
     public SaveStorageWrapper() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static SaveStorageWrapper FromAddress(nint address) => new SaveStorageWrapper(address);
 
     internal static SaveStorageWrapper? OrNull(nint address) => address != 0 ? new SaveStorageWrapper(address) : null;
 
@@ -64300,6 +65674,8 @@ public readonly partial struct Scene : IForm, IEquatable<Scene>
 
     nint IAddressable.Address => Address;
 
+    internal static Scene FromAddress(nint address) => new Scene(address);
+
     internal static Scene? OrNull(nint address) => address != 0 ? new Scene(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -64369,6 +65745,8 @@ public readonly partial struct SceneGraph : IBSSceneGraph, IEquatable<SceneGraph
 
     nint IAddressable.Address => Address;
 
+    internal static SceneGraph FromAddress(nint address) => new SceneGraph(address);
+
     internal static SceneGraph? OrNull(nint address) => address != 0 ? new SceneGraph(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -64421,6 +65799,8 @@ public readonly partial struct SceneGraph : IBSSceneGraph, IEquatable<SceneGraph
         /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public SCENE_GRAPH_RUNTIME_DATA() => address = 0;
+
+        internal static SCENE_GRAPH_RUNTIME_DATA FromAddress(nint address) => new SCENE_GRAPH_RUNTIME_DATA(address);
 
         internal static SCENE_GRAPH_RUNTIME_DATA? OrNull(nint address) => address != 0 ? new SCENE_GRAPH_RUNTIME_DATA(address) : null;
 
@@ -64631,6 +66011,8 @@ public readonly partial struct ScreenSplatter : IEquatable<ScreenSplatter>
     [Obsolete("Creates a view with no address. Use GameTarget.ScreenSplatter, which returns the instance the game creates.", error: true)]
     public ScreenSplatter() => address = 0;
 
+    internal static ScreenSplatter FromAddress(nint address) => new ScreenSplatter(address);
+
     internal static ScreenSplatter? OrNull(nint address) => address != 0 ? new ScreenSplatter(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -64666,6 +66048,8 @@ public readonly partial struct ScreenshotHandler : IMenuEventHandler, IEquatable
     public ScreenshotHandler() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ScreenshotHandler FromAddress(nint address) => new ScreenshotHandler(address);
 
     internal static ScreenshotHandler? OrNull(nint address) => address != 0 ? new ScreenshotHandler(address) : null;
 
@@ -64708,6 +66092,8 @@ public readonly partial struct Script : IForm, IEquatable<Script>
     public Script() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static Script FromAddress(nint address) => new Script(address);
 
     internal static Script? OrNull(nint address) => address != 0 ? new Script(address) : null;
 
@@ -64826,6 +66212,8 @@ public readonly partial struct ScriptEventSourceHolder : IEquatable<ScriptEventS
     [Obsolete("Creates a view with no address. Use GameTarget.ScriptEventSourceHolder, which returns the instance the game creates.", error: true)]
     public ScriptEventSourceHolder() => address = 0;
 
+    internal static ScriptEventSourceHolder FromAddress(nint address) => new ScriptEventSourceHolder(address);
+
     internal static ScriptEventSourceHolder? OrNull(nint address) => address != 0 ? new ScriptEventSourceHolder(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -64934,6 +66322,8 @@ public readonly partial struct ScriptedRefEffect : IScriptEffect, IEquatable<Scr
 
     nint IAddressable.Address => Address;
 
+    internal static ScriptedRefEffect FromAddress(nint address) => new ScriptedRefEffect(address);
+
     internal static ScriptedRefEffect? OrNull(nint address) => address != 0 ? new ScriptedRefEffect(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -64975,6 +66365,8 @@ public readonly partial struct Scroll : ISpell, IEquatable<Scroll>
     public Scroll() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static Scroll FromAddress(nint address) => new Scroll(address);
 
     internal static Scroll? OrNull(nint address) => address != 0 ? new Scroll(address) : null;
 
@@ -65027,6 +66419,8 @@ public readonly partial struct SeenData : IEquatable<SeenData>
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public SeenData() => address = 0;
+
+    internal static SeenData FromAddress(nint address) => new SeenData(address);
 
     internal static SeenData? OrNull(nint address) => address != 0 ? new SeenData(address) : null;
 
@@ -65097,6 +66491,8 @@ public readonly partial struct Setting : IEquatable<Setting>
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public Setting() => address = 0;
+
+    internal static Setting FromAddress(nint address) => new Setting(address);
 
     internal static Setting? OrNull(nint address) => address != 0 ? new Setting(address) : null;
 
@@ -65188,6 +66584,8 @@ public readonly partial struct ShaderParticleGeometry : IForm, IEquatable<Shader
     public ShaderParticleGeometry() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ShaderParticleGeometry FromAddress(nint address) => new ShaderParticleGeometry(address);
 
     internal static ShaderParticleGeometry? OrNull(nint address) => address != 0 ? new ShaderParticleGeometry(address) : null;
 
@@ -65403,6 +66801,8 @@ public readonly partial struct ShaderReferenceEffect : IReferenceEffect, IEquata
 
     nint IAddressable.Address => Address;
 
+    internal static ShaderReferenceEffect FromAddress(nint address) => new ShaderReferenceEffect(address);
+
     internal static ShaderReferenceEffect? OrNull(nint address) => address != 0 ? new ShaderReferenceEffect(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -65539,6 +66939,8 @@ public readonly partial struct ShadowSceneNode : INiNode, IEquatable<ShadowScene
 
     nint IAddressable.Address => Address;
 
+    internal static ShadowSceneNode FromAddress(nint address) => new ShadowSceneNode(address);
+
     internal static ShadowSceneNode? OrNull(nint address) => address != 0 ? new ShadowSceneNode(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -65665,6 +67067,8 @@ public readonly partial struct Shout : IForm, IEquatable<Shout>
 
     nint IAddressable.Address => Address;
 
+    internal static Shout FromAddress(nint address) => new Shout(address);
+
     internal static Shout? OrNull(nint address) => address != 0 ? new Shout(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -65758,6 +67162,8 @@ public readonly partial struct ShoutHandler : IPlayerInputHandler, IEquatable<Sh
 
     nint IAddressable.Address => Address;
 
+    internal static ShoutHandler FromAddress(nint address) => new ShoutHandler(address);
+
     internal static ShoutHandler? OrNull(nint address) => address != 0 ? new ShoutHandler(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -65793,6 +67199,8 @@ public readonly partial struct ShoutHandler : IPlayerInputHandler, IEquatable<Sh
         /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public VR_RUNTIME_DATA() => address = 0;
+
+        internal static VR_RUNTIME_DATA FromAddress(nint address) => new VR_RUNTIME_DATA(address);
 
         internal static VR_RUNTIME_DATA? OrNull(nint address) => address != 0 ? new VR_RUNTIME_DATA(address) : null;
 
@@ -65831,6 +67239,8 @@ public readonly partial struct ShoutMeter : IHUDMeter, IEquatable<ShoutMeter>
     public ShoutMeter() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ShoutMeter FromAddress(nint address) => new ShoutMeter(address);
 
     internal static ShoutMeter? OrNull(nint address) => address != 0 ? new ShoutMeter(address) : null;
 
@@ -65873,6 +67283,8 @@ public readonly partial struct SimpleAnimationGraphManagerHolder : IAnimationGra
     public SimpleAnimationGraphManagerHolder() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static SimpleAnimationGraphManagerHolder FromAddress(nint address) => new SimpleAnimationGraphManagerHolder(address);
 
     internal static SimpleAnimationGraphManagerHolder? OrNull(nint address) => address != 0 ? new SimpleAnimationGraphManagerHolder(address) : null;
 
@@ -65954,6 +67366,8 @@ public readonly partial struct Sky : IEquatable<Sky>
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. Use GameTarget.Sky, which returns the instance the game creates.", error: true)]
     public Sky() => address = 0;
+
+    internal static Sky FromAddress(nint address) => new Sky(address);
 
     internal static Sky? OrNull(nint address) => address != 0 ? new Sky(address) : null;
 
@@ -66168,6 +67582,8 @@ public readonly partial struct SkySound : IEquatable<SkySound>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public SkySound() => address = 0;
 
+    internal static SkySound FromAddress(nint address) => new SkySound(address);
+
     internal static SkySound? OrNull(nint address) => address != 0 ? new SkySound(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -66201,6 +67617,8 @@ public readonly partial struct SkyrimVM : IEquatable<SkyrimVM>
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. Use GameTarget.SkyrimVM, which returns the instance the game creates.", error: true)]
     public SkyrimVM() => address = 0;
+
+    internal static SkyrimVM FromAddress(nint address) => new SkyrimVM(address);
 
     internal static SkyrimVM? OrNull(nint address) => address != 0 ? new SkyrimVM(address) : null;
 
@@ -66386,6 +67804,8 @@ public readonly partial struct SkyrimVM : IEquatable<SkyrimVM>
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public VR_RUNTIME_DATA() => address = 0;
 
+        internal static VR_RUNTIME_DATA FromAddress(nint address) => new VR_RUNTIME_DATA(address);
+
         internal static VR_RUNTIME_DATA? OrNull(nint address) => address != 0 ? new VR_RUNTIME_DATA(address) : null;
 
         /// <summary>Whether both views are over one address.</summary>
@@ -66459,6 +67879,8 @@ public readonly partial struct SleepWaitMenu : IMenu_, IEquatable<SleepWaitMenu>
     public SleepWaitMenu() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static SleepWaitMenu FromAddress(nint address) => new SleepWaitMenu(address);
 
     /// <summary>The name the game registers this menu under, which <see cref="MenuOpenCloseEventArgs.MenuName"/> reports and the UI members that take a menu name accept.</summary>
     public const string MenuName = "Sleep/Wait Menu";
@@ -66542,6 +67964,8 @@ public readonly partial struct SlowTimeEffect : IScriptEffect, IEquatable<SlowTi
 
     nint IAddressable.Address => Address;
 
+    internal static SlowTimeEffect FromAddress(nint address) => new SlowTimeEffect(address);
+
     internal static SlowTimeEffect? OrNull(nint address) => address != 0 ? new SlowTimeEffect(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -66584,6 +68008,8 @@ public readonly partial struct SneakHandler : IPlayerInputHandler, IEquatable<Sn
 
     nint IAddressable.Address => Address;
 
+    internal static SneakHandler FromAddress(nint address) => new SneakHandler(address);
+
     internal static SneakHandler? OrNull(nint address) => address != 0 ? new SneakHandler(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -66619,6 +68045,8 @@ public readonly partial struct SneakHandler : IPlayerInputHandler, IEquatable<Sn
         /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public VR_RUNTIME_DATA() => address = 0;
+
+        internal static VR_RUNTIME_DATA FromAddress(nint address) => new VR_RUNTIME_DATA(address);
 
         internal static VR_RUNTIME_DATA? OrNull(nint address) => address != 0 ? new VR_RUNTIME_DATA(address) : null;
 
@@ -66657,6 +68085,8 @@ public readonly partial struct SoulGem : IMiscObject, IEquatable<SoulGem>
     public SoulGem() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static SoulGem FromAddress(nint address) => new SoulGem(address);
 
     internal static SoulGem? OrNull(nint address) => address != 0 ? new SoulGem(address) : null;
 
@@ -66709,6 +68139,8 @@ public readonly partial struct SoulTrapEffect : IActiveMagicEffect, IEquatable<S
 
     nint IAddressable.Address => Address;
 
+    internal static SoulTrapEffect FromAddress(nint address) => new SoulTrapEffect(address);
+
     internal static SoulTrapEffect? OrNull(nint address) => address != 0 ? new SoulTrapEffect(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -66747,6 +68179,8 @@ public readonly partial struct Sound : ITESBoundAnimObject, IEquatable<Sound>
     public Sound() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static Sound FromAddress(nint address) => new Sound(address);
 
     internal static Sound? OrNull(nint address) => address != 0 ? new Sound(address) : null;
 
@@ -66799,6 +68233,8 @@ public readonly partial struct SoundCategory : IForm, IEquatable<SoundCategory>
 
     nint IAddressable.Address => Address;
 
+    internal static SoundCategory FromAddress(nint address) => new SoundCategory(address);
+
     internal static SoundCategory? OrNull(nint address) => address != 0 ? new SoundCategory(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -66849,6 +68285,8 @@ public readonly partial struct SoundDescriptor : IForm, IEquatable<SoundDescript
     public SoundDescriptor() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static SoundDescriptor FromAddress(nint address) => new SoundDescriptor(address);
 
     internal static SoundDescriptor? OrNull(nint address) => address != 0 ? new SoundDescriptor(address) : null;
 
@@ -66964,6 +68402,8 @@ public readonly partial struct SpawnHazardEffect : IActiveMagicEffect, IEquatabl
 
     nint IAddressable.Address => Address;
 
+    internal static SpawnHazardEffect FromAddress(nint address) => new SpawnHazardEffect(address);
+
     internal static SpawnHazardEffect? OrNull(nint address) => address != 0 ? new SpawnHazardEffect(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -67000,6 +68440,8 @@ public readonly partial struct SpecialRefData : IEquatable<SpecialRefData>
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public SpecialRefData() => address = 0;
+
+    internal static SpecialRefData FromAddress(nint address) => new SpecialRefData(address);
 
     internal static SpecialRefData? OrNull(nint address) => address != 0 ? new SpecialRefData(address) : null;
 
@@ -67143,6 +68585,8 @@ public readonly partial struct SprintHandler : IHeldStateHandler, IEquatable<Spr
 
     nint IAddressable.Address => Address;
 
+    internal static SprintHandler FromAddress(nint address) => new SprintHandler(address);
+
     internal static SprintHandler? OrNull(nint address) => address != 0 ? new SprintHandler(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -67181,6 +68625,8 @@ public readonly partial struct SprintHandler : IHeldStateHandler, IEquatable<Spr
         /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public VR_RUNTIME_DATA() => address = 0;
+
+        internal static VR_RUNTIME_DATA FromAddress(nint address) => new VR_RUNTIME_DATA(address);
 
         internal static VR_RUNTIME_DATA? OrNull(nint address) => address != 0 ? new VR_RUNTIME_DATA(address) : null;
 
@@ -67297,6 +68743,8 @@ public readonly partial struct Stars : ISkyObject, IEquatable<Stars>
 
     nint IAddressable.Address => Address;
 
+    internal static Stars FromAddress(nint address) => new Stars(address);
+
     internal static Stars? OrNull(nint address) => address != 0 ? new Stars(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -67335,6 +68783,8 @@ public readonly partial struct Static : ITESBoundObject, IEquatable<Static>
     public Static() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static Static FromAddress(nint address) => new Static(address);
 
     internal static Static? OrNull(nint address) => address != 0 ? new Static(address) : null;
 
@@ -67383,6 +68833,8 @@ public readonly partial struct StatsMenu : IMenu_, IEquatable<StatsMenu>
     public StatsMenu() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static StatsMenu FromAddress(nint address) => new StatsMenu(address);
 
     /// <summary>The name the game registers this menu under, which <see cref="MenuOpenCloseEventArgs.MenuName"/> reports and the UI members that take a menu name accept.</summary>
     public const string MenuName = "StatsMenu";
@@ -67545,6 +68997,8 @@ public readonly partial struct SubtitleManager : IEquatable<SubtitleManager>
     [Obsolete("Creates a view with no address. Use GameTarget.SubtitleManager, which returns the instance the game creates.", error: true)]
     public SubtitleManager() => address = 0;
 
+    internal static SubtitleManager FromAddress(nint address) => new SubtitleManager(address);
+
     internal static SubtitleManager? OrNull(nint address) => address != 0 ? new SubtitleManager(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -67580,6 +69034,8 @@ public readonly partial struct SummonCreatureEffect : IActiveMagicEffect, IEquat
     public SummonCreatureEffect() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static SummonCreatureEffect FromAddress(nint address) => new SummonCreatureEffect(address);
 
     internal static SummonCreatureEffect? OrNull(nint address) => address != 0 ? new SummonCreatureEffect(address) : null;
 
@@ -67619,6 +69075,8 @@ public readonly partial struct SummonPlacementEffect : IReferenceEffect, IEquata
     public SummonPlacementEffect() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static SummonPlacementEffect FromAddress(nint address) => new SummonPlacementEffect(address);
 
     internal static SummonPlacementEffect? OrNull(nint address) => address != 0 ? new SummonPlacementEffect(address) : null;
 
@@ -67667,6 +69125,8 @@ public readonly partial struct Sun : ISkyObject, IEquatable<Sun>
     public Sun() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static Sun FromAddress(nint address) => new Sun(address);
 
     internal static Sun? OrNull(nint address) => address != 0 ? new Sun(address) : null;
 
@@ -67765,6 +69225,8 @@ public readonly partial struct TES : ICellAttachDetachEventSource_, IEquatable<T
 
     nint IAddressable.Address => Address;
 
+    internal static TES FromAddress(nint address) => new TES(address);
+
     internal static TES? OrNull(nint address) => address != 0 ? new TES(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -67800,6 +69262,8 @@ public readonly partial struct TES : ICellAttachDetachEventSource_, IEquatable<T
         /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public AE_RUNTIME_DATA() => address = 0;
+
+        internal static AE_RUNTIME_DATA FromAddress(nint address) => new AE_RUNTIME_DATA(address);
 
         internal static AE_RUNTIME_DATA? OrNull(nint address) => address != 0 ? new AE_RUNTIME_DATA(address) : null;
 
@@ -67870,6 +69334,8 @@ public readonly partial struct TES : ICellAttachDetachEventSource_, IEquatable<T
         /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public RUNTIME_DATA() => address = 0;
+
+        internal static RUNTIME_DATA FromAddress(nint address) => new RUNTIME_DATA(address);
 
         internal static RUNTIME_DATA? OrNull(nint address) => address != 0 ? new RUNTIME_DATA(address) : null;
 
@@ -67944,6 +69410,8 @@ public readonly partial struct TESAIForm : IBaseFormComponent, IEquatable<TESAIF
     public TESAIForm() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static TESAIForm FromAddress(nint address) => new TESAIForm(address);
 
     internal static TESAIForm? OrNull(nint address) => address != 0 ? new TESAIForm(address) : null;
 
@@ -68037,6 +69505,8 @@ public readonly partial struct TESActorBaseData : IBaseFormComponent, IEquatable
 
     nint IAddressable.Address => Address;
 
+    internal static TESActorBaseData FromAddress(nint address) => new TESActorBaseData(address);
+
     internal static TESActorBaseData? OrNull(nint address) => address != 0 ? new TESActorBaseData(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -68075,6 +69545,8 @@ public readonly partial struct TESAttackDamageForm : IBaseFormComponent, IEquata
     public TESAttackDamageForm() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static TESAttackDamageForm FromAddress(nint address) => new TESAttackDamageForm(address);
 
     internal static TESAttackDamageForm? OrNull(nint address) => address != 0 ? new TESAttackDamageForm(address) : null;
 
@@ -68115,6 +69587,8 @@ public readonly partial struct TESBipedModelForm : IBaseFormComponent, IEquatabl
 
     nint IAddressable.Address => Address;
 
+    internal static TESBipedModelForm FromAddress(nint address) => new TESBipedModelForm(address);
+
     internal static TESBipedModelForm? OrNull(nint address) => address != 0 ? new TESBipedModelForm(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -68151,6 +69625,8 @@ public readonly partial struct TESBitArrayFile : IEquatable<TESBitArrayFile>
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public TESBitArrayFile() => address = 0;
+
+    internal static TESBitArrayFile FromAddress(nint address) => new TESBitArrayFile(address);
 
     internal static TESBitArrayFile? OrNull(nint address) => address != 0 ? new TESBitArrayFile(address) : null;
 
@@ -68399,6 +69875,8 @@ public readonly partial struct TESChildCell : IEquatable<TESChildCell>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public TESChildCell() => address = 0;
 
+    internal static TESChildCell FromAddress(nint address) => new TESChildCell(address);
+
     internal static TESChildCell? OrNull(nint address) => address != 0 ? new TESChildCell(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -68434,6 +69912,8 @@ public readonly partial struct TESClimate : IForm, IEquatable<TESClimate>
     public TESClimate() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static TESClimate FromAddress(nint address) => new TESClimate(address);
 
     internal static TESClimate? OrNull(nint address) => address != 0 ? new TESClimate(address) : null;
 
@@ -68673,6 +70153,8 @@ public readonly partial struct TESCustomPackageData : ITESPackageData, IEquatabl
 
     nint IAddressable.Address => Address;
 
+    internal static TESCustomPackageData FromAddress(nint address) => new TESCustomPackageData(address);
+
     internal static TESCustomPackageData? OrNull(nint address) => address != 0 ? new TESCustomPackageData(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -68709,6 +70191,8 @@ public readonly partial struct TESDataHandler : IEquatable<TESDataHandler>
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. Use GameTarget.DataHandler, which returns the instance the game creates.", error: true)]
     public TESDataHandler() => address = 0;
+
+    internal static TESDataHandler FromAddress(nint address) => new TESDataHandler(address);
 
     internal static TESDataHandler? OrNull(nint address) => address != 0 ? new TESDataHandler(address) : null;
 
@@ -68824,6 +70308,8 @@ public readonly partial struct TESEnchantableForm : IBaseFormComponent, IEquatab
 
     nint IAddressable.Address => Address;
 
+    internal static TESEnchantableForm FromAddress(nint address) => new TESEnchantableForm(address);
+
     internal static TESEnchantableForm? OrNull(nint address) => address != 0 ? new TESEnchantableForm(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -68862,6 +70348,8 @@ public readonly partial struct TESEyes : IForm, IEquatable<TESEyes>
     public TESEyes() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static TESEyes FromAddress(nint address) => new TESEyes(address);
 
     internal static TESEyes? OrNull(nint address) => address != 0 ? new TESEyes(address) : null;
 
@@ -69148,6 +70636,8 @@ public readonly partial struct TESGrass : ITESBoundObject, IEquatable<TESGrass>
 
     nint IAddressable.Address => Address;
 
+    internal static TESGrass FromAddress(nint address) => new TESGrass(address);
+
     internal static TESGrass? OrNull(nint address) => address != 0 ? new TESGrass(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -69316,6 +70806,8 @@ public readonly partial struct TESImageSpace : IForm, IEquatable<TESImageSpace>
 
     nint IAddressable.Address => Address;
 
+    internal static TESImageSpace FromAddress(nint address) => new TESImageSpace(address);
+
     internal static TESImageSpace? OrNull(nint address) => address != 0 ? new TESImageSpace(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -69358,6 +70850,8 @@ public readonly partial struct TESImageSpaceModifiableForm : IBaseFormComponent,
 
     nint IAddressable.Address => Address;
 
+    internal static TESImageSpaceModifiableForm FromAddress(nint address) => new TESImageSpaceModifiableForm(address);
+
     internal static TESImageSpaceModifiableForm? OrNull(nint address) => address != 0 ? new TESImageSpaceModifiableForm(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -69396,6 +70890,8 @@ public readonly partial struct TESLandTexture : IForm, IEquatable<TESLandTexture
     public TESLandTexture() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static TESLandTexture FromAddress(nint address) => new TESLandTexture(address);
 
     internal static TESLandTexture? OrNull(nint address) => address != 0 ? new TESLandTexture(address) : null;
 
@@ -69438,6 +70934,8 @@ public readonly partial struct TESLeveledList : IBaseFormComponent, IEquatable<T
     public TESLeveledList() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static TESLeveledList FromAddress(nint address) => new TESLeveledList(address);
 
     internal static TESLeveledList? OrNull(nint address) => address != 0 ? new TESLeveledList(address) : null;
 
@@ -69489,6 +70987,8 @@ public readonly partial struct TESLoadScreen : IForm, IEquatable<TESLoadScreen>
 
     nint IAddressable.Address => Address;
 
+    internal static TESLoadScreen FromAddress(nint address) => new TESLoadScreen(address);
+
     internal static TESLoadScreen? OrNull(nint address) => address != 0 ? new TESLoadScreen(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -69527,6 +71027,8 @@ public readonly partial struct TESLoadScreen : IForm, IEquatable<TESLoadScreen>
         /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public LoadNIFData() => address = 0;
+
+        internal static LoadNIFData FromAddress(nint address) => new LoadNIFData(address);
 
         internal static LoadNIFData? OrNull(nint address) => address != 0 ? new LoadNIFData(address) : null;
 
@@ -69767,6 +71269,8 @@ public readonly partial struct TESModelTextureSwap : ITESModel, IEquatable<TESMo
 
     nint IAddressable.Address => Address;
 
+    internal static TESModelTextureSwap FromAddress(nint address) => new TESModelTextureSwap(address);
+
     internal static TESModelTextureSwap? OrNull(nint address) => address != 0 ? new TESModelTextureSwap(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -69847,6 +71351,8 @@ public readonly partial struct TESModelTri : ITESModel, IEquatable<TESModelTri>
     public TESModelTri() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static TESModelTri FromAddress(nint address) => new TESModelTri(address);
 
     internal static TESModelTri? OrNull(nint address) => address != 0 ? new TESModelTri(address) : null;
 
@@ -69999,6 +71505,8 @@ public readonly partial struct TESObjectANIO : IForm, IEquatable<TESObjectANIO>
 
     nint IAddressable.Address => Address;
 
+    internal static TESObjectANIO FromAddress(nint address) => new TESObjectANIO(address);
+
     internal static TESObjectANIO? OrNull(nint address) => address != 0 ? new TESObjectANIO(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -70041,6 +71549,8 @@ public readonly partial struct TESObjectLAND : IForm, IEquatable<TESObjectLAND>
 
     nint IAddressable.Address => Address;
 
+    internal static TESObjectLAND FromAddress(nint address) => new TESObjectLAND(address);
+
     internal static TESObjectLAND? OrNull(nint address) => address != 0 ? new TESObjectLAND(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -70079,6 +71589,8 @@ public readonly partial struct TESObjectLAND : IForm, IEquatable<TESObjectLAND>
         /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public LoadedLandData() => address = 0;
+
+        internal static LoadedLandData FromAddress(nint address) => new LoadedLandData(address);
 
         internal static LoadedLandData? OrNull(nint address) => address != 0 ? new LoadedLandData(address) : null;
 
@@ -70236,6 +71748,8 @@ public readonly partial struct TESProduceForm : IBaseFormComponent, IEquatable<T
 
     nint IAddressable.Address => Address;
 
+    internal static TESProduceForm FromAddress(nint address) => new TESProduceForm(address);
+
     internal static TESProduceForm? OrNull(nint address) => address != 0 ? new TESProduceForm(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -70274,6 +71788,8 @@ public readonly partial struct TESQualityForm : IBaseFormComponent, IEquatable<T
     public TESQualityForm() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static TESQualityForm FromAddress(nint address) => new TESQualityForm(address);
 
     internal static TESQualityForm? OrNull(nint address) => address != 0 ? new TESQualityForm(address) : null;
 
@@ -70441,6 +71957,8 @@ public readonly partial struct TESRaceForm : IBaseFormComponent, IEquatable<TESR
 
     nint IAddressable.Address => Address;
 
+    internal static TESRaceForm FromAddress(nint address) => new TESRaceForm(address);
+
     internal static TESRaceForm? OrNull(nint address) => address != 0 ? new TESRaceForm(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -70480,6 +71998,8 @@ public readonly partial struct TESReactionForm : IBaseFormComponent, IEquatable<
 
     nint IAddressable.Address => Address;
 
+    internal static TESReactionForm FromAddress(nint address) => new TESReactionForm(address);
+
     internal static TESReactionForm? OrNull(nint address) => address != 0 ? new TESReactionForm(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -70518,6 +72038,8 @@ public readonly partial struct TESRegion : IForm, IEquatable<TESRegion>
     public TESRegion() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static TESRegion FromAddress(nint address) => new TESRegion(address);
 
     internal static TESRegion? OrNull(nint address) => address != 0 ? new TESRegion(address) : null;
 
@@ -70654,6 +72176,8 @@ public readonly partial struct TESRegionDataGrass : IEquatable<TESRegionDataGras
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public TESRegionDataGrass() => address = 0;
 
+    internal static TESRegionDataGrass FromAddress(nint address) => new TESRegionDataGrass(address);
+
     internal static TESRegionDataGrass? OrNull(nint address) => address != 0 ? new TESRegionDataGrass(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -70689,6 +72213,8 @@ public readonly partial struct TESRegionDataLandscape : ITESRegionData, IEquatab
     public TESRegionDataLandscape() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static TESRegionDataLandscape FromAddress(nint address) => new TESRegionDataLandscape(address);
 
     internal static TESRegionDataLandscape? OrNull(nint address) => address != 0 ? new TESRegionDataLandscape(address) : null;
 
@@ -70763,6 +72289,8 @@ public readonly partial struct TESRegionDataManager : IEquatable<TESRegionDataMa
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public TESRegionDataManager() => address = 0;
 
+    internal static TESRegionDataManager FromAddress(nint address) => new TESRegionDataManager(address);
+
     internal static TESRegionDataManager? OrNull(nint address) => address != 0 ? new TESRegionDataManager(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -70798,6 +72326,8 @@ public readonly partial struct TESRegionDataMap : ITESRegionData, IEquatable<TES
     public TESRegionDataMap() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static TESRegionDataMap FromAddress(nint address) => new TESRegionDataMap(address);
 
     internal static TESRegionDataMap? OrNull(nint address) => address != 0 ? new TESRegionDataMap(address) : null;
 
@@ -70836,6 +72366,8 @@ public readonly partial struct TESRegionDataObjects : IEquatable<TESRegionDataOb
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public TESRegionDataObjects() => address = 0;
 
+    internal static TESRegionDataObjects FromAddress(nint address) => new TESRegionDataObjects(address);
+
     internal static TESRegionDataObjects? OrNull(nint address) => address != 0 ? new TESRegionDataObjects(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -70871,6 +72403,8 @@ public readonly partial struct TESRegionDataSound : ITESRegionData, IEquatable<T
     public TESRegionDataSound() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static TESRegionDataSound FromAddress(nint address) => new TESRegionDataSound(address);
 
     internal static TESRegionDataSound? OrNull(nint address) => address != 0 ? new TESRegionDataSound(address) : null;
 
@@ -70960,6 +72494,8 @@ public readonly partial struct TESRegionDataWeather : ITESRegionData, IEquatable
 
     nint IAddressable.Address => Address;
 
+    internal static TESRegionDataWeather FromAddress(nint address) => new TESRegionDataWeather(address);
+
     internal static TESRegionDataWeather? OrNull(nint address) => address != 0 ? new TESRegionDataWeather(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -70996,6 +72532,8 @@ public readonly partial struct TESRegionList : IEquatable<TESRegionList>
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public TESRegionList() => address = 0;
+
+    internal static TESRegionList FromAddress(nint address) => new TESRegionList(address);
 
     internal static TESRegionList? OrNull(nint address) => address != 0 ? new TESRegionList(address) : null;
 
@@ -71142,6 +72680,8 @@ public readonly partial struct TESSpellList : IBaseFormComponent, IEquatable<TES
 
     nint IAddressable.Address => Address;
 
+    internal static TESSpellList FromAddress(nint address) => new TESSpellList(address);
+
     internal static TESSpellList? OrNull(nint address) => address != 0 ? new TESSpellList(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -71259,6 +72799,8 @@ public readonly partial struct TESTexture1024 : ITESTexture, IEquatable<TESTextu
 
     nint IAddressable.Address => Address;
 
+    internal static TESTexture1024 FromAddress(nint address) => new TESTexture1024(address);
+
     internal static TESTexture1024? OrNull(nint address) => address != 0 ? new TESTexture1024(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -71312,6 +72854,8 @@ public readonly partial struct TESValueForm : IBaseFormComponent, IEquatable<TES
 
     nint IAddressable.Address => Address;
 
+    internal static TESValueForm FromAddress(nint address) => new TESValueForm(address);
+
     internal static TESValueForm? OrNull(nint address) => address != 0 ? new TESValueForm(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -71350,6 +72894,8 @@ public readonly partial struct TESWaterForm : IForm, IEquatable<TESWaterForm>
     public TESWaterForm() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static TESWaterForm FromAddress(nint address) => new TESWaterForm(address);
 
     internal static TESWaterForm? OrNull(nint address) => address != 0 ? new TESWaterForm(address) : null;
 
@@ -71402,6 +72948,8 @@ public readonly partial struct TESWaterSystem : IEquatable<TESWaterSystem>
     [Obsolete("Creates a view with no address. Use GameTarget.WaterSystem, which returns the instance the game creates.", error: true)]
     public TESWaterSystem() => address = 0;
 
+    internal static TESWaterSystem FromAddress(nint address) => new TESWaterSystem(address);
+
     internal static TESWaterSystem? OrNull(nint address) => address != 0 ? new TESWaterSystem(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -71437,6 +72985,8 @@ public readonly partial struct TESWeightForm : IBaseFormComponent, IEquatable<TE
     public TESWeightForm() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static TESWeightForm FromAddress(nint address) => new TESWeightForm(address);
 
     internal static TESWeightForm? OrNull(nint address) => address != 0 ? new TESWeightForm(address) : null;
 
@@ -71629,6 +73179,8 @@ public readonly partial struct TalkingActivator : ITESObjectACTI, IEquatable<Tal
 
     nint IAddressable.Address => Address;
 
+    internal static TalkingActivator FromAddress(nint address) => new TalkingActivator(address);
+
     internal static TalkingActivator? OrNull(nint address) => address != 0 ? new TalkingActivator(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -71680,6 +73232,8 @@ public readonly partial struct TargetEntry : IEquatable<TargetEntry>
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public TargetEntry() => address = 0;
+
+    internal static TargetEntry FromAddress(nint address) => new TargetEntry(address);
 
     internal static TargetEntry? OrNull(nint address) => address != 0 ? new TargetEntry(address) : null;
 
@@ -71759,6 +73313,8 @@ public readonly partial struct TaskQueueInterface : IEquatable<TaskQueueInterfac
     [Obsolete("Creates a view with no address. Use GameTarget.TaskQueueInterface, which returns the instance the game creates.", error: true)]
     public TaskQueueInterface() => address = 0;
 
+    internal static TaskQueueInterface FromAddress(nint address) => new TaskQueueInterface(address);
+
     internal static TaskQueueInterface? OrNull(nint address) => address != 0 ? new TaskQueueInterface(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -71794,6 +73350,8 @@ public readonly partial struct TelekinesisEffect : IActiveMagicEffect, IEquatabl
     public TelekinesisEffect() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static TelekinesisEffect FromAddress(nint address) => new TelekinesisEffect(address);
 
     internal static TelekinesisEffect? OrNull(nint address) => address != 0 ? new TelekinesisEffect(address) : null;
 
@@ -71979,6 +73537,8 @@ public readonly partial struct TextureSet : ITESBoundObject, IEquatable<TextureS
 
     nint IAddressable.Address => Address;
 
+    internal static TextureSet FromAddress(nint address) => new TextureSet(address);
+
     internal static TextureSet? OrNull(nint address) => address != 0 ? new TextureSet(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -72037,6 +73597,8 @@ public readonly partial struct ThumbstickEvent : IDEvent_, IEquatable<Thumbstick
     public ThumbstickEvent() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static ThumbstickEvent FromAddress(nint address) => new ThumbstickEvent(address);
 
     internal static ThumbstickEvent? OrNull(nint address) => address != 0 ? new ThumbstickEvent(address) : null;
 
@@ -72150,6 +73712,8 @@ public readonly partial struct TitleSequenceMenu : IMenu_, IEquatable<TitleSeque
 
     nint IAddressable.Address => Address;
 
+    internal static TitleSequenceMenu FromAddress(nint address) => new TitleSequenceMenu(address);
+
     /// <summary>The name the game registers this menu under, which <see cref="MenuOpenCloseEventArgs.MenuName"/> reports and the UI members that take a menu name accept.</summary>
     public const string MenuName = "TitleSequence Menu";
 
@@ -72195,6 +73759,8 @@ public readonly partial struct TogglePOVHandler : IHeldStateHandler, IEquatable<
 
     nint IAddressable.Address => Address;
 
+    internal static TogglePOVHandler FromAddress(nint address) => new TogglePOVHandler(address);
+
     internal static TogglePOVHandler? OrNull(nint address) => address != 0 ? new TogglePOVHandler(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -72237,6 +73803,8 @@ public readonly partial struct ToggleRunHandler : IPlayerInputHandler, IEquatabl
 
     nint IAddressable.Address => Address;
 
+    internal static ToggleRunHandler FromAddress(nint address) => new ToggleRunHandler(address);
+
     internal static ToggleRunHandler? OrNull(nint address) => address != 0 ? new ToggleRunHandler(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -72275,6 +73843,8 @@ public readonly partial struct Topic : IForm, IEquatable<Topic>
     public Topic() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static Topic FromAddress(nint address) => new Topic(address);
 
     internal static Topic? OrNull(nint address) => address != 0 ? new Topic(address) : null;
 
@@ -72318,6 +73888,8 @@ public readonly partial struct TopicInfo : IForm, IEquatable<TopicInfo>
 
     nint IAddressable.Address => Address;
 
+    internal static TopicInfo FromAddress(nint address) => new TopicInfo(address);
+
     internal static TopicInfo? OrNull(nint address) => address != 0 ? new TopicInfo(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -72358,6 +73930,8 @@ public readonly partial struct TopicInfo : IForm, IEquatable<TopicInfo>
         /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public AE1799_RUNTIME_DATA() => address = 0;
+
+        internal static AE1799_RUNTIME_DATA FromAddress(nint address) => new AE1799_RUNTIME_DATA(address);
 
         internal static AE1799_RUNTIME_DATA? OrNull(nint address) => address != 0 ? new AE1799_RUNTIME_DATA(address) : null;
 
@@ -72499,6 +74073,8 @@ public readonly partial struct TrainingMenu : IMenu_, IEquatable<TrainingMenu>
 
     nint IAddressable.Address => Address;
 
+    internal static TrainingMenu FromAddress(nint address) => new TrainingMenu(address);
+
     /// <summary>The name the game registers this menu under, which <see cref="MenuOpenCloseEventArgs.MenuName"/> reports and the UI members that take a menu name accept.</summary>
     public const string MenuName = "Training Menu";
 
@@ -72579,6 +74155,8 @@ public readonly partial struct TrapData : IEquatable<TrapData>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public TrapData() => address = 0;
 
+    internal static TrapData FromAddress(nint address) => new TrapData(address);
+
     internal static TrapData? OrNull(nint address) => address != 0 ? new TrapData(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -72612,6 +74190,8 @@ public readonly partial struct TrapEntry : IEquatable<TrapEntry>
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public TrapEntry() => address = 0;
+
+    internal static TrapEntry FromAddress(nint address) => new TrapEntry(address);
 
     internal static TrapEntry? OrNull(nint address) => address != 0 ? new TrapEntry(address) : null;
 
@@ -72648,6 +74228,8 @@ public readonly partial struct TreeObject : ITESBoundObject, IEquatable<TreeObje
     public TreeObject() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static TreeObject FromAddress(nint address) => new TreeObject(address);
 
     internal static TreeObject? OrNull(nint address) => address != 0 ? new TreeObject(address) : null;
 
@@ -72705,6 +74287,8 @@ public readonly partial struct TrespassPackage : IEquatable<TrespassPackage>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public TrespassPackage() => address = 0;
 
+    internal static TrespassPackage FromAddress(nint address) => new TrespassPackage(address);
+
     internal static TrespassPackage? OrNull(nint address) => address != 0 ? new TrespassPackage(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -72740,6 +74324,8 @@ public readonly partial struct TurnUndeadEffect : IDemoralizeEffect, IEquatable<
     public TurnUndeadEffect() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static TurnUndeadEffect FromAddress(nint address) => new TurnUndeadEffect(address);
 
     internal static TurnUndeadEffect? OrNull(nint address) => address != 0 ? new TurnUndeadEffect(address) : null;
 
@@ -72789,6 +74375,8 @@ public readonly partial struct TutorialMenu : IMenu_, IEquatable<TutorialMenu>
 
     nint IAddressable.Address => Address;
 
+    internal static TutorialMenu FromAddress(nint address) => new TutorialMenu(address);
+
     /// <summary>The name the game registers this menu under, which <see cref="MenuOpenCloseEventArgs.MenuName"/> reports and the UI members that take a menu name accept.</summary>
     public const string MenuName = "Tutorial Menu";
 
@@ -72833,6 +74421,8 @@ public readonly partial struct TweenMenu : IMenu_, IEquatable<TweenMenu>
     public TweenMenu() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static TweenMenu FromAddress(nint address) => new TweenMenu(address);
 
     /// <summary>The name the game registers this menu under, which <see cref="MenuOpenCloseEventArgs.MenuName"/> reports and the UI members that take a menu name accept.</summary>
     public const string MenuName = "TweenMenu";
@@ -72914,6 +74504,8 @@ public readonly partial struct UI : IEquatable<UI>
     [Obsolete("Creates a view with no address. Use GameTarget.UI, which returns the instance the game creates.", error: true)]
     public UI() => address = 0;
 
+    internal static UI FromAddress(nint address) => new UI(address);
+
     internal static UI? OrNull(nint address) => address != 0 ? new UI(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -72983,6 +74575,8 @@ public readonly partial struct UI : IEquatable<UI>
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public VR_RUNTIME_DATA() => address = 0;
 
+        internal static VR_RUNTIME_DATA FromAddress(nint address) => new VR_RUNTIME_DATA(address);
+
         internal static VR_RUNTIME_DATA? OrNull(nint address) => address != 0 ? new VR_RUNTIME_DATA(address) : null;
 
         /// <summary>Whether both views are over one address.</summary>
@@ -73019,6 +74613,8 @@ public readonly partial struct UI3DSceneManager : IEquatable<UI3DSceneManager>
     [Obsolete("Creates a view with no address. Use GameTarget.UI3DSceneManager, which returns the instance the game creates.", error: true)]
     public UI3DSceneManager() => address = 0;
 
+    internal static UI3DSceneManager FromAddress(nint address) => new UI3DSceneManager(address);
+
     internal static UI3DSceneManager? OrNull(nint address) => address != 0 ? new UI3DSceneManager(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -73052,6 +74648,8 @@ public readonly partial struct UIBlurManager : IEquatable<UIBlurManager>
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. Use GameTarget.UIBlurManager, which returns the instance the game creates.", error: true)]
     public UIBlurManager() => address = 0;
+
+    internal static UIBlurManager FromAddress(nint address) => new UIBlurManager(address);
 
     internal static UIBlurManager? OrNull(nint address) => address != 0 ? new UIBlurManager(address) : null;
 
@@ -73122,6 +74720,8 @@ public readonly partial struct UIMessageQueue : IEquatable<UIMessageQueue>
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. Use GameTarget.UIMessageQueue, which returns the instance the game creates.", error: true)]
     public UIMessageQueue() => address = 0;
+
+    internal static UIMessageQueue FromAddress(nint address) => new UIMessageQueue(address);
 
     internal static UIMessageQueue? OrNull(nint address) => address != 0 ? new UIMessageQueue(address) : null;
 
@@ -73439,6 +75039,8 @@ public readonly partial struct UserEvents : IEquatable<UserEvents>
     [Obsolete("Creates a view with no address. Use GameTarget.UserEvents, which returns the instance the game creates.", error: true)]
     public UserEvents() => address = 0;
 
+    internal static UserEvents FromAddress(nint address) => new UserEvents(address);
+
     internal static UserEvents? OrNull(nint address) => address != 0 ? new UserEvents(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -73525,6 +75127,8 @@ public readonly partial struct VATS : IEquatable<VATS>
     [Obsolete("Creates a view with no address. Use GameTarget.VATS, which returns the instance the game creates.", error: true)]
     public VATS() => address = 0;
 
+    internal static VATS FromAddress(nint address) => new VATS(address);
+
     internal static VATS? OrNull(nint address) => address != 0 ? new VATS(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -73566,6 +75170,8 @@ public readonly partial struct VATSCameraShotQueueNode : IEquatable<VATSCameraSh
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public VATSCameraShotQueueNode() => address = 0;
+
+    internal static VATSCameraShotQueueNode FromAddress(nint address) => new VATSCameraShotQueueNode(address);
 
     internal static VATSCameraShotQueueNode? OrNull(nint address) => address != 0 ? new VATSCameraShotQueueNode(address) : null;
 
@@ -73799,6 +75405,8 @@ public readonly partial struct ValueAndConditionsEffect : IValueModifierEffect, 
 
     nint IAddressable.Address => Address;
 
+    internal static ValueAndConditionsEffect FromAddress(nint address) => new ValueAndConditionsEffect(address);
+
     internal static ValueAndConditionsEffect? OrNull(nint address) => address != 0 ? new ValueAndConditionsEffect(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -73882,6 +75490,8 @@ public readonly partial struct VampireLordEffect : IActiveMagicEffect, IEquatabl
 
     nint IAddressable.Address => Address;
 
+    internal static VampireLordEffect FromAddress(nint address) => new VampireLordEffect(address);
+
     internal static VampireLordEffect? OrNull(nint address) => address != 0 ? new VampireLordEffect(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -73920,6 +75530,8 @@ public readonly partial struct VisualEffect : IForm, IEquatable<VisualEffect>
     public VisualEffect() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static VisualEffect FromAddress(nint address) => new VisualEffect(address);
 
     internal static VisualEffect? OrNull(nint address) => address != 0 ? new VisualEffect(address) : null;
 
@@ -74010,6 +75622,8 @@ public readonly partial struct VoiceType : IForm, IEquatable<VoiceType>
 
     nint IAddressable.Address => Address;
 
+    internal static VoiceType FromAddress(nint address) => new VoiceType(address);
+
     internal static VoiceType? OrNull(nint address) => address != 0 ? new VoiceType(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -74051,6 +75665,8 @@ public readonly partial struct VrWandTouchpadPositionEvent : IVRWandEvent, IEqua
     public VrWandTouchpadPositionEvent() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static VrWandTouchpadPositionEvent FromAddress(nint address) => new VrWandTouchpadPositionEvent(address);
 
     internal static VrWandTouchpadPositionEvent? OrNull(nint address) => address != 0 ? new VrWandTouchpadPositionEvent(address) : null;
 
@@ -74096,6 +75712,8 @@ public readonly partial struct VrWandTouchpadSwipeEvent : IVRWandEvent, IEquatab
     public VrWandTouchpadSwipeEvent() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static VrWandTouchpadSwipeEvent FromAddress(nint address) => new VrWandTouchpadSwipeEvent(address);
 
     internal static VrWandTouchpadSwipeEvent? OrNull(nint address) => address != 0 ? new VrWandTouchpadSwipeEvent(address) : null;
 
@@ -74352,6 +75970,8 @@ public readonly partial struct WSActivateRollover : IWorldSpaceMenu, IEquatable<
 
     nint IAddressable.Address => Address;
 
+    internal static WSActivateRollover FromAddress(nint address) => new WSActivateRollover(address);
+
     /// <summary>The name the game registers this menu under, which <see cref="MenuOpenCloseEventArgs.MenuName"/> reports and the UI members that take a menu name accept.</summary>
     public const string MenuName = "WSActivateRollover";
 
@@ -74397,6 +76017,8 @@ public readonly partial struct WadingWaterData : IEquatable<WadingWaterData>
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public WadingWaterData() => address = 0;
+
+    internal static WadingWaterData FromAddress(nint address) => new WadingWaterData(address);
 
     internal static WadingWaterData? OrNull(nint address) => address != 0 ? new WadingWaterData(address) : null;
 
@@ -74506,6 +76128,8 @@ public readonly partial struct Weapon : ITESBoundObject, IEquatable<Weapon>
     public Weapon() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static Weapon FromAddress(nint address) => new Weapon(address);
 
     internal static Weapon? OrNull(nint address) => address != 0 ? new Weapon(address) : null;
 
@@ -74727,6 +76351,8 @@ public readonly partial struct Weapon : ITESBoundObject, IEquatable<Weapon>
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public ScopeArt() => address = 0;
 
+        internal static ScopeArt FromAddress(nint address) => new ScopeArt(address);
+
         internal static ScopeArt? OrNull(nint address) => address != 0 ? new ScopeArt(address) : null;
 
         /// <summary>Whether both views are over one address.</summary>
@@ -74764,6 +76390,8 @@ public readonly partial struct WeaponAnimationGraphManagerHolder : IAnimationGra
     public WeaponAnimationGraphManagerHolder() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static WeaponAnimationGraphManagerHolder FromAddress(nint address) => new WeaponAnimationGraphManagerHolder(address);
 
     internal static WeaponAnimationGraphManagerHolder? OrNull(nint address) => address != 0 ? new WeaponAnimationGraphManagerHolder(address) : null;
 
@@ -74823,6 +76451,8 @@ public readonly partial struct Weather : IForm, IEquatable<Weather>
     public Weather() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static Weather FromAddress(nint address) => new Weather(address);
 
     internal static Weather? OrNull(nint address) => address != 0 ? new Weather(address) : null;
 
@@ -75102,6 +76732,8 @@ public readonly partial struct WerewolfEffect : IActiveMagicEffect, IEquatable<W
 
     nint IAddressable.Address => Address;
 
+    internal static WerewolfEffect FromAddress(nint address) => new WerewolfEffect(address);
+
     internal static WerewolfEffect? OrNull(nint address) => address != 0 ? new WerewolfEffect(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -75141,6 +76773,8 @@ public readonly partial struct WerewolfFeedEffect : IActiveMagicEffect, IEquatab
 
     nint IAddressable.Address => Address;
 
+    internal static WerewolfFeedEffect FromAddress(nint address) => new WerewolfFeedEffect(address);
+
     internal static WerewolfFeedEffect? OrNull(nint address) => address != 0 ? new WerewolfFeedEffect(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -75178,6 +76812,8 @@ public readonly partial struct Win32FileType : IEquatable<Win32FileType>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public Win32FileType() => address = 0;
 
+    internal static Win32FileType FromAddress(nint address) => new Win32FileType(address);
+
     internal static Win32FileType? OrNull(nint address) => address != 0 ? new Win32FileType(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -75213,6 +76849,8 @@ public readonly partial struct WordOfPower : IForm, IEquatable<WordOfPower>
     public WordOfPower() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static WordOfPower FromAddress(nint address) => new WordOfPower(address);
 
     internal static WordOfPower? OrNull(nint address) => address != 0 ? new WordOfPower(address) : null;
 
@@ -75255,6 +76893,8 @@ public readonly partial struct WorldSpace : IForm, IEquatable<WorldSpace>
     public WorldSpace() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static WorldSpace FromAddress(nint address) => new WorldSpace(address);
 
     internal static WorldSpace? OrNull(nint address) => address != 0 ? new WorldSpace(address) : null;
 
@@ -75407,6 +77047,8 @@ public readonly partial struct ahkpWorld : IhkpWorld, IEquatable<ahkpWorld>
 
     nint IAddressable.Address => Address;
 
+    internal static ahkpWorld FromAddress(nint address) => new ahkpWorld(address);
+
     internal static ahkpWorld? OrNull(nint address) => address != 0 ? new ahkpWorld(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -75449,6 +77091,8 @@ public readonly partial struct bhkAttachmentCollisionObject : IEquatable<bhkAtta
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public bhkAttachmentCollisionObject() => address = 0;
+
+    internal static bhkAttachmentCollisionObject FromAddress(nint address) => new bhkAttachmentCollisionObject(address);
 
     internal static bhkAttachmentCollisionObject? OrNull(nint address) => address != 0 ? new bhkAttachmentCollisionObject(address) : null;
 
@@ -75530,6 +77174,8 @@ public readonly partial struct bhkBlendCollisionObject : IbhkCollisionObject, IE
 
     nint IAddressable.Address => Address;
 
+    internal static bhkBlendCollisionObject FromAddress(nint address) => new bhkBlendCollisionObject(address);
+
     internal static bhkBlendCollisionObject? OrNull(nint address) => address != 0 ? new bhkBlendCollisionObject(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -75581,6 +77227,8 @@ public readonly partial struct bhkCharacterController : INiRefObject, IEquatable
 
     nint IAddressable.Address => Address;
 
+    internal static bhkCharacterController FromAddress(nint address) => new bhkCharacterController(address);
+
     internal static bhkCharacterController? OrNull(nint address) => address != 0 ? new bhkCharacterController(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -75619,6 +77267,8 @@ public readonly partial struct bhkCollisionFilter : IhkpCollisionFilter, IEquata
     public bhkCollisionFilter() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static bhkCollisionFilter FromAddress(nint address) => new bhkCollisionFilter(address);
 
     internal static bhkCollisionFilter? OrNull(nint address) => address != 0 ? new bhkCollisionFilter(address) : null;
 
@@ -75848,6 +77498,8 @@ public readonly partial struct bhkICharOrientationController : IEquatable<bhkICh
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public bhkICharOrientationController() => address = 0;
 
+    internal static bhkICharOrientationController FromAddress(nint address) => new bhkICharOrientationController(address);
+
     internal static bhkICharOrientationController? OrNull(nint address) => address != 0 ? new bhkICharOrientationController(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -75881,6 +77533,8 @@ public readonly partial struct bhkLimitedHingeConstraint : IEquatable<bhkLimited
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public bhkLimitedHingeConstraint() => address = 0;
+
+    internal static bhkLimitedHingeConstraint FromAddress(nint address) => new bhkLimitedHingeConstraint(address);
 
     internal static bhkLimitedHingeConstraint? OrNull(nint address) => address != 0 ? new bhkLimitedHingeConstraint(address) : null;
 
@@ -76062,6 +77716,8 @@ public readonly partial struct bhkRigidBody : IbhkEntity, IEquatable<bhkRigidBod
 
     nint IAddressable.Address => Address;
 
+    internal static bhkRigidBody FromAddress(nint address) => new bhkRigidBody(address);
+
     internal static bhkRigidBody? OrNull(nint address) => address != 0 ? new bhkRigidBody(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -76163,6 +77819,8 @@ public readonly partial struct bhkShape : IbhkSerializable, IEquatable<bhkShape>
 
     nint IAddressable.Address => Address;
 
+    internal static bhkShape FromAddress(nint address) => new bhkShape(address);
+
     internal static bhkShape? OrNull(nint address) => address != 0 ? new bhkShape(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -76211,6 +77869,8 @@ public readonly partial struct bhkSimpleShapePhantom : INiRefObject, IEquatable<
 
     nint IAddressable.Address => Address;
 
+    internal static bhkSimpleShapePhantom FromAddress(nint address) => new bhkSimpleShapePhantom(address);
+
     internal static bhkSimpleShapePhantom? OrNull(nint address) => address != 0 ? new bhkSimpleShapePhantom(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -76249,6 +77909,8 @@ public readonly partial struct bhkWorld : IbhkSerializable, IEquatable<bhkWorld>
     public bhkWorld() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static bhkWorld FromAddress(nint address) => new bhkWorld(address);
 
     internal static bhkWorld? OrNull(nint address) => address != 0 ? new bhkWorld(address) : null;
 
@@ -76295,6 +77957,8 @@ public readonly partial struct bhkWorld : IbhkSerializable, IEquatable<bhkWorld>
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public AE1799_RUNTIME_DATA() => address = 0;
 
+        internal static AE1799_RUNTIME_DATA FromAddress(nint address) => new AE1799_RUNTIME_DATA(address);
+
         internal static AE1799_RUNTIME_DATA? OrNull(nint address) => address != 0 ? new AE1799_RUNTIME_DATA(address) : null;
 
         /// <summary>Whether both views are over one address.</summary>
@@ -76328,6 +77992,8 @@ public readonly partial struct bhkWorld : IbhkSerializable, IEquatable<bhkWorld>
         /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public bhkConstraintProjector() => address = 0;
+
+        internal static bhkConstraintProjector FromAddress(nint address) => new bhkConstraintProjector(address);
 
         internal static bhkConstraintProjector? OrNull(nint address) => address != 0 ? new bhkConstraintProjector(address) : null;
 
@@ -76823,6 +78489,8 @@ public readonly partial struct hkCriticalSection : IEquatable<hkCriticalSection>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public hkCriticalSection() => address = 0;
 
+    internal static hkCriticalSection FromAddress(nint address) => new hkCriticalSection(address);
+
     internal static hkCriticalSection? OrNull(nint address) => address != 0 ? new hkCriticalSection(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -76856,6 +78524,8 @@ public readonly partial struct hkCustomAttributes : IEquatable<hkCustomAttribute
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public hkCustomAttributes() => address = 0;
+
+    internal static hkCustomAttributes FromAddress(nint address) => new hkCustomAttributes(address);
 
     internal static hkCustomAttributes? OrNull(nint address) => address != 0 ? new hkCustomAttributes(address) : null;
 
@@ -76929,6 +78599,8 @@ public readonly partial struct hkLocalFrame : IhkReferencedObject, IEquatable<hk
 
     nint IAddressable.Address => Address;
 
+    internal static hkLocalFrame FromAddress(nint address) => new hkLocalFrame(address);
+
     internal static hkLocalFrame? OrNull(nint address) => address != 0 ? new hkLocalFrame(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -76970,6 +78642,8 @@ public readonly partial struct hkLocalFrameGroup : IhkReferencedObject, IEquatab
     public hkLocalFrameGroup() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static hkLocalFrameGroup FromAddress(nint address) => new hkLocalFrameGroup(address);
 
     internal static hkLocalFrameGroup? OrNull(nint address) => address != 0 ? new hkLocalFrameGroup(address) : null;
 
@@ -77318,6 +78992,8 @@ public readonly partial struct hkSphere : IEquatable<hkSphere>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public hkSphere() => address = 0;
 
+    internal static hkSphere FromAddress(nint address) => new hkSphere(address);
+
     internal static hkSphere? OrNull(nint address) => address != 0 ? new hkSphere(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -77352,6 +79028,8 @@ public readonly partial struct hkSpuCollisionCallbackUtil : IEquatable<hkSpuColl
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public hkSpuCollisionCallbackUtil() => address = 0;
 
+    internal static hkSpuCollisionCallbackUtil FromAddress(nint address) => new hkSpuCollisionCallbackUtil(address);
+
     internal static hkSpuCollisionCallbackUtil? OrNull(nint address) => address != 0 ? new hkSpuCollisionCallbackUtil(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -77385,6 +79063,8 @@ public readonly partial struct hkStatisticsCollector : IEquatable<hkStatisticsCo
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public hkStatisticsCollector() => address = 0;
+
+    internal static hkStatisticsCollector FromAddress(nint address) => new hkStatisticsCollector(address);
 
     internal static hkStatisticsCollector? OrNull(nint address) => address != 0 ? new hkStatisticsCollector(address) : null;
 
@@ -77636,6 +79316,8 @@ public readonly partial struct hkaBone : IEquatable<hkaBone>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public hkaBone() => address = 0;
 
+    internal static hkaBone FromAddress(nint address) => new hkaBone(address);
+
     internal static hkaBone? OrNull(nint address) => address != 0 ? new hkaBone(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -77670,6 +79352,8 @@ public readonly partial struct hkaDefaultAnimationControlMapperData : IEquatable
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public hkaDefaultAnimationControlMapperData() => address = 0;
 
+    internal static hkaDefaultAnimationControlMapperData FromAddress(nint address) => new hkaDefaultAnimationControlMapperData(address);
+
     internal static hkaDefaultAnimationControlMapperData? OrNull(nint address) => address != 0 ? new hkaDefaultAnimationControlMapperData(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -77703,6 +79387,8 @@ public readonly partial struct hkaFootPlacementIkSolver : IEquatable<hkaFootPlac
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public hkaFootPlacementIkSolver() => address = 0;
+
+    internal static hkaFootPlacementIkSolver FromAddress(nint address) => new hkaFootPlacementIkSolver(address);
 
     internal static hkaFootPlacementIkSolver? OrNull(nint address) => address != 0 ? new hkaFootPlacementIkSolver(address) : null;
 
@@ -77739,6 +79425,8 @@ public readonly partial struct hkaRagdollInstance : IhkReferencedObject, IEquata
     public hkaRagdollInstance() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static hkaRagdollInstance FromAddress(nint address) => new hkaRagdollInstance(address);
 
     internal static hkaRagdollInstance? OrNull(nint address) => address != 0 ? new hkaRagdollInstance(address) : null;
 
@@ -77780,6 +79468,8 @@ public readonly partial struct hkaRagdollRigidBodyController : IEquatable<hkaRag
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public hkaRagdollRigidBodyController() => address = 0;
 
+    internal static hkaRagdollRigidBodyController FromAddress(nint address) => new hkaRagdollRigidBodyController(address);
+
     internal static hkaRagdollRigidBodyController? OrNull(nint address) => address != 0 ? new hkaRagdollRigidBodyController(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -77815,6 +79505,8 @@ public readonly partial struct hkaSkeleton : IhkReferencedObject, IEquatable<hka
     public hkaSkeleton() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static hkaSkeleton FromAddress(nint address) => new hkaSkeleton(address);
 
     internal static hkaSkeleton? OrNull(nint address) => address != 0 ? new hkaSkeleton(address) : null;
 
@@ -77895,6 +79587,8 @@ public readonly partial struct hkbAnimationBindingSet : IhkReferencedObject, IEq
 
     nint IAddressable.Address => Address;
 
+    internal static hkbAnimationBindingSet FromAddress(nint address) => new hkbAnimationBindingSet(address);
+
     internal static hkbAnimationBindingSet? OrNull(nint address) => address != 0 ? new hkbAnimationBindingSet(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -77935,6 +79629,8 @@ public readonly partial struct hkbAnimationBindingWithTriggers : IEquatable<hkbA
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public hkbAnimationBindingWithTriggers() => address = 0;
 
+    internal static hkbAnimationBindingWithTriggers FromAddress(nint address) => new hkbAnimationBindingWithTriggers(address);
+
     internal static hkbAnimationBindingWithTriggers? OrNull(nint address) => address != 0 ? new hkbAnimationBindingWithTriggers(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -77969,6 +79665,8 @@ public readonly partial struct hkbAssetBundleStringData : IEquatable<hkbAssetBun
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public hkbAssetBundleStringData() => address = 0;
 
+    internal static hkbAssetBundleStringData FromAddress(nint address) => new hkbAssetBundleStringData(address);
+
     internal static hkbAssetBundleStringData? OrNull(nint address) => address != 0 ? new hkbAssetBundleStringData(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -78002,6 +79700,8 @@ public readonly partial struct hkbAttachmentManager : IEquatable<hkbAttachmentMa
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public hkbAttachmentManager() => address = 0;
+
+    internal static hkbAttachmentManager FromAddress(nint address) => new hkbAttachmentManager(address);
 
     internal static hkbAttachmentManager? OrNull(nint address) => address != 0 ? new hkbAttachmentManager(address) : null;
 
@@ -78038,6 +79738,8 @@ public readonly partial struct hkbBehaviorGraph : IhkbGenerator, IEquatable<hkbB
     public hkbBehaviorGraph() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static hkbBehaviorGraph FromAddress(nint address) => new hkbBehaviorGraph(address);
 
     internal static hkbBehaviorGraph? OrNull(nint address) => address != 0 ? new hkbBehaviorGraph(address) : null;
 
@@ -78098,6 +79800,8 @@ public readonly partial struct hkbBehaviorGraphData : IhkReferencedObject, IEqua
 
     nint IAddressable.Address => Address;
 
+    internal static hkbBehaviorGraphData FromAddress(nint address) => new hkbBehaviorGraphData(address);
+
     internal static hkbBehaviorGraphData? OrNull(nint address) => address != 0 ? new hkbBehaviorGraphData(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -78139,6 +79843,8 @@ public readonly partial struct hkbBehaviorGraphStringData : IhkReferencedObject,
     public hkbBehaviorGraphStringData() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static hkbBehaviorGraphStringData FromAddress(nint address) => new hkbBehaviorGraphStringData(address);
 
     internal static hkbBehaviorGraphStringData? OrNull(nint address) => address != 0 ? new hkbBehaviorGraphStringData(address) : null;
 
@@ -78270,6 +79976,8 @@ public readonly partial struct hkbCharacterData : IhkReferencedObject, IEquatabl
 
     nint IAddressable.Address => Address;
 
+    internal static hkbCharacterData FromAddress(nint address) => new hkbCharacterData(address);
+
     internal static hkbCharacterData? OrNull(nint address) => address != 0 ? new hkbCharacterData(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -78311,6 +80019,8 @@ public readonly partial struct hkbCharacterSetup : IhkReferencedObject, IEquatab
     public hkbCharacterSetup() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static hkbCharacterSetup FromAddress(nint address) => new hkbCharacterSetup(address);
 
     internal static hkbCharacterSetup? OrNull(nint address) => address != 0 ? new hkbCharacterSetup(address) : null;
 
@@ -78354,6 +80064,8 @@ public readonly partial struct hkbCharacterStringData : IhkReferencedObject, IEq
 
     nint IAddressable.Address => Address;
 
+    internal static hkbCharacterStringData FromAddress(nint address) => new hkbCharacterStringData(address);
+
     internal static hkbCharacterStringData? OrNull(nint address) => address != 0 ? new hkbCharacterStringData(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -78395,6 +80107,8 @@ public readonly partial struct hkbCharacterStringData : IhkReferencedObject, IEq
         [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
         public FileNameMeshNamePair() => address = 0;
 
+        internal static FileNameMeshNamePair FromAddress(nint address) => new FileNameMeshNamePair(address);
+
         internal static FileNameMeshNamePair? OrNull(nint address) => address != 0 ? new FileNameMeshNamePair(address) : null;
 
         /// <summary>Whether both views are over one address.</summary>
@@ -78430,6 +80144,8 @@ public readonly partial struct hkbContext : IEquatable<hkbContext>
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public hkbContext() => address = 0;
+
+    internal static hkbContext FromAddress(nint address) => new hkbContext(address);
 
     internal static hkbContext? OrNull(nint address) => address != 0 ? new hkbContext(address) : null;
 
@@ -78509,6 +80225,8 @@ public readonly partial struct hkbEventQueue : IEquatable<hkbEventQueue>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public hkbEventQueue() => address = 0;
 
+    internal static hkbEventQueue FromAddress(nint address) => new hkbEventQueue(address);
+
     internal static hkbEventQueue? OrNull(nint address) => address != 0 ? new hkbEventQueue(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -78544,6 +80262,8 @@ public readonly partial struct hkbFootIkDriver : IhkReferencedObject, IEquatable
     public hkbFootIkDriver() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static hkbFootIkDriver FromAddress(nint address) => new hkbFootIkDriver(address);
 
     internal static hkbFootIkDriver? OrNull(nint address) => address != 0 ? new hkbFootIkDriver(address) : null;
 
@@ -78931,6 +80651,8 @@ public readonly partial struct hkbProjectData : IhkReferencedObject, IEquatable<
 
     nint IAddressable.Address => Address;
 
+    internal static hkbProjectData FromAddress(nint address) => new hkbProjectData(address);
+
     internal static hkbProjectData? OrNull(nint address) => address != 0 ? new hkbProjectData(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -78972,6 +80694,8 @@ public readonly partial struct hkbProjectStringData : IhkReferencedObject, IEqua
     public hkbProjectStringData() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static hkbProjectStringData FromAddress(nint address) => new hkbProjectStringData(address);
 
     internal static hkbProjectStringData? OrNull(nint address) => address != 0 ? new hkbProjectStringData(address) : null;
 
@@ -79015,6 +80739,8 @@ public readonly partial struct hkbRagdollDriver : IhkReferencedObject, IEquatabl
 
     nint IAddressable.Address => Address;
 
+    internal static hkbRagdollDriver FromAddress(nint address) => new hkbRagdollDriver(address);
+
     internal static hkbRagdollDriver? OrNull(nint address) => address != 0 ? new hkbRagdollDriver(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -79057,6 +80783,8 @@ public readonly partial struct hkbSymbolIdMap : IhkReferencedObject, IEquatable<
 
     nint IAddressable.Address => Address;
 
+    internal static hkbSymbolIdMap FromAddress(nint address) => new hkbSymbolIdMap(address);
+
     internal static hkbSymbolIdMap? OrNull(nint address) => address != 0 ? new hkbSymbolIdMap(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -79098,6 +80826,8 @@ public readonly partial struct hkbVariableBindingSet : IhkReferencedObject, IEqu
     public hkbVariableBindingSet() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static hkbVariableBindingSet FromAddress(nint address) => new hkbVariableBindingSet(address);
 
     internal static hkbVariableBindingSet? OrNull(nint address) => address != 0 ? new hkbVariableBindingSet(address) : null;
 
@@ -79186,6 +80916,8 @@ public readonly partial struct hkbVariableValue : IEquatable<hkbVariableValue>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public hkbVariableValue() => address = 0;
 
+    internal static hkbVariableValue FromAddress(nint address) => new hkbVariableValue(address);
+
     internal static hkbVariableValue? OrNull(nint address) => address != 0 ? new hkbVariableValue(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -79221,6 +80953,8 @@ public readonly partial struct hkbVariableValueSet : IhkReferencedObject, IEquat
     public hkbVariableValueSet() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static hkbVariableValueSet FromAddress(nint address) => new hkbVariableValueSet(address);
 
     internal static hkbVariableValueSet? OrNull(nint address) => address != 0 ? new hkbVariableValueSet(address) : null;
 
@@ -79309,6 +81043,8 @@ public readonly partial struct hkdWorld : IEquatable<hkdWorld>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public hkdWorld() => address = 0;
 
+    internal static hkdWorld FromAddress(nint address) => new hkdWorld(address);
+
     internal static hkdWorld? OrNull(nint address) => address != 0 ? new hkdWorld(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -79342,6 +81078,8 @@ public readonly partial struct hknpWorld : IEquatable<hknpWorld>
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public hknpWorld() => address = 0;
+
+    internal static hknpWorld FromAddress(nint address) => new hknpWorld(address);
 
     internal static hknpWorld? OrNull(nint address) => address != 0 ? new hknpWorld(address) : null;
 
@@ -79378,6 +81116,8 @@ public readonly partial struct hkpAction : IhkReferencedObject, IEquatable<hkpAc
     public hkpAction() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static hkpAction FromAddress(nint address) => new hkpAction(address);
 
     internal static hkpAction? OrNull(nint address) => address != 0 ? new hkpAction(address) : null;
 
@@ -79418,6 +81158,8 @@ public readonly partial struct hkpActionListener : IEquatable<hkpActionListener>
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public hkpActionListener() => address = 0;
+
+    internal static hkpActionListener FromAddress(nint address) => new hkpActionListener(address);
 
     internal static hkpActionListener? OrNull(nint address) => address != 0 ? new hkpActionListener(address) : null;
 
@@ -79489,6 +81231,8 @@ public readonly partial struct hkpAgentNnEntry : IEquatable<hkpAgentNnEntry>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public hkpAgentNnEntry() => address = 0;
 
+    internal static hkpAgentNnEntry FromAddress(nint address) => new hkpAgentNnEntry(address);
+
     internal static hkpAgentNnEntry? OrNull(nint address) => address != 0 ? new hkpAgentNnEntry(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -79522,6 +81266,8 @@ public readonly partial struct hkpAgentNnSector : IEquatable<hkpAgentNnSector>
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public hkpAgentNnSector() => address = 0;
+
+    internal static hkpAgentNnSector FromAddress(nint address) => new hkpAgentNnSector(address);
 
     internal static hkpAgentNnSector? OrNull(nint address) => address != 0 ? new hkpAgentNnSector(address) : null;
 
@@ -79603,6 +81349,8 @@ public readonly partial struct hkpAllRayHitCollector : IhkpRayHitCollector, IEqu
 
     nint IAddressable.Address => Address;
 
+    internal static hkpAllRayHitCollector FromAddress(nint address) => new hkpAllRayHitCollector(address);
+
     internal static hkpAllRayHitCollector? OrNull(nint address) => address != 0 ? new hkpAllRayHitCollector(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -79642,6 +81390,8 @@ public readonly partial struct hkpAllRayHitTempCollector : IhkpRayHitCollector, 
 
     nint IAddressable.Address => Address;
 
+    internal static hkpAllRayHitTempCollector FromAddress(nint address) => new hkpAllRayHitTempCollector(address);
+
     internal static hkpAllRayHitTempCollector? OrNull(nint address) => address != 0 ? new hkpAllRayHitTempCollector(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -79679,6 +81429,8 @@ public readonly partial struct hkpBodyVelocity : IEquatable<hkpBodyVelocity>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public hkpBodyVelocity() => address = 0;
 
+    internal static hkpBodyVelocity FromAddress(nint address) => new hkpBodyVelocity(address);
+
     internal static hkpBodyVelocity? OrNull(nint address) => address != 0 ? new hkpBodyVelocity(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -79712,6 +81464,8 @@ public readonly partial struct hkpBreakableBody : IEquatable<hkpBreakableBody>
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public hkpBreakableBody() => address = 0;
+
+    internal static hkpBreakableBody FromAddress(nint address) => new hkpBreakableBody(address);
 
     internal static hkpBreakableBody? OrNull(nint address) => address != 0 ? new hkpBreakableBody(address) : null;
 
@@ -79748,6 +81502,8 @@ public readonly partial struct hkpBroadPhase : IhkReferencedObject, IEquatable<h
     public hkpBroadPhase() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static hkpBroadPhase FromAddress(nint address) => new hkpBroadPhase(address);
 
     internal static hkpBroadPhase? OrNull(nint address) => address != 0 ? new hkpBroadPhase(address) : null;
 
@@ -79883,6 +81639,8 @@ public readonly partial struct hkpBroadPhaseBorder : IEquatable<hkpBroadPhaseBor
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public hkpBroadPhaseBorder() => address = 0;
 
+    internal static hkpBroadPhaseBorder FromAddress(nint address) => new hkpBroadPhaseBorder(address);
+
     internal static hkpBroadPhaseBorder? OrNull(nint address) => address != 0 ? new hkpBroadPhaseBorder(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -79917,6 +81675,8 @@ public readonly partial struct hkpBroadPhaseBorderListener : IEquatable<hkpBroad
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public hkpBroadPhaseBorderListener() => address = 0;
 
+    internal static hkpBroadPhaseBorderListener FromAddress(nint address) => new hkpBroadPhaseBorderListener(address);
+
     internal static hkpBroadPhaseBorderListener? OrNull(nint address) => address != 0 ? new hkpBroadPhaseBorderListener(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -79950,6 +81710,8 @@ public readonly partial struct hkpBroadPhaseCastCollector : IEquatable<hkpBroadP
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public hkpBroadPhaseCastCollector() => address = 0;
+
+    internal static hkpBroadPhaseCastCollector FromAddress(nint address) => new hkpBroadPhaseCastCollector(address);
 
     internal static hkpBroadPhaseCastCollector? OrNull(nint address) => address != 0 ? new hkpBroadPhaseCastCollector(address) : null;
 
@@ -80061,6 +81823,8 @@ public readonly partial struct hkpCdBodyPairCollector : IEquatable<hkpCdBodyPair
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public hkpCdBodyPairCollector() => address = 0;
 
+    internal static hkpCdBodyPairCollector FromAddress(nint address) => new hkpCdBodyPairCollector(address);
+
     internal static hkpCdBodyPairCollector? OrNull(nint address) => address != 0 ? new hkpCdBodyPairCollector(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -80130,6 +81894,8 @@ public readonly partial struct hkpCdPointCollector : IEquatable<hkpCdPointCollec
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public hkpCdPointCollector() => address = 0;
+
+    internal static hkpCdPointCollector FromAddress(nint address) => new hkpCdPointCollector(address);
 
     internal static hkpCdPointCollector? OrNull(nint address) => address != 0 ? new hkpCdPointCollector(address) : null;
 
@@ -80291,6 +82057,8 @@ public readonly partial struct hkpCharacterState : IhkReferencedObject, IEquatab
 
     nint IAddressable.Address => Address;
 
+    internal static hkpCharacterState FromAddress(nint address) => new hkpCharacterState(address);
+
     internal static hkpCharacterState? OrNull(nint address) => address != 0 ? new hkpCharacterState(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -80332,6 +82100,8 @@ public readonly partial struct hkpCharacterStateManager : IhkReferencedObject, I
     public hkpCharacterStateManager() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static hkpCharacterStateManager FromAddress(nint address) => new hkpCharacterStateManager(address);
 
     internal static hkpCharacterStateManager? OrNull(nint address) => address != 0 ? new hkpCharacterStateManager(address) : null;
 
@@ -80396,6 +82166,8 @@ public readonly partial struct hkpClosestRayHitCollector : IhkpRayHitCollector, 
     public hkpClosestRayHitCollector() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static hkpClosestRayHitCollector FromAddress(nint address) => new hkpClosestRayHitCollector(address);
 
     internal static hkpClosestRayHitCollector? OrNull(nint address) => address != 0 ? new hkpClosestRayHitCollector(address) : null;
 
@@ -80514,6 +82286,8 @@ public readonly partial struct hkpCollidableCollidableFilter : IEquatable<hkpCol
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public hkpCollidableCollidableFilter() => address = 0;
 
+    internal static hkpCollidableCollidableFilter FromAddress(nint address) => new hkpCollidableCollidableFilter(address);
+
     internal static hkpCollidableCollidableFilter? OrNull(nint address) => address != 0 ? new hkpCollidableCollidableFilter(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -80583,6 +82357,8 @@ public readonly partial struct hkpCollisionDispatcher : IEquatable<hkpCollisionD
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public hkpCollisionDispatcher() => address = 0;
+
+    internal static hkpCollisionDispatcher FromAddress(nint address) => new hkpCollisionDispatcher(address);
 
     internal static hkpCollisionDispatcher? OrNull(nint address) => address != 0 ? new hkpCollisionDispatcher(address) : null;
 
@@ -81142,6 +82918,8 @@ public readonly partial struct hkpConstraintListener : IEquatable<hkpConstraintL
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public hkpConstraintListener() => address = 0;
 
+    internal static hkpConstraintListener FromAddress(nint address) => new hkpConstraintListener(address);
+
     internal static hkpConstraintListener? OrNull(nint address) => address != 0 ? new hkpConstraintListener(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -81220,6 +82998,8 @@ public readonly partial struct hkpConstraintQueryIn : IEquatable<hkpConstraintQu
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public hkpConstraintQueryIn() => address = 0;
 
+    internal static hkpConstraintQueryIn FromAddress(nint address) => new hkpConstraintQueryIn(address);
+
     internal static hkpConstraintQueryIn? OrNull(nint address) => address != 0 ? new hkpConstraintQueryIn(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -81253,6 +83033,8 @@ public readonly partial struct hkpConstraintQueryOut : IEquatable<hkpConstraintQ
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public hkpConstraintQueryOut() => address = 0;
+
+    internal static hkpConstraintQueryOut FromAddress(nint address) => new hkpConstraintQueryOut(address);
 
     internal static hkpConstraintQueryOut? OrNull(nint address) => address != 0 ? new hkpConstraintQueryOut(address) : null;
 
@@ -81289,6 +83071,8 @@ public readonly partial struct hkpContactImpulseLimitBreachedListener : IEquatab
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public hkpContactImpulseLimitBreachedListener() => address = 0;
+
+    internal static hkpContactImpulseLimitBreachedListener FromAddress(nint address) => new hkpContactImpulseLimitBreachedListener(address);
 
     internal static hkpContactImpulseLimitBreachedListener? OrNull(nint address) => address != 0 ? new hkpContactImpulseLimitBreachedListener(address) : null;
 
@@ -81425,6 +83209,8 @@ public readonly partial struct hkpContactPointAddedEvent : IEquatable<hkpContact
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public hkpContactPointAddedEvent() => address = 0;
 
+    internal static hkpContactPointAddedEvent FromAddress(nint address) => new hkpContactPointAddedEvent(address);
+
     internal static hkpContactPointAddedEvent? OrNull(nint address) => address != 0 ? new hkpContactPointAddedEvent(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -81460,6 +83246,8 @@ public readonly partial struct hkpContactPointEvent : IhkpCollisionEvent, IEquat
     public hkpContactPointEvent() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static hkpContactPointEvent FromAddress(nint address) => new hkpContactPointEvent(address);
 
     internal static hkpContactPointEvent? OrNull(nint address) => address != 0 ? new hkpContactPointEvent(address) : null;
 
@@ -81550,6 +83338,8 @@ public readonly partial struct hkpContactPointRemovedEvent : IEquatable<hkpConta
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public hkpContactPointRemovedEvent() => address = 0;
 
+    internal static hkpContactPointRemovedEvent FromAddress(nint address) => new hkpContactPointRemovedEvent(address);
+
     internal static hkpContactPointRemovedEvent? OrNull(nint address) => address != 0 ? new hkpContactPointRemovedEvent(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -81583,6 +83373,8 @@ public readonly partial struct hkpContactProcessEvent : IEquatable<hkpContactPro
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public hkpContactProcessEvent() => address = 0;
+
+    internal static hkpContactProcessEvent FromAddress(nint address) => new hkpContactProcessEvent(address);
 
     internal static hkpContactProcessEvent? OrNull(nint address) => address != 0 ? new hkpContactProcessEvent(address) : null;
 
@@ -81619,6 +83411,8 @@ public readonly partial struct hkpConvexListFilter : IhkReferencedObject, IEquat
     public hkpConvexListFilter() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static hkpConvexListFilter FromAddress(nint address) => new hkpConvexListFilter(address);
 
     internal static hkpConvexListFilter? OrNull(nint address) => address != 0 ? new hkpConvexListFilter(address) : null;
 
@@ -81932,6 +83726,8 @@ public readonly partial struct hkpEntityEntityBroadPhaseListener : IEquatable<hk
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public hkpEntityEntityBroadPhaseListener() => address = 0;
 
+    internal static hkpEntityEntityBroadPhaseListener FromAddress(nint address) => new hkpEntityEntityBroadPhaseListener(address);
+
     internal static hkpEntityEntityBroadPhaseListener? OrNull(nint address) => address != 0 ? new hkpEntityEntityBroadPhaseListener(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -82004,6 +83800,8 @@ public readonly partial struct hkpGskCache : IEquatable<hkpGskCache>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public hkpGskCache() => address = 0;
 
+    internal static hkpGskCache FromAddress(nint address) => new hkpGskCache(address);
+
     internal static hkpGskCache? OrNull(nint address) => address != 0 ? new hkpGskCache(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -82037,6 +83835,8 @@ public readonly partial struct hkpIslandActivationListener : IEquatable<hkpIslan
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public hkpIslandActivationListener() => address = 0;
+
+    internal static hkpIslandActivationListener FromAddress(nint address) => new hkpIslandActivationListener(address);
 
     internal static hkpIslandActivationListener? OrNull(nint address) => address != 0 ? new hkpIslandActivationListener(address) : null;
 
@@ -82072,6 +83872,8 @@ public readonly partial struct hkpIslandPostCollideListener : IEquatable<hkpIsla
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public hkpIslandPostCollideListener() => address = 0;
 
+    internal static hkpIslandPostCollideListener FromAddress(nint address) => new hkpIslandPostCollideListener(address);
+
     internal static hkpIslandPostCollideListener? OrNull(nint address) => address != 0 ? new hkpIslandPostCollideListener(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -82105,6 +83907,8 @@ public readonly partial struct hkpIslandPostIntegrateListener : IEquatable<hkpIs
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public hkpIslandPostIntegrateListener() => address = 0;
+
+    internal static hkpIslandPostIntegrateListener FromAddress(nint address) => new hkpIslandPostIntegrateListener(address);
 
     internal static hkpIslandPostIntegrateListener? OrNull(nint address) => address != 0 ? new hkpIslandPostIntegrateListener(address) : null;
 
@@ -82403,6 +84207,8 @@ public readonly partial struct hkpModifierConstraintAtom : IEquatable<hkpModifie
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public hkpModifierConstraintAtom() => address = 0;
 
+    internal static hkpModifierConstraintAtom FromAddress(nint address) => new hkpModifierConstraintAtom(address);
+
     internal static hkpModifierConstraintAtom? OrNull(nint address) => address != 0 ? new hkpModifierConstraintAtom(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -82585,6 +84391,8 @@ public readonly partial struct hkpMtThreadStructure : IEquatable<hkpMtThreadStru
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public hkpMtThreadStructure() => address = 0;
 
+    internal static hkpMtThreadStructure FromAddress(nint address) => new hkpMtThreadStructure(address);
+
     internal static hkpMtThreadStructure? OrNull(nint address) => address != 0 ? new hkpMtThreadStructure(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -82665,6 +84473,8 @@ public readonly partial struct hkpPhantomBroadPhaseListener : IEquatable<hkpPhan
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public hkpPhantomBroadPhaseListener() => address = 0;
+
+    internal static hkpPhantomBroadPhaseListener FromAddress(nint address) => new hkpPhantomBroadPhaseListener(address);
 
     internal static hkpPhantomBroadPhaseListener? OrNull(nint address) => address != 0 ? new hkpPhantomBroadPhaseListener(address) : null;
 
@@ -82747,6 +84557,8 @@ public readonly partial struct hkpPhantomListener : IEquatable<hkpPhantomListene
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public hkpPhantomListener() => address = 0;
 
+    internal static hkpPhantomListener FromAddress(nint address) => new hkpPhantomListener(address);
+
     internal static hkpPhantomListener? OrNull(nint address) => address != 0 ? new hkpPhantomListener(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -82780,6 +84592,8 @@ public readonly partial struct hkpPhantomOverlapListener : IEquatable<hkpPhantom
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public hkpPhantomOverlapListener() => address = 0;
+
+    internal static hkpPhantomOverlapListener FromAddress(nint address) => new hkpPhantomOverlapListener(address);
 
     internal static hkpPhantomOverlapListener? OrNull(nint address) => address != 0 ? new hkpPhantomOverlapListener(address) : null;
 
@@ -82833,6 +84647,8 @@ public readonly partial struct hkpProcessCollisionData : IEquatable<hkpProcessCo
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public hkpProcessCollisionData() => address = 0;
+
+    internal static hkpProcessCollisionData FromAddress(nint address) => new hkpProcessCollisionData(address);
 
     internal static hkpProcessCollisionData? OrNull(nint address) => address != 0 ? new hkpProcessCollisionData(address) : null;
 
@@ -82908,6 +84724,8 @@ public readonly partial struct hkpProcessCollisionOutput : IEquatable<hkpProcess
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public hkpProcessCollisionOutput() => address = 0;
+
+    internal static hkpProcessCollisionOutput FromAddress(nint address) => new hkpProcessCollisionOutput(address);
 
     internal static hkpProcessCollisionOutput? OrNull(nint address) => address != 0 ? new hkpProcessCollisionOutput(address) : null;
 
@@ -83015,6 +84833,8 @@ public readonly partial struct hkpRayCollidableFilter : IEquatable<hkpRayCollida
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public hkpRayCollidableFilter() => address = 0;
 
+    internal static hkpRayCollidableFilter FromAddress(nint address) => new hkpRayCollidableFilter(address);
+
     internal static hkpRayCollidableFilter? OrNull(nint address) => address != 0 ? new hkpRayCollidableFilter(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -83087,6 +84907,8 @@ public readonly partial struct hkpRayShapeCollectionFilter : IEquatable<hkpRaySh
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public hkpRayShapeCollectionFilter() => address = 0;
 
+    internal static hkpRayShapeCollectionFilter FromAddress(nint address) => new hkpRayShapeCollectionFilter(address);
+
     internal static hkpRayShapeCollectionFilter? OrNull(nint address) => address != 0 ? new hkpRayShapeCollectionFilter(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -83122,6 +84944,8 @@ public readonly partial struct hkpRigidBody : IhkpEntity, IEquatable<hkpRigidBod
     public hkpRigidBody() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static hkpRigidBody FromAddress(nint address) => new hkpRigidBody(address);
 
     internal static hkpRigidBody? OrNull(nint address) => address != 0 ? new hkpRigidBody(address) : null;
 
@@ -83322,6 +85146,8 @@ public readonly partial struct hkpShapeCollectionFilter : IEquatable<hkpShapeCol
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public hkpShapeCollectionFilter() => address = 0;
 
+    internal static hkpShapeCollectionFilter FromAddress(nint address) => new hkpShapeCollectionFilter(address);
+
     internal static hkpShapeCollectionFilter? OrNull(nint address) => address != 0 ? new hkpShapeCollectionFilter(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -83356,6 +85182,8 @@ public readonly partial struct hkpShapeContainer : IEquatable<hkpShapeContainer>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public hkpShapeContainer() => address = 0;
 
+    internal static hkpShapeContainer FromAddress(nint address) => new hkpShapeContainer(address);
+
     internal static hkpShapeContainer? OrNull(nint address) => address != 0 ? new hkpShapeContainer(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -83389,6 +85217,8 @@ public readonly partial struct hkpShapeModifier : IEquatable<hkpShapeModifier>
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public hkpShapeModifier() => address = 0;
+
+    internal static hkpShapeModifier FromAddress(nint address) => new hkpShapeModifier(address);
 
     internal static hkpShapeModifier? OrNull(nint address) => address != 0 ? new hkpShapeModifier(address) : null;
 
@@ -83633,6 +85463,8 @@ public readonly partial struct hkpSimpleConstraintContactMgr : IhkpDynamicsConta
 
     nint IAddressable.Address => Address;
 
+    internal static hkpSimpleConstraintContactMgr FromAddress(nint address) => new hkpSimpleConstraintContactMgr(address);
+
     internal static hkpSimpleConstraintContactMgr? OrNull(nint address) => address != 0 ? new hkpSimpleConstraintContactMgr(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -83679,6 +85511,8 @@ public readonly partial struct hkpSimpleConstraintInfoInitInput : IEquatable<hkp
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public hkpSimpleConstraintInfoInitInput() => address = 0;
 
+    internal static hkpSimpleConstraintInfoInitInput FromAddress(nint address) => new hkpSimpleConstraintInfoInitInput(address);
+
     internal static hkpSimpleConstraintInfoInitInput? OrNull(nint address) => address != 0 ? new hkpSimpleConstraintInfoInitInput(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -83712,6 +85546,8 @@ public readonly partial struct hkpSimpleContactConstraintAtom : IEquatable<hkpSi
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public hkpSimpleContactConstraintAtom() => address = 0;
+
+    internal static hkpSimpleContactConstraintAtom FromAddress(nint address) => new hkpSimpleContactConstraintAtom(address);
 
     internal static hkpSimpleContactConstraintAtom? OrNull(nint address) => address != 0 ? new hkpSimpleContactConstraintAtom(address) : null;
 
@@ -83796,6 +85632,8 @@ public readonly partial struct hkpSimpleShapePhantom : IhkpShapePhantom, IEquata
 
     nint IAddressable.Address => Address;
 
+    internal static hkpSimpleShapePhantom FromAddress(nint address) => new hkpSimpleShapePhantom(address);
+
     internal static hkpSimpleShapePhantom? OrNull(nint address) => address != 0 ? new hkpSimpleShapePhantom(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -83845,6 +85683,8 @@ public readonly partial struct hkpSimulation : IEquatable<hkpSimulation>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public hkpSimulation() => address = 0;
 
+    internal static hkpSimulation FromAddress(nint address) => new hkpSimulation(address);
+
     internal static hkpSimulation? OrNull(nint address) => address != 0 ? new hkpSimulation(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -83880,6 +85720,8 @@ public readonly partial struct hkpSimulationIsland : IhkpConstraintOwner, IEquat
     public hkpSimulationIsland() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static hkpSimulationIsland FromAddress(nint address) => new hkpSimulationIsland(address);
 
     internal static hkpSimulationIsland? OrNull(nint address) => address != 0 ? new hkpSimulationIsland(address) : null;
 
@@ -84035,6 +85877,8 @@ public readonly partial struct hkpSphere : IEquatable<hkpSphere>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public hkpSphere() => address = 0;
 
+    internal static hkpSphere FromAddress(nint address) => new hkpSphere(address);
+
     internal static hkpSphere? OrNull(nint address) => address != 0 ? new hkpSphere(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -84117,6 +85961,8 @@ public readonly partial struct hkpSphereShape : IhkpConvexShape, IEquatable<hkpS
     public hkpSphereShape() => address = 0;
 
     nint IAddressable.Address => Address;
+
+    internal static hkpSphereShape FromAddress(nint address) => new hkpSphereShape(address);
 
     internal static hkpSphereShape? OrNull(nint address) => address != 0 ? new hkpSphereShape(address) : null;
 
@@ -84212,6 +86058,8 @@ public readonly partial struct hkpSuspendInactiveAgentsUtil : IEquatable<hkpSusp
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public hkpSuspendInactiveAgentsUtil() => address = 0;
 
+    internal static hkpSuspendInactiveAgentsUtil FromAddress(nint address) => new hkpSuspendInactiveAgentsUtil(address);
+
     internal static hkpSuspendInactiveAgentsUtil? OrNull(nint address) => address != 0 ? new hkpSuspendInactiveAgentsUtil(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -84245,6 +86093,8 @@ public readonly partial struct hkpToiEvent : IEquatable<hkpToiEvent>
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public hkpToiEvent() => address = 0;
+
+    internal static hkpToiEvent FromAddress(nint address) => new hkpToiEvent(address);
 
     internal static hkpToiEvent? OrNull(nint address) => address != 0 ? new hkpToiEvent(address) : null;
 
@@ -84280,6 +86130,8 @@ public readonly partial struct hkpTreeWorldManager : IEquatable<hkpTreeWorldMana
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public hkpTreeWorldManager() => address = 0;
 
+    internal static hkpTreeWorldManager FromAddress(nint address) => new hkpTreeWorldManager(address);
+
     internal static hkpTreeWorldManager? OrNull(nint address) => address != 0 ? new hkpTreeWorldManager(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -84313,6 +86165,8 @@ public readonly partial struct hkpTypedBroadPhaseDispatcher : IEquatable<hkpType
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public hkpTypedBroadPhaseDispatcher() => address = 0;
+
+    internal static hkpTypedBroadPhaseDispatcher FromAddress(nint address) => new hkpTypedBroadPhaseDispatcher(address);
 
     internal static hkpTypedBroadPhaseDispatcher? OrNull(nint address) => address != 0 ? new hkpTypedBroadPhaseDispatcher(address) : null;
 
@@ -84389,6 +86243,8 @@ public readonly partial struct hkpVelocityAccumulator : IEquatable<hkpVelocityAc
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public hkpVelocityAccumulator() => address = 0;
 
+    internal static hkpVelocityAccumulator FromAddress(nint address) => new hkpVelocityAccumulator(address);
+
     internal static hkpVelocityAccumulator? OrNull(nint address) => address != 0 ? new hkpVelocityAccumulator(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -84422,6 +86278,8 @@ public readonly partial struct hkpViolatedConstraintArray : IEquatable<hkpViolat
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public hkpViolatedConstraintArray() => address = 0;
+
+    internal static hkpViolatedConstraintArray FromAddress(nint address) => new hkpViolatedConstraintArray(address);
 
     internal static hkpViolatedConstraintArray? OrNull(nint address) => address != 0 ? new hkpViolatedConstraintArray(address) : null;
 
@@ -84579,6 +86437,8 @@ public readonly partial struct hkpWorldDeletionListener : IEquatable<hkpWorldDel
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public hkpWorldDeletionListener() => address = 0;
 
+    internal static hkpWorldDeletionListener FromAddress(nint address) => new hkpWorldDeletionListener(address);
+
     internal static hkpWorldDeletionListener? OrNull(nint address) => address != 0 ? new hkpWorldDeletionListener(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -84649,6 +86509,8 @@ public readonly partial struct hkpWorldExtension : IEquatable<hkpWorldExtension>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public hkpWorldExtension() => address = 0;
 
+    internal static hkpWorldExtension FromAddress(nint address) => new hkpWorldExtension(address);
+
     internal static hkpWorldExtension? OrNull(nint address) => address != 0 ? new hkpWorldExtension(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -84682,6 +86544,8 @@ public readonly partial struct hkpWorldMaintenanceMgr : IEquatable<hkpWorldMaint
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public hkpWorldMaintenanceMgr() => address = 0;
+
+    internal static hkpWorldMaintenanceMgr FromAddress(nint address) => new hkpWorldMaintenanceMgr(address);
 
     internal static hkpWorldMaintenanceMgr? OrNull(nint address) => address != 0 ? new hkpWorldMaintenanceMgr(address) : null;
 
@@ -84761,6 +86625,8 @@ public readonly partial struct hkpWorldPostCollideListener : IEquatable<hkpWorld
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public hkpWorldPostCollideListener() => address = 0;
 
+    internal static hkpWorldPostCollideListener FromAddress(nint address) => new hkpWorldPostCollideListener(address);
+
     internal static hkpWorldPostCollideListener? OrNull(nint address) => address != 0 ? new hkpWorldPostCollideListener(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -84795,6 +86661,8 @@ public readonly partial struct hkpWorldPostIntegrateListener : IEquatable<hkpWor
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public hkpWorldPostIntegrateListener() => address = 0;
 
+    internal static hkpWorldPostIntegrateListener FromAddress(nint address) => new hkpWorldPostIntegrateListener(address);
+
     internal static hkpWorldPostIntegrateListener? OrNull(nint address) => address != 0 ? new hkpWorldPostIntegrateListener(address) : null;
 
     /// <summary>Whether both views are over one address.</summary>
@@ -84828,6 +86696,8 @@ public readonly partial struct hkpWorldPostSimulationListener : IEquatable<hkpWo
     /// <summary>Reports a compile-time error, since a view created with <c>new</c> has no address.</summary>
     [Obsolete("Creates a view with no address. SkyrimForge cannot allocate this type, so a view of it is obtained only from a member that returns one.", error: true)]
     public hkpWorldPostSimulationListener() => address = 0;
+
+    internal static hkpWorldPostSimulationListener FromAddress(nint address) => new hkpWorldPostSimulationListener(address);
 
     internal static hkpWorldPostSimulationListener? OrNull(nint address) => address != 0 ? new hkpWorldPostSimulationListener(address) : null;
 

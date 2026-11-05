@@ -99,7 +99,7 @@ internal sealed class QuestRecordAliases
         const int refAliasSize = 0x48;
         uint id = (uint)aliasObjects.Count;
         nint address = GameHeap.AllocateObject(gameTarget, refAliasSize, "BGSRefAlias");
-        Alias alias = Alias.OrNull(address)!.Value;
+        Alias alias = Alias.FromAddress(address);
         alias.AliasName = name;
         alias.OwningQuest = record;
         alias.AliasID = id;
@@ -107,7 +107,7 @@ internal sealed class QuestRecordAliases
         // Without kOptional a quest whose alias is empty does not start, and without kAllowReserved an alias does not fill with an actor another quest's alias reserves.
         alias.Flags = Alias.FLAGS.kOptional | Alias.FLAGS.kAllowReserved | flags;
         record.Aliases.Add(alias);
-        aliasObjects.Add(ReferenceAlias.OrNull(address)!.Value);
+        aliasObjects.Add(ReferenceAlias.FromAddress(address));
         return id;
     }
 }

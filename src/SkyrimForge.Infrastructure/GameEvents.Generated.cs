@@ -719,7 +719,7 @@ internal sealed unsafe partial class GameEvents
     [UnmanagedCallersOnly]
     private static void OnInputHook(nint raised)
     {
-        instance!.onInput.Raise(new InputEventArgs(InputEvent.OrNull(raised)!.Value));
+        instance!.onInput.Raise(new InputEventArgs(InputEvent.FromAddress(raised)));
     }
 
     [UnmanagedCallersOnly]

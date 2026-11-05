@@ -62,7 +62,7 @@ internal sealed class AnimationEvents(ILog log) : IAnimationEvents
         {
             return;
         }
-        var animationEvent = new AnimationEventArgs(Marshal.PtrToStringUTF8(tag) ?? string.Empty, Marshal.PtrToStringUTF8(payload) ?? string.Empty, Actor.OrNull(holder)!.Value);
+        var animationEvent = new AnimationEventArgs(Marshal.PtrToStringUTF8(tag) ?? string.Empty, Marshal.PtrToStringUTF8(payload) ?? string.Empty, Actor.FromAddress(holder));
         foreach (HandlerRegistration<GameEventHandler<AnimationEventArgs>> registration in actorRegistrations)
         {
             try

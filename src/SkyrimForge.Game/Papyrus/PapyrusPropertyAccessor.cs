@@ -89,14 +89,11 @@ internal static class PapyrusPropertyAccessor
     private static (IReadOnlyList<Variable> Entries, FormType ElementType) Allocate(string className, string propertyName, Variable destination, int count)
     {
         int status = NativePapyrus.SF_Papyrus_PropertyArray(className, propertyName, destination.Address, (uint)count, out nint array, out FormType elementType);
-        if (status != 0 || Array_.OrNull(array) is not { } allocatedArray)
+        if (status == 0)
         {
-            throw CreateArrayException(status, className, propertyName);
+            return (Array_.FromAddress(array).GetEntries(), elementType);
         }
-
-        // Zip against a shorter array would leave entries None without a report.
-        IReadOnlyList<Variable> entries = allocatedArray.GetEntries();
-        return entries.Count == count ? (entries, elementType) : throw new InvalidOperationException($"{className}.{propertyName} was allocated with {count} entries, but has {entries.Count}.");
+        throw CreateArrayException(status, className, propertyName);
     }
 
     internal static FormType GetDeclaredFormClass(string className, string propertyName, string operation)
@@ -108,7 +105,11 @@ internal static class PapyrusPropertyAccessor
     private static Variable GetPropertyVariable(IForm receiver, string className, string propertyName, string operation)
     {
         int status = NativePapyrus.SF_Papyrus_PropertySlot(receiver.Address, className, propertyName, out nint variableAddress);
-        return (status == 0 ? Variable.OrNull(variableAddress) : null) ?? throw CreatePropertyException(status, className, propertyName, operation);
+        if (status == 0)
+        {
+            return Variable.FromAddress(variableAddress);
+        }
+        throw CreatePropertyException(status, className, propertyName, operation);
     }
 
     private static InvalidOperationException CreatePropertyException(int status, string className, string propertyName, string operation)

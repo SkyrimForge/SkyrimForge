@@ -60,17 +60,15 @@ public static class Bootstrap
 
     private static void RunPlugins(GameTarget gameTarget, IGameEvents events, FileLog log, string logDirectory)
     {
-        string hostDirectory = AssemblyOrAppContextDirectory;
+        string hostDirectory = Path.GetDirectoryName(typeof(Bootstrap).Assembly.Location) ?? AppContext.BaseDirectory;
         string directory = Path.Combine(hostDirectory, PluginDirectoryName);
-        var taskQueueSource = new TaskQueueSource();
-        taskQueueSource.Install(log);
-        ITaskQueue logTaskQueue = taskQueueSource.CreateLogTaskQueue(log);
-        PapyrusDispatcher.Install(new PapyrusDispatcher(gameTarget, logTaskQueue, log));
+        TaskQueueSource.Install(log);
+        PapyrusDispatcher.Install(new PapyrusDispatcher(gameTarget, TaskQueueSource.CreateLogTaskQueue(log), log));
 
         var plugins = new PluginCollection();
         IReadOnlyDictionary<string, string> sharedLibraryPaths = SharedLibraryPaths.Find(Path.Combine(hostDirectory, SharedLibraryDirectoryName), log);
         (IReadOnlyList<IPluginServiceSource> serviceSources, IReadOnlyList<string> serviceSourceFailures) = ServiceSourceLoader.Load(sharedLibraryPaths.Values, log);
-        var serviceResolver = new ServiceResolver(gameTarget, events, log, taskQueueSource, plugins, logDirectory);
+        var serviceResolver = new ServiceResolver(gameTarget, events, log, plugins, logDirectory);
         var pluginLoader = new PluginLoader(directory, log, serviceResolver, serviceSources, sharedLibraryPaths);
         plugins.AddRange(pluginLoader.Load());
 
@@ -121,6 +119,4 @@ public static class Bootstrap
     }
 
     internal static string CurrentProcessFileName => Path.GetFileName(Environment.ProcessPath) ?? "unknown";
-
-    private static string AssemblyOrAppContextDirectory => Path.GetDirectoryName(typeof(Bootstrap).Assembly.Location) ?? AppContext.BaseDirectory;
 }

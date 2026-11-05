@@ -1,23 +1,15 @@
 ﻿using SkyrimForge.Events;
 using System;
-using System.Collections.Concurrent;
 using System.Runtime.InteropServices;
-using System.Threading;
 
 namespace SkyrimForge.Infrastructure;
 
-internal sealed class TaskQueueSource
+internal static class TaskQueueSource
 {
-    // The native side receives a token, not the delegate. The delegate stays rooted here until its token runs.
-    private readonly ConcurrentDictionary<ulong, HandlerRegistration<Action>> pendingJobs = new();
+    private static readonly TokenRegistry<HandlerRegistration<Action>> tasksByToken = new();
 
-    private ulong lastToken;
-
-    private static TaskQueueSource? instance;
-
-    public unsafe void Install(ILog hostLog)
+    public static unsafe void Install(ILog hostLog)
     {
-        instance = this;
         NativeGlobals.SF_Task_SetHandler(&OnRun);
         if (!NativeGlobals.SF_Task_IsAvailable())
         {
@@ -25,28 +17,27 @@ internal sealed class TaskQueueSource
         }
     }
 
-    internal ITaskQueue CreateLogTaskQueue(ILog log) => new LogTaskQueue(this, log);
+    internal static ITaskQueue CreateLogTaskQueue(ILog log) => new LogTaskQueue(log);
 
-    private void Add(Action work, bool isUITask, ILog log)
+    private static void Add(Action work, bool isUITask, ILog log)
     {
         ArgumentNullException.ThrowIfNull(work);
 
         // Recorded before the token is queued, because SKSE may run it at once.
-        ulong token = Interlocked.Increment(ref lastToken);
-        pendingJobs[token] = new HandlerRegistration<Action>(work, log);
-        if (isUITask ? NativeGlobals.SF_Task_AddUI(token) : NativeGlobals.SF_Task_Add(token))
+        int token = tasksByToken.Add(new HandlerRegistration<Action>(work, log));
+        if (isUITask ? NativeGlobals.SF_Task_AddUI((ulong)token) : NativeGlobals.SF_Task_Add((ulong)token))
         {
             return;
         }
 
-        pendingJobs.TryRemove(token, out _);
+        tasksByToken.TryRemove(token, out _);
         log.Write($"{(isUITask ? nameof(ITaskQueue.AddUITask) : nameof(ITaskQueue.AddTask))} could not queue the work. It was dropped.");
     }
 
     [UnmanagedCallersOnly]
     private static void OnRun(ulong token)
     {
-        if (instance != null && instance.pendingJobs.TryRemove(token, out HandlerRegistration<Action>? job))
+        if (tasksByToken.TryRemove((int)token, out HandlerRegistration<Action>? job))
         {
             try
             {
@@ -59,12 +50,12 @@ internal sealed class TaskQueueSource
         }
     }
 
-    private sealed class LogTaskQueue(TaskQueueSource queue, ILog log) : ITaskQueue
+    private sealed class LogTaskQueue(ILog log) : ITaskQueue
     {
         /// <inheritdoc/>
-        public void AddTask(Action work) => queue.Add(work, false, log);
+        public void AddTask(Action work) => Add(work, false, log);
 
         /// <inheritdoc/>
-        public void AddUITask(Action work) => queue.Add(work, true, log);
+        public void AddUITask(Action work) => Add(work, true, log);
     }
 }

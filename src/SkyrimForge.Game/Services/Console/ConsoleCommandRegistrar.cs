@@ -10,8 +10,7 @@ namespace SkyrimForge.Game;
 internal sealed unsafe class ConsoleCommandRegistrar(ILog log) : IConsoleCommandRegistrar
 {
     // Keyed by the command's parameter array address, which the native handler passes.
-    private static readonly ConcurrentDictionary<long, Command> commands = new();
-    private static bool installed;
+    private static readonly ConcurrentDictionary<long, Command> commandsById = new();
 
     private sealed record Command(string Name, Func<ObjectReference?, IReadOnlyList<string>, Task> Handler, ILog Log);
 
@@ -29,16 +28,12 @@ internal sealed unsafe class ConsoleCommandRegistrar(ILog log) : IConsoleCommand
         {
             throw new ArgumentException("A console command name cannot contain white space.", nameof(shortName));
         }
-        if (!installed)
-        {
-            NativeSupplements.SF_ConsoleCommand_SetHandler(&Run);
-            installed = true;
-        }
+        NativeSupplements.SF_ConsoleCommand_SetHandler(&Run);
         string[] parameters = [.. parameterNames];
         long id = NativeSupplements.SF_ConsoleCommand_Add(name, shortName, help, parameters, parameters.Length);
         if (id > 0)
         {
-            commands[id] = new Command(name, handler, log);
+            commandsById[id] = new Command(name, handler, log);
             return;
         }
         if (id == -1)
@@ -56,7 +51,7 @@ internal sealed unsafe class ConsoleCommandRegistrar(ILog log) : IConsoleCommand
     [UnmanagedCallersOnly]
     private static void Run(long id, nint target, int count, byte** arguments)
     {
-        if (!commands.TryGetValue(id, out Command? command))
+        if (!commandsById.TryGetValue(id, out Command? command))
         {
             return;
         }

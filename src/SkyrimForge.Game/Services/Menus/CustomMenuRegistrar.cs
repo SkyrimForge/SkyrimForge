@@ -2,18 +2,13 @@
 using SkyrimForge.Hooks;
 using SkyrimForge.Menus;
 using System;
-using System.Collections.Concurrent;
 using System.Runtime.InteropServices;
-using System.Threading;
 
 namespace SkyrimForge.Game;
 
 internal sealed class CustomMenuRegistrar(ILog log) : ICustomMenuRegistrar
 {
-    // Static because the native side identifies a menu by token alone. Concurrent because OnMessage can run while another menu is being registered.
-    private static readonly ConcurrentDictionary<int, HandlerRegistration<Func<UI_MESSAGE_TYPE, UI_MESSAGE_RESULTS>>> registrations = new();
-
-    private static int nextToken;
+    private static readonly TokenRegistry<HandlerRegistration<Func<UI_MESSAGE_TYPE, UI_MESSAGE_RESULTS>>> menuHandlersByToken = new();
 
     public unsafe void Register(string name, Func<UI_MESSAGE_TYPE, UI_MESSAGE_RESULTS> handler, string? movieFile = null, UI_MENU_FLAGS flags = UI_MENU_FLAGS.kNone, sbyte depth = 3, UserEvents.INPUT_CONTEXT_IDS.INPUT_CONTEXT_ID context = UserEvents.INPUT_CONTEXT_IDS.INPUT_CONTEXT_ID.kMenuMode)
     {
@@ -21,8 +16,7 @@ internal sealed class CustomMenuRegistrar(ILog log) : ICustomMenuRegistrar
         ArgumentNullException.ThrowIfNull(handler);
 
         // Recorded before the native call, since the game can construct the menu at once.
-        int token = Interlocked.Increment(ref nextToken);
-        registrations[token] = new HandlerRegistration<Func<UI_MESSAGE_TYPE, UI_MESSAGE_RESULTS>>(handler, log);
+        int token = menuHandlersByToken.Add(new HandlerRegistration<Func<UI_MESSAGE_TYPE, UI_MESSAGE_RESULTS>>(handler, log));
 
         NativeSupplements.SF_ManagedMenu_SetHandler(&OnMessage);
         int status = NativeSupplements.SF_UI_RegisterManagedMenu(name, token, movieFile, (uint)flags, depth, (uint)context);
@@ -31,7 +25,7 @@ internal sealed class CustomMenuRegistrar(ILog log) : ICustomMenuRegistrar
             return;
         }
 
-        registrations.TryRemove(token, out _);
+        menuHandlersByToken.TryRemove(token, out _);
         if (status == 3)
         {
             throw new ArgumentException($"The game already registers a menu called \"{name}\". To change a built-in menu, replace its virtual table entries through {nameof(IFunctionHooks)}.{nameof(IFunctionHooks.ReplaceVirtualTableEntry)}.", nameof(name));
@@ -47,7 +41,7 @@ internal sealed class CustomMenuRegistrar(ILog log) : ICustomMenuRegistrar
     [UnmanagedCallersOnly]
     private static int OnMessage(int token, uint messageType)
     {
-        if (!registrations.TryGetValue(token, out var registration))
+        if (!menuHandlersByToken.TryGetValue(token, out var registration))
         {
             return (int)UI_MESSAGE_RESULTS.kPassOn;
         }

@@ -42,7 +42,7 @@ internal sealed class PluginServiceResolver
         serviceCollection.Add<ILog>(() => new FileLog(Path.Combine(directory, identity + ".log")));
         serviceCollection.Add<IFunctionHooks>(() => new FunctionHooks(identity));
         serviceCollection.Add<ICodePatcher>(() => new CodePatcher(identity, serviceCollection.GetRequired<ILog>()));
-        serviceCollection.Add(() => serviceResolver.TaskQueueSource.CreateLogTaskQueue(serviceCollection.GetRequired<ILog>()));
+        serviceCollection.Add(() => TaskQueueSource.CreateLogTaskQueue(serviceCollection.GetRequired<ILog>()));
         serviceCollection.Add<IGameEvents>(() => new PluginGameEvents(serviceResolver.Events, serviceCollection.GetRequired<ILog>()));
         serviceCollection.Add<IPapyrusFunctionRegistrar, PapyrusFunctionRegistrar>();
         serviceCollection.Add<IPapyrusEvents, PapyrusEvents>();

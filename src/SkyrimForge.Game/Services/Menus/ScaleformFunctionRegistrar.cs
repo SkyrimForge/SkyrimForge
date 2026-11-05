@@ -3,16 +3,12 @@ using SkyrimForge.Menus;
 using System;
 using System.Collections.Concurrent;
 using System.Runtime.InteropServices;
-using System.Threading;
 
 namespace SkyrimForge.Game;
 
 internal sealed class ScaleformFunctionRegistrar(ILog log) : IScaleformFunctionRegistrar
 {
-    // Static because the native side identifies a function by token alone. Concurrent because Call can run while another function is being registered.
-    private static readonly ConcurrentDictionary<int, HandlerRegistration<Action<GFxFunctionHandler.Params>>> registrations = new();
-
-    private static int nextToken;
+    private static readonly TokenRegistry<HandlerRegistration<Action<GFxFunctionHandler.Params>>> functionHandlersByToken = new();
 
     // Static because SKSE calls one callback for every plugin.
     private static readonly ConcurrentQueue<GameEvent<ScaleformMovieCreatedEventArgs>> movieEvents = new();
@@ -25,8 +21,7 @@ internal sealed class ScaleformFunctionRegistrar(ILog log) : IScaleformFunctionR
         ArgumentNullException.ThrowIfNull(handler);
 
         // Recorded before the handler exists, since the movie can call the function as soon as it is a member.
-        int token = Interlocked.Increment(ref nextToken);
-        registrations[token] = new HandlerRegistration<Action<GFxFunctionHandler.Params>>(handler, log);
+        int token = functionHandlersByToken.Add(new HandlerRegistration<Action<GFxFunctionHandler.Params>>(handler, log));
 
         NativeSupplements.SF_Scaleform_SetCallHandler(&Call);
 
@@ -42,7 +37,7 @@ internal sealed class ScaleformFunctionRegistrar(ILog log) : IScaleformFunctionR
             }
         }
 
-        registrations.TryRemove(token, out _);
+        functionHandlersByToken.TryRemove(token, out _);
         throw new InvalidOperationException($"The Scaleform object rejected a member named \"{name}\".");
     }
 
@@ -66,7 +61,7 @@ internal sealed class ScaleformFunctionRegistrar(ILog log) : IScaleformFunctionR
     [UnmanagedCallersOnly]
     private static void Call(int token, nint parameters)
     {
-        if (!registrations.TryGetValue(token, out var registration))
+        if (!functionHandlersByToken.TryGetValue(token, out var registration))
         {
             return;
         }

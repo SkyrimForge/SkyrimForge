@@ -48,7 +48,7 @@ internal sealed class PapyrusDispatcher(GameTarget gameTarget, ITaskQueue taskQu
         Variable value = virtualMachineArgumentList.Append();
 
         // Built before the value is written, so the callback can free the argument list if the write throws.
-        PapyrusCallback callback = PapyrusCallback.Create(log, virtualMachineArgumentList, _ => { }, () => { });
+        var callback = new PapyrusCallback(log, virtualMachineArgumentList, _ => { }, () => { });
         try
         {
             setPropertyValue(value);
@@ -86,8 +86,8 @@ internal sealed class PapyrusDispatcher(GameTarget gameTarget, ITaskQueue taskQu
         }
 
         // Built here, inside the task, so an argument the Papyrus VM did not allocate faults the task. Only the callback frees the list once it is built.
-        // The handlers go to Create because the Papyrus VM can run and release the call as soon as it accepts it.
-        PapyrusCallback callback = PapyrusCallback.Create(log, arguments?.Build() ?? VirtualMachineArgumentList.Allocate(), returnValue =>
+        // The handlers go to the constructor because the Papyrus VM can run and release the call as soon as it accepts it.
+        var callback = new PapyrusCallback(log, arguments?.Build() ?? VirtualMachineArgumentList.Allocate(), returnValue =>
         {
             // Converted here, because returnValue points into the Papyrus VM's stack, which is released once this delegate returns.
             try

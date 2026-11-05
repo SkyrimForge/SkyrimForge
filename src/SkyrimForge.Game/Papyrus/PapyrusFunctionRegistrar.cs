@@ -9,11 +9,7 @@ namespace SkyrimForge.Papyrus;
 
 internal sealed class PapyrusFunctionRegistrar(ILog log) : IPapyrusFunctionRegistrar
 {
-    // Replaced rather than mutated, because calls on a Papyrus VM thread read it without a lock.
-    private static volatile Dictionary<int, Func<Variable, StackFrame, Variable, uint, bool>> implementations = [];
-
-    // The first registration sets the native callback.
-    private static int nextToken;
+    private static readonly TokenRegistry<Func<Variable, StackFrame, Variable, uint, bool>> implementationsByToken = new();
 
     public void RegisterStatic(string className, PapyrusType returnType, string functionName, IReadOnlyCollection<PapyrusType> parameterTypes, Action<PapyrusCall> body)
     {
@@ -96,15 +92,8 @@ internal sealed class PapyrusFunctionRegistrar(ILog log) : IPapyrusFunctionRegis
             }
         }
 
-        if (nextToken == 0)
-        {
-            NativePapyrus.SF_Papyrus_SetCallback(&OnCall);
-        }
-        int token = nextToken++;
-        implementations = new Dictionary<int, Func<Variable, StackFrame, Variable, uint, bool>>(implementations)
-        {
-            [token] = InvokeBodyWithTryCatch
-        };
+        NativePapyrus.SF_Papyrus_SetCallback(&OnCall);
+        int token = implementationsByToken.Add(InvokeBodyWithTryCatch);
 
         int status = NativePapyrus.SF_Papyrus_BindFunction(className, functionName, rawTypes, objectTypes, rawTypes.Length, returnType.Raw, returnType.ObjectType, token, isStatic, isLatent);
         string? failure = status switch
@@ -122,9 +111,7 @@ internal sealed class PapyrusFunctionRegistrar(ILog log) : IPapyrusFunctionRegis
             return;
         }
 
-        var remaining = new Dictionary<int, Func<Variable, StackFrame, Variable, uint, bool>>(implementations);
-        remaining.Remove(token);
-        implementations = remaining;
+        implementationsByToken.TryRemove(token, out _);
         throw new InvalidOperationException(failure);
     }
 
@@ -149,7 +136,7 @@ internal sealed class PapyrusFunctionRegistrar(ILog log) : IPapyrusFunctionRegis
     private static byte OnCall(int token, nint returnValueAddress, nint frameAddress, nint selfAddress, uint stackId)
     {
         // The Papyrus VM passes a receiver Variable for every function, None for a static one, so a zero address is a fault.
-        if (!implementations.TryGetValue(token, out Func<Variable, StackFrame, Variable, uint, bool>? implementation)
+        if (!implementationsByToken.TryGetValue(token, out Func<Variable, StackFrame, Variable, uint, bool>? implementation)
             || Variable.OrNull(returnValueAddress) is not { } returnValue
             || StackFrame.OrNull(frameAddress) is not { } frame
             || Variable.OrNull(selfAddress) is not { } self)

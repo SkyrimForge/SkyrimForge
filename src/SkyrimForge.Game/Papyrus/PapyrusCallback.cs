@@ -1,18 +1,14 @@
 ﻿using SkyrimForge.Game;
 using SkyrimForge.Game.BSScript;
 using System;
-using System.Collections.Concurrent;
 using System.Runtime.InteropServices;
-using System.Threading;
 
 namespace SkyrimForge.Papyrus;
 
 // Frees the argument list when the call ends. The Papyrus VM does not free it, and freeing it sooner frees memory the Papyrus VM has yet to copy.
 internal sealed class PapyrusCallback
 {
-    private static readonly ConcurrentDictionary<int, PapyrusCallback> callbacksByToken = new();
-
-    private static int nextToken;
+    private static readonly TokenRegistry<PapyrusCallback> callbacksByToken = new();
 
     private readonly VirtualMachineArgumentList virtualMachineArgumentList;
 
@@ -31,22 +27,14 @@ internal sealed class PapyrusCallback
         NativePapyrus.SF_Papyrus_SetReturnOrDestructionCallback(&OnReturnOrDestruction);
     }
 
-    internal static PapyrusCallback Create(ILog log, VirtualMachineArgumentList virtualMachineArgumentList, Action<PapyrusValue> onReturn, Action onDestroyedWithoutReturn)
-    {
-        int token = Interlocked.Increment(ref nextToken);
-        IStackCallbackFunctor functor = IStackCallbackFunctor.FromAddress(NativePapyrus.SF_Papyrus_BeginCallback(token, virtualMachineArgumentList.NativeArguments.Address));
-        var callback = new PapyrusCallback(log, virtualMachineArgumentList, onReturn, onDestroyedWithoutReturn, functor);
-        callbacksByToken[token] = callback;
-        return callback;
-    }
-
-    private PapyrusCallback(ILog log, VirtualMachineArgumentList virtualMachineArgumentList, Action<PapyrusValue> onReturn, Action onDestroyedWithoutReturn, IStackCallbackFunctor functor)
+    internal PapyrusCallback(ILog log, VirtualMachineArgumentList virtualMachineArgumentList, Action<PapyrusValue> onReturn, Action onDestroyedWithoutReturn)
     {
         this.log = log;
         this.virtualMachineArgumentList = virtualMachineArgumentList;
         this.onReturn = onReturn;
         this.onDestroyedWithoutReturn = onDestroyedWithoutReturn;
-        Functor = functor;
+        // OnReturnOrDestruction cannot run before the constructor returns, because it runs only when the call returns or the functor is destroyed.
+        Functor = IStackCallbackFunctor.FromAddress(NativePapyrus.SF_Papyrus_BeginCallback(callbacksByToken.Add(this), virtualMachineArgumentList.NativeArguments.Address));
     }
 
     internal IStackCallbackFunctor Functor { get; }

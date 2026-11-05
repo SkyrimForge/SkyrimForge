@@ -10,13 +10,12 @@ internal sealed class ServiceResolver
 {
     public ServiceCollection ServiceCollection { get; }
 
-    public ServiceResolver(GameTarget gameTarget, IGameEvents events, ILog log, TaskQueueSource taskQueueSource, IPluginCollection plugins, string skseLogDirectory)
+    public ServiceResolver(GameTarget gameTarget, IGameEvents events, ILog log, IPluginCollection plugins, string skseLogDirectory)
     {
         ServiceCollection = new ServiceCollection();
         ServiceCollection.Add(() => gameTarget);
         ServiceCollection.Add(() => events);
         ServiceCollection.Add(() => log);
-        ServiceCollection.Add(() => taskQueueSource);
         ServiceCollection.Add(() => plugins);
         ServiceCollection.Add<IConsole>(() => new GameConsole());
         ServiceCollection.Add<IConsoleCommands>(() => new ConsoleCommands());
@@ -37,8 +36,6 @@ internal sealed class ServiceResolver
     }
 
     public IGameEvents Events => ServiceCollection.GetRequired<IGameEvents>();
-
-    public TaskQueueSource TaskQueueSource => ServiceCollection.GetRequired<TaskQueueSource>();
 
     public CoSave CoSave => ServiceCollection.GetRequired<CoSave>();
 

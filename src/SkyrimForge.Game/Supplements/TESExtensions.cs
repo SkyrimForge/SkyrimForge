@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace SkyrimForge.Game;
 
@@ -175,18 +173,6 @@ public static class TESExtensions
                 reference.Disable();
             }
             return clearedReferences;
-        }
-
-        internal async Task LayOnGroundAfterDelayAsync(IEnumerable<GroundPlacement> placements, IUtility utility, CancellationToken cancellationToken = default)
-        {
-            const float settleSeconds = 1f;
-            ArgumentNullException.ThrowIfNull(placements);
-            ArgumentNullException.ThrowIfNull(utility);
-            await utility.WaitSecondsAsync(settleSeconds, cancellationToken);
-            foreach ((ObjectReference reference, NiPoint3 position, float yaw, float span) in placements)
-            {
-                reference.LayOnGround(tes, position, yaw, span);
-            }
         }
     }
 

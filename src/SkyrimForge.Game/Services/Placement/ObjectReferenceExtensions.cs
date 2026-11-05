@@ -44,7 +44,7 @@ public static class ObjectReferenceExtensions
                 cancellationToken.ThrowIfCancellationRequested();
                 tes.DisableVegetation(packIn, origin);
                 Dictionary<PackInPart, ObjectReference> placedParts = [];
-                List<GroundPlacement> laidParts = [];
+                List<Action> layActions = [];
                 foreach (PackInPart part in packIn.Parts)
                 {
                     NiPoint3 groundPosition = packIn.GetGroundPosition(tes, origin, part);
@@ -55,9 +55,13 @@ public static class ObjectReferenceExtensions
                     float yaw = part.Yaw ?? Random.Shared.NextSingle() * 360f;
                     ObjectReference partReference = reference.PlaceOnGround(tes, dataHandler, part.BaseObjectId, groundPosition, yaw, part.Span);
                     placedParts.Add(part, partReference);
-                    laidParts.Add(new(partReference, groundPosition, yaw, part.Span));
+                    layActions.Add(() => partReference.LayOnGround(tes, groundPosition, yaw, part.Span));
                 }
-                await tes.LayOnGroundAfterDelayAsync(laidParts, utility, cancellationToken);
+                await utility.WaitSecondsAsync(1f, cancellationToken);
+                foreach (Action lay in layActions)
+                {
+                    lay();
+                }
                 return placedParts;
             }
         }

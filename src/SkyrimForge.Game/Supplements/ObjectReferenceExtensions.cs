@@ -310,8 +310,7 @@ public static class ObjectReferenceExtensions
         /// <remarks>Call on the game's thread.</remarks>
         public ObjectReference PlaceOnGround<TBase>(TES tes, TESDataHandler dataHandler, FormId<TBase> baseObjectId, NiPoint3 position, float yawDegrees, float span) where TBase : struct, ITESBoundObject
         {
-            float drop = Math.Max(baseObjectId.Form.AsTESBoundObject().OriginDrop, 0f);
-            ObjectReference placedReference = reference.Place(dataHandler, baseObjectId, position with { Z = position.Z + drop }, yawDegrees);
+            ObjectReference placedReference = reference.Place(dataHandler, baseObjectId, position, yawDegrees);
             placedReference.LayOnGround(tes, position, yawDegrees, span);
             return placedReference;
         }

@@ -21,13 +21,6 @@ internal sealed class PapyrusEvents : IPapyrusEvents
         return declaredEvents.GetOrAdd((scriptName.ToUpperInvariant(), eventName.ToUpperInvariant()), _ => CreateEvent(scriptName, eventName));
     }
 
-    private static PapyrusEvent CreateEvent(string? scriptName, string eventName)
-    {
-        nint registrationSet = NativePapyrus.SF_PapyrusEvents_Declare(eventName);
-        if (registrationSet == 0)
-        {
-            throw new InvalidOperationException($"No registration set could be made for \"{eventName}\".");
-        }
-        return new PapyrusEvent(eventName, scriptName, registrationSet);
-    }
+    private static PapyrusEvent CreateEvent(string? scriptName, string eventName) => new(eventName, scriptName, NativePapyrus.SF_PapyrusEvents_Declare(eventName));
+
 }

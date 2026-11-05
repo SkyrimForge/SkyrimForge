@@ -14,12 +14,7 @@ internal sealed class VirtualMachineArgumentList
 
     private VirtualMachineArgumentList(IFunctionArguments nativeArguments) => NativeArguments = nativeArguments;
 
-    internal static VirtualMachineArgumentList Allocate()
-    {
-        IFunctionArguments functionArguments = IFunctionArguments.OrNull(NativePapyrus.SF_Papyrus_BeginArguments())
-            ?? throw new InvalidOperationException("The Papyrus argument list could not be allocated.");
-        return new VirtualMachineArgumentList(functionArguments);
-    }
+    internal static VirtualMachineArgumentList Allocate() => new(IFunctionArguments.FromAddress(NativePapyrus.SF_Papyrus_BeginArguments()));
 
     internal IFunctionArguments NativeArguments { get; }
 
@@ -31,7 +26,7 @@ internal sealed class VirtualMachineArgumentList
     internal Variable Append()
     {
         count++;
-        return Variable.OrNull(NativePapyrus.SF_Papyrus_AppendArgument(NativeArguments.Address)) ?? throw new InvalidOperationException("The Papyrus argument could not be appended.");
+        return Variable.FromAddress(NativePapyrus.SF_Papyrus_AppendArgument(NativeArguments.Address));
     }
 
     internal void AppendForm(nint form)

@@ -34,11 +34,7 @@ internal sealed class PapyrusCallback
     internal static PapyrusCallback Create(ILog log, VirtualMachineArgumentList virtualMachineArgumentList, Action<PapyrusValue> onReturn, Action onDestroyedWithoutReturn)
     {
         int token = Interlocked.Increment(ref nextToken);
-        if (IStackCallbackFunctor.OrNull(NativePapyrus.SF_Papyrus_BeginCallback(token, virtualMachineArgumentList.NativeArguments.Address)) is not { } functor)
-        {
-            virtualMachineArgumentList.Free();
-            throw new InvalidOperationException("The Papyrus callback could not be allocated.");
-        }
+        IStackCallbackFunctor functor = IStackCallbackFunctor.FromAddress(NativePapyrus.SF_Papyrus_BeginCallback(token, virtualMachineArgumentList.NativeArguments.Address));
         var callback = new PapyrusCallback(log, virtualMachineArgumentList, onReturn, onDestroyedWithoutReturn, functor);
         callbacksByToken[token] = callback;
         return callback;

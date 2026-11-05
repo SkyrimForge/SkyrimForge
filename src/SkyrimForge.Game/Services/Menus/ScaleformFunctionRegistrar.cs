@@ -30,12 +30,7 @@ internal sealed class ScaleformFunctionRegistrar(ILog log) : IScaleformFunctionR
 
         NativeSupplements.SF_Scaleform_SetCallHandler(&Call);
 
-        nint handlerAddress = NativeSupplements.SF_Scaleform_CreateFunctionHandler(token);
-        if (GFxFunctionHandler.OrNull(handlerAddress) is not { } functionHandler)
-        {
-            registrations.TryRemove(token, out _);
-            throw new InvalidOperationException("The Scaleform function handler could not be allocated.");
-        }
+        GFxFunctionHandler functionHandler = GFxFunctionHandler.FromAddress(NativeSupplements.SF_Scaleform_CreateFunctionHandler(token));
 
         // SetMember copies the reference, so the function outlives this value.
         using (ScaleformValue function = ScaleformValue.Create())

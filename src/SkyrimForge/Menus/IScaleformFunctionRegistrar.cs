@@ -31,7 +31,9 @@ public interface IScaleformFunctionRegistrar
     /// </param>
     /// <exception cref="ArgumentNullException"><paramref name="name"/> or <paramref name="handler"/> is <c>null</c>.</exception>
     /// <exception cref="ArgumentException"><paramref name="name"/> is empty.</exception>
-    /// <exception cref="InvalidOperationException">The handler could not be allocated, or setting the member on the object returned false.</exception>
+    /// <exception cref="InvalidOperationException">
+    /// The <see cref="GFxValue"/> that receives the function could not be allocated, or setting the member on <paramref name="target"/> returned false.
+    /// </exception>
     void Register(IGFxMovie movie, GFxValue target, string name, Action<GFxFunctionHandler.Params> handler);
 
     /// <summary>Raised as the game finishes each movie.</summary>

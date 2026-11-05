@@ -12,7 +12,6 @@ public interface IPapyrusEvents
     /// <param name="eventName">The name the receiving script declares, as <c>Event OnGoldSpent(int amount)</c>.</param>
     /// <exception cref="System.ArgumentNullException"><paramref name="eventName"/> is <c>null</c>.</exception>
     /// <exception cref="System.ArgumentException"><paramref name="eventName"/> is empty.</exception>
-    /// <exception cref="System.InvalidOperationException">No registration set could be made for the name.</exception>
     PapyrusEvent Declare(string eventName);
 
     /// <summary>
@@ -27,6 +26,5 @@ public interface IPapyrusEvents
     /// <param name="eventName">The name the receiving script declares, as <c>Event OnTargetChosen(Actor target)</c>.</param>
     /// <exception cref="System.ArgumentNullException"><paramref name="scriptName"/> or <paramref name="eventName"/> is <c>null</c>.</exception>
     /// <exception cref="System.ArgumentException"><paramref name="scriptName"/> or <paramref name="eventName"/> is empty.</exception>
-    /// <exception cref="System.InvalidOperationException">No registration set could be made for the name.</exception>
     PapyrusEvent Declare(string scriptName, string eventName);
 }

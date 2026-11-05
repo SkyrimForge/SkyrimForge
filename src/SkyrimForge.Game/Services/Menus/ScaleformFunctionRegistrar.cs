@@ -20,24 +20,20 @@ internal sealed class ScaleformFunctionRegistrar(ILog log) : IScaleformFunctionR
         ArgumentException.ThrowIfNullOrEmpty(name);
         ArgumentNullException.ThrowIfNull(handler);
 
-        // Recorded before the handler exists, since the movie can call the function as soon as it is a member.
-        int token = functionHandlersByToken.Add(new HandlerRegistration<Action<GFxFunctionHandler.Params>>(handler, log));
-
-        NativeSupplements.SF_Scaleform_SetCallHandler(&Call);
-
-        GFxFunctionHandler functionHandler = GFxFunctionHandler.FromAddress(NativeSupplements.SF_Scaleform_CreateFunctionHandler(token));
-
         // SetMember copies the reference, so the function outlives this value.
         using (ScaleformValue function = ScaleformValue.Create())
         {
+            // Recorded before the handler exists, since the movie can call the function as soon as it is a member.
+            int token = functionHandlersByToken.Add(new HandlerRegistration<Action<GFxFunctionHandler.Params>>(handler, log));
+            NativeSupplements.SF_Scaleform_SetCallHandler(&Call);
+            GFxFunctionHandler functionHandler = GFxFunctionHandler.FromAddress(NativeSupplements.SF_Scaleform_CreateFunctionHandler(token));
             movie.CreateFunction(function.Value, functionHandler);
             if (target.SetMember(name, function.Value))
             {
                 return;
             }
+            functionHandlersByToken.TryRemove(token, out _);
         }
-
-        functionHandlersByToken.TryRemove(token, out _);
         throw new InvalidOperationException($"The Scaleform object rejected a member named \"{name}\".");
     }
 

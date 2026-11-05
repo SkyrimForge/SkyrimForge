@@ -16,9 +16,6 @@ internal sealed class MessageBoxPrompter(ILog log, ITaskQueue taskQueue) : IMess
     private static bool installed;
     private static readonly Lock installLock = new();
 
-    private readonly ILog log = log;
-    private readonly ITaskQueue taskQueue = taskQueue;
-
     public unsafe Task<int> ShowAsync(string message, IReadOnlyList<string> buttons, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(message);

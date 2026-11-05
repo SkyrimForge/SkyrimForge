@@ -13,8 +13,6 @@ internal sealed unsafe class SksePluginMessenger(ILog log) : ISksePluginMessenge
     // Installed on the first subscription, so a test that constructs a plugin needs no native runtime.
     private static bool handlerInstalled;
 
-    private readonly ILog log = log;
-
     /// <inheritdoc/>
     public bool Send(uint messageType, nint data = 0, int length = 0, string? receiver = null)
     {
@@ -97,9 +95,6 @@ internal sealed unsafe class SksePluginMessenger(ILog log) : ISksePluginMessenge
     // SKSE cannot remove a registration, so unsubscribing removes only the handler.
     private sealed class Subscription(string sender, HandlerRegistration<Action<SksePluginMessage>> registration) : ISubscription
     {
-        private readonly string sender = sender;
-        private readonly HandlerRegistration<Action<SksePluginMessage>> registration = registration;
-
         /// <inheritdoc/>
         public void Unsubscribe() => Drop(sender, registration);
     }

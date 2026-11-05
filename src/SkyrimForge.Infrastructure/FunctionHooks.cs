@@ -7,8 +7,6 @@ namespace SkyrimForge.Infrastructure;
 
 internal sealed class FunctionHooks(string owner) : IFrameworkFunctionHooks
 {
-    private readonly string owner = owner;
-
     internal static string? ConflictOwner => Marshal.PtrToStringUTF8(NativeGlobals.SF_Hook_ConflictOwner()) is { Length: > 0 } name ? name : null;
 
     /// <inheritdoc/>

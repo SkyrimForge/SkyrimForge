@@ -9,9 +9,6 @@ namespace SkyrimForge.Papyrus;
 
 internal sealed class PapyrusDispatcher(GameTarget gameTarget, ITaskQueue taskQueue, ILog log)
 {
-    private readonly GameTarget gameTarget = gameTarget;
-    private readonly ITaskQueue taskQueue = taskQueue;
-    private readonly ILog log = log;
     private static PapyrusDispatcher? instance;
 
     // Static because the generated Papyrus API is extension members, which have no constructor for injection.

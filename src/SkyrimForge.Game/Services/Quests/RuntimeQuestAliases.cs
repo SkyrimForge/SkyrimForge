@@ -13,16 +13,6 @@ internal sealed class RuntimeQuestAliases(IRuntimeQuest quest, RuntimeQuestFacto
 {
     private static readonly TimeSpan distanceCheckInterval = TimeSpan.FromSeconds(1);
 
-    private readonly RuntimeQuestFactory factory = factory;
-    private readonly GameTarget gameTarget = gameTarget;
-    private readonly IGameEvents events = events;
-    private readonly IUtility utility = utility;
-    private readonly IGameSession session = session;
-    private readonly SavedQuestStore store = store;
-    private readonly RuntimeQuestRecord record = record;
-    private readonly AliasActorState actorState = actorState;
-    private readonly QuestDeclaration declaration = declaration;
-
     public IRuntimeQuest Quest { get; } = quest;
 
     internal AliasPackages Packages { get; } = packages;

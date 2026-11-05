@@ -16,11 +16,6 @@ namespace SkyrimForge.PluginHost;
 internal sealed class PluginLoader(
     string directory, ILog log, ServiceResolver serviceResolver, IReadOnlyList<IPluginServiceSource> serviceSources, IReadOnlyDictionary<string, string> sharedLibraryPaths)
 {
-    private readonly string directory = directory;
-    private readonly IReadOnlyDictionary<string, string> sharedLibraryPaths = sharedLibraryPaths;
-    private readonly ILog log = log;
-    private readonly ServiceResolver serviceResolver = serviceResolver;
-    private readonly IReadOnlyList<IPluginServiceSource> serviceSources = serviceSources;
     private readonly HashSet<string> identities = new(StringComparer.OrdinalIgnoreCase);
     private readonly List<string> failures = [];
     private readonly Dictionary<IPlugin, PluginServiceResolver> resolversByPlugin = new(ReferenceEqualityComparer.Instance);

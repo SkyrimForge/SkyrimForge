@@ -8,12 +8,6 @@ namespace SkyrimForge.Game;
 
 internal sealed class UnvoicedLipSync(MouthAnimator mouthAnimator, IUtility utility, IGameSession session, GameTarget gameTarget, IGameEvents events, ILog log)
 {
-    private readonly MouthAnimator mouthAnimator = mouthAnimator;
-    private readonly IUtility utility = utility;
-    private readonly IGameSession session = session;
-    private readonly GameTarget gameTarget = gameTarget;
-    private readonly IGameEvents events = events;
-
     // Read and written on the game's thread.
     private readonly Dictionary<FormId<Actor>, Line> linesBySpeaker = [];
 

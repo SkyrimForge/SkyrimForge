@@ -13,15 +13,6 @@ internal sealed class RuntimeQuestRecord(GameTarget gameTarget, IUtility utility
     // The game's own quests use instance 1.
     private const uint instance = 1;
 
-    private readonly GameTarget gameTarget = gameTarget;
-    private readonly IUtility utility = utility;
-    private readonly IGameSession session = session;
-    private readonly ILog log = log;
-    private readonly SavedQuestStore store = store;
-    private readonly QuestDeclaration declaration = declaration;
-    private readonly string name = name;
-    private readonly QUEST_DATA.Type type = type;
-
     // Each target is allocated the first time its marker is shown and retained until the process exits.
     private readonly Dictionary<(ushort Objective, uint AliasId), TESQuestTarget> questTargets = [];
 

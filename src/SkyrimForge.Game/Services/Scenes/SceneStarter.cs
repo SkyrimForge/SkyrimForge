@@ -19,15 +19,6 @@ internal sealed class SceneStarter(IUtility utility, ISceneOwner owner, SceneRef
     // A scene started less than this long after the end of a scene that shares one of its actors can have a phase end as it begins.
     private static readonly TimeSpan releaseDelay = TimeSpan.FromSeconds(2);
 
-    private readonly IUtility utility = utility;
-    private readonly ISceneOwner owner = owner;
-    private readonly SceneReferences references = references;
-    private readonly ScenePlayerControl playerControl = playerControl;
-    private readonly LinkedRefChanges linkedRefs = linkedRefs;
-    private readonly ILog log = log;
-    private readonly string questName = questName;
-    private readonly Func<TimeSpan> getNow = getNow;
-
     private readonly Dictionary<QuestReferenceAlias, TimeSpan> releaseTimes = [];
 
     internal void RecordRelease(IEnumerable<QuestReferenceAlias> actors)

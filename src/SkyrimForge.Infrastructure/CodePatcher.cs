@@ -24,9 +24,6 @@ internal sealed unsafe partial class CodePatcher(string owner, ILog log) : ICode
 
     private static bool dispatchSet;
 
-    private readonly string owner = owner;
-    private readonly ILog log = log;
-
     /// <summary>Mirrors PatchKind in CodePatches.cpp.</summary>
     private enum PatchKind
     {

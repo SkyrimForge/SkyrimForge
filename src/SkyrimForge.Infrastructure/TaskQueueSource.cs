@@ -61,9 +61,6 @@ internal sealed class TaskQueueSource
 
     private sealed class LogTaskQueue(TaskQueueSource queue, ILog log) : ITaskQueue
     {
-        private readonly TaskQueueSource queue = queue;
-        private readonly ILog log = log;
-
         /// <inheritdoc/>
         public void AddTask(Action work) => queue.Add(work, false, log);
 

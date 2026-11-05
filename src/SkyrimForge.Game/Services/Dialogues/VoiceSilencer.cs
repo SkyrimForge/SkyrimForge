@@ -19,10 +19,6 @@ internal sealed unsafe class VoiceSilencer(GameTarget gameTarget, IFrameworkFunc
     private static delegate* unmanaged<nint, nint, nint, nint, nint, nint> originalDialogueItemConstructor;
 
     private readonly GameTarget gameTarget = gameTarget;
-    private readonly IFunctionHooks functionHooks = functionHooks;
-    private readonly IGameEvents events = events;
-    private readonly SubtitleSwitch subtitleSwitch = subtitleSwitch;
-    private readonly UnvoicedLipSync unvoicedLipSync = unvoicedLipSync;
     private readonly ILog log = log;
 
     // A created form is never freed, so its address outlives a load. The game enters the replacements, which read this, from any thread.

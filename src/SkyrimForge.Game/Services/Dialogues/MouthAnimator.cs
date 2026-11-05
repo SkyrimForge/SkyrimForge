@@ -34,10 +34,13 @@ internal sealed class MouthAnimator(IUtility utility)
         }
         finally
         {
-            if (!newGameOrSaveLoadingToken.IsCancellationRequested)
+            // A phoneme weight left in the phoneme keyframe overrides the game's lip sync for every later line.
+            // BSFaceGenAnimationData.Reset does not clear the phoneme keyframe, but BSFaceGenKeyframeMultiple.Reset does.
+            if (!newGameOrSaveLoadingToken.IsCancellationRequested && speakerId.FormOrNull?.GetFaceGenAnimationData() is { } animationData)
             {
-                // Reset rather than a phoneme of zero, which leaves the mouth open.
-                speakerId.FormOrNull?.GetFaceGenAnimationData()?.Reset(0f, false, true, false, false);
+                BSFaceGenKeyframeMultiple phonemes = animationData.PhenomeKeyFrame;
+                phonemes.Reset();
+                phonemes.IsUpdated = true;
             }
         }
     }

@@ -20,9 +20,6 @@ public sealed class AnimationPlugin(GameTarget gameTarget, IGameEvents events, I
 
     private int heardCount;
 
-    // Read on worker threads without the lock.
-    private volatile bool eventNameLimitReached;
-
     /// <inheritdoc/>
     public void Start()
     {
@@ -42,16 +39,12 @@ public sealed class AnimationPlugin(GameTarget gameTarget, IGameEvents events, I
 
     private void OnAnimationEvent(AnimationEventArgs animationEvent)
     {
-        if (eventNameLimitReached)
-        {
-            return;
-        }
         // The game raises these on worker threads.
         int eventNameCount;
         int total;
         lock (eventNames)
         {
-            total = ++heardCount;
+            total = heardCount++;
             if (eventNames.Count >= eventNameLimit || !eventNames.Add(animationEvent.Tag))
             {
                 return;
@@ -61,7 +54,6 @@ public sealed class AnimationPlugin(GameTarget gameTarget, IGameEvents events, I
         log.Write($"Animation event \"{animationEvent.Tag}\"{(animationEvent.Payload.Length > 0 ? $", payload \"{animationEvent.Payload}\"" : "")}. Kinds: {eventNameCount}. Events: {total}.");
         if (eventNameCount == eventNameLimit)
         {
-            eventNameLimitReached = true;
             log.Write($"Logged {eventNameLimit} kinds. Further kinds are not logged.");
         }
     }

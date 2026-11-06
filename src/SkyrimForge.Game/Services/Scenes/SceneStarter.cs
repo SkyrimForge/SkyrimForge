@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SkyrimForge.Game;
 
-internal sealed class SceneStarter(IUtility utility, ISceneOwner owner, SceneReferences references, ScenePlayerControl playerControl, LinkedRefChanges linkedRefs, ILog log, string questName, Func<TimeSpan> getNow)
+internal sealed class SceneStarter(IUtility utility, RuntimeQuest owner, SceneReferences references, ScenePlayerControl playerControl, LinkedRefChanges linkedRefs, ILog log, string questName, Func<TimeSpan> getNow)
 {
     private static readonly TimeSpan playWait = TimeSpan.FromSeconds(5);
 

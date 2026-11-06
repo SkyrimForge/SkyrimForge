@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SkyrimForge.Game;
 
-internal sealed class ScenePlayerControl(GameTarget gameTarget, ISceneOwner owner, SceneReferences references, LinkedRefChanges linkedRefs, ILog log)
+internal sealed class ScenePlayerControl(GameTarget gameTarget, RuntimeQuest owner, SceneReferences references, LinkedRefChanges linkedRefs, ILog log)
 {
     internal void DisableControls(ScenePlayerControls controls) => CallControls(GameScript.DisablePlayerControls, controls).LogFault(log);
 

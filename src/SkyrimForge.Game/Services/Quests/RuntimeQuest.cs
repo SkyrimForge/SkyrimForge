@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SkyrimForge.Game;
 
-internal sealed partial class RuntimeQuest : IRuntimeQuest, IQuestObjectives, IQuestStages, ISceneOwner
+internal sealed partial class RuntimeQuest : IRuntimeQuest, IQuestObjectives, IQuestStages
 {
     [GeneratedRegex("<Alias=([^>]+)>")]
     private static partial Regex AliasToken { get; }
@@ -48,17 +48,15 @@ internal sealed partial class RuntimeQuest : IRuntimeQuest, IQuestObjectives, IQ
 
     internal RuntimeQuestScenes Scenes { get; }
 
-    FormId<ObjectReference>? ISceneOwner.GetReference(QuestReferenceAlias alias) => store.GetReference(alias);
+    internal FormId<ObjectReference>? GetReference(QuestReferenceAlias alias) => store.GetReference(alias);
 
-    FormId<ObjectReference>? ISceneOwner.GetLocationMarker(QuestLocationAlias alias) => store.GetLocationMarker(alias);
+    internal FormId<ObjectReference>? GetLocationMarker(QuestLocationAlias alias) => store.GetLocationMarker(alias);
 
-    Quest ISceneOwner.CreateSceneQuestRecord(string name) => record.CreateForm(name);
+    internal Quest CreateSceneQuestRecord(string name) => record.CreateForm(name);
 
-    IReadOnlyList<string> ISceneOwner.SavedSaidLines => store.Read().SaidLines;
+    internal IReadOnlyList<string> SavedSaidLines => store.Read().SaidLines;
 
-    IRuntimeQuest ISceneOwner.Quest => this;
-
-    IEnumerable<RuntimeQuestScenes> ISceneOwner.PluginScenes => factory.Scenes;
+    internal IEnumerable<RuntimeQuestScenes> PluginScenes => factory.Scenes;
 
     internal void Build()
     {

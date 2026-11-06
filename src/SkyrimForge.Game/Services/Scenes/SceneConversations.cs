@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace SkyrimForge.Game;
 
-internal sealed class SceneConversations(ISceneOwner owner, GameTarget gameTarget)
+internal sealed class SceneConversations(RuntimeQuest owner, GameTarget gameTarget)
 {
     internal void Show(QuestScene scene, ScenePlay play, int? phase)
     {

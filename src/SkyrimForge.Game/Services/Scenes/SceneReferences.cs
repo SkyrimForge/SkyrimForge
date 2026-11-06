@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace SkyrimForge.Game;
 
-internal sealed class SceneReferences(ISceneOwner owner)
+internal sealed class SceneReferences(RuntimeQuest owner)
 {
     internal static readonly FormId<ObjectReference> Player = new(KnownForms.PlayerRef.Value);
 

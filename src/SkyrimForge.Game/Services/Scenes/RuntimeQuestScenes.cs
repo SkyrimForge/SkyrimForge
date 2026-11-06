@@ -30,7 +30,7 @@ internal sealed class RuntimeQuestScenes : IQuestScenes, IScenePlayback
     private readonly SceneStarter starter;
     private readonly string questName;
     private readonly IReadOnlyList<QuestScene> declaredScenes;
-    private readonly ISceneOwner owner;
+    private readonly RuntimeQuest owner;
     private readonly GameEvent<QuestSceneBeginEventArgs> onBegin;
     private readonly GameEvent<QuestScenePhaseEventArgs> onPhaseBegin;
     private readonly GameEvent<QuestScenePhaseEventArgs> onPhaseEnd;
@@ -45,7 +45,7 @@ internal sealed class RuntimeQuestScenes : IQuestScenes, IScenePlayback
 
     private TimeSpan now;
 
-    internal RuntimeQuestScenes(GameTarget gameTarget, IGameEvents events, IUtility utility, IGameSession session, VoiceSilencer voiceSilencer, PluginVoices voices, ILog log, LinkedRefChanges linkedRefs, ISceneOwner owner, IReadOnlyList<QuestScene> declaredScenes)
+    internal RuntimeQuestScenes(GameTarget gameTarget, IGameEvents events, IUtility utility, IGameSession session, VoiceSilencer voiceSilencer, PluginVoices voices, ILog log, LinkedRefChanges linkedRefs, RuntimeQuest owner, IReadOnlyList<QuestScene> declaredScenes)
     {
         this.gameTarget = gameTarget;
         this.session = session;
@@ -112,7 +112,7 @@ internal sealed class RuntimeQuestScenes : IQuestScenes, IScenePlayback
 
     public IGameEvent<QuestSceneLineEventArgs> OnLineEnd => lineTracker.OnEnd;
 
-    IRuntimeQuest IScenePlayback.Quest => owner.Quest;
+    IRuntimeQuest IScenePlayback.Quest => owner;
 
     public IQuestSceneEvents GetEvents(QuestScene scene) => new QuestSceneEvents(this, scene);
 

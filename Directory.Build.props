@@ -10,7 +10,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>0.2.0</Version>
+    <Version>0.3.0</Version>
     <Authors>Wessley Mitchell</Authors>
     <Copyright>Copyright 2026 Wessley Mitchell</Copyright>
     <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>

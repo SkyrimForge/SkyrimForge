@@ -13,7 +13,6 @@ internal static class RuntimeConditions
     internal static TESConditionItem Create(FUNCTION_DATA.FunctionID function, nint parameter, float value = 1f)
     {
         TESConditionItem item = TESConditionItem.New();
-        item.Next = null;
         CONDITION_ITEM_DATA data = item.Data;
         FUNCTION_DATA functionData = data.FunctionData;
         functionData.Function = function;

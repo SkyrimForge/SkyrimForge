@@ -89,7 +89,12 @@ internal sealed class RuntimeQuestScenes : IQuestScenes, IScenePlayback
             records.Clear();
             lineTracker.Clear();
             starter.ClearReleaseTimes();
-            EndAll(QuestSceneEndReason.NewGameOrSaveLoading);
+            QuestScene[] endedScenes = [.. plays.Keys];
+            plays.Clear();
+            foreach (QuestScene scene in endedScenes)
+            {
+                onEnd.Raise(new QuestSceneEndEventArgs(scene, QuestSceneEndReason.NewGameOrSaveLoading));
+            }
         });
     }
 
@@ -534,16 +539,6 @@ internal sealed class RuntimeQuestScenes : IQuestScenes, IScenePlayback
             return QuestSceneEndReason.Completed;
         }
         return sceneReferences.GetUnavailabilityReason(scene, play.ReachedPhase) != null ? QuestSceneEndReason.ActorUnavailable : QuestSceneEndReason.Interrupted;
-    }
-
-    private void EndAll(QuestSceneEndReason reason)
-    {
-        QuestScene[] endedScenes = [.. plays.Keys];
-        plays.Clear();
-        foreach (QuestScene scene in endedScenes)
-        {
-            onEnd.Raise(new QuestSceneEndEventArgs(scene, reason));
-        }
     }
 
     // A load clears every silence, and a scene playing at the save begins again after the load, silencing its actors again.

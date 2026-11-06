@@ -41,10 +41,8 @@ internal sealed class Courier : ICourier
         });
     }
 
-    public async Task SendAsync<TItem>(TItem item) where TItem : IObjectReference
-    {
-        await script.CallAsync(KnownForms.WICourier.Form, "addRefToContainer", new PapyrusArguments().Add(item));
-    }
+    public Task SendAsync<TItem>(TItem item) where TItem : IObjectReference =>
+        script.CallAsync(KnownForms.WICourier.Form, "addRefToContainer", new PapyrusArguments().Add(item));
 
     private static string[] ReadNames() =>
     [

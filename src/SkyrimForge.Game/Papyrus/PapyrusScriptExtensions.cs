@@ -15,8 +15,7 @@ public static class PapyrusScriptExtensions
         /// </exception>
         public async Task AddItem<TForm>(FormId<TForm> akItemToAdd, int aiCount = 1, bool abSilent = false) where TForm : struct, IForm
         {
-            TForm form = akItemToAdd.Form;
-            await self.AddItem(form, aiCount, abSilent);
+            await self.AddItem(akItemToAdd.Form, aiCount, abSilent);
         }
 
         /// <summary>Returns how many of the item <paramref name="akItem"/> identifies are in this reference's inventory.</summary>
@@ -25,8 +24,7 @@ public static class PapyrusScriptExtensions
         /// </exception>
         public async Task<int> GetItemCount<TForm>(FormId<TForm> akItem) where TForm : struct, IForm
         {
-            TForm form = akItem.Form;
-            return await self.GetItemCount(form);
+            return await self.GetItemCount(akItem.Form);
         }
 
         /// <summary>Removes the item <paramref name="akItemToRemove"/> identifies from this reference's inventory.</summary>
@@ -35,8 +33,7 @@ public static class PapyrusScriptExtensions
         /// </exception>
         public async Task RemoveItem<TForm>(FormId<TForm> akItemToRemove, int aiCount = 1, bool abSilent = false, IObjectReference? akOtherContainer = null) where TForm : struct, IForm
         {
-            TForm form = akItemToRemove.Form;
-            await self.RemoveItem(form, aiCount, abSilent, akOtherContainer);
+            await self.RemoveItem(akItemToRemove.Form, aiCount, abSilent, akOtherContainer);
         }
     }
 }

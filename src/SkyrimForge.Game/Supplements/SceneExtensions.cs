@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-namespace SkyrimForge.Game;
+﻿namespace SkyrimForge.Game;
 
 /// <summary>Provides extension members for <see cref="Scene"/>.</summary>
 public static class SceneExtensions
@@ -13,7 +11,7 @@ public static class SceneExtensions
         {
             // The game reads the first action whose index, without its two high bits, equals the ID.
             const uint indexMask = 0x3FFFFFFF;
-            return scene.Actions.Get().Where(action => (action.Index & indexMask) == (uint)actionId).Take(1).Any(action => action.ActiveFlags.HasFlag(BGSSceneAction.ActiveFlag.kComplete));
+            return scene.Actions.Get().FirstOrNull(action => (action.Index & indexMask) == (uint)actionId)?.ActiveFlags.HasFlag(BGSSceneAction.ActiveFlag.kComplete) == true;
         }
     }
 }

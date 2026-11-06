@@ -8,7 +8,6 @@ internal sealed class QuestDeclaration
 {
     internal QuestDeclaration(IEnumerable<QuestStage> stages, IEnumerable<QuestScene>? scenes = null, IEnumerable<QuestAlias>? aliases = null)
     {
-        ArgumentNullException.ThrowIfNull(stages);
         QuestStage[] declaredStages = [.. stages];
         Dictionary<ushort, QuestStage> stagesByIndex = [];
         Dictionary<ushort, QuestObjective> objectivesByIndex = [];

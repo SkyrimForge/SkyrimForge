@@ -67,8 +67,6 @@ internal static class PapyrusPropertyAccessor
 
     internal static void WriteArray<T>(string className, string propertyName, Variable destination, IReadOnlyCollection<T> values, Action<Variable, T> setEntry)
     {
-        ArgumentNullException.ThrowIfNull(values);
-        ArgumentNullException.ThrowIfNull(setEntry);
         foreach ((Variable entry, T value) in Allocate(className, propertyName, destination, values.Count).Entries.Zip(values))
         {
             setEntry(entry, value);
@@ -77,7 +75,6 @@ internal static class PapyrusPropertyAccessor
 
     internal static void WriteFormArray<TForm>(string className, string propertyName, Variable destination, IReadOnlyCollection<TForm> forms) where TForm : IForm
     {
-        ArgumentNullException.ThrowIfNull(forms);
         (IReadOnlyList<Variable> entries, FormType elementType) =
             Allocate(className, propertyName, destination, forms.Count);
         foreach ((Variable entry, TForm form) in entries.Zip(forms))

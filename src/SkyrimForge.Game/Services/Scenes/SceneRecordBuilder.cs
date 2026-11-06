@@ -211,10 +211,8 @@ internal sealed class SceneRecordBuilder(GameTarget gameTarget, VoiceSilencer vo
         else
         {
             _ = package.LinkedPackage?.KeywordId?.Form;
-            foreach (Package listedPackage in package.PackageIds.Select(packageId => packageId.Form))
-            {
-                packages.Add(listedPackage);
-            }
+            packages.AddRange(package.PackageIds.Select(packageId => packageId.Form));
+
         }
         return action;
     }

@@ -26,8 +26,6 @@ public sealed class PapyrusScriptDispatcher
     /// <summary>The script these calls name.</summary>
     public string ScriptName { get; }
 
-    private static PapyrusDispatcher Dispatcher => PapyrusDispatcher.Instance;
-
     /// <summary>Calls a function of this script on a form, reading the return value as <typeparamref name="TValue"/>.</summary>
     /// <returns>
     /// A task with the return value. It faults if the value cannot be read as <typeparamref name="TValue"/>,
@@ -45,7 +43,7 @@ public sealed class PapyrusScriptDispatcher
         ArgumentNullException.ThrowIfNull(receiver);
         ArgumentException.ThrowIfNullOrEmpty(functionName);
         arguments?.Consume();
-        return Dispatcher.DispatchFunctionCallAsync<TValue>(receiver, ScriptName, functionName, arguments);
+        return PapyrusDispatcher.Instance.DispatchFunctionCallAsync<TValue>(receiver, ScriptName, functionName, arguments);
     }
 
     /// <summary>Calls a function whose return value is of no interest.</summary>
@@ -55,7 +53,7 @@ public sealed class PapyrusScriptDispatcher
         ArgumentNullException.ThrowIfNull(receiver);
         ArgumentException.ThrowIfNullOrEmpty(functionName);
         arguments?.Consume();
-        return Dispatcher.DispatchFunctionCallAsync(receiver, ScriptName, functionName, arguments);
+        return PapyrusDispatcher.Instance.DispatchFunctionCallAsync(receiver, ScriptName, functionName, arguments);
     }
 
     /// <summary>Calls a global (static) function of this script.</summary>
@@ -70,7 +68,7 @@ public sealed class PapyrusScriptDispatcher
     {
         ArgumentException.ThrowIfNullOrEmpty(functionName);
         arguments?.Consume();
-        return Dispatcher.DispatchStaticCallAsync<TValue>(ScriptName, functionName, arguments);
+        return PapyrusDispatcher.Instance.DispatchStaticCallAsync<TValue>(ScriptName, functionName, arguments);
     }
 
     /// <summary>Calls a global function whose return value is of no interest.</summary>
@@ -79,7 +77,7 @@ public sealed class PapyrusScriptDispatcher
     {
         ArgumentException.ThrowIfNullOrEmpty(functionName);
         arguments?.Consume();
-        return Dispatcher.DispatchStaticCallAsync(ScriptName, functionName, arguments);
+        return PapyrusDispatcher.Instance.DispatchStaticCallAsync(ScriptName, functionName, arguments);
     }
 
     /// <summary>Reads an Auto property of this script from a form, for one with no generated binding.</summary>
@@ -193,7 +191,7 @@ public sealed class PapyrusScriptDispatcher
     {
         ArgumentNullException.ThrowIfNull(receiver);
         ArgumentException.ThrowIfNullOrEmpty(propertyName);
-        return Dispatcher.DispatchPropertyGetAsync<TValue>(receiver, ScriptName, propertyName);
+        return PapyrusDispatcher.Instance.DispatchPropertyGetAsync<TValue>(receiver, ScriptName, propertyName);
     }
 
     /// <summary>Runs a full property's setter with an int.</summary>
@@ -229,7 +227,7 @@ public sealed class PapyrusScriptDispatcher
         ArgumentException.ThrowIfNullOrEmpty(propertyName);
         FormType formClass = PapyrusPropertyAccessor.GetDeclaredFormClass(ScriptName, propertyName, "write");
         nint formAddress = value?.Address ?? 0;
-        Dispatcher.SetProperty(receiver, ScriptName, propertyName, variable => NativePapyrus.SF_Papyrus_SetVariableForm(variable.Address, formAddress, formClass));
+        PapyrusDispatcher.Instance.SetProperty(receiver, ScriptName, propertyName, variable => NativePapyrus.SF_Papyrus_SetVariableForm(variable.Address, formAddress, formClass));
     }
 
     /// <summary>Runs a full array property's setter with an array of ints. Null writes None, not an empty array.</summary>
@@ -281,7 +279,7 @@ public sealed class PapyrusScriptDispatcher
     {
         ArgumentNullException.ThrowIfNull(receiver);
         ArgumentException.ThrowIfNullOrEmpty(propertyName);
-        Dispatcher.SetProperty(receiver, ScriptName, propertyName, setPropertyValue);
+        PapyrusDispatcher.Instance.SetProperty(receiver, ScriptName, propertyName, setPropertyValue);
     }
 
     private void CallSetterArray<T>(IForm receiver, string propertyName, IReadOnlyCollection<T>? values, Action<Variable, T> setEntry)

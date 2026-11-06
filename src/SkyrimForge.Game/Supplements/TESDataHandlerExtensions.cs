@@ -18,19 +18,15 @@ public static class TESDataHandlerExtensions
         /// Gets the .esm and .esp files that are not light, in load order.
         /// </summary>
         /// <remarks>Call on the game's thread.</remarks>
-        public IReadOnlyList<TESFile> GetLoadedMods()
-        {
-            return Sequences.Read((ref nint first, int capacity) => NativeSupplements.SF_TESDataHandler_GetLoadedMods(dataHandler.Address, ref first, capacity), TESFile.OrNull);
-        }
+        public IReadOnlyList<TESFile> GetLoadedMods() =>
+            Sequences.Read((ref nint first, int capacity) => NativeSupplements.SF_TESDataHandler_GetLoadedMods(dataHandler.Address, ref first, capacity), TESFile.OrNull);
 
         /// <summary>
         /// Gets the light .esm, .esp, and .esl files, which <see cref="GetLoadedMods"/> leaves out. On Skyrim VR the result is empty unless SkyrimVRESL is installed.
         /// </summary>
         /// <remarks>Call on the game's thread.</remarks>
-        public IReadOnlyList<TESFile> GetLoadedLightMods()
-        {
-            return Sequences.Read((ref nint first, int capacity) => NativeSupplements.SF_TESDataHandler_GetLoadedLightMods(dataHandler.Address, ref first, capacity), TESFile.OrNull);
-        }
+        public IReadOnlyList<TESFile> GetLoadedLightMods() =>
+            Sequences.Read((ref nint first, int capacity) => NativeSupplements.SF_TESDataHandler_GetLoadedLightMods(dataHandler.Address, ref first, capacity), TESFile.OrNull);
 
         /// <summary>Whether the game loaded the .esm, .esp, or .esl file, light or not, named <paramref name="fileName"/>, such as Dawnguard.esm.</summary>
         /// <exception cref="ArgumentNullException"><paramref name="fileName"/> is <c>null</c>.</exception>

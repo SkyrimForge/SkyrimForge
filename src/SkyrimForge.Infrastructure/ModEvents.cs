@@ -11,7 +11,6 @@ internal sealed class ModEvents : IModEvents
     {
         ArgumentNullException.ThrowIfNull(eventName);
         ArgumentNullException.ThrowIfNull(stringArgument);
-        nint senderAddress = sender?.Address ?? 0;
-        NativeGlobals.SF_Messaging_SendModEvent(eventName, stringArgument, numberArgument, senderAddress);
+        NativeGlobals.SF_Messaging_SendModEvent(eventName, stringArgument, numberArgument, sender?.Address ?? 0);
     }
 }

@@ -38,11 +38,8 @@ internal sealed class SceneStarter(IUtility utility, ISceneOwner owner, SceneRef
     {
         await utility.WaitAsync(TimeSpan.Zero, newGameOrSaveLoadingToken);
         await WaitForActorsAsync(actors, stoppedScenes, newGameOrSaveLoadingToken);
-        TimeSpan loadDeadline = getNow() + loadWait;
-        while (getNow() < loadDeadline && play.EndReason == null && references.GetUnavailabilityReason(scene, play.FirstPhase) != null)
-        {
-            await utility.WaitAsync(TimeSpan.Zero, newGameOrSaveLoadingToken);
-        }
+        await utility.WaitUntilAsync(() => play.EndReason != null || references.GetUnavailabilityReason(scene, play.FirstPhase) == null, loadWait, newGameOrSaveLoadingToken);
+
         if (play.EndReason != null)
         {
             return;
@@ -83,11 +80,8 @@ internal sealed class SceneStarter(IUtility utility, ISceneOwner owner, SceneRef
         play.ScenesAtStart = [.. scene.GetActors(play.FirstPhase).Select(alias => owner.GetReference(alias)?.FormOrNull?.GetCurrentScene())
             .WhereNotNull().Where(current => current.IsPlaying).Select(current => current.Address)];
         await (play.IsForced ? play.Scene.Papyrus.ForceStart() : play.Scene.Papyrus.Start());
-        TimeSpan waitDeadline = getNow() + playWait;
-        while (getNow() < waitDeadline && !play.Scene.IsPlaying && play.EndReason == null)
-        {
-            await utility.WaitAsync(TimeSpan.Zero, newGameOrSaveLoadingToken);
-        }
+        await utility.WaitUntilAsync(() => play.Scene.IsPlaying || play.EndReason != null, playWait, newGameOrSaveLoadingToken);
+
     }
 
     // A scene does not play if started while a scene it stopped is still playing.

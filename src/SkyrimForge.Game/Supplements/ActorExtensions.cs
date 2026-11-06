@@ -148,7 +148,7 @@ public static class ActorExtensions
         public bool HasParentRelationship<TOther>(TOther other) where TOther : IActor
         {
             ActorBase actorBase = actor.GetActorBase()!.Value;
-            return BGSRelationship.GetRelationship(actorBase, other.GetActorBase()!.Value)?.Npc1?.Address == actorBase.Address;
+            return BGSRelationship.GetRelationship(actorBase, other.GetActorBase()!.Value)?.Npc1 == actorBase;
         }
 
         /// <summary>Evaluates the actor's package again and resets its AI, as Papyrus's ResetAI does.</summary>

@@ -41,7 +41,7 @@ public static class ObjectReferenceExtensions
         {
             float drop = reference.GetCurrent3D() is { } node
                 ? node.World.Translate.Z - node.WorldBound.Center.Z
-                : reference.GetBaseObject()?.OriginDrop ?? 0f;
+                : reference.GetBaseObject() is { BoundData: var bounds } ? -(bounds.BoundMin.Z + bounds.BoundMax.Z) / 2f : 0f;
             reference.SetPosition(position with { Z = position.Z + Math.Max(drop, 0f) });
             reference.SetAngle(tes.GetLandAngle(position, yawDegrees, span) ?? new NiPoint3(0f, 0f, float.DegreesToRadians(yawDegrees)));
             reference.Update3DPosition(false);
@@ -123,41 +123,25 @@ public static class ObjectReferenceExtensions
         /// <summary>Sends the animation event <paramref name="eventName"/> to the reference's animation graph, as Papyrus's Debug.SendAnimationEvent does.</summary>
         /// <exception cref="ArgumentNullException"><paramref name="eventName"/> is <c>null</c>.</exception>
         /// <remarks>Call on the game's thread.</remarks>
-        public void SendAnimationEvent(string eventName)
-        {
-            ArgumentNullException.ThrowIfNull(eventName);
-            reference.AsIAnimationGraphManagerHolder().NotifyAnimationGraph(eventName);
-        }
+        public void SendAnimationEvent(string eventName) => reference.AsIAnimationGraphManagerHolder().NotifyAnimationGraph(eventName);
 
         /// <summary>Sets the bool animation graph variable <paramref name="variableName"/> to <paramref name="value"/>, as Papyrus's SetAnimationVariableBool does.</summary>
         /// <returns>The game's result, which is true even for a name the graph does not declare.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="variableName"/> is <c>null</c>.</exception>
         /// <remarks>Call on the game's thread.</remarks>
-        public bool SetAnimationVariableBool(string variableName, bool value)
-        {
-            ArgumentNullException.ThrowIfNull(variableName);
-            return reference.AsIAnimationGraphManagerHolder().SetGraphVariableBool(variableName, value);
-        }
+        public bool SetAnimationVariableBool(string variableName, bool value) => reference.AsIAnimationGraphManagerHolder().SetGraphVariableBool(variableName, value);
 
         /// <summary>Sets the float animation graph variable <paramref name="variableName"/> to <paramref name="value"/>, as Papyrus's SetAnimationVariableFloat does.</summary>
         /// <returns>The game's result, which is true even for a name the graph does not declare.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="variableName"/> is <c>null</c>.</exception>
         /// <remarks>Call on the game's thread.</remarks>
-        public bool SetAnimationVariableFloat(string variableName, float value)
-        {
-            ArgumentNullException.ThrowIfNull(variableName);
-            return reference.AsIAnimationGraphManagerHolder().SetGraphVariableFloat(variableName, value);
-        }
+        public bool SetAnimationVariableFloat(string variableName, float value) => reference.AsIAnimationGraphManagerHolder().SetGraphVariableFloat(variableName, value);
 
         /// <summary>Sets the int animation graph variable <paramref name="variableName"/> to <paramref name="value"/>, as Papyrus's SetAnimationVariableInt does.</summary>
         /// <returns>The game's result, which is true even for a name the graph does not declare.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="variableName"/> is <c>null</c>.</exception>
         /// <remarks>Call on the game's thread.</remarks>
-        public bool SetAnimationVariableInt(string variableName, int value)
-        {
-            ArgumentNullException.ThrowIfNull(variableName);
-            return reference.AsIAnimationGraphManagerHolder().SetGraphVariableInt(variableName, value);
-        }
+        public bool SetAnimationVariableInt(string variableName, int value) => reference.AsIAnimationGraphManagerHolder().SetGraphVariableInt(variableName, value);
 
         /// <summary>Plays <paramref name="impactEffect"/> at the reference, as Papyrus's PlayImpactEffect does.</summary>
         /// <param name="impactManager">The game's impact manager.</param>

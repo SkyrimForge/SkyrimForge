@@ -60,7 +60,7 @@ internal sealed unsafe class ConsoleCommandRegistrar(ILog log) : IConsoleCommand
             var values = new string[count];
             for (int i = 0; i < count; i++)
             {
-                values[i] = Marshal.PtrToStringUTF8((nint)arguments[i]) ?? throw new InvalidOperationException($"The native handler passed a null pointer for argument {i}.");
+                values[i] = Marshal.PtrToStringUTF8((nint)arguments[i])!;
             }
             command.Handler(ObjectReference.OrNull(target), values).OnFault(exception => command.Log.Write($"Console command {command.Name} threw: {exception}"));
         }

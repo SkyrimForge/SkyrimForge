@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.InteropServices;
 
 namespace SkyrimForge;
 
@@ -18,13 +17,12 @@ public static class SksePluginMessengerExtensions
         /// </param>
         /// <inheritdoc cref="ISksePluginMessenger.Send(uint, nint, int, string?)" path="/returns"/>
         /// <inheritdoc cref="ISksePluginMessenger.Send(uint, nint, int, string?)" path="/remarks"/>
-        public bool Send(uint messageType, ReadOnlySpan<byte> payload, string? receiver = null)
+        public unsafe bool Send(uint messageType, ReadOnlySpan<byte> payload, string? receiver = null)
         {
-            byte[] copy = GC.AllocateUninitializedArray<byte>(payload.Length, pinned: true);
-            payload.CopyTo(copy);
-            bool sent = messenger.Send(messageType, Marshal.UnsafeAddrOfPinnedArrayElement(copy, 0), copy.Length, receiver);
-            GC.KeepAlive(copy);
-            return sent;
+            fixed (byte* data = payload)
+            {
+                return messenger.Send(messageType, (nint)data, payload.Length, receiver);
+            }
         }
     }
 }

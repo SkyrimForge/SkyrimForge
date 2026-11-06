@@ -14,8 +14,6 @@ internal sealed class PapyrusFunctionRegistrar(ILog log) : IPapyrusFunctionRegis
     public void RegisterStatic(string className, PapyrusType returnType, string functionName, IReadOnlyCollection<PapyrusType> parameterTypes, Action<PapyrusCall> body)
     {
         ArgumentException.ThrowIfNullOrEmpty(className);
-        ArgumentException.ThrowIfNullOrEmpty(functionName);
-        ArgumentNullException.ThrowIfNull(parameterTypes);
         ArgumentNullException.ThrowIfNull(body);
         Bind(className, returnType, functionName, parameterTypes, AdaptImmediate(body), isStatic: true, isLatent: false, FormType.None);
     }
@@ -23,8 +21,6 @@ internal sealed class PapyrusFunctionRegistrar(ILog log) : IPapyrusFunctionRegis
     public void RegisterInstance(string selfClassName, FormType selfType, PapyrusType returnType, string functionName, IReadOnlyCollection<PapyrusType> parameterTypes, Action<PapyrusCall> body)
     {
         ArgumentException.ThrowIfNullOrEmpty(selfClassName);
-        ArgumentException.ThrowIfNullOrEmpty(functionName);
-        ArgumentNullException.ThrowIfNull(parameterTypes);
         ArgumentNullException.ThrowIfNull(body);
         Bind(selfClassName, returnType, functionName, parameterTypes, AdaptImmediate(body), isStatic: false, isLatent: false, selfType);
     }
@@ -32,29 +28,15 @@ internal sealed class PapyrusFunctionRegistrar(ILog log) : IPapyrusFunctionRegis
     public void RegisterLatentStatic(string className, PapyrusType returnType, string functionName, IReadOnlyCollection<PapyrusType> parameterTypes, Func<PapyrusCall, PapyrusLatentCall, bool> body)
     {
         ArgumentException.ThrowIfNullOrEmpty(className);
-        ArgumentException.ThrowIfNullOrEmpty(functionName);
-        ArgumentNullException.ThrowIfNull(parameterTypes);
         ArgumentNullException.ThrowIfNull(body);
-        ThrowIfArray(returnType);
         Bind(className, returnType, functionName, parameterTypes, AdaptLatent(body, returnType.ObjectType), isStatic: true, isLatent: true, FormType.None);
     }
 
     public void RegisterLatentInstance(string selfClassName, FormType selfType, PapyrusType returnType, string functionName, IReadOnlyCollection<PapyrusType> parameterTypes, Func<PapyrusCall, PapyrusLatentCall, bool> body)
     {
         ArgumentException.ThrowIfNullOrEmpty(selfClassName);
-        ArgumentException.ThrowIfNullOrEmpty(functionName);
-        ArgumentNullException.ThrowIfNull(parameterTypes);
         ArgumentNullException.ThrowIfNull(body);
-        ThrowIfArray(returnType);
         Bind(selfClassName, returnType, functionName, parameterTypes, AdaptLatent(body, returnType.ObjectType), isStatic: false, isLatent: true, selfType);
-    }
-
-    private static void ThrowIfArray(PapyrusType returnType)
-    {
-        if (returnType.IsArray)
-        {
-            throw new ArgumentException("A latent function cannot return an array.", nameof(returnType));
-        }
     }
 
     private static Func<PapyrusCall, uint, bool> AdaptImmediate(Action<PapyrusCall> body)
@@ -73,6 +55,12 @@ internal sealed class PapyrusFunctionRegistrar(ILog log) : IPapyrusFunctionRegis
 
     private unsafe void Bind(string className, PapyrusType returnType, string functionName, IReadOnlyCollection<PapyrusType> parameterTypes, Func<PapyrusCall, uint, bool> body, bool isStatic, bool isLatent, FormType selfObjectType)
     {
+        ArgumentException.ThrowIfNullOrEmpty(functionName);
+        ArgumentNullException.ThrowIfNull(parameterTypes);
+        if (isLatent && returnType.IsArray)
+        {
+            throw new ArgumentException("A latent function cannot return an array.", nameof(returnType));
+        }
         TypeInfo.RawType[] rawTypes = [.. parameterTypes.Select(parameter => parameter.Raw)];
         FormType[] objectTypes = [.. parameterTypes.Select(parameter => parameter.ObjectType)];
 

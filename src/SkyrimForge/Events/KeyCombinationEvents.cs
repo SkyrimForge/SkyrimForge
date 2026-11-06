@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Numerics;
 using System.Threading;
 
@@ -29,13 +30,8 @@ internal sealed class KeyCombinationEvents(IGameEvent<InputEventArgs> input, IKe
                 input.Subscribe(RaiseCombinations);
                 inputSubscribed = true;
             }
-            var combination = new Combination(key, modifiers);
-            if (!eventsByCombination.TryGetValue(combination, out GameEvent<InputEventArgs>? gameEvent))
-            {
-                gameEvent = new GameEvent<InputEventArgs>(reportFailure);
-                eventsByCombination.Add(combination, gameEvent);
-            }
-            return gameEvent;
+            return CollectionsMarshal.GetValueRefOrAddDefault(eventsByCombination, new Combination(key, modifiers), out _) ??= new GameEvent<InputEventArgs>(reportFailure);
+
         }
     }
 

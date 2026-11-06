@@ -62,23 +62,10 @@ internal sealed class TriggerZoneFactory : ITriggerZoneFactory
         }
     }
 
-    private static WorldspaceOrCellPosition? GetWorldspaceOrCellPosition<TReference>(TReference reference) where TReference : IObjectReference
-    {
-        FormId<Form> worldspaceOrCellId;
-        if (reference.GetWorldspace() is { } worldspace)
-        {
-            worldspaceOrCellId = worldspace.FormId;
-        }
-        else if (reference.ParentCell is { } cell)
-        {
-            worldspaceOrCellId = cell.FormId;
-        }
-        else
-        {
-            return null;
-        }
-        return new WorldspaceOrCellPosition(worldspaceOrCellId, reference.GetPosition());
-    }
+    private static WorldspaceOrCellPosition? GetWorldspaceOrCellPosition<TReference>(TReference reference) where TReference : IObjectReference =>
+        reference.GetWorldspace() is { } worldspace ? new WorldspaceOrCellPosition(worldspace.FormId, reference.GetPosition())
+        : reference.ParentCell is { } cell ? new WorldspaceOrCellPosition(cell.FormId, reference.GetPosition())
+        : null;
 
     private sealed class Zone(string key, Func<FormId<ObjectReference>?> getCenterId, float radius, ISavedStatePair<bool> isPlayerInsidePair, ILog log) : ITriggerZone
     {

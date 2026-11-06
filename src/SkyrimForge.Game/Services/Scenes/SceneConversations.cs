@@ -49,8 +49,7 @@ internal sealed class SceneConversations(ISceneOwner owner, GameTarget gameTarge
         {
             if (candidate == conversation)
             {
-                packages.Clear();
-                packages.Add(packageId.Form);
+                packages.Replace([packageId.Form]);
             }
         }
     }

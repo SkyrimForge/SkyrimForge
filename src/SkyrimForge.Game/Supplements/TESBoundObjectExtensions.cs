@@ -8,14 +8,6 @@ public static class TESBoundObjectExtensions
 {
     extension<TBoundObject>(TBoundObject boundObject) where TBoundObject : ITESBoundObject
     {
-        internal float OriginDrop
-        {
-            get
-            {
-                TESBoundObject.BOUND_DATA bounds = boundObject.BoundData;
-                return -(bounds.BoundMin.Z + bounds.BoundMax.Z) / 2f;
-            }
-        }
 
         /// <summary>Whether the object is a flora or tree record that specifies a produce item.</summary>
         public bool IsHarvestable

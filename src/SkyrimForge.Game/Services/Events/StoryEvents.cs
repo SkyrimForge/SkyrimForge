@@ -93,19 +93,12 @@ internal sealed unsafe class StoryEvents : IStoryEvents
     }
 
     // A handle is resolved here because the reference it identifies can be gone by the time a subscriber reads it.
-    private static StoryEventValue Read(ValueDeclaration declaredValue, ulong member)
+    private static StoryEventValue Read(ValueDeclaration declaredValue, ulong member) => declaredValue.Kind switch
     {
-        if (declaredValue.Kind == StoryEventValueKind.Reference)
-        {
-            ObjectReference? reference = ObjectReference.LookupByHandle((uint)member);
-            return new StoryEventValue(declaredValue.Name, declaredValue.Kind, reference?.Address ?? 0, 0);
-        }
-        if (declaredValue.Kind == StoryEventValueKind.Number)
-        {
-            return new StoryEventValue(declaredValue.Name, declaredValue.Kind, 0, (long)member);
-        }
-        return new StoryEventValue(declaredValue.Name, declaredValue.Kind, (nint)member, 0);
-    }
+        StoryEventValueKind.Reference => new StoryEventValue(declaredValue.Name, declaredValue.Kind, ObjectReference.LookupByHandle((uint)member)?.Address ?? 0, 0),
+        StoryEventValueKind.Number => new StoryEventValue(declaredValue.Name, declaredValue.Kind, 0, (long)member),
+        _ => new StoryEventValue(declaredValue.Name, declaredValue.Kind, (nint)member, 0)
+    };
 
     private List<StoryEventKind> Describe() =>
     [

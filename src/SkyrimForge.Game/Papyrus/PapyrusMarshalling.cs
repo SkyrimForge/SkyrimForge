@@ -44,14 +44,10 @@ internal static class PapyrusMarshalling<T>
         }
 
         PapyrusObjectType objectType = PapyrusObjectType.FromView(underlyingType);
-        return (PapyrusType.Form(objectType.FormType), argument =>
-        {
-            nint address = argument.GetFormAddress();
-            if (address == 0) { return null; }
-            var view = objectType.CreateView(address);
-            if (view != null) { return view; }
-            throw new InvalidOperationException($"A Papyrus value storing a form of type {Form.OrNull(address)?.GetFormType()} was read as {underlyingType.Name}, which that form is not.");
-        });
+        return (PapyrusType.Form(objectType.FormType), argument => argument.GetFormAddress() is var address and not 0
+            ? objectType.CreateView(address)
+                ?? throw new InvalidOperationException($"A Papyrus value storing a form of type {Form.FromAddress(address).GetFormType()} was read as {underlyingType.Name}, which that form is not.")
+            : null);
     }
 
     private static Array ReadEntries(Type elementType, PapyrusValue argument, Func<PapyrusValue, object?> readEntry)

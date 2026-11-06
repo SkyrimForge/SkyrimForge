@@ -74,7 +74,6 @@ public static class GameSettingCollectionExtensions
 
     private static Setting GetTypedSetting(GameSettingCollection settings, string name, Setting.Type type)
     {
-        ArgumentNullException.ThrowIfNull(name);
         Setting setting = settings.GetSetting(name) ?? throw new KeyNotFoundException($"The game has no setting named {name}.");
         Setting.Type settingType = setting.GetSettingType();
         if (settingType != type)

@@ -16,7 +16,7 @@ public static class SubtitleManagerExtensions
             ArgumentNullException.ThrowIfNull(text);
             // The list stores a copy, so the entry built here is deleted afterward.
             SubtitleInfo entry = SubtitleInfo.New();
-            entry.Speaker = ObjectReference.OrNull(speaker.Address);
+            entry.Speaker = speaker.AsObjectReference();
             entry.Subtitle = text;
             entry.TargetDistance = distance;
             entry.ForceDisplay = forceDisplay;

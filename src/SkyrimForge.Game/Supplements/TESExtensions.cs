@@ -28,7 +28,7 @@ public static class TESExtensions
         /// <remarks>The ray strikes actors, as <see cref="GetSurfaceUnder"/> describes. Call on the game's thread.</remarks>
         public NiPoint3? GetPositionOnGround(NiPoint3 position, float rayStartHeight, float rayEndDepth)
         {
-            float? hitHeight = tes.GetSurfaceUnder(position, rayStartHeight, rayEndDepth) is ({ } hit, _) ? hit.Z : null;
+            float? hitHeight = tes.GetSurfaceUnder(position, rayStartHeight, rayEndDepth)?.Position.Z;
             float? landHeight = tes.GetLandHeight(position, out float height) ? height : null;
             float? groundHeight = hitHeight != null && landHeight != null ? Math.Max(hitHeight.Value, landHeight.Value) : hitHeight ?? landHeight;
             return groundHeight != null ? position with { Z = groundHeight.Value } : null;

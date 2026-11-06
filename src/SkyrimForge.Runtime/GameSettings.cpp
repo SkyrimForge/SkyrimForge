@@ -3,15 +3,14 @@
 #include <RE/Skyrim.h>
 #include <cstring>
 
-extern "C" __declspec(dllexport) bool SF_Setting_SetString(RE::Setting* setting, const char* value)
+extern "C" __declspec(dllexport) void SF_Setting_SetString(RE::Setting* setting, const char* value)
 {
 	const std::size_t length = std::strlen(value) + 1;
 	auto* text = static_cast<char*>(RE::malloc(length));
 	if (text == nullptr)
 	{
-		return false;
+		SKSE::stl::report_and_fail("out of memory");
 	}
 	std::memcpy(text, value, length);
 	setting->data.s = text;
-	return true;
 }

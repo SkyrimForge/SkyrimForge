@@ -81,7 +81,7 @@ namespace
 		auto* instance = RE::malloc<RE::BGSRefAliasInstanceData>();
 		if (instance == nullptr)
 		{
-			return nullptr;
+			SKSE::stl::report_and_fail("out of memory");
 		}
 		instance->quest = quest;
 		instance->alias = alias;
@@ -116,10 +116,7 @@ extern "C" __declspec(dllexport) void SF_AliasInstance_SetPackage(RE::TESObjectR
 	}
 	if (!found && package != nullptr)
 	{
-		if (RE::BGSRefAliasInstanceData* instance = AddInstance(*instances, quest, alias))
-		{
-			SetInstancePackage(*instance, package);
-		}
+		SetInstancePackage(*AddInstance(*instances, quest, alias), package);
 	}
 }
 

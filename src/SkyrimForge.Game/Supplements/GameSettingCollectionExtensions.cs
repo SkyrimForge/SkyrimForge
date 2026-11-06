@@ -65,16 +65,10 @@ public static class GameSettingCollectionExtensions
         /// <exception cref="ArgumentNullException"><paramref name="name"/> or <paramref name="value"/> is <c>null</c>.</exception>
         /// <exception cref="KeyNotFoundException">The game has no setting named <paramref name="name"/>.</exception>
         /// <exception cref="ArgumentException">The setting named <paramref name="name"/> is not of this type.</exception>
-        /// <exception cref="InvalidOperationException">The game's heap could not allocate the text.</exception>
         public void SetString(string name, string value)
         {
             ArgumentNullException.ThrowIfNull(value);
-            Setting setting = GetTypedSetting(settings, name, Setting.Type.kString);
-            if (NativeSupplements.SF_Setting_SetString(setting.Address, value))
-            {
-                return;
-            }
-            throw new InvalidOperationException("The game's heap could not allocate the setting's text.");
+            NativeSupplements.SF_Setting_SetString(GetTypedSetting(settings, name, Setting.Type.kString).Address, value);
         }
     }
 
@@ -94,6 +88,5 @@ public static class GameSettingCollectionExtensions
 internal static partial class NativeSupplements
 {
     [LibraryImport(library, StringMarshalling = StringMarshalling.Utf8)]
-    [return: MarshalAs(UnmanagedType.U1)]
-    internal static partial bool SF_Setting_SetString(nint setting, string value);
+    internal static partial void SF_Setting_SetString(nint setting, string value);
 }

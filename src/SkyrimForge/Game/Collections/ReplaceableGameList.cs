@@ -16,15 +16,13 @@ public sealed class ReplaceableGameList<T> : ReadableGameList<T>
     /// <summary>Replaces the run with <paramref name="entries"/>. The new run is allocated on the game's heap, and the run it replaces is not freed.</summary>
     /// <remarks>A run that stores its entries whole receives a copy of each, so the entries read from it afterwards are the copies.</remarks>
     /// <exception cref="ArgumentNullException"><paramref name="entries"/> is <c>null</c>.</exception>
-    /// <exception cref="ArgumentException">
-    /// <paramref name="entries"/> has more entries than the run's count field can store, or the game's heap could not allocate the new run.
-    /// </exception>
+    /// <exception cref="ArgumentException"><paramref name="entries"/> has more entries than the run's count field can store.</exception>
     public void Replace(IEnumerable<T> entries)
     {
         ArgumentNullException.ThrowIfNull(entries);
         if (!replace(Address, [.. entries]))
         {
-            throw new ArgumentException("The run's count field cannot store that many entries, or the game's heap could not allocate them.", nameof(entries));
+            throw new ArgumentException("The run's count field cannot store that many entries.", nameof(entries));
         }
     }
 }

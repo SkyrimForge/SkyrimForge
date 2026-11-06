@@ -13,16 +13,7 @@ public sealed class ScaleformValue : IDisposable
     private ScaleformValue(nint address) => this.address = address;
 
     /// <summary>Allocates a value that <see cref="Dispose"/> frees.</summary>
-    /// <exception cref="InvalidOperationException">The value could not be allocated.</exception>
-    public static ScaleformValue Create()
-    {
-        nint createdAddress = NativeBindings.SF_GFxValue_New();
-        if (createdAddress == 0)
-        {
-            throw new InvalidOperationException("A Scaleform value could not be allocated.");
-        }
-        return new ScaleformValue(createdAddress);
-    }
+    public static ScaleformValue Create() => new(NativeBindings.SF_GFxValue_New());
 
     /// <summary>The stored value as a <see cref="GFxValue"/>.</summary>
     public GFxValue Value

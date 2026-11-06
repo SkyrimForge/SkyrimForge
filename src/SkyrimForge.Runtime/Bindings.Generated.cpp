@@ -34,7 +34,10 @@ template <class T>
 {
 	constexpr bool overAligned = alignof(T) > alignof(std::max_align_t);
 	void* memory = overAligned ? RE::aligned_alloc(alignof(T), sizeof(T)) : RE::malloc(sizeof(T));
-	return memory ? ::new (memory) T() : nullptr;
+	if (!memory) {
+		SKSE::stl::report_and_fail("out of memory");
+	}
+	return ::new (memory) T();
 }
 
 template <class T>
@@ -1690,7 +1693,7 @@ extern "C" __declspec(dllexport) bool SF_MemoryManager_Heaps_Set(RE::MemoryManag
     using Count = std::remove_cvref_t<decltype(self->numHeaps)>;
     if (count < 0 || std::cmp_greater(count, (std::numeric_limits<Count>::max)()) || (count > 0 && !entries)) { return false; }
     auto* replacement = count > 0 ? static_cast<Entry*>(RE::malloc(sizeof(Entry) * static_cast<std::size_t>(count))) : nullptr;
-    if (count > 0 && !replacement) { return false; }
+    if (count > 0 && !replacement) { SKSE::stl::report_and_fail("out of memory"); }
     for (std::int32_t i = 0; i < count; ++i) { std::construct_at(replacement + i, entries[i]); }
     self->heaps = replacement;
     self->numHeaps = static_cast<Count>(count);
@@ -1731,7 +1734,7 @@ extern "C" __declspec(dllexport) bool SF_MemoryManager_PhysicalHeaps_Set(RE::Mem
     using Count = std::remove_cvref_t<decltype(self->numPhysicalHeaps)>;
     if (count < 0 || std::cmp_greater(count, (std::numeric_limits<Count>::max)()) || (count > 0 && !entries)) { return false; }
     auto* replacement = count > 0 ? static_cast<Entry*>(RE::malloc(sizeof(Entry) * static_cast<std::size_t>(count))) : nullptr;
-    if (count > 0 && !replacement) { return false; }
+    if (count > 0 && !replacement) { SKSE::stl::report_and_fail("out of memory"); }
     for (std::int32_t i = 0; i < count; ++i) { std::construct_at(replacement + i, entries[i]); }
     self->physicalHeaps = replacement;
     self->numPhysicalHeaps = static_cast<Count>(count);
@@ -3625,7 +3628,7 @@ extern "C" __declspec(dllexport) bool SF_BGSQuestObjective_Targets_Set(RE::BGSQu
     using Count = std::remove_cvref_t<decltype(self->numTargets)>;
     if (count < 0 || std::cmp_greater(count, (std::numeric_limits<Count>::max)()) || (count > 0 && !entries)) { return false; }
     auto* replacement = count > 0 ? static_cast<Entry*>(RE::malloc(sizeof(Entry) * static_cast<std::size_t>(count))) : nullptr;
-    if (count > 0 && !replacement) { return false; }
+    if (count > 0 && !replacement) { SKSE::stl::report_and_fail("out of memory"); }
     for (std::int32_t i = 0; i < count; ++i) { std::construct_at(replacement + i, entries[i]); }
     self->targets = replacement;
     self->numTargets = static_cast<Count>(count);
@@ -5457,7 +5460,7 @@ extern "C" __declspec(dllexport) bool SF_DestructibleObjectData_Stages_Set(RE::D
     using Count = std::remove_cvref_t<decltype(self->numStages)>;
     if (count < 0 || std::cmp_greater(count, (std::numeric_limits<Count>::max)()) || (count > 0 && !entries)) { return false; }
     auto* replacement = count > 0 ? static_cast<Entry*>(RE::malloc(sizeof(Entry) * static_cast<std::size_t>(count))) : nullptr;
-    if (count > 0 && !replacement) { return false; }
+    if (count > 0 && !replacement) { SKSE::stl::report_and_fail("out of memory"); }
     for (std::int32_t i = 0; i < count; ++i) { std::construct_at(replacement + i, entries[i]); }
     self->stages = replacement;
     self->numStages = static_cast<Count>(count);
@@ -10032,7 +10035,7 @@ extern "C" __declspec(dllexport) bool SF_RagDollData_Bones_Set(RE::RagDollData* 
     using Count = std::remove_cvref_t<decltype(self->boneCount)>;
     if (count < 0 || std::cmp_greater(count, (std::numeric_limits<Count>::max)()) || (count > 0 && !entries)) { return false; }
     auto* replacement = count > 0 ? static_cast<Entry*>(RE::malloc(sizeof(Entry) * static_cast<std::size_t>(count))) : nullptr;
-    if (count > 0 && !replacement) { return false; }
+    if (count > 0 && !replacement) { SKSE::stl::report_and_fail("out of memory"); }
     for (std::int32_t i = 0; i < count; ++i) { std::construct_at(replacement + i, *entries[i]); }
     self->bones = replacement;
     self->boneCount = static_cast<Count>(count);
@@ -11286,7 +11289,7 @@ extern "C" __declspec(dllexport) bool SF_TESSpellList__SpellData_LevSpells_Set(R
     using Count = std::remove_cvref_t<decltype(self->numlevSpells)>;
     if (count < 0 || std::cmp_greater(count, (std::numeric_limits<Count>::max)()) || (count > 0 && !entries)) { return false; }
     auto* replacement = count > 0 ? static_cast<Entry*>(RE::malloc(sizeof(Entry) * static_cast<std::size_t>(count))) : nullptr;
-    if (count > 0 && !replacement) { return false; }
+    if (count > 0 && !replacement) { SKSE::stl::report_and_fail("out of memory"); }
     for (std::int32_t i = 0; i < count; ++i) { std::construct_at(replacement + i, entries[i]); }
     self->levSpells = replacement;
     self->numlevSpells = static_cast<Count>(count);
@@ -11317,7 +11320,7 @@ extern "C" __declspec(dllexport) bool SF_TESSpellList__SpellData_Shouts_Set(RE::
     using Count = std::remove_cvref_t<decltype(self->numShouts)>;
     if (count < 0 || std::cmp_greater(count, (std::numeric_limits<Count>::max)()) || (count > 0 && !entries)) { return false; }
     auto* replacement = count > 0 ? static_cast<Entry*>(RE::malloc(sizeof(Entry) * static_cast<std::size_t>(count))) : nullptr;
-    if (count > 0 && !replacement) { return false; }
+    if (count > 0 && !replacement) { SKSE::stl::report_and_fail("out of memory"); }
     for (std::int32_t i = 0; i < count; ++i) { std::construct_at(replacement + i, entries[i]); }
     self->shouts = replacement;
     self->numShouts = static_cast<Count>(count);
@@ -11338,7 +11341,7 @@ extern "C" __declspec(dllexport) bool SF_TESSpellList__SpellData_Spells_Set(RE::
     using Count = std::remove_cvref_t<decltype(self->numSpells)>;
     if (count < 0 || std::cmp_greater(count, (std::numeric_limits<Count>::max)()) || (count > 0 && !entries)) { return false; }
     auto* replacement = count > 0 ? static_cast<Entry*>(RE::malloc(sizeof(Entry) * static_cast<std::size_t>(count))) : nullptr;
-    if (count > 0 && !replacement) { return false; }
+    if (count > 0 && !replacement) { SKSE::stl::report_and_fail("out of memory"); }
     for (std::int32_t i = 0; i < count; ++i) { std::construct_at(replacement + i, entries[i]); }
     self->spells = replacement;
     self->numSpells = static_cast<Count>(count);
@@ -13075,7 +13078,7 @@ extern "C" __declspec(dllexport) bool SF_BSSmallBlockAllocator__MegaBlockPage_Fr
     using Count = std::remove_cvref_t<decltype(self->numFreeBlockPages)>;
     if (count < 0 || std::cmp_greater(count, (std::numeric_limits<Count>::max)()) || (count > 0 && !entries)) { return false; }
     auto* replacement = count > 0 ? static_cast<Entry*>(RE::malloc(sizeof(Entry) * static_cast<std::size_t>(count))) : nullptr;
-    if (count > 0 && !replacement) { return false; }
+    if (count > 0 && !replacement) { SKSE::stl::report_and_fail("out of memory"); }
     for (std::int32_t i = 0; i < count; ++i) { std::construct_at(replacement + i, *entries[i]); }
     self->freeBlockPages = replacement;
     self->numFreeBlockPages = static_cast<Count>(count);
@@ -17167,7 +17170,7 @@ extern "C" __declspec(dllexport) bool SF_NiParticlesData__PARTICLES_RUNTIME_DATA
     using Count = std::remove_cvref_t<decltype(self->subTextureOffsetsCount)>;
     if (count < 0 || std::cmp_greater(count, (std::numeric_limits<Count>::max)()) || (count > 0 && !entries)) { return false; }
     auto* replacement = count > 0 ? static_cast<Entry*>(RE::malloc(sizeof(Entry) * static_cast<std::size_t>(count))) : nullptr;
-    if (count > 0 && !replacement) { return false; }
+    if (count > 0 && !replacement) { SKSE::stl::report_and_fail("out of memory"); }
     for (std::int32_t i = 0; i < count; ++i) { std::construct_at(replacement + i, entries[i]); }
     self->subtextureOffsets = replacement;
     self->subTextureOffsetsCount = static_cast<Count>(count);
@@ -17206,7 +17209,7 @@ extern "C" __declspec(dllexport) bool SF_NiSkinPartition__Partition_Bones_Set(RE
     using Count = std::remove_cvref_t<decltype(self->numBones)>;
     if (count < 0 || std::cmp_greater(count, (std::numeric_limits<Count>::max)()) || (count > 0 && !entries)) { return false; }
     auto* replacement = count > 0 ? static_cast<Entry*>(RE::malloc(sizeof(Entry) * static_cast<std::size_t>(count))) : nullptr;
-    if (count > 0 && !replacement) { return false; }
+    if (count > 0 && !replacement) { SKSE::stl::report_and_fail("out of memory"); }
     for (std::int32_t i = 0; i < count; ++i) { std::construct_at(replacement + i, entries[i]); }
     self->bones = replacement;
     self->numBones = static_cast<Count>(count);
@@ -17819,7 +17822,7 @@ extern "C" __declspec(dllexport) bool SF_BGSIdleCollection_Idles_Set(RE::BGSIdle
     using Count = std::remove_cvref_t<decltype(self->idleCount)>;
     if (count < 0 || std::cmp_greater(count, (std::numeric_limits<Count>::max)()) || (count > 0 && !entries)) { return false; }
     auto* replacement = count > 0 ? static_cast<Entry*>(RE::malloc(sizeof(Entry) * static_cast<std::size_t>(count))) : nullptr;
-    if (count > 0 && !replacement) { return false; }
+    if (count > 0 && !replacement) { SKSE::stl::report_and_fail("out of memory"); }
     for (std::int32_t i = 0; i < count; ++i) { std::construct_at(replacement + i, entries[i]); }
     self->idles = replacement;
     self->idleCount = static_cast<Count>(count);
@@ -17865,7 +17868,7 @@ extern "C" __declspec(dllexport) bool SF_BGSKeywordForm_Keywords_Set(RE::BGSKeyw
     using Count = std::remove_cvref_t<decltype(self->numKeywords)>;
     if (count < 0 || std::cmp_greater(count, (std::numeric_limits<Count>::max)()) || (count > 0 && !entries)) { return false; }
     auto* replacement = count > 0 ? static_cast<Entry*>(RE::malloc(sizeof(Entry) * static_cast<std::size_t>(count))) : nullptr;
-    if (count > 0 && !replacement) { return false; }
+    if (count > 0 && !replacement) { SKSE::stl::report_and_fail("out of memory"); }
     for (std::int32_t i = 0; i < count; ++i) { std::construct_at(replacement + i, entries[i]); }
     self->keywords = replacement;
     self->numKeywords = static_cast<Count>(count);
@@ -17906,7 +17909,7 @@ extern "C" __declspec(dllexport) bool SF_BGSPerkRankArray_Perks_Set(RE::BGSPerkR
     using Count = std::remove_cvref_t<decltype(self->perkCount)>;
     if (count < 0 || std::cmp_greater(count, (std::numeric_limits<Count>::max)()) || (count > 0 && !entries)) { return false; }
     auto* replacement = count > 0 ? static_cast<Entry*>(RE::malloc(sizeof(Entry) * static_cast<std::size_t>(count))) : nullptr;
-    if (count > 0 && !replacement) { return false; }
+    if (count > 0 && !replacement) { SKSE::stl::report_and_fail("out of memory"); }
     for (std::int32_t i = 0; i < count; ++i) { std::construct_at(replacement + i, *entries[i]); }
     self->perks = replacement;
     self->perkCount = static_cast<Count>(count);
@@ -18318,7 +18321,7 @@ extern "C" __declspec(dllexport) bool SF_TESContainer_ContainerObjects_Set(RE::T
     using Count = std::remove_cvref_t<decltype(self->numContainerObjects)>;
     if (count < 0 || std::cmp_greater(count, (std::numeric_limits<Count>::max)()) || (count > 0 && !entries)) { return false; }
     auto* replacement = count > 0 ? static_cast<Entry*>(RE::malloc(sizeof(Entry) * static_cast<std::size_t>(count))) : nullptr;
-    if (count > 0 && !replacement) { return false; }
+    if (count > 0 && !replacement) { SKSE::stl::report_and_fail("out of memory"); }
     for (std::int32_t i = 0; i < count; ++i) { std::construct_at(replacement + i, entries[i]); }
     self->containerObjects = replacement;
     self->numContainerObjects = static_cast<Count>(count);
@@ -18552,7 +18555,7 @@ extern "C" __declspec(dllexport) bool SF_TESModel_Addons_Set(RE::TESModel* self,
     using Count = std::remove_cvref_t<decltype(self->numAddons)>;
     if (count < 0 || std::cmp_greater(count, (std::numeric_limits<Count>::max)()) || (count > 0 && !entries)) { return false; }
     auto* replacement = count > 0 ? static_cast<Entry*>(RE::malloc(sizeof(Entry) * static_cast<std::size_t>(count))) : nullptr;
-    if (count > 0 && !replacement) { return false; }
+    if (count > 0 && !replacement) { SKSE::stl::report_and_fail("out of memory"); }
     for (std::int32_t i = 0; i < count; ++i) { std::construct_at(replacement + i, entries[i]); }
     self->addons = replacement;
     self->numAddons = static_cast<Count>(count);
@@ -18580,7 +18583,7 @@ extern "C" __declspec(dllexport) bool SF_TESModel_Textures_Set(RE::TESModel* sel
     using Count = std::remove_cvref_t<decltype(self->numTextures)>;
     if (count < 0 || std::cmp_greater(count, (std::numeric_limits<Count>::max)()) || (count > 0 && !entries)) { return false; }
     auto* replacement = count > 0 ? static_cast<Entry*>(RE::malloc(sizeof(Entry) * static_cast<std::size_t>(count))) : nullptr;
-    if (count > 0 && !replacement) { return false; }
+    if (count > 0 && !replacement) { SKSE::stl::report_and_fail("out of memory"); }
     for (std::int32_t i = 0; i < count; ++i) { std::construct_at(replacement + i, *entries[i]); }
     self->textures = replacement;
     self->numTextures = static_cast<Count>(count);
@@ -19056,7 +19059,7 @@ extern "C" __declspec(dllexport) bool SF_ExtraMissingRefIDs_IDs_Set(RE::ExtraMis
     using Count = std::remove_cvref_t<decltype(self->numIDs)>;
     if (count < 0 || std::cmp_greater(count, (std::numeric_limits<Count>::max)()) || (count > 0 && !entries)) { return false; }
     auto* replacement = count > 0 ? static_cast<Entry*>(RE::malloc(sizeof(Entry) * static_cast<std::size_t>(count))) : nullptr;
-    if (count > 0 && !replacement) { return false; }
+    if (count > 0 && !replacement) { SKSE::stl::report_and_fail("out of memory"); }
     for (std::int32_t i = 0; i < count; ++i) { std::construct_at(replacement + i, *entries[i]); }
     self->IDs = replacement;
     self->numIDs = static_cast<Count>(count);
@@ -21723,7 +21726,7 @@ extern "C" __declspec(dllexport) bool SF_BSScript__Internal__VirtualMachine_Froz
     using Count = std::remove_cvref_t<decltype(self->frozenStacksCount)>;
     if (count < 0 || std::cmp_greater(count, (std::numeric_limits<Count>::max)()) || (count > 0 && !entries)) { return false; }
     auto* replacement = count > 0 ? static_cast<Entry*>(RE::malloc(sizeof(Entry) * static_cast<std::size_t>(count))) : nullptr;
-    if (count > 0 && !replacement) { return false; }
+    if (count > 0 && !replacement) { SKSE::stl::report_and_fail("out of memory"); }
     for (std::int32_t i = 0; i < count; ++i) { std::construct_at(replacement + i, *entries[i]); }
     self->frozenStacks = replacement;
     self->frozenStacksCount = static_cast<Count>(count);
@@ -22405,7 +22408,7 @@ extern "C" __declspec(dllexport) bool SF_TESModelTextureSwap_AlternateTextures_S
     using Count = std::remove_cvref_t<decltype(self->numAlternateTextures)>;
     if (count < 0 || std::cmp_greater(count, (std::numeric_limits<Count>::max)()) || (count > 0 && !entries)) { return false; }
     auto* replacement = count > 0 ? static_cast<Entry*>(RE::malloc(sizeof(Entry) * static_cast<std::size_t>(count))) : nullptr;
-    if (count > 0 && !replacement) { return false; }
+    if (count > 0 && !replacement) { SKSE::stl::report_and_fail("out of memory"); }
     for (std::int32_t i = 0; i < count; ++i) { std::construct_at(replacement + i, *entries[i]); }
     self->alternateTextures = replacement;
     self->numAlternateTextures = static_cast<Count>(count);
@@ -22989,7 +22992,7 @@ extern "C" __declspec(dllexport) bool SF_TESTopic_TopicInfos_Set(RE::TESTopic* s
     using Count = std::remove_cvref_t<decltype(self->numTopicInfos)>;
     if (count < 0 || std::cmp_greater(count, (std::numeric_limits<Count>::max)()) || (count > 0 && !entries)) { return false; }
     auto* replacement = count > 0 ? static_cast<Entry*>(RE::malloc(sizeof(Entry) * static_cast<std::size_t>(count))) : nullptr;
-    if (count > 0 && !replacement) { return false; }
+    if (count > 0 && !replacement) { SKSE::stl::report_and_fail("out of memory"); }
     for (std::int32_t i = 0; i < count; ++i) { std::construct_at(replacement + i, entries[i]); }
     self->topicInfos = replacement;
     self->numTopicInfos = static_cast<Count>(count);
@@ -26346,7 +26349,7 @@ extern "C" __declspec(dllexport) bool SF_NiBackToFrontAccumulator_Items_Set(RE::
     using Count = std::remove_cvref_t<decltype(self->numItems)>;
     if (count < 0 || std::cmp_greater(count, (std::numeric_limits<Count>::max)()) || (count > 0 && !entries)) { return false; }
     auto* replacement = count > 0 ? static_cast<Entry*>(RE::malloc(sizeof(Entry) * static_cast<std::size_t>(count))) : nullptr;
-    if (count > 0 && !replacement) { return false; }
+    if (count > 0 && !replacement) { SKSE::stl::report_and_fail("out of memory"); }
     for (std::int32_t i = 0; i < count; ++i) { std::construct_at(replacement + i, entries[i]); }
     self->items = replacement;
     self->numItems = static_cast<Count>(count);
@@ -27597,7 +27600,7 @@ extern "C" __declspec(dllexport) bool SF_TESNPC_HeadParts_Set(RE::TESNPC* self, 
     using Count = std::remove_cvref_t<decltype(self->numHeadParts)>;
     if (count < 0 || std::cmp_greater(count, (std::numeric_limits<Count>::max)()) || (count > 0 && !entries)) { return false; }
     auto* replacement = count > 0 ? static_cast<Entry*>(RE::malloc(sizeof(Entry) * static_cast<std::size_t>(count))) : nullptr;
-    if (count > 0 && !replacement) { return false; }
+    if (count > 0 && !replacement) { SKSE::stl::report_and_fail("out of memory"); }
     for (std::int32_t i = 0; i < count; ++i) { std::construct_at(replacement + i, entries[i]); }
     self->headParts = replacement;
     self->numHeadParts = static_cast<Count>(count);

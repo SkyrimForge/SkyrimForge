@@ -7,35 +7,19 @@ namespace SkyrimForge.Game;
 /// <summary>Provides extension members for <see cref="MapMarker"/>, a sequence of them, and <see cref="GameTarget"/>.</summary>
 public static class MapMarkerExtensions
 {
-    // Form IDs, because a reference view is invalid after a save loads.
-    private static FormId<ObjectReference>[]? markerReferences;
-
     extension(GameTarget gameTarget)
     {
         /// <summary>Reads every named map marker of every worldspace.</summary>
-        /// <remarks>The first call enumerates each worldspace's persistent cell, so a marker created after it is not included.</remarks>
-        public IReadOnlyList<MapMarker> GetMapMarkers()
-        {
-            if (markerReferences != null)
-            {
-                return [.. markerReferences.Select(id => id.FormOrNull).WhereNotNull().Select(FromReference).WhereNotNull()];
-            }
-            MapMarker[] markers =
-            [
-                .. gameTarget.DataHandler.GetFormArray<WorldSpace>()
-                    .Select(worldspace => worldspace.PersistentCell)
-                    .WhereNotNull()
-                    .SelectMany(cell => cell.GetReferences())
-                    .Select(FromReference)
-                    .WhereNotNull()
-            ];
-            // An empty enumeration means the game has loaded no data yet.
-            if (markers.Length > 0)
-            {
-                markerReferences = [.. markers.Select(marker => marker.ReferenceId)];
-            }
-            return markers;
-        }
+        /// <remarks>Each call enumerates every worldspace's persistent cell, so call it when the markers are needed rather than each frame.</remarks>
+        public IReadOnlyList<MapMarker> GetMapMarkers() =>
+        [
+            .. gameTarget.DataHandler.GetFormArray<WorldSpace>()
+                .Select(worldspace => worldspace.PersistentCell)
+                .WhereNotNull()
+                .SelectMany(cell => cell.GetReferences())
+                .Select(FromReference)
+                .WhereNotNull()
+        ];
     }
 
     extension(IEnumerable<MapMarker> markers)

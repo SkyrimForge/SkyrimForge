@@ -96,7 +96,11 @@ internal static class PapyrusPropertyAccessor
     internal static FormType GetDeclaredFormClass(string className, string propertyName, string operation)
     {
         int status = NativePapyrus.SF_Papyrus_PropertyClass(className, propertyName, out FormType declaredClass);
-        return status == 0 ? declaredClass : throw CreateClassException(status, className, propertyName, operation);
+        if (status == 0)
+        {
+            return declaredClass;
+        }
+        throw CreateClassException(status, className, propertyName, operation);
     }
 
     private static Variable GetPropertyVariable(IForm receiver, string className, string propertyName, string operation)

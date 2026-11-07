@@ -5,8 +5,8 @@ namespace SkyrimForge;
 
 /// <summary>Queues work to run while the game is stopped for it. A plugin uses this to call the game from a thread of its own.</summary>
 /// <remarks>
-/// Each piece runs on a worker thread SKSE selects, never the game's thread,
-/// so no thread-local value survives between pieces and a lock acquired in one cannot be released in the next.
+/// Each piece runs on a thread SKSE selects: often the game's thread at the main menu and during a load, and a worker thread during play.
+/// The thread can differ from piece to piece, so no thread-local value survives between pieces, and a lock acquired in one cannot be released in the next.
 /// Work that blocks until the game's thread runs never finishes, because the game's thread is waiting for that work.
 /// BGSSaveLoadManager.Save on Skyrim VR can block this way, or return false, when called from queued work.
 /// The game waits throughout, so long work costs frames.

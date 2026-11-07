@@ -21,7 +21,10 @@ public interface IServiceRegistrar
     /// <exception cref="ArgumentException"><typeparamref name="T"/> is registered already, or the framework provides it to each plugin.</exception>
     void Add<T>() where T : class;
 
-    /// <summary>Registers a service the framework constructs through the one public constructor of <typeparamref name="TImplementation"/>, whose parameters are services too.</summary>
+    /// <summary>
+    /// Registers a service the framework constructs through the one public constructor of <typeparamref name="TImplementation"/>,
+    /// whose parameters are services too.
+    /// </summary>
     /// <exception cref="ArgumentException"><typeparamref name="TService"/> is registered already, or the framework provides it to each plugin.</exception>
     void Add<TService, TImplementation>() where TService : class where TImplementation : class, TService;
 }
